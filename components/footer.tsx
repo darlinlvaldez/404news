@@ -4,7 +4,7 @@ export default function Footer() {
       <div className="bg-green-800 border-b border-green-900">
         <div className="mx-auto lg:w-[calc(15rem*4+3rem)] p-4">
           <a href="/news.html" className="cursor-pointer">
-            <img className="w-44 max-h-24 object-contain" src="/404news-logo.png" alt="404 News"/>
+            <img className="w-44 max-h-24 object-contain" src="/images/404news-logo.png" alt="404 News"/>
           </a>
         </div>
       </div>

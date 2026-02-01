@@ -1,13 +1,10 @@
-import Link from "next/link";
-import Image from "next/image";
-
 export default function Header() {
   return (
     <header className="w-full p-4 bg-green-800 border-b border-green-900">
       <div className="flex flex-col gap-4 items-center lg:flex-row lg:justify-between">
     
         <a href="/index.html" className="cursor-pointer">
-          <img className="w-32 lg:w-40 object-contain" src="/image/404news-logo.png" alt="404 News"/>
+          <img className="w-32 lg:w-40 object-contain" src="/images/404news-logo.png" alt="404 News"/>
         </a>
     
         <nav className="text-white font-bold">

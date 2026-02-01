@@ -1,7 +1,6 @@
 import Head from "next/head";
-import Image from "next/Image";
 
-export default function principal() {
+export default function Principal() {
   return (
     <>
   <Head>
