@@ -79,7 +79,7 @@ export default function Principal() {
 
         <section className="lg:col-span-2 flex flex-col">
           <article className="mb-10 relative group">
-            <a href="">
+            <a href="/news-details">
             <img className="w-full h-96 object-cover rounded"
               src="https://dims.apnews.com/dims4/default/2f34a09/2147483647/strip/true/crop/6019x4011+0+1/resize/980x653!/format/webp/quality/90/?url=https%3A%2F%2Fassets.apnews.com%2F28%2F9f%2F93d5e092f51bc2bb2771224ed2b2%2F0d35f6187e7a449a9a99924b9a427420"
               alt="Reunión de líderes de la Unión Europea"/>

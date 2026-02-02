@@ -32,10 +32,9 @@ export default function NewsDetails() {
                         </div>
                     
                     <div className="absolute right-0 top-1/2 -translate-y-1/2">
-  <ShareMenu />
-</div>
-
-            </div>
+                        <ShareMenu />
+                    </div>
+                </div>
 
                 </header>
 
@@ -129,7 +128,7 @@ export default function NewsDetails() {
     <section className="flex flex-col justify-center text-xs items-center lg:flex-row lg:gap-4">
       <article className="mb-10 relative">
         <a href="">
-        <img className="w-30 h-40 object-cover rounded"
+        <img className="w-60 h-40 object-cover rounded"
           src="https://dims.apnews.com/dims4/default/2f34a09/2147483647/strip/true/crop/6019x4011+0+1/resize/980x653!/format/webp/quality/90/?url=https%3A%2F%2Fassets.apnews.com%2F28%2F9f%2F93d5e092f51bc2bb2771224ed2b2%2F0d35f6187e7a449a9a99924b9a427420"
           alt="Reunión de líderes de la Unión Europea"/>
           <h2 className="font-sans w-60 mt-1 hover:underline">
@@ -143,7 +142,7 @@ export default function NewsDetails() {
 
       <article className="mb-10 relative">
         <a href="">
-        <img className="w-30 h-40 object-cover rounded"
+        <img className="w-60 h-40 object-cover rounded"
           src="https://dims.apnews.com/dims4/default/2f34a09/2147483647/strip/true/crop/6019x4011+0+1/resize/980x653!/format/webp/quality/90/?url=https%3A%2F%2Fassets.apnews.com%2F28%2F9f%2F93d5e092f51bc2bb2771224ed2b2%2F0d35f6187e7a449a9a99924b9a427420"
           alt="Reunión de líderes de la Unión Europea"/>
           <h2 className="font-sans w-60 mt-1 hover:underline">
@@ -157,7 +156,7 @@ export default function NewsDetails() {
 
       <article className="mb-10 relative">
         <a href="">
-        <img className="w-30 h-40 object-cover rounded"
+        <img className="w-60 h-40 object-cover rounded"
           src="https://dims.apnews.com/dims4/default/2f34a09/2147483647/strip/true/crop/6019x4011+0+1/resize/980x653!/format/webp/quality/90/?url=https%3A%2F%2Fassets.apnews.com%2F28%2F9f%2F93d5e092f51bc2bb2771224ed2b2%2F0d35f6187e7a449a9a99924b9a427420"
           alt="Reunión de líderes de la Unión Europea"/>
           <h2 className="font-sans w-60 mt-1 hover:underline">
@@ -171,7 +170,7 @@ export default function NewsDetails() {
 
       <article className="mb-10 relative">
         <a href="">
-        <img className="w-30 h-40 object-cover rounded"
+        <img className="w-60 h-40 object-cover rounded"
           src="https://dims.apnews.com/dims4/default/2f34a09/2147483647/strip/true/crop/6019x4011+0+1/resize/980x653!/format/webp/quality/90/?url=https%3A%2F%2Fassets.apnews.com%2F28%2F9f%2F93d5e092f51bc2bb2771224ed2b2%2F0d35f6187e7a449a9a99924b9a427420"
           alt="Reunión de líderes de la Unión Europea"/>
           <h2 className="font-sans w-60 mt-1 hover:underline">
