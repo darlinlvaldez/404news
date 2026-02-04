@@ -1,0 +1,235 @@
+import { formatDateAbsolute } from '@/utils/formatDate'
+
+export const metadata = {
+  title: "Section - 404 News",
+  icons: {
+    icon: "/images/news-logo.png",
+  },
+};
+
+async function getNewsByCategory(slug) {
+  const res = await fetch(
+    `http://localhost:3000/api/news/category/${slug}`,
+    { cache: "no-store" }
+  );
+
+  if (!res.ok) {
+    throw new Error("Error al cargar la categoría");
+  }
+
+  return res.json();
+}
+
+export default async function SectionCategory({ params }) {
+  const { category } = await params;
+
+  const data = await getNewsByCategory(category);
+
+  if (!data.ok) return <p>Error cargando noticias</p>;
+
+  const news = data.news;
+
+  const mainNews = news[0];              
+  const secondaryNews = news.slice(1, 3); 
+  const sideNews = news.slice(3, 5);     
+  const listNews = news.slice(5, 10);     
+  const moreNews = news.slice(10, 14);    
+
+  return (
+    <>
+      <div className="flex-1 font-sans min-h-screen flex flex-col">
+        <main className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-4 gap-6 px-6 py-10">
+          <header className="lg:col-span-4 mb-6">
+            <h1 className="text-3xl font-bold text-neutral-700">
+              {category.replaceAll("-", " ")}
+            </h1>
+          </header>
+
+          <section className="lg:col-span-2 flex flex-col">
+            {mainNews && (
+              <article className="mb-10 relative">
+                <a href={`/news/${mainNews.slug}`}>
+                  <img className="object-cover rounded"
+                    src={mainNews.cover_image} alt={mainNews.title}/>
+                  <h2 className="font-sans text-gray-700 font-bold mt-1 hover:underline">
+                    {mainNews.title}
+                  </h2>
+                  <time className="block text-right font-sans text-gray-400 right font-bold">
+                    {formatDateAbsolute(mainNews.created_at)}
+                  </time>
+                </a>
+              </article>
+            )}
+
+            {secondaryNews.length > 0 && (
+              <section className="flex flex-col justify-center text-xs items-center lg:flex-row lg:gap-4">
+                {secondaryNews.map((item) => (
+                  <article key={item.id} className="mb-10 relative">
+                    <a href={`/news/${item.slug}`}>
+                      <img className="h-40 object-cover rounded"
+                        src={item.cover_image} alt={item.title}/>
+                      <h2 className="font-sans w-60 mt-1 hover:underline">
+                        {item.title}
+                      </h2>
+                      <time className="block font-sans text-gray-400 text-right text-xs font-bold">
+                        {formatDateAbsolute(item.created_at)}
+                      </time>
+                    </a>
+                  </article>
+                ))}
+              </section>
+            )}
+          </section>
+
+          {sideNews.length > 0 && (
+            <section className="lg:col-span-1 flex flex-col">
+              {sideNews.map((item) => (
+                <article key={item.id} className="mb-10 relative">
+                  <a href={`/news/${item.slug}`}>
+                    <img className="w-full h-72 object-cover rounded"
+                      src={item.cover_image} alt={item.title}/>
+                    <h2 className="font-sans text-gray-700 font-bold mt-1 hover:underline">
+                      {item.title}
+                    </h2>
+                    <time className="block text-right font-sans text-gray-400 font-bold">
+                      {formatDateAbsolute(item.created_at)}
+                    </time>
+                  </a>
+                </article>
+              ))}
+            </section>
+          )}
+
+          {listNews.length > 0 && (
+            <aside className="lg:col-span-1">
+              {listNews.map((item) => (
+                <a key={item.id} href={`/news/${item.slug}`}
+                  className="block hover:underline border-t border-gray-300 pt-1">
+                  <h4 className="text-sm leading-snug break-words">
+                    {item.title}
+                  </h4>
+                </a>
+              ))}
+
+              <div className="bg-gray-100 rounded p-4 mt-10">
+                Publicidad / extra
+              </div>
+            </aside>
+          )}
+        </main>
+
+        <h2 className="mx-auto w-fit m-2 text-xl uppercase lg:w-[calc(15rem*4+3rem)]">
+          Más noticias
+        </h2>
+        {moreNews.length > 0 && (
+          <section className="flex flex-col justify-center text-xs items-center lg:flex-row lg:gap-4">
+            {moreNews.map((item) => (
+            <article key={item.id} className="mb-10 relative">
+              <a href={`/news/${item.slug}`}>
+                <img className="h-40 object-cover rounded"
+                  src={item.cover_image} alt={item.title}/>
+                <h2 className="font-sans w-60 p-2 mt-1 hover:underline">
+                  {item.title}
+                </h2>
+                <time className="block font-sans text-gray-400 text-right  text-xs font-bold">
+                  {formatDateAbsolute(item.created_at)}
+                </time>
+              </a>
+            </article>
+            ))}
+          </section>
+        )}
+      </div>
+
+      <div className="">
+        <h2 className="mx-auto w-fit m-2 text-xl uppercase lg:w-[calc(15rem*4+3rem)]">
+          VIDEOS
+        </h2>
+        <section className="flex flex-col justify-center text-xs items-center lg:flex-row lg:gap-4">
+          <article className="mb-10 relative">
+            <iframe
+              className="w-60 h-40 object-cover rounded"
+              src="https://www.youtube.com/embed/0-cIJAPSYaY?si=yTuEGxI1WhTJPuVi"
+              title="YouTube video player"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerPolicy="strict-origin-when-cross-origin"
+              allowFullScreen
+            ></iframe>
+            <a href="">
+              <h2 className="font-sans w-60 p-2 hover:underline">
+                Líderes de la UE se reúnen para trazar un nuevo rumbo tras
+                amenazas de Trump sobre Groenlandia.
+              </h2>
+              <time className="block font-sans text-gray-400 text-right  text-xs font-bold">
+                02/2/2026
+              </time>
+            </a>
+          </article>
+
+          <article className="mb-10 relative">
+            <iframe
+              className="w-60 h-40 object-cover rounded"
+              src="https://www.youtube.com/embed/0-cIJAPSYaY?si=yTuEGxI1WhTJPuVi"
+              title="YouTube video player" frame-border="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerPolicy="strict-origin-when-cross-origin"
+              allowFullScreen
+            ></iframe>
+            <a href="">
+              <h2 className="font-sans w-60 p-2 hover:underline">
+                Líderes de la UE se reúnen para trazar un nuevo rumbo tras
+                amenazas de Trump sobre Groenlandia.
+              </h2>
+              <time className="block font-sans text-gray-400 text-right  text-xs font-bold">
+                02/2/2026
+              </time>
+            </a>
+          </article>
+
+          <article className="mb-10 relative">
+            <iframe
+              className="w-60 h-40 object-cover rounded"
+              src="https://www.youtube.com/embed/0-cIJAPSYaY?si=yTuEGxI1WhTJPuVi"
+              title="YouTube video player"
+              frame-border="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerPolicy="strict-origin-when-cross-origin"
+              allowFullScreen
+            ></iframe>
+            <a href="">
+              <h2 className="font-sans w-60 p-2 hover:underline">
+                Líderes de la UE se reúnen para trazar un nuevo rumbo tras
+                amenazas de Trump sobre Groenlandia.
+              </h2>
+              <time className="block font-sans text-gray-400 text-right  text-xs font-bold">
+                02/2/2026
+              </time>
+            </a>
+          </article>
+
+          <article className="mb-10 relative">
+            <iframe
+              className="w-60 h-40 object-cover rounded"
+              src="https://www.youtube.com/embed/0-cIJAPSYaY?si=yTuEGxI1WhTJPuVi"
+              title="YouTube video player"
+              frame-border="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerPolicy="strict-origin-when-cross-origin"
+              allowFullScreen
+            ></iframe>
+            <a href="">
+              <h2 className="font-sans w-60 p-2 hover:underline">
+                Líderes de la UE se reúnen para trazar un nuevo rumbo tras
+                amenazas de Trump sobre Groenlandia.
+              </h2>
+              <time className="block font-sans text-gray-400 text-right  text-xs font-bold">
+                02/2/2026
+              </time>
+            </a>
+          </article>
+        </section>
+      </div>
+    </>
+  );
+}

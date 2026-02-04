@@ -18,7 +18,6 @@ export function formatDateRelative(dateString) {
   }
 
     return formatDateAbsolute(dateString)
-
 }
 
 export function formatDateAbsolute(dateString) {
