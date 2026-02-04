@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function Header() {
   return (
     <header className="w-full p-4 bg-green-800 border-b border-green-900">
@@ -9,13 +11,15 @@ export default function Header() {
     
         <nav className="text-white font-bold">
           <ul className="flex flex-col gap-3 items-center lg:flex-row lg:gap-6">
-            <li><a className="px-2 py-2 hover:border-b-2 hover:border-white transition" href="/">Inicio</a></li>
-            <li><a className="px-2 py-2 hover:border-b-2 hover:border-white transition" href="/section">Lo Nuevo</a></li>
-            <li><a className="px-2 py-2 hover:border-b-2 hover:border-white transition" href="section.html">Tendencias</a></li>
-            <li><a className="px-2 py-2 hover:border-b-2 hover:border-white transition" href="section.html">IA</a></li>
-            <li><a className="px-2 py-2 hover:border-b-2 hover:border-white transition" href="section.html">PCs</a></li>
-            <li><a className="px-2 py-2 hover:border-b-2 hover:border-white transition" href="section.html">Moviles</a></li>
-            <li><a className="px-2 py-2 hover:border-b-2 hover:border-white transition" href="section.html">Otros</a></li>
+            <li><Link className="px-2 py-2 hover:border-b-2 hover:border-white transition" href="/">Inicio</Link></li>
+            <li><Link className="px-2 py-2 hover:border-b-2 hover:border-white transition" href="/section">Lo Nuevo</Link></li>
+            <li><Link className="px-2 py-2 hover:border-b-2 hover:border-white transition" href="section.html">Tendencias</Link></li>
+            <li><Link className="px-2 py-2 hover:border-b-2 hover:border-white transition" href="/section/inteligencia-artificial">IA</Link></li>
+            <li><Link className="px-2 py-2 hover:border-b-2 hover:border-white transition" href="section.html">PCs</Link></li>
+            <li><Link className="px-2 py-2 hover:border-b-2 hover:border-white transition" href="/section/dispositivos-moviles">Moviles</Link></li>
+            <li><Link className="px-2 py-2 hover:border-b-2 hover:border-white transition" href="/section/ciberseguridad">Ciber Seguridad</Link></li>
+            <li><Link className="px-2 py-2 hover:border-b-2 hover:border-white transition" href="/section/software">Software</Link></li>
+            <li><Link className="px-2 py-2 hover:border-b-2 hover:border-white transition" href="section.html">Tecnologia General</Link></li>
           </ul>
         </nav>
     

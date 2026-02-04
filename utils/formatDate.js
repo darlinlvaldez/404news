@@ -1,4 +1,4 @@
-export function formatDate(dateString) {
+export function formatDateRelative(dateString) {
   const now = new Date()
   const date = new Date(dateString)
 
@@ -17,7 +17,12 @@ export function formatDate(dateString) {
     return 'La semana pasada'
   }
 
-  return date.toLocaleDateString('es-ES', {
+    return formatDateAbsolute(dateString)
+
+}
+
+export function formatDateAbsolute(dateString) {
+  return new Date(dateString).toLocaleDateString('es-ES', {
     day: '2-digit',
     month: '2-digit',
     year: 'numeric'

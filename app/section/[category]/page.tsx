@@ -1,22 +1,39 @@
-import Head from "next/head";
+export const metadata = {
+  title: "Section - 404 News",
+  icons: {
+    icon: "/image/news-logo.png",
+  },
+};
 
-export default function Section() {
-    return (
+async function getNewsByCategory(slug) {
+  const res = await fetch(
+    `http://localhost:3000/api/news/category/${slug}`,
+    { cache: "no-store" }
+  );
+
+  if (!res.ok) {
+    throw new Error("Error al cargar la categoría");
+  }
+
+  return res.json();
+}
+
+export default async function SectionCategory({ params }) {
+  const { category } = await params;
+
+  const data = await getNewsByCategory(category);
+
+  if (!data.ok) return <p>Error cargando noticias</p>;
+
+  return (
     <>
-    <Head>
-    <meta charSet="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/png" href="/image/news-logo.png"/>
-    <title>Section - 404 News</title>
-    </Head>
-
     <div className="flex-1 font-sans min-h-screen flex flex-col">
         
         <main className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-4 gap-6 px-6 py-10">
         
             <header className="lg:col-span-4 mb-6">
                 <h1 className="text-3xl font-bold text-neutral-700">
-                    Noticias específicas
+                    {category.replaceAll("-", " ")}
                 </h1>
             </header>
 

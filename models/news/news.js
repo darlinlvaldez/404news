@@ -2,7 +2,7 @@ import db from "../../lib/db";
 
 const getNews = {};
 
-getNews.getLatestNews = async function (limit = 10) {
+getNews.getLatestNews = async function (limit, offset = 0) {
   const [rows] = await db.query(`
     SELECT 
       n.id,
@@ -14,10 +14,10 @@ getNews.getLatestNews = async function (limit = 10) {
     FROM news n
     WHERE n.status = 'published' AND n.active = 1
     ORDER BY n.created_at DESC
-    LIMIT ?
-  `, [limit]);
+    LIMIT ? OFFSET ?
+  `, [limit, offset])
 
-  return rows;
+  return rows
 }
 
 getNews.getLastWeekNews = async function(limit = 3) {
@@ -39,5 +39,28 @@ getNews.getLastWeekNews = async function(limit = 3) {
 
   return rows
 }
+
+getNews.getByCategorySlug = async function (slug) {
+  const [rows] = await db.query(`
+    SELECT 
+      n.id,
+      n.title,
+      n.slug,
+      n.excerpt,
+      n.cover_image,
+      n.created_at,
+      c.name AS category
+    FROM news n
+    JOIN categories c ON n.category_id = c.id
+    WHERE 
+      c.slug = ?
+      AND n.status = 'published'
+      AND n.active = 1
+      AND c.active = 1
+    ORDER BY n.created_at DESC
+  `, [slug]);
+
+  return rows;
+};
 
 export default getNews;
