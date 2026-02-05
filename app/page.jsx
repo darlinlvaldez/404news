@@ -46,7 +46,7 @@ export default async function Principal() {
 
         {latestWeekNews.length > 0 && (
         <>
-          <h2 className="m-2 text-xl font-semibold uppercase mt-8">
+          <h2 className="m-2 text-xl font-semibold uppercase mt-8 text-neutral-700">
             La semana pasada
           </h2>
 

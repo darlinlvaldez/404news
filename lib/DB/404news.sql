@@ -34,9 +34,10 @@ CREATE TABLE `authors` (
 /*Data for the table `authors` */
 
 insert  into `authors`(`id`,`name`,`bio`,`slug`,`avatar`,`active`) values 
-(1,'Ana Tech','Periodista especializada en tecnología y startups.','ana-tech','/avatars/ana-tech.jpg',1),
-(2,'Carlos Byte','Analista de software y tendencias digitales.','carlos-byte','/avatars/carlos-byte.jpg',1),
-(3,'Lucía AI','Redactora enfocada en inteligencia artificial y ciencia.','lucia-ai','/avatars/lucia-ai.jpg',1);
+(1,'Ana Torres','Periodista especializada en inteligencia artificial con más de 10 años de experiencia','ana-torres','ana-torres-avatar.jpg',1),
+(2,'Carlos Mendoza','Analista de hardware y dispositivos móviles, colaborador habitual en revistas especializadas','carlos-mendoza','carlos-mendoza-avatar.jpg',1),
+(3,'Laura Vega','Desarrolladora de software y experta en nuevas tecnologías','laura-vega','laura-vega-avatar.jpg',1),
+(4,'Miguel Ruiz','Ingeniero en sistemas y especialista en hardware de PCs','miguel-ruiz','miguel-ruiz-avatar.jpg',1);
 
 /*Table structure for table `categories` */
 
@@ -55,11 +56,11 @@ CREATE TABLE `categories` (
 /*Data for the table `categories` */
 
 insert  into `categories`(`id`,`name`,`slug`,`created_at`,`active`) values 
-(1,'Inteligencia Artificial','inteligencia-artificial','2026-02-03 12:01:14',1),
+(1,'Inteligencia Artificial','IA-inteligencia-artificial','2026-02-03 12:01:14',1),
 (2,'Dispositivos Móviles','dispositivos-moviles','2026-02-03 12:01:14',1),
-(3,'Software','software','2026-02-03 12:01:14',1),
-(4,'PCs','tecnologia-general','2026-02-03 12:01:14',1),
-(5,'Tecnología General','mundo-computadoras-pc','2026-02-03 20:19:34',1);
+(3,'Software','desarrollo-software-app','2026-02-03 12:01:14',1),
+(4,'Computadoras (PC)','computadoras-pc','2026-02-03 12:01:14',1),
+(5,'Tecnología General','tecnologia-tecnology','2026-02-03 20:19:34',1);
 
 /*Table structure for table `news` */
 
@@ -70,7 +71,6 @@ CREATE TABLE `news` (
   `title` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `slug` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `excerpt` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `cover_image` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `author_id` int DEFAULT NULL,
   `category_id` int DEFAULT NULL,
@@ -84,17 +84,22 @@ CREATE TABLE `news` (
   KEY `fk_news_category` (`category_id`),
   CONSTRAINT `fk_news_author` FOREIGN KEY (`author_id`) REFERENCES `authors` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `fk_news_category` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
-  CONSTRAINT `news_chk_1` CHECK ((`status` in (_utf8mb3'draft',_utf8mb3'review',_utf8mb3'published')))
+  CONSTRAINT `news_chk_1` CHECK ((`status` in (_utf8mb4'draft',_utf8mb4'review',_utf8mb4'published')))
 ) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `news` */
 
-insert  into `news`(`id`,`title`,`slug`,`excerpt`,`content`,`cover_image`,`author_id`,`category_id`,`status`,`created_at`,`updated_at`,`active`) values 
-(1,'La IA generativa redefine el desarrollo de software en 2025','ia-generativa-desarrollo-software-2025','Nuevas herramientas basadas en IA están cambiando la forma de programar.','La inteligencia artificial generativa se ha convertido en una aliada clave para los desarrolladores. Plataformas modernas permiten escribir, depurar y optimizar código en menos tiempo, reduciendo errores y acelerando los ciclos de desarrollo.','https://revistamercado.do/wp-content/uploads/2025/09/el-uso-de-IA-alcanza-el-90-y-redefine-el-trabajo-de-los-programadores.jpg',3,1,'published','2026-02-01 12:04:45','2026-02-03 19:23:21',1),
-(2,'Samsung y Apple apuestan fuerte por la IA en sus nuevos smartphones','samsung-apple-ia-smartphones','Los nuevos teléfonos integran funciones inteligentes avanzadas.','Las principales marcas de móviles están incorporando IA para mejorar fotografía, batería y asistentes personales. Esta tendencia marca un nuevo estándar en la experiencia de usuario.','https://elceo.com/wp-content/uploads/2024/12/Smartphones_IA_apple_samsung.jpg',1,2,'published','2026-02-02 12:04:45','2026-02-03 19:23:27',1),
-(3,'Next.js 15 mejora el rendimiento y la experiencia del desarrollador','nextjs-15-novedades-rendimiento','La nueva versión de Next.js trae mejoras clave para proyectos modernos.','Next.js 15 introduce optimizaciones en el enrutamiento, mejor manejo del caché y una experiencia más fluida tanto para desarrolladores como para usuarios finales.','https://img-c.udemycdn.com/course/750x422/6239633_20d6.jpg',2,3,'published','2026-02-02 12:04:45','2026-02-03 19:23:51',1),
-(4,'Aumentan los ataques de phishing impulsados por inteligencia artificial','phishing-impulsado-por-ia','La IA está siendo usada para crear estafas más creíbles.','Expertos en ciberseguridad alertan sobre el crecimiento de ataques de phishing que utilizan IA para personalizar mensajes y engañar a más usuarios.','https://www.redseguridad.com/wp-content/uploads/sites/2/2024/08/gettyimages-1779158338.jpg',2,5,'published','2026-01-27 12:04:45','2026-02-04 19:35:36',1),
-(5,'La tecnología 5G sigue expandiéndose en América Latina','expansion-5g-america-latina','Cada vez más países adoptan redes 5G.','La expansión del 5G promete mejorar la conectividad, reducir la latencia y abrir nuevas oportunidades para aplicaciones como IoT y realidad aumentada.','https://dplnews.com/wp-content/uploads/2024/12/dplnews_5g-smartphone_mc31224.jpeg',1,4,'published','2026-01-27 12:04:45','2026-02-03 12:27:46',1);
+insert  into `news`(`id`,`title`,`slug`,`excerpt`,`cover_image`,`author_id`,`category_id`,`status`,`created_at`,`updated_at`,`active`) values 
+(1,'GPT-5 supera los límites de la generación de texto multimodal','gpt-5-supera-limites-texto-multimodal','OpenAI presenta su modelo más avanzado capaz de entender y generar contenido en múltiples formatos','https://www.iweaver.ai/wp-content/uploads/2025/08/ChatGPT-5.webp',1,1,'published','2026-02-03 09:15:00','2026-02-05 13:22:53',1),
+(2,'Nuevo modelo de IA detecta enfermedades con 98% de precisión','ia-detecta-enfermedades-precision','Sistema de inteligencia artificial revoluciona el diagnóstico médico temprano','ia-medicina-cover.jpg',1,1,'published','2026-02-02 14:30:00','2026-02-05 12:45:56',1),
+(3,'Samsung Galaxy S30 con pantalla plegable sin bisel','samsung-galaxy-s30-pantalla-plegable','El nuevo flagship de Samsung presenta innovaciones en diseño y tecnología flexible','galaxy-s30-cover.jpg',2,2,'published','2026-02-01 11:45:00','2026-02-05 12:45:56',1),
+(4,'Apple iPhone 16: Cámara cuántica y carga inalámbrica a distancia','iphone-16-camara-cuantica','Apple anuncia su nuevo smartphone con tecnología de cámara revolucionaria','iphone16-cover.jpg',2,2,'published','2026-01-31 16:20:00','2026-02-05 12:45:56',1),
+(5,'Windows 13 incluye asistente de IA nativo','windows-13-asistente-ia-nativo','Microsoft integra Copilot directamente en el sistema operativo','windows13-cover.jpg',3,3,'published','2026-01-30 10:10:00','2026-02-05 12:45:56',1),
+(6,'Nueva versión de Python acelera ejecución en un 40%','python-nueva-version-acelera-ejecucion','Python 3.13 mejora significativamente el rendimiento de aplicaciones','python-cover.jpg',3,3,'published','2026-01-29 13:55:00','2026-02-05 12:45:56',1),
+(7,'Procesadores cuánticos disponibles para computadoras personales','procesadores-cuanticos-pc-personales','IBM lanza el primer procesador cuántico accesible para el mercado de consumo','pc-cuantica-cover.jpg',4,4,'published','2026-01-28 15:40:00','2026-02-05 12:45:56',1),
+(8,'NVIDIA RTX 5090: 4 veces más rápida que su predecesora','nvidia-rtx-5090-rendimiento','La nueva generación de tarjetas gráficas establece récords de rendimiento','rtx5090-cover.jpg',4,4,'published','2026-01-27 09:25:00','2026-02-05 12:45:56',1),
+(9,'Internet satelital alcanza velocidades de 1 Gbps globalmente','internet-satelital-1gbps-global','Proyectos de constelación satelital democratizan el acceso a internet de alta velocidad','internet-satelital-cover.jpg',3,5,'published','2026-01-26 12:15:00','2026-02-05 12:45:56',1),
+(10,'Robots humanoides realizan tareas domésticas complejas','robots-humanoides-tareas-domesticas','Nueva generación de robots asistentes aprenden y se adaptan a entornos domésticos','robots-cover.jpg',1,5,'published','2026-01-25 17:30:00','2026-02-05 12:45:56',1);
 
 /*Table structure for table `news_blocks` */
 
@@ -103,18 +108,50 @@ DROP TABLE IF EXISTS `news_blocks`;
 CREATE TABLE `news_blocks` (
   `id` int NOT NULL AUTO_INCREMENT,
   `news_id` int NOT NULL,
-  `block_type` enum('paragraph','image','heading') COLLATE utf8mb4_general_ci NOT NULL,
-  `content` text COLLATE utf8mb4_general_ci,
-  `image_url` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `alt_text` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `block_type` enum('paragraph','image','heading') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
+  `image_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `alt_text` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `position` int NOT NULL,
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `fk_blocks_news` (`news_id`),
   CONSTRAINT `fk_blocks_news` FOREIGN KEY (`news_id`) REFERENCES `news` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `news_blocks` */
+
+insert  into `news_blocks`(`id`,`news_id`,`block_type`,`content`,`image_url`,`alt_text`,`position`,`created_at`) values 
+(1,1,'heading','La revolución multimodal de la IA','https://blog.donweb.com/wp-content/uploads/2025/08/Lo-nuevo-de-GPT-5.jpeg',NULL,1,'2026-02-05 12:46:12'),
+(2,1,'paragraph','OpenAI ha presentado oficialmente GPT-5, su modelo de lenguaje más avanzado hasta la fecha. Lo que diferencia a esta versión es su capacidad nativa para entender y generar contenido en múltiples formatos: texto, imágenes, audio y video.',NULL,NULL,2,'2026-02-05 12:46:12'),
+(3,1,'paragraph','Según los desarrolladores, GPT-5 puede mantener conversaciones coherentes mientras analiza documentos visuales, generando respuestas que integran información de todas las modalidades.',NULL,NULL,3,'2026-02-05 12:46:12'),
+(4,1,'image',NULL,'gpt5-multimodal-diagram.jpg','Arquitectura multimodal de GPT-5',4,'2026-02-05 12:46:12'),
+(5,3,'heading','Diseño sin bisel revolucionario',NULL,NULL,1,'2026-02-05 12:46:12'),
+(6,3,'paragraph','Samsung ha desvelado el Galaxy S30, su nuevo smartphone insignia que presenta una pantalla plegable completamente libre de biseles. La tecnología \"Flex Infinity Display\" permite un ángulo de visión ininterrumpido de 180 grados.',NULL,NULL,2,'2026-02-05 12:46:12'),
+(7,3,'paragraph','El dispositivo utiliza un nuevo tipo de vidrio ultra-flexible desarrollado conjuntamente con Corning, ofreciendo una resistencia al rayado 3 veces mayor que las generaciones anteriores.',NULL,NULL,3,'2026-02-05 12:46:12'),
+(8,3,'image',NULL,'galaxy-s30-flex.jpg','Samsung Galaxy S30 completamente desplegado',4,'2026-02-05 12:46:12'),
+(9,5,'heading','Copilot integrado en el sistema',NULL,NULL,1,'2026-02-05 12:46:12'),
+(10,5,'paragraph','Microsoft ha anunciado Windows 13, que incluye por primera vez un asistente de IA nativo llamado \"Windows Copilot\". Esta herramienta está integrada directamente en el sistema operativo y puede ejecutarse localmente sin necesidad de conexión a internet.',NULL,NULL,2,'2026-02-05 12:46:12'),
+(11,5,'paragraph','Windows Copilot puede automatizar tareas complejas, optimizar el rendimiento del sistema y ofrecer sugerencias contextuales basadas en el uso del usuario.',NULL,NULL,3,'2026-02-05 12:46:12'),
+(12,5,'image',NULL,'windows-copilot-interface.jpg','Interfaz de Windows Copilot en acción',4,'2026-02-05 12:46:12'),
+(13,7,'heading','La computación cuántica llega al hogar',NULL,NULL,1,'2026-02-05 12:46:12'),
+(14,7,'paragraph','IBM ha anunciado el procesador cuántico \"Q-ONE Consumer\", el primero diseñado específicamente para computadoras personales. Con 128 qubits de potencia, ofrece capacidades de cálculo que superan a los supercomputadores de hace una década.',NULL,NULL,2,'2026-02-05 12:46:12'),
+(15,7,'paragraph','El procesador viene integrado en placas madre especializadas que mantienen los qubits a temperaturas cercanas al cero absoluto, usando un sistema de refrigeración compacto.',NULL,NULL,3,'2026-02-05 12:46:12'),
+(16,7,'image',NULL,'quantum-processor-motherboard.jpg','Placa madre con procesador cuántico',4,'2026-02-05 12:46:12'),
+(17,9,'heading','Conectividad global a velocidad de fibra',NULL,NULL,1,'2026-02-05 12:46:12'),
+(18,9,'paragraph','Varios proyectos de constelación satelital, liderados por SpaceX, Amazon y OneWeb, han alcanzado cobertura global completa. Los usuarios en cualquier punto del planeta pueden acceder a internet de 1 Gbps con latencias menores a 20ms.',NULL,NULL,2,'2026-02-05 12:46:12'),
+(19,9,'paragraph','Esta tecnología está revolucionando especialmente las zonas rurales y en desarrollo, donde la infraestructura terrestre es limitada o inexistente.',NULL,NULL,3,'2026-02-05 12:46:12'),
+(20,9,'image',NULL,'satellite-constellation-globe.jpg','Cobertura global de constelación satelital',4,'2026-02-05 12:46:12'),
+(21,2,'heading','IA transforma el diagnóstico médico',NULL,NULL,1,'2026-02-05 12:46:24'),
+(22,2,'paragraph','El sistema \"MediScan AI\" ha demostrado una precisión del 98% en la detección temprana de cáncer de pulmón, mama y próstata en estudios clínicos.',NULL,NULL,2,'2026-02-05 12:46:24'),
+(23,4,'heading','La fotografía cuántica llega al iPhone',NULL,NULL,1,'2026-02-05 12:46:24'),
+(24,4,'paragraph','Apple integra sensores cuánticos que capturan fotones individuales, permitiendo imágenes en condiciones de luz extremadamente bajas.',NULL,NULL,2,'2026-02-05 12:46:24'),
+(25,6,'heading','Python más rápido que nunca',NULL,NULL,1,'2026-02-05 12:46:24'),
+(26,6,'paragraph','Python 3.13 incluye un nuevo compilador JIT que mejora el rendimiento de aplicaciones científicas y de datos en un 40%.',NULL,NULL,2,'2026-02-05 12:46:24'),
+(27,8,'heading','NVIDIA redefine el rendimiento gráfico',NULL,NULL,1,'2026-02-05 12:46:24'),
+(28,8,'paragraph','La RTX 5090 utiliza arquitectura \"Blackwell\" con 24,576 núcleos CUDA y 48GB de memoria GDDR7.',NULL,NULL,2,'2026-02-05 12:46:24'),
+(29,10,'heading','Robots que aprenden como humanos',NULL,NULL,1,'2026-02-05 12:46:24'),
+(30,10,'paragraph','La nueva generación de robots humanoides utiliza aprendizaje por refuerzo para dominar tareas domésticas complejas.',NULL,NULL,2,'2026-02-05 12:46:24');
 
 /*Table structure for table `users` */
 

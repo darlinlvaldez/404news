@@ -41,7 +41,7 @@ export default async function SectionCategory({ params }) {
         <main className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-4 gap-6 px-6 py-10">
           <header className="lg:col-span-4 mb-6">
             <h1 className="text-3xl font-bold text-neutral-700">
-              {category.replaceAll("-", " ")}
+              {news[0]?.category}
             </h1>
           </header>
 

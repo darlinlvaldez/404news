@@ -56,7 +56,7 @@ export default async function DetailNews({ params }) {
                         </div>
                     
                     <div className="absolute right-0 top-1/2 -translate-y-1/2">
-                        <ShareMenu />
+                        <ShareMenu/>
                     </div>
                 </div>
 

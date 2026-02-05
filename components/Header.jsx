@@ -1,23 +1,25 @@
 import Link from "next/link";
+import Image from "next/image";
 
 export default function Header() {
   return (
     <header className="w-full p-4 bg-green-800 border-b border-green-900">
       <div className="flex flex-col gap-4 items-center lg:flex-row lg:justify-between">
     
-        <a href="/" className="cursor-pointer">
-          <img className="w-32 lg:w-40 object-contain" src="/images/404news-logo.png" alt="404 News"/>
-        </a>
+        <Link href="/" className="cursor-pointer">
+          <Image className="w-32 lg:w-40 object-contain" width={160} height={80} 
+          src="/images/404news-logo.png" alt="404 News"/>
+        </Link>
     
         <nav className="text-white font-bold">
-          <ul className="flex flex-col gap-3 items-center lg:flex-row lg:gap-6">
+          <ul className="flex flex-col gap-3 items-center lg:flex-row lg:gap-6 uppercase">
             <li><Link className="px-2 py-2 hover:border-b-2 hover:border-white transition" href="/">Inicio</Link></li>
             <li><Link className="px-2 py-2 hover:border-b-2 hover:border-white transition" href="section.html">Tendencias</Link></li>
-            <li><Link className="px-2 py-2 hover:border-b-2 hover:border-white transition" href="/section/inteligencia-artificial">IA</Link></li>
-            <li><Link className="px-2 py-2 hover:border-b-2 hover:border-white transition" href="section.html">PCs</Link></li>
-            <li><Link className="px-2 py-2 hover:border-b-2 hover:border-white transition" href="/section/dispositivos-moviles">Moviles</Link></li>
-            <li><Link className="px-2 py-2 hover:border-b-2 hover:border-white transition" href="/section/software">Software</Link></li>
-            <li><Link className="px-2 py-2 hover:border-b-2 hover:border-white transition" href="section.html">Tecnologia General</Link></li>
+            <li><Link className="px-2 py-2 hover:border-b-2 hover:border-white transition" href="/section/AI-inteligencia-artificial">IA</Link></li>
+            <li><Link className="px-2 py-2 hover:border-b-2 hover:border-white transition" href="/section/computadoras-pc">PC</Link></li>
+            <li><Link className="px-2 py-2 hover:border-b-2 hover:border-white transition" href="/section/dispositivos-moviles">Móviles</Link></li>
+            <li><Link className="px-2 py-2 hover:border-b-2 hover:border-white transition" href="/section/desarrollo-software-app">Software</Link></li>
+            <li><Link className="px-2 py-2 hover:border-b-2 hover:border-white transition" href="/section/tecnologia-tecnology">Tecnología General</Link></li>
           </ul>
         </nav>
     
@@ -29,6 +31,5 @@ export default function Header() {
           </button>
         </div>
     </header>
-
   );
 }

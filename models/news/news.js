@@ -30,8 +30,8 @@ getNews.getLastWeekNews = async function(limit) {
       n.created_at
     FROM news n
     WHERE n.status = 'published' AND n.active = 1
-      AND n.created_at >= DATE_SUB(NOW(), INTERVAL 14 DAY)
-      AND n.created_at < DATE_SUB(NOW(), INTERVAL 7 DAY)
+    AND n.created_at >= DATE_SUB(NOW(), INTERVAL 14 DAY)
+    AND n.created_at < DATE_SUB(NOW(), INTERVAL 7 DAY)
     ORDER BY n.created_at DESC
     LIMIT ?
   `, [limit])
@@ -62,8 +62,7 @@ getNews.getByCategorySlug = async function (slug) {
 };
 
 getNews.getDetailNews = async function (slug) {
-  const [[news]] = await db.query(
-    `
+  const [[news]] = await db.query(`
     SELECT 
       n.id,
       a.name AS author,
@@ -85,15 +84,14 @@ getNews.getDetailNews = async function (slug) {
 
   if (!news) return null;
 
-    const [blocks] = await db.query(
-    `
+  const [blocks] = await db.query(`
     SELECT 
-      id,
-      block_type,
-      content,
-      image_url,
-      alt_text,
-      position
+    id,
+    block_type,
+    content,
+    image_url,
+    alt_text,
+    position
     FROM news_blocks
     WHERE news_id = ?
     ORDER BY position ASC
