@@ -24,4 +24,19 @@ newsController.fetchByCategory = async function (slug) {
   }
 };
 
+newsController.fetchDetailNews = async function (slug) {
+  try {
+    const detailNews = await news.getDetailNews(slug);
+
+    if (!detailNews) {
+      return { ok: false, message: "Noticia no encontrada" };
+    }
+
+    return { ok: true, detailNews };
+  } catch (error) {
+    console.error(error);
+    return { ok: false, message: "Error al obtener la noticia" };
+  }
+};
+
 export default newsController;

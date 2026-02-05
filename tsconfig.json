@@ -29,6 +29,6 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
     "**/*.mts"
-, "app/section/[category]/page.jsx", "app/page.jsx"  ],
+, "app/section/[category]/page.jsx", "app/page.jsx", "components/Header.jsx", "components/ShareMenu.jsx", "components/Footer.jsx", "app/news-details/[slug]/page.jsx"  ],
   "exclude": ["node_modules"]
 }

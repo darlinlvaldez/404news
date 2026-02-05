@@ -1,13 +1,37 @@
 import ShareMenu from "@/components/ShareMenu";
+import { formatDateAbsolute } from '@/utils/formatDate'
 
 export const metadata = {
-  title: "Section - 404 News",
+  title: "Details - 404 News",
   icons: {
     icon: "/image/news-logo.png",
   },
 };
 
-export default function NewsDetails() {
+async function getDetailNews(slug) {
+  const res = await fetch(
+    `http://localhost:3000/api/news/detail-news/${slug}`,
+    { cache: "no-store" }
+  );
+
+  if (!res.ok) {
+    throw new Error("Error al cargar la categoría");
+  }
+
+  return res.json();
+}
+
+export default async function DetailNews({ params }) {
+  const { slug } = await params;
+
+  const data = await getDetailNews(slug);
+
+  if (!data.ok) {
+    return <p>Error cargando la noticia</p>;
+  }
+
+  const news = data.detailNews;
+
   return (
     <>
     <div className="flex-1 font-sans min-h-screen flex flex-col">
@@ -18,17 +42,17 @@ export default function NewsDetails() {
 
                 <header className="mb-6">
                     <h1 className="font-bold text-5xl leading-tight text-gray-700">
-                        Vance calls Minneapolis unrest engineered chaos after deadly shooting
+                        {news.title}
                     </h1>
 
                     <p className="text-sm mt-4 text-gray-500">
-                        By <a href="#">Anders Hagstrom</a>, <a href="#">Emma Colton</a>
+                        By <a href="#">{news.author}</a>
                     </p>
 
                     <div className="relative mt-6">
                         <div className="flex justify-center gap-1 text-gray-500 text-sm">
                             <span>Publicado:</span>
-                            <time dateTime="2026-02-02">02/02/2026</time>
+                            <time>{formatDateAbsolute(news.created_at)}</time>
                         </div>
                     
                     <div className="absolute right-0 top-1/2 -translate-y-1/2">
@@ -40,23 +64,40 @@ export default function NewsDetails() {
 
                 <figure className="mb-4">
                     <img className="object-cover rounded w-full"
-                        src="https://dims.apnews.com/dims4/default/2f34a09/2147483647/strip/true/crop/6019x4011+0+1/resize/980x653!/format/webp/quality/90/?url=https%3A%2F%2Fassets.apnews.com%2F28%2F9f%2F93d5e092f51bc2bb2771224ed2b2%2F0d35f6187e7a449a9a99924b9a427420"
-                        alt="Reunión de líderes de la Unión Europea"/>
+                        src={news.cover_image} alt={news.title}/>
                 </figure>
                 
                 <div className="prose max-w-none">
-                    <p>Primer parrafo...</p>
-                        
-                    <p>Segundo párrafo...</p>
+                {news.blocks.map(block => {
+                    if (block.block_type === "paragraph") {
+                    return (
+                        <p key={block.id}>
+                        {block.content}
+                        </p>
+                    );
+                    }
 
-                    <figure className="mb-4">
-                    <img className="object-cover rounded w-full"
-                        src="https://dims.apnews.com/dims4/default/2f34a09/2147483647/strip/true/crop/6019x4011+0+1/resize/980x653!/format/webp/quality/90/?url=https%3A%2F%2Fassets.apnews.com%2F28%2F9f%2F93d5e092f51bc2bb2771224ed2b2%2F0d35f6187e7a449a9a99924b9a427420"
-                        alt="Reunión de líderes de la Unión Europea"/>
-                </figure>
+                    if (block.block_type === "image") {
+                    return (
+                        <figure key={block.id} className="mb-4">
+                        <img className="object-cover rounded w-full"
+                            src={block.image_url} alt={block.alt_text || news.title}/>
+                        </figure>
+                    );
+                    }
 
-                    <p>Más contenido...</p>
+                    if (block.block_type === "heading") {
+                    return (
+                        <h2 key={block.id}>
+                        {block.content}
+                        </h2>
+                    );
+                    }
+
+                    return null;
+                })}
                 </div>
+
             </article>
 
             <aside className="lg:col-span-2 space-y-1">

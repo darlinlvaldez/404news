@@ -22,10 +22,10 @@ DROP TABLE IF EXISTS `authors`;
 
 CREATE TABLE `authors` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
-  `bio` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `bio` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `slug` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `avatar` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `avatar` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `active` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   UNIQUE KEY `uk_authors_slug` (`slug`)
@@ -44,13 +44,13 @@ DROP TABLE IF EXISTS `categories`;
 
 CREATE TABLE `categories` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
-  `slug` varchar(60) COLLATE utf8mb4_general_ci NOT NULL,
+  `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `slug` varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `active` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   UNIQUE KEY `uk_categories_slug` (`slug`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `categories` */
 
@@ -58,31 +58,8 @@ insert  into `categories`(`id`,`name`,`slug`,`created_at`,`active`) values
 (1,'Inteligencia Artificial','inteligencia-artificial','2026-02-03 12:01:14',1),
 (2,'Dispositivos Móviles','dispositivos-moviles','2026-02-03 12:01:14',1),
 (3,'Software','software','2026-02-03 12:01:14',1),
-(4,'Ciberseguridad','ciberseguridad','2026-02-03 12:01:14',1),
-(5,'Tecnología General','tecnologia-general','2026-02-03 12:01:14',1);
-
-/*Table structure for table `image` */
-
-DROP TABLE IF EXISTS `image`;
-
-CREATE TABLE `image` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `news_id` int NOT NULL,
-  `image` varchar(150) COLLATE utf8mb4_general_ci NOT NULL,
-  `alt_text` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `fk_image_news` (`news_id`),
-  CONSTRAINT `fk_image_news` FOREIGN KEY (`news_id`) REFERENCES `news` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
-/*Data for the table `image` */
-
-insert  into `image`(`id`,`news_id`,`image`,`alt_text`) values 
-(11,1,'/news/gallery/ia-dev.jpg','Inteligencia artificial aplicada al desarrollo de software'),
-(12,2,'/news/gallery/smartphone-ai.jpg','Smartphones con funciones de inteligencia artificial'),
-(13,3,'/news/gallery/nextjs.jpg','Framework Next.js en entorno de desarrollo'),
-(14,4,'/news/gallery/phishing.jpg','Ejemplo de ataque de phishing digital'),
-(15,5,'/news/gallery/5g.jpg','Infraestructura de red 5G');
+(4,'PCs','tecnologia-general','2026-02-03 12:01:14',1),
+(5,'Tecnología General','mundo-computadoras-pc','2026-02-03 20:19:34',1);
 
 /*Table structure for table `news` */
 
@@ -90,14 +67,14 @@ DROP TABLE IF EXISTS `news`;
 
 CREATE TABLE `news` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `title` varchar(150) COLLATE utf8mb4_general_ci NOT NULL,
-  `slug` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
-  `excerpt` varchar(150) COLLATE utf8mb4_general_ci NOT NULL,
-  `content` text COLLATE utf8mb4_general_ci NOT NULL,
-  `cover_image` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `title` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `slug` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `excerpt` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `cover_image` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `author_id` int DEFAULT NULL,
   `category_id` int DEFAULT NULL,
-  `status` varchar(20) COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'draft',
+  `status` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'draft',
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `active` tinyint(1) NOT NULL DEFAULT '1',
@@ -113,24 +90,31 @@ CREATE TABLE `news` (
 /*Data for the table `news` */
 
 insert  into `news`(`id`,`title`,`slug`,`excerpt`,`content`,`cover_image`,`author_id`,`category_id`,`status`,`created_at`,`updated_at`,`active`) values 
-(1,'La IA generativa redefine el desarrollo de software en 2025','ia-generativa-desarrollo-software-2025','Nuevas herramientas basadas en IA están cambiando la forma de programar.','La inteligencia artificial generativa se ha convertido en una aliada clave para los desarrolladores. Plataformas modernas permiten escribir, depurar y optimizar código en menos tiempo, reduciendo errores y acelerando los ciclos de desarrollo.','https://revistamercado.do/wp-content/uploads/2025/09/el-uso-de-IA-alcanza-el-90-y-redefine-el-trabajo-de-los-programadores.jpg',3,1,'published','2026-02-02 12:04:45','2026-02-03 14:32:21',1),
-(2,'Samsung y Apple apuestan fuerte por la IA en sus nuevos smartphones','samsung-apple-ia-smartphones','Los nuevos teléfonos integran funciones inteligentes avanzadas.','Las principales marcas de móviles están incorporando IA para mejorar fotografía, batería y asistentes personales. Esta tendencia marca un nuevo estándar en la experiencia de usuario.','https://elceo.com/wp-content/uploads/2024/12/Smartphones_IA_apple_samsung.jpg',1,2,'published','2026-02-03 12:04:45','2026-02-02 12:26:32',1),
-(3,'Next.js 15 mejora el rendimiento y la experiencia del desarrollador','nextjs-15-novedades-rendimiento','La nueva versión de Next.js trae mejoras clave para proyectos modernos.','Next.js 15 introduce optimizaciones en el enrutamiento, mejor manejo del caché y una experiencia más fluida tanto para desarrolladores como para usuarios finales.','https://img-c.udemycdn.com/course/750x422/6239633_20d6.jpg',2,3,'published','2026-02-02 12:04:45','2026-02-03 14:22:10',1),
-(4,'Aumentan los ataques de phishing impulsados por inteligencia artificial','phishing-impulsado-por-ia','La IA está siendo usada para crear estafas más creíbles.','Expertos en ciberseguridad alertan sobre el crecimiento de ataques de phishing que utilizan IA para personalizar mensajes y engañar a más usuarios.','https://www.redseguridad.com/wp-content/uploads/sites/2/2024/08/gettyimages-1779158338.jpg',2,4,'published','2026-01-27 12:04:45','2026-02-03 14:31:33',1),
-(5,'La tecnología 5G sigue expandiéndose en América Latina','expansion-5g-america-latina','Cada vez más países adoptan redes 5G.','La expansión del 5G promete mejorar la conectividad, reducir la latencia y abrir nuevas oportunidades para aplicaciones como IoT y realidad aumentada.','https://dplnews.com/wp-content/uploads/2024/12/dplnews_5g-smartphone_mc31224.jpeg',1,5,'published','2026-01-27 12:04:45','2026-02-03 12:27:46',1);
+(1,'La IA generativa redefine el desarrollo de software en 2025','ia-generativa-desarrollo-software-2025','Nuevas herramientas basadas en IA están cambiando la forma de programar.','La inteligencia artificial generativa se ha convertido en una aliada clave para los desarrolladores. Plataformas modernas permiten escribir, depurar y optimizar código en menos tiempo, reduciendo errores y acelerando los ciclos de desarrollo.','https://revistamercado.do/wp-content/uploads/2025/09/el-uso-de-IA-alcanza-el-90-y-redefine-el-trabajo-de-los-programadores.jpg',3,1,'published','2026-02-01 12:04:45','2026-02-03 19:23:21',1),
+(2,'Samsung y Apple apuestan fuerte por la IA en sus nuevos smartphones','samsung-apple-ia-smartphones','Los nuevos teléfonos integran funciones inteligentes avanzadas.','Las principales marcas de móviles están incorporando IA para mejorar fotografía, batería y asistentes personales. Esta tendencia marca un nuevo estándar en la experiencia de usuario.','https://elceo.com/wp-content/uploads/2024/12/Smartphones_IA_apple_samsung.jpg',1,2,'published','2026-02-02 12:04:45','2026-02-03 19:23:27',1),
+(3,'Next.js 15 mejora el rendimiento y la experiencia del desarrollador','nextjs-15-novedades-rendimiento','La nueva versión de Next.js trae mejoras clave para proyectos modernos.','Next.js 15 introduce optimizaciones en el enrutamiento, mejor manejo del caché y una experiencia más fluida tanto para desarrolladores como para usuarios finales.','https://img-c.udemycdn.com/course/750x422/6239633_20d6.jpg',2,3,'published','2026-02-02 12:04:45','2026-02-03 19:23:51',1),
+(4,'Aumentan los ataques de phishing impulsados por inteligencia artificial','phishing-impulsado-por-ia','La IA está siendo usada para crear estafas más creíbles.','Expertos en ciberseguridad alertan sobre el crecimiento de ataques de phishing que utilizan IA para personalizar mensajes y engañar a más usuarios.','https://www.redseguridad.com/wp-content/uploads/sites/2/2024/08/gettyimages-1779158338.jpg',2,5,'published','2026-01-27 12:04:45','2026-02-04 19:35:36',1),
+(5,'La tecnología 5G sigue expandiéndose en América Latina','expansion-5g-america-latina','Cada vez más países adoptan redes 5G.','La expansión del 5G promete mejorar la conectividad, reducir la latencia y abrir nuevas oportunidades para aplicaciones como IoT y realidad aumentada.','https://dplnews.com/wp-content/uploads/2024/12/dplnews_5g-smartphone_mc31224.jpeg',1,4,'published','2026-01-27 12:04:45','2026-02-03 12:27:46',1);
 
-/*Table structure for table `sessions` */
+/*Table structure for table `news_blocks` */
 
-DROP TABLE IF EXISTS `sessions`;
+DROP TABLE IF EXISTS `news_blocks`;
 
-CREATE TABLE `sessions` (
-  `session_id` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `expires` int unsigned NOT NULL,
-  `data` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
-  PRIMARY KEY (`session_id`)
+CREATE TABLE `news_blocks` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `news_id` int NOT NULL,
+  `block_type` enum('paragraph','image','heading') COLLATE utf8mb4_general_ci NOT NULL,
+  `content` text COLLATE utf8mb4_general_ci,
+  `image_url` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `alt_text` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `position` int NOT NULL,
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `fk_blocks_news` (`news_id`),
+  CONSTRAINT `fk_blocks_news` FOREIGN KEY (`news_id`) REFERENCES `news` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-/*Data for the table `sessions` */
+/*Data for the table `news_blocks` */
 
 /*Table structure for table `users` */
 
