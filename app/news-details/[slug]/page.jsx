@@ -1,3 +1,4 @@
+import Link from "next/link" 
 import ShareMenu from "@/components/ShareMenu";
 import { formatDateAbsolute } from '@/utils/formatDate'
 
@@ -46,7 +47,7 @@ export default async function DetailNews({ params }) {
                     </h1>
 
                     <p className="text-sm mt-4 text-gray-500">
-                        By <a href="#">{news.author}</a>
+                        By <Link href="#">{news.author}</Link>
                     </p>
 
                     <div className="relative mt-6">
@@ -101,30 +102,30 @@ export default async function DetailNews({ params }) {
             </article>
 
             <aside className="lg:col-span-2 space-y-1">
-                <a href="" className="block hover:underline border-t border-gray-300 pt-1">
+                <Link href="" className="block hover:underline border-t border-gray-300 pt-1">
                     <h4 className="text-sm leading-snug break-words">Líderes de la UE se reúnen para trazar un nuevo rumbo tras
                             amenazas de Trump sobre Groenlandia.</h4>
-                </a>
-                <a href="" className="block hover:underline border-t border-gray-300 pt-1">
+                </Link>
+                <Link href="" className="block hover:underline border-t border-gray-300 pt-1">
                     <h4 className="text-sm leading-snug break-words">Líderes de la UE se reúnen para trazar un nuevo rumbo tras
                             amenazas de Trump sobre Groenlandia.</h4>
-                </a>
-                <a href="" className="block hover:underline border-t border-gray-300 pt-1">
+                </Link>
+                <Link href="" className="block hover:underline border-t border-gray-300 pt-1">
                     <h4 className="text-sm leading-snug break-words">Líderes de la UE se reúnen para trazar un nuevo rumbo tras
                             amenazas de Trump sobre Groenlandia.</h4>
-                </a>
-                <a href="" className="block hover:underline border-t border-gray-300 pt-1">
+                </Link>
+                <Link href="" className="block hover:underline border-t border-gray-300 pt-1">
                     <h4 className="text-sm leading-snug break-words">Líderes de la UE se reúnen para trazar un nuevo rumbo tras
                             amenazas de Trump sobre Groenlandia.</h4>
-                </a>
-                <a href="" className="block hover:underline border-t border-gray-300 pt-1">
+                </Link>
+                <Link href="" className="block hover:underline border-t border-gray-300 pt-1">
                     <h4 className="text-sm leading-snug break-words">Líderes de la UE se reúnen para trazar un nuevo rumbo tras
                             amenazas de Trump sobre Groenlandia.</h4>
-                </a>
-                <a href="" className="block hover:underline border-t border-gray-300 pt-1 py-10">
+                </Link>
+                <Link href="" className="block hover:underline border-t border-gray-300 pt-1 py-10">
                     <h4 className="text-sm leading-snug break-words">Líderes de la UE se reúnen para trazar un nuevo rumbo tras
                             amenazas de Trump sobre Groenlandia.</h4>
-                </a>
+                </Link>
 
                 <div className="bg-gray-100 rounded p-4">
                     Publicidad / extra
@@ -132,7 +133,7 @@ export default async function DetailNews({ params }) {
 
                 <section className="flex flex-col text-xs items-center lg:flex-row lg:flex-wrap lg:gap-4 py-10">
                     <article className="mb-10 relative">
-                    <a href="">
+                    <Link href="">
                     <img className="w-full max-w-xs h-40 object-cover rounded"
                         src="https://dims.apnews.com/dims4/default/2f34a09/2147483647/strip/true/crop/6019x4011+0+1/resize/980x653!/format/webp/quality/90/?url=https%3A%2F%2Fassets.apnews.com%2F28%2F9f%2F93d5e092f51bc2bb2771224ed2b2%2F0d35f6187e7a449a9a99924b9a427420"
                         alt="Reunión de líderes de la Unión Europea"/>
@@ -142,11 +143,11 @@ export default async function DetailNews({ params }) {
                         </h2>
                         <time className="block font-sans text-gray-400 text-right text-xs font-bold">
                             02/2/2026
-                        </time></a>
+                        </time></Link>
                     </article>
 
                     <article className="mb-10 relative">
-                    <a href="">
+                    <Link href="">
                     <img className="w-full max-w-xs h-40 object-cover rounded"
                         src="https://dims.apnews.com/dims4/default/2f34a09/2147483647/strip/true/crop/6019x4011+0+1/resize/980x653!/format/webp/quality/90/?url=https%3A%2F%2Fassets.apnews.com%2F28%2F9f%2F93d5e092f51bc2bb2771224ed2b2%2F0d35f6187e7a449a9a99924b9a427420"
                         alt="Reunión de líderes de la Unión Europea"/>
@@ -156,7 +157,7 @@ export default async function DetailNews({ params }) {
                         </h2>
                         <time className="block font-sans text-gray-400 text-right text-xs font-bold">
                             02/2/2026
-                        </time></a>
+                        </time></Link>
                     </article>
                 </section>
             </aside>
@@ -168,7 +169,7 @@ export default async function DetailNews({ params }) {
     </h2>
     <section className="flex flex-col justify-center text-xs items-center lg:flex-row lg:gap-4">
       <article className="mb-10 relative">
-        <a href="">
+        <Link href="">
         <img className="w-60 h-40 object-cover rounded"
           src="https://dims.apnews.com/dims4/default/2f34a09/2147483647/strip/true/crop/6019x4011+0+1/resize/980x653!/format/webp/quality/90/?url=https%3A%2F%2Fassets.apnews.com%2F28%2F9f%2F93d5e092f51bc2bb2771224ed2b2%2F0d35f6187e7a449a9a99924b9a427420"
           alt="Reunión de líderes de la Unión Europea"/>
@@ -178,11 +179,11 @@ export default async function DetailNews({ params }) {
           </h2>
           <time className="block font-sans text-gray-400 text-right text-xs font-bold">
             02/2/2026
-          </time></a>
+          </time></Link>
       </article>
 
       <article className="mb-10 relative">
-        <a href="">
+        <Link href="">
         <img className="w-60 h-40 object-cover rounded"
           src="https://dims.apnews.com/dims4/default/2f34a09/2147483647/strip/true/crop/6019x4011+0+1/resize/980x653!/format/webp/quality/90/?url=https%3A%2F%2Fassets.apnews.com%2F28%2F9f%2F93d5e092f51bc2bb2771224ed2b2%2F0d35f6187e7a449a9a99924b9a427420"
           alt="Reunión de líderes de la Unión Europea"/>
@@ -192,11 +193,11 @@ export default async function DetailNews({ params }) {
           </h2>
           <time className="block font-sans text-gray-400 text-right  text-xs font-bold">
             02/2/2026
-          </time></a>
+          </time></Link>
       </article>
 
       <article className="mb-10 relative">
-        <a href="">
+        <Link href="">
         <img className="w-60 h-40 object-cover rounded"
           src="https://dims.apnews.com/dims4/default/2f34a09/2147483647/strip/true/crop/6019x4011+0+1/resize/980x653!/format/webp/quality/90/?url=https%3A%2F%2Fassets.apnews.com%2F28%2F9f%2F93d5e092f51bc2bb2771224ed2b2%2F0d35f6187e7a449a9a99924b9a427420"
           alt="Reunión de líderes de la Unión Europea"/>
@@ -206,11 +207,11 @@ export default async function DetailNews({ params }) {
           </h2>
           <time className="block font-sans text-gray-400 text-right  text-xs font-bold anima">
             02/2/2026
-          </time></a>
+          </time></Link>
       </article>
 
       <article className="mb-10 relative">
-        <a href="">
+        <Link href="">
         <img className="w-60 h-40 object-cover rounded"
           src="https://dims.apnews.com/dims4/default/2f34a09/2147483647/strip/true/crop/6019x4011+0+1/resize/980x653!/format/webp/quality/90/?url=https%3A%2F%2Fassets.apnews.com%2F28%2F9f%2F93d5e092f51bc2bb2771224ed2b2%2F0d35f6187e7a449a9a99924b9a427420"
           alt="Reunión de líderes de la Unión Europea"/>
@@ -220,7 +221,7 @@ export default async function DetailNews({ params }) {
           </h2>
           <time className="block font-sans text-gray-400 text-right  text-xs font-bold">
             02/2/2026
-          </time></a>
+          </time></Link>
       </article>
     </section>
     </>

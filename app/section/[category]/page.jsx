@@ -1,4 +1,5 @@
-import { formatDateAbsolute } from '@/utils/formatDate'
+import Link from "next/link"
+import { formatDateAbsolute, formatDateRelative } from '@/utils/formatDate'
 
 export const metadata = {
   title: "Section - 404 News",
@@ -48,16 +49,16 @@ export default async function SectionCategory({ params }) {
           <section className="lg:col-span-2 flex flex-col">
             {mainNews && (
               <article className="mb-10 relative">
-                <a href={`/news-details/${mainNews.slug}`}>
-                  <img className="object-cover rounded"
+                <Link href={`/news-details/${mainNews.slug}`}>
+                  <img className="w-full object-cover rounded"
                     src={mainNews.cover_image} alt={mainNews.title}/>
                   <h2 className="font-sans text-gray-700 font-bold mt-1 hover:underline">
                     {mainNews.title}
                   </h2>
                   <time className="block text-right font-sans text-gray-400 right font-bold">
-                    {formatDateAbsolute(mainNews.created_at)}
+                    {formatDateRelative(mainNews.created_at)}
                   </time>
-                </a>
+                </Link>
               </article>
             )}
 
@@ -65,16 +66,16 @@ export default async function SectionCategory({ params }) {
               <section className="flex flex-col justify-center text-xs items-center lg:flex-row lg:gap-4">
                 {secondaryNews.map((item) => (
                   <article key={item.id} className="mb-10 relative">
-                    <a href={`/news-details/${item.slug}`}>
-                      <img className="h-40 object-cover rounded"
+                    <Link href={`/news-details/${item.slug}`}>
+                      <img className="h-50 w-80 object-cover rounded"
                         src={item.cover_image} alt={item.title}/>
                       <h2 className="font-sans w-60 mt-1 hover:underline">
                         {item.title}
                       </h2>
                       <time className="block font-sans text-gray-400 text-right text-xs font-bold">
-                        {formatDateAbsolute(item.created_at)}
+                        {formatDateRelative(item.created_at)}
                       </time>
-                    </a>
+                    </Link>
                   </article>
                 ))}
               </section>
@@ -85,16 +86,16 @@ export default async function SectionCategory({ params }) {
             <section className="lg:col-span-1 flex flex-col">
               {sideNews.map((item) => (
                 <article key={item.id} className="mb-10 relative">
-                  <a href={`/news-details/${item.slug}`}>
+                  <Link href={`/news-details/${item.slug}`}>
                     <img className="w-full h-72 object-cover rounded"
                       src={item.cover_image} alt={item.title}/>
                     <h2 className="font-sans text-gray-700 font-bold mt-1 hover:underline">
                       {item.title}
                     </h2>
                     <time className="block text-right font-sans text-gray-400 font-bold">
-                      {formatDateAbsolute(item.created_at)}
+                      {formatDateRelative(item.created_at)}
                     </time>
-                  </a>
+                  </Link>
                 </article>
               ))}
             </section>
@@ -103,17 +104,13 @@ export default async function SectionCategory({ params }) {
           {listNews.length > 0 && (
             <aside className="lg:col-span-1">
               {listNews.map((item) => (
-                <a key={item.id} href={`/news-details/${item.slug}`}
+                <Link key={item.id} href={`/news-details/${item.slug}`}
                   className="block hover:underline border-t border-gray-300 pt-1">
-                  <h4 className="text-sm leading-snug break-words">
+                  <h4 className="text-sm leading-snug wrap-break-words">
                     {item.title}
                   </h4>
-                </a>
+                </Link>
               ))}
-
-              <div className="bg-gray-100 rounded p-4 mt-10">
-                Publicidad / extra
-              </div>
             </aside>
           )}
         </main>
@@ -125,7 +122,7 @@ export default async function SectionCategory({ params }) {
           <section className="flex flex-col justify-center text-xs items-center lg:flex-row lg:gap-4">
             {moreNews.map((item) => (
             <article key={item.id} className="mb-10 relative">
-              <a href={`/news-details/${item.slug}`}>
+              <Link href={`/news-details/${item.slug}`}>
                 <img className="h-40 object-cover rounded"
                   src={item.cover_image} alt={item.title}/>
                 <h2 className="font-sans w-60 p-2 mt-1 hover:underline">
@@ -134,7 +131,7 @@ export default async function SectionCategory({ params }) {
                 <time className="block font-sans text-gray-400 text-right  text-xs font-bold">
                   {formatDateAbsolute(item.created_at)}
                 </time>
-              </a>
+              </Link>
             </article>
             ))}
           </section>
@@ -156,7 +153,7 @@ export default async function SectionCategory({ params }) {
               referrerPolicy="strict-origin-when-cross-origin"
               allowFullScreen
             ></iframe>
-            <a href="">
+            <Link href="">
               <h2 className="font-sans w-60 p-2 hover:underline">
                 Líderes de la UE se reúnen para trazar un nuevo rumbo tras
                 amenazas de Trump sobre Groenlandia.
@@ -164,7 +161,7 @@ export default async function SectionCategory({ params }) {
               <time className="block font-sans text-gray-400 text-right  text-xs font-bold">
                 02/2/2026
               </time>
-            </a>
+            </Link>
           </article>
 
           <article className="mb-10 relative">
@@ -176,7 +173,7 @@ export default async function SectionCategory({ params }) {
               referrerPolicy="strict-origin-when-cross-origin"
               allowFullScreen
             ></iframe>
-            <a href="">
+            <Link href="">
               <h2 className="font-sans w-60 p-2 hover:underline">
                 Líderes de la UE se reúnen para trazar un nuevo rumbo tras
                 amenazas de Trump sobre Groenlandia.
@@ -184,7 +181,27 @@ export default async function SectionCategory({ params }) {
               <time className="block font-sans text-gray-400 text-right  text-xs font-bold">
                 02/2/2026
               </time>
-            </a>
+            </Link>
+          </article>
+
+          <article className="mb-10 relative">
+            <iframe
+              className="w-60 h-40 object-cover rounded"
+              src="https://www.youtube.com/embed/0-cIJAPSYaY?si=yTuEGxI1WhTJPuVi"
+              title="YouTube video player"
+              frame-border="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerPolicy="strict-origin-when-cross-origin"
+              allowFullScreen></iframe>
+            <Link href="">
+              <h2 className="font-sans w-60 p-2 hover:underline">
+                Líderes de la UE se reúnen para trazar un nuevo rumbo tras
+                amenazas de Trump sobre Groenlandia.
+              </h2>
+              <time className="block font-sans text-gray-400 text-right  text-xs font-bold">
+                02/2/2026
+              </time>
+            </Link>
           </article>
 
           <article className="mb-10 relative">
@@ -197,7 +214,7 @@ export default async function SectionCategory({ params }) {
               referrerPolicy="strict-origin-when-cross-origin"
               allowFullScreen
             ></iframe>
-            <a href="">
+            <Link href="">
               <h2 className="font-sans w-60 p-2 hover:underline">
                 Líderes de la UE se reúnen para trazar un nuevo rumbo tras
                 amenazas de Trump sobre Groenlandia.
@@ -205,28 +222,7 @@ export default async function SectionCategory({ params }) {
               <time className="block font-sans text-gray-400 text-right  text-xs font-bold">
                 02/2/2026
               </time>
-            </a>
-          </article>
-
-          <article className="mb-10 relative">
-            <iframe
-              className="w-60 h-40 object-cover rounded"
-              src="https://www.youtube.com/embed/0-cIJAPSYaY?si=yTuEGxI1WhTJPuVi"
-              title="YouTube video player"
-              frame-border="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              referrerPolicy="strict-origin-when-cross-origin"
-              allowFullScreen
-            ></iframe>
-            <a href="">
-              <h2 className="font-sans w-60 p-2 hover:underline">
-                Líderes de la UE se reúnen para trazar un nuevo rumbo tras
-                amenazas de Trump sobre Groenlandia.
-              </h2>
-              <time className="block font-sans text-gray-400 text-right  text-xs font-bold">
-                02/2/2026
-              </time>
-            </a>
+            </Link>
           </article>
         </section>
       </div>

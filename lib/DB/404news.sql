@@ -56,7 +56,7 @@ CREATE TABLE `categories` (
 /*Data for the table `categories` */
 
 insert  into `categories`(`id`,`name`,`slug`,`created_at`,`active`) values 
-(1,'Inteligencia Artificial','IA-inteligencia-artificial','2026-02-03 12:01:14',1),
+(1,'Inteligencia Artificial','ia-inteligencia-artificial','2026-02-03 12:01:14',1),
 (2,'Dispositivos Móviles','dispositivos-moviles','2026-02-03 12:01:14',1),
 (3,'Software','desarrollo-software-app','2026-02-03 12:01:14',1),
 (4,'Computadoras (PC)','computadoras-pc','2026-02-03 12:01:14',1),
@@ -91,15 +91,30 @@ CREATE TABLE `news` (
 
 insert  into `news`(`id`,`title`,`slug`,`excerpt`,`cover_image`,`author_id`,`category_id`,`status`,`created_at`,`updated_at`,`active`) values 
 (1,'GPT-5 supera los límites de la generación de texto multimodal','gpt-5-supera-limites-texto-multimodal','OpenAI presenta su modelo más avanzado capaz de entender y generar contenido en múltiples formatos','https://www.iweaver.ai/wp-content/uploads/2025/08/ChatGPT-5.webp',1,1,'published','2026-02-03 09:15:00','2026-02-05 13:22:53',1),
-(2,'Nuevo modelo de IA detecta enfermedades con 98% de precisión','ia-detecta-enfermedades-precision','Sistema de inteligencia artificial revoluciona el diagnóstico médico temprano','ia-medicina-cover.jpg',1,1,'published','2026-02-02 14:30:00','2026-02-05 12:45:56',1),
-(3,'Samsung Galaxy S30 con pantalla plegable sin bisel','samsung-galaxy-s30-pantalla-plegable','El nuevo flagship de Samsung presenta innovaciones en diseño y tecnología flexible','galaxy-s30-cover.jpg',2,2,'published','2026-02-01 11:45:00','2026-02-05 12:45:56',1),
-(4,'Apple iPhone 16: Cámara cuántica y carga inalámbrica a distancia','iphone-16-camara-cuantica','Apple anuncia su nuevo smartphone con tecnología de cámara revolucionaria','iphone16-cover.jpg',2,2,'published','2026-01-31 16:20:00','2026-02-05 12:45:56',1),
-(5,'Windows 13 incluye asistente de IA nativo','windows-13-asistente-ia-nativo','Microsoft integra Copilot directamente en el sistema operativo','windows13-cover.jpg',3,3,'published','2026-01-30 10:10:00','2026-02-05 12:45:56',1),
-(6,'Nueva versión de Python acelera ejecución en un 40%','python-nueva-version-acelera-ejecucion','Python 3.13 mejora significativamente el rendimiento de aplicaciones','python-cover.jpg',3,3,'published','2026-01-29 13:55:00','2026-02-05 12:45:56',1),
-(7,'Procesadores cuánticos disponibles para computadoras personales','procesadores-cuanticos-pc-personales','IBM lanza el primer procesador cuántico accesible para el mercado de consumo','pc-cuantica-cover.jpg',4,4,'published','2026-01-28 15:40:00','2026-02-05 12:45:56',1),
-(8,'NVIDIA RTX 5090: 4 veces más rápida que su predecesora','nvidia-rtx-5090-rendimiento','La nueva generación de tarjetas gráficas establece récords de rendimiento','rtx5090-cover.jpg',4,4,'published','2026-01-27 09:25:00','2026-02-05 12:45:56',1),
-(9,'Internet satelital alcanza velocidades de 1 Gbps globalmente','internet-satelital-1gbps-global','Proyectos de constelación satelital democratizan el acceso a internet de alta velocidad','internet-satelital-cover.jpg',3,5,'published','2026-01-26 12:15:00','2026-02-05 12:45:56',1),
-(10,'Robots humanoides realizan tareas domésticas complejas','robots-humanoides-tareas-domesticas','Nueva generación de robots asistentes aprenden y se adaptan a entornos domésticos','robots-cover.jpg',1,5,'published','2026-01-25 17:30:00','2026-02-05 12:45:56',1);
+(2,'Nuevo modelo de IA detecta enfermedades con 98% de precisión','ia-detecta-enfermedades-precision','Sistema de inteligencia artificial revoluciona el diagnóstico médico temprano','https://images.ecestaticos.com/MfuZbXrtEZBJSHTQghygcWF5u-g=/0x0:2272x1515/1200x1200/filters:fill(white):format(jpg)/f.elconfidencial.com%2Foriginal%2F194%2F3b6%2F83b%2F1943b683bccc82165c4ab61e16e7c727.jpg',1,1,'published','2026-02-02 14:30:00','2026-02-05 20:20:21',1),
+(3,'Samsung Galaxy S30 con pantalla plegable sin bisel','samsung-galaxy-s30-pantalla-plegable','El nuevo flagship de Samsung presenta innovaciones en diseño y tecnología flexible','https://revistamercado.do/wp-content/uploads/2025/12/Samsung-lanza-su-tele%CC%81fono-plegable-triple-Galaxy-Z-TriFold-copy.jpg',2,2,'published','2026-02-01 11:45:00','2026-02-05 20:21:45',1),
+(4,'Apple iPhone 16: Cámara cuántica y carga inalámbrica a distancia','iphone-16-camara-cuantica','Apple anuncia su nuevo smartphone con tecnología de cámara revolucionaria','https://cdsassets.apple.com/live/7WUAS350/images/tech-specs/121031-iphone-16-pro.png',2,2,'published','2026-01-31 16:20:00','2026-02-05 20:22:31',1),
+(5,'Windows 13 incluye asistente de IA nativo','windows-13-asistente-ia-nativo','Microsoft integra Copilot directamente en el sistema operativo','https://i.blogs.es/876678/copilot-novedades/500_333.jpeg',3,3,'published','2026-01-30 10:10:00','2026-02-05 20:23:28',1),
+(6,'Nueva versión de Python acelera ejecución en un 40%','python-nueva-version-acelera-ejecucion','Python 3.13 mejora significativamente el rendimiento de aplicaciones','https://pandorafms.com/blog/wp-content/uploads/2018/10/lenguaje-python-featured.png',3,3,'published','2026-01-29 13:55:00','2026-02-05 20:24:05',1),
+(7,'Procesadores cuánticos disponibles para computadoras personales','procesadores-cuanticos-pc-personales','IBM lanza el primer procesador cuántico accesible para el mercado de consumo','https://i.blogs.es/491562/intelcuanticaap/1366_2000.jpg',4,4,'published','2026-01-28 15:40:00','2026-02-05 20:24:58',1),
+(8,'NVIDIA RTX 5090: 4 veces más rápida que su predecesora','nvidia-rtx-5090-rendimiento','La nueva generación de tarjetas gráficas establece récords de rendimiento','https://www.storagereview.com/wp-content/uploads/2025/01/StorageReview-NVIDIA-RTX5090-Lab-01-1024x615.jpg',4,4,'published','2026-01-27 09:25:00','2026-02-05 20:25:56',1),
+(9,'Internet satelital alcanza velocidades de 1 Gbps globalmente','internet-satelital-1gbps-global','Proyectos de constelación satelital democratizan el acceso a internet de alta velocidad','https://www.adslzone.net/app/uploads-adslzone.net/2024/01/nave-espacial-que-orbita-planeta-tierra-comunicaciones-globales-generadas-ia.jpg',3,5,'published','2026-01-26 12:15:00','2026-02-05 20:26:58',1),
+(10,'Robots humanoides realizan tareas domésticas complejas','robots-humanoides-tareas-domesticas','Nueva generación de robots asistentes aprenden y se adaptan a entornos domésticos','https://www.infobae.com/new-resizer/tIpR57VRa38zapjgpaE9nl0rObM=/arc-anglerfish-arc2-prod-infobae/public/WPTXEEPKV5CYBHADF3XIWNT3P4.png',1,5,'published','2026-01-25 17:30:00','2026-02-05 20:27:34',1),
+(11,'Meta lanza Llama 3.2 con capacidades de razonamiento matemático avanzado','meta-llama-3-2-razonamiento-matematico','Nuevo modelo open-source supera a GPT-4 en tareas de matemáticas y razonamiento lógico','https://i.ytimg.com/vi/94gWFywzNzA/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLBRkI0sqKa53yrEN5DHbsVIOK32ng',1,1,'published','2026-01-24 08:45:00','2026-02-05 21:00:29',1),
+(12,'DeepMind resuelve problema biológico de plegamiento de proteínas con AlphaFold 3','deepmind-alphafold-3-proteínas','IA de Google logra predicción precisa de estructuras de proteínas con aplicaciones médicas revolucionarias','https://s3.abcstatics.com/media/ciencia/2020/12/01/30SCI-DEEPMIND1-superJumbo-kUoF--1248x698@abc.jpg',1,1,'published','2026-01-23 14:20:00','2026-02-05 21:01:19',1),
+(13,'ChatGPT obtiene capacidad de memoria a largo plazo','chatgpt-memoria-largo-plazo','OpenAI actualiza su modelo para recordar conversaciones anteriores y preferencias del usuario','https://cloudfront-us-east-1.images.arcpublishing.com/infobae/C2RUS3WYTJBVLEWKMLRNPB2DYQ.png',1,1,'published','2026-01-22 11:30:00','2026-02-05 21:01:47',1),
+(14,'Google Pixel 9 Pro con Tensor G4 y cámara térmica','google-pixel-9-pro-camara-termica','Nuevo sensor térmico permite ver temperatura y detectar problemas eléctricos','https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSTb4elrGyn1Pr8RfiUz2fehsNynWJ3X8XKBw&s',2,2,'published','2026-01-21 16:15:00','2026-02-05 21:02:15',1),
+(15,'Xiaomi presenta smartphone con batería de estado sólido de 6000mAh','xiaomi-bateria-estado-solido','Nueva tecnología de batería ofrece carga completa en 8 minutos y mayor seguridad','https://blob.tusbuenasnoticias.com/images/2025/12/30/vale-la-pena-el-poco-c85-con-bateria-de-6000-mah-y-doble-camara-en-remate-706e2adf-focus-0-0-1200-600.webp',2,2,'published','2026-01-20 09:50:00','2026-02-05 21:03:00',1),
+(16,'Nothing Phone (3) con pantalla holográfica retroiluminada','nothing-phone-3-pantalla-holografica','Interfaz Glyph Interface evoluciona con efectos de luz 3D y notificaciones contextuales','https://i.blogs.es/2a45d5/nothing3/450_1000.jpeg',2,2,'published','2026-01-19 13:40:00','2026-02-05 21:03:48',1),
+(17,'Visual Studio Code integra Copilot Chat de forma nativa','vscode-copilot-chat-nativo','Microsoft fusiona su IDE con herramientas de IA para desarrollo asistido','https://blog.underc0de.org/wp-content/uploads/2026/01/Sin-titulo-5.png',3,3,'published','2026-01-18 10:25:00','2026-02-05 21:04:26',1),
+(18,'Kubernetes 1.30 simplifica la gestión de clusters con IA','kubernetes-1-30-gestion-ia','Nueva versión incluye operadores auto-curativos y optimización automática de recursos','https://www.muylinux.com/wp-content/uploads/2023/10/Kubernetes.png',3,3,'published','2026-01-17 15:10:00','2026-02-05 21:04:49',1),
+(19,'Linux 6.10 mejora soporte para hardware ARM y RISC-V','linux-6-10-soporte-arm-riscv','Kernel actualizado optimiza rendimiento en procesadores de arquitectura alternativa','https://blog.underc0de.org/wp-content/uploads/2024/07/R.jpg',3,3,'published','2026-01-16 12:05:00','2026-02-05 21:06:05',1),
+(20,'AMD Ryzen 9000: hasta 24 núcleos y frecuencia de 6GHz','amd-ryzen-9000-24-nucleos','Nueva arquitectura Zen 5 ofrece mejora del 35% en rendimiento single-thread','https://www.amd.com/content/dam/amd/en/images/products/processors/ryzen/2613900-ryzen-9-9950x.jpg',4,4,'published','2026-01-15 17:30:00','2026-02-05 21:06:33',1),
+(21,'Apple MacBook Pro M4 con Neural Engine de 50 TOPS','macbook-pro-m4-neural-engine','Chip M4 incluye acelerador de IA dedicado para aplicaciones de machine learning','https://www.digitaltrends.com/tachyon/2024/11/macbook-pro-m4-pro-01.jpg?resize=1200%2C720',4,4,'published','2026-01-14 08:20:00','2026-02-05 21:07:04',1),
+(22,'Framework Laptop 16: modularidad extrema con GPU intercambiable','framework-laptop-16-gpu-intercambiable','Portátil completamente modular permite actualizar CPU, GPU y puertos individualmente','https://i.blogs.es/f37bd3/nuevo-framework-laptop-16-1/840_560.jpeg',4,4,'published','2026-01-13 14:45:00','2026-02-05 21:07:49',1),
+(23,'Starlink alcanza 5 millones de usuarios activos globalmente','starlink-5-millones-usuarios','Servicio de internet satelital expande cobertura a 75 países con velocidades mejoradas','https://cloudfront-us-east-1.images.arcpublishing.com/infobae/BD3QN4RGEVAXDGGAAICM3KXQVQ.png',1,5,'published','2026-01-12 11:15:00','2026-02-05 21:08:31',1),
+(24,'Tesla Optimus realiza tareas de fábrica en línea de producción real','tesla-optimus-produccion-real','Robot humanoide de Tesla trabaja junto a humanos ensamblando componentes de vehículos','https://clickpetroleoegas.com.br/wp-content/uploads/2026/01/Design-sem-nome-2026-01-29T190106.112.jpg',3,5,'published','2026-01-11 16:50:00','2026-02-05 21:08:56',1),
+(25,'Quantum computer de IBM supera los 1000 qubits útiles','ibm-quantum-1000-qubits','Procesador \"Condor\" marca hito en computación cuántica con corrección de errores integrada','https://i.blogs.es/1df1e8/qubit1/450_1000.jpg',4,5,'published','2026-01-10 09:35:00','2026-02-05 21:09:32',1);
 
 /*Table structure for table `news_blocks` */
 
@@ -117,7 +132,7 @@ CREATE TABLE `news_blocks` (
   PRIMARY KEY (`id`),
   KEY `fk_blocks_news` (`news_id`),
   CONSTRAINT `fk_blocks_news` FOREIGN KEY (`news_id`) REFERENCES `news` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `news_blocks` */
 
@@ -151,7 +166,27 @@ insert  into `news_blocks`(`id`,`news_id`,`block_type`,`content`,`image_url`,`al
 (27,8,'heading','NVIDIA redefine el rendimiento gráfico',NULL,NULL,1,'2026-02-05 12:46:24'),
 (28,8,'paragraph','La RTX 5090 utiliza arquitectura \"Blackwell\" con 24,576 núcleos CUDA y 48GB de memoria GDDR7.',NULL,NULL,2,'2026-02-05 12:46:24'),
 (29,10,'heading','Robots que aprenden como humanos',NULL,NULL,1,'2026-02-05 12:46:24'),
-(30,10,'paragraph','La nueva generación de robots humanoides utiliza aprendizaje por refuerzo para dominar tareas domésticas complejas.',NULL,NULL,2,'2026-02-05 12:46:24');
+(30,10,'paragraph','La nueva generación de robots humanoides utiliza aprendizaje por refuerzo para dominar tareas domésticas complejas.',NULL,NULL,2,'2026-02-05 12:46:24'),
+(31,11,'heading','Meta avanza en IA open-source con Llama 3.2',NULL,NULL,1,'2026-02-05 20:49:46'),
+(32,11,'paragraph','Meta ha lanzado Llama 3.2, la última versión de su modelo de lenguaje open-source que destaca especialmente en razonamiento matemático y lógico. En benchmarks como GSM8K y MATH, supera a GPT-4 con un 85% de precisión.',NULL,NULL,2,'2026-02-05 20:49:46'),
+(33,11,'paragraph','El modelo está disponible en tres tamaños: 8B, 70B y 405B parámetros, siendo esta última versión la que compite directamente con los modelos premium del mercado.',NULL,NULL,3,'2026-02-05 20:49:46'),
+(34,11,'image',NULL,'llama3-2-benchmarks.jpg','Resultados de benchmarks de Llama 3.2 vs competencia',4,'2026-02-05 20:49:46'),
+(35,14,'heading','Google innova con sensor térmico en smartphone',NULL,NULL,1,'2026-02-05 20:49:46'),
+(36,14,'paragraph','El Google Pixel 9 Pro incluye un sensor térmico FLIR que permite medir temperatura de objetos desde -20°C hasta 400°C. Esta función tiene aplicaciones prácticas en detección de sobrecalentamiento eléctrico, verificación de aislamiento térmico y monitoreo de salud.',NULL,NULL,2,'2026-02-05 20:49:46'),
+(37,14,'paragraph','El Tensor G4, fabricado en 3nm, incluye un TPU dedicada para procesamiento de imágenes térmicas en tiempo real.',NULL,NULL,3,'2026-02-05 20:49:46'),
+(38,14,'image',NULL,'pixel9-thermal-imaging.jpg','Pixel 9 Pro mostrando imagen térmica de un circuito',4,'2026-02-05 20:49:46'),
+(39,17,'heading','Desarrollo asistido por IA integrado en VS Code',NULL,NULL,1,'2026-02-05 20:49:46'),
+(40,17,'paragraph','Microsoft ha integrado GitHub Copilot Chat directamente en Visual Studio Code como función nativa. Los desarrolladores pueden ahora conversar con la IA sobre su código, pedir explicaciones, refactorizaciones y sugerencias sin cambiar de ventana.',NULL,NULL,2,'2026-02-05 20:49:46'),
+(41,17,'paragraph','La versión 1.90 de VS Code incluye también \"Inline Chat\" que permite hacer preguntas contextuales directamente en el editor de código.',NULL,NULL,3,'2026-02-05 20:49:46'),
+(42,17,'image',NULL,'vscode-copilot-chat.jpg','Interfaz de Copilot Chat en Visual Studio Code',4,'2026-02-05 20:49:46'),
+(43,20,'heading','AMD lanza arquitectura Zen 5 con Ryzen 9000',NULL,NULL,1,'2026-02-05 20:49:46'),
+(44,20,'paragraph','AMD presenta los procesadores Ryzen 9000 basados en la nueva arquitectura Zen 5. El flagship Ryzen 9 9950X ofrece 24 núcleos/48 hilos con frecuencias boost de hasta 6GHz y TDP de 170W.',NULL,NULL,2,'2026-02-05 20:49:46'),
+(45,20,'paragraph','Las mejoras incluyen un 35% más de IPC (Instrucciones Por Ciclo), cache L3 aumentada a 128MB y soporte nativo para DDR5-6400. La fabricación en 4nm TSMC permite mayor eficiencia energética.',NULL,NULL,3,'2026-02-05 20:49:46'),
+(46,20,'image',NULL,'ryzen-9000-architecture.jpg','Diagrama de arquitectura Zen 5 de AMD',4,'2026-02-05 20:49:46'),
+(47,23,'heading','Starlink alcanza hitos de crecimiento masivo',NULL,NULL,1,'2026-02-05 20:49:46'),
+(48,23,'paragraph','SpaceX ha anunciado que Starlink supera los 5 millones de usuarios activos en 75 países. El servicio ofrece ahora velocidades de hasta 500 Mbps con latencias de 20ms mediante la constelación de satélites de segunda generación.',NULL,NULL,2,'2026-02-05 20:49:46'),
+(49,23,'paragraph','La empresa ha desplegado más de 5,000 satélites activos y planea lanzar la versión \"Mini\" del terminal para movilidad, con 40% menos tamaño y consumo.',NULL,NULL,3,'2026-02-05 20:49:46'),
+(50,23,'image',NULL,'starlink-global-coverage.jpg','Mapa de cobertura global de Starlink',4,'2026-02-05 20:49:46');
 
 /*Table structure for table `users` */
 

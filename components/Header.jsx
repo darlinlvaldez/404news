@@ -15,7 +15,7 @@ export default function Header() {
           <ul className="flex flex-col gap-3 items-center lg:flex-row lg:gap-6 uppercase">
             <li><Link className="px-2 py-2 hover:border-b-2 hover:border-white transition" href="/">Inicio</Link></li>
             <li><Link className="px-2 py-2 hover:border-b-2 hover:border-white transition" href="section.html">Tendencias</Link></li>
-            <li><Link className="px-2 py-2 hover:border-b-2 hover:border-white transition" href="/section/AI-inteligencia-artificial">IA</Link></li>
+            <li><Link className="px-2 py-2 hover:border-b-2 hover:border-white transition" href="/section/ia-inteligencia-artificial">IA</Link></li>
             <li><Link className="px-2 py-2 hover:border-b-2 hover:border-white transition" href="/section/computadoras-pc">PC</Link></li>
             <li><Link className="px-2 py-2 hover:border-b-2 hover:border-white transition" href="/section/dispositivos-moviles">Móviles</Link></li>
             <li><Link className="px-2 py-2 hover:border-b-2 hover:border-white transition" href="/section/desarrollo-software-app">Software</Link></li>
