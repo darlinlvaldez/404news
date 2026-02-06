@@ -36,7 +36,7 @@ export default function Footer() {
             </ul>
           </div>
         </div>
-        <p className="text-center text-white py-4">© 2026 404 NEWS</p>
+        <p className="text-center font-normal text-white py-4">© 2026 404 NEWS</p>
       </div>
     </footer>
   );

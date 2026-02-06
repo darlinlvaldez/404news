@@ -38,10 +38,10 @@ export default async function SectionCategory({ params }) {
 
   return (
     <>
-      <div className="flex-1 font-sans min-h-screen flex flex-col">
+      <div className="flex-1  min-h-screen flex flex-col">
         <main className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-4 gap-6 px-6 py-10">
           <header className="lg:col-span-4 mb-6">
-            <h1 className="text-3xl font-bold text-neutral-700">
+            <h1 className="text-3xl font-bold text-gray-800">
               {news[0]?.category}
             </h1>
           </header>
@@ -52,10 +52,10 @@ export default async function SectionCategory({ params }) {
                 <Link href={`/news-details/${mainNews.slug}`}>
                   <img className="w-full object-cover rounded"
                     src={mainNews.cover_image} alt={mainNews.title}/>
-                  <h2 className="font-sans text-gray-700 font-bold mt-1 hover:underline">
+                  <h2 className=" text-gray-800 font-bold mt-1 hover:underline">
                     {mainNews.title}
                   </h2>
-                  <time className="block text-right font-sans text-gray-400 right font-bold">
+                  <time className="block text-right text-sm text-gray-400 right font-bold">
                     {formatDateRelative(mainNews.created_at)}
                   </time>
                 </Link>
@@ -63,16 +63,16 @@ export default async function SectionCategory({ params }) {
             )}
 
             {secondaryNews.length > 0 && (
-              <section className="flex flex-col justify-center text-xs items-center lg:flex-row lg:gap-4">
+              <section className="flex flex-col justify-center items-center lg:flex-row lg:gap-4">
                 {secondaryNews.map((item) => (
                   <article key={item.id} className="mb-10 relative">
                     <Link href={`/news-details/${item.slug}`}>
                       <img className="h-50 w-80 object-cover rounded"
                         src={item.cover_image} alt={item.title}/>
-                      <h2 className="font-sans w-60 mt-1 hover:underline">
+                      <h2 className=" w-60 mt-1 text-sm text-gray-800 hover:underline">
                         {item.title}
                       </h2>
-                      <time className="block font-sans text-gray-400 text-right text-xs font-bold">
+                      <time className="block  text-gray-400 text-right text-sm font-bold">
                         {formatDateRelative(item.created_at)}
                       </time>
                     </Link>
@@ -89,10 +89,10 @@ export default async function SectionCategory({ params }) {
                   <Link href={`/news-details/${item.slug}`}>
                     <img className="w-full h-72 object-cover rounded"
                       src={item.cover_image} alt={item.title}/>
-                    <h2 className="font-sans text-gray-700 font-bold mt-1 hover:underline">
+                    <h2 className=" text-gray-800 text-sm font-bold mt-1 hover:underline">
                       {item.title}
                     </h2>
-                    <time className="block text-right font-sans text-gray-400 font-bold">
+                    <time className="block text-right text-sm text-gray-400 font-bold">
                       {formatDateRelative(item.created_at)}
                     </time>
                   </Link>
@@ -115,7 +115,7 @@ export default async function SectionCategory({ params }) {
           )}
         </main>
 
-        <h2 className="mx-auto w-fit m-2 text-xl uppercase lg:w-[calc(15rem*4+3rem)]">
+        <h2 className="mx-auto w-fit m-2 text-xl font-semibold uppercase text-neutral-800 lg:w-[calc(15rem*4+3rem)]">
           Más noticias
         </h2>
         {moreNews.length > 0 && (
@@ -125,10 +125,10 @@ export default async function SectionCategory({ params }) {
               <Link href={`/news-details/${item.slug}`}>
                 <img className="h-40 object-cover rounded"
                   src={item.cover_image} alt={item.title}/>
-                <h2 className="font-sans w-60 p-2 mt-1 hover:underline">
+                <h2 className="w-60 text-sm p-2 mt-1 hover:underline">
                   {item.title}
                 </h2>
-                <time className="block font-sans text-gray-400 text-right  text-xs font-bold">
+                <time className="block text-gray-400 text-right text-sm font-bold">
                   {formatDateAbsolute(item.created_at)}
                 </time>
               </Link>
@@ -154,11 +154,11 @@ export default async function SectionCategory({ params }) {
               allowFullScreen
             ></iframe>
             <Link href="">
-              <h2 className="font-sans w-60 p-2 hover:underline">
+              <h2 className=" w-60 p-2 hover:underline">
                 Líderes de la UE se reúnen para trazar un nuevo rumbo tras
                 amenazas de Trump sobre Groenlandia.
               </h2>
-              <time className="block font-sans text-gray-400 text-right  text-xs font-bold">
+              <time className="block  text-gray-400 text-right  text-xs font-bold">
                 02/2/2026
               </time>
             </Link>
@@ -174,11 +174,11 @@ export default async function SectionCategory({ params }) {
               allowFullScreen
             ></iframe>
             <Link href="">
-              <h2 className="font-sans w-60 p-2 hover:underline">
+              <h2 className=" w-60 p-2 hover:underline">
                 Líderes de la UE se reúnen para trazar un nuevo rumbo tras
                 amenazas de Trump sobre Groenlandia.
               </h2>
-              <time className="block font-sans text-gray-400 text-right  text-xs font-bold">
+              <time className="block  text-gray-400 text-right  text-xs font-bold">
                 02/2/2026
               </time>
             </Link>
@@ -194,11 +194,11 @@ export default async function SectionCategory({ params }) {
               referrerPolicy="strict-origin-when-cross-origin"
               allowFullScreen></iframe>
             <Link href="">
-              <h2 className="font-sans w-60 p-2 hover:underline">
+              <h2 className=" w-60 p-2 hover:underline">
                 Líderes de la UE se reúnen para trazar un nuevo rumbo tras
                 amenazas de Trump sobre Groenlandia.
               </h2>
-              <time className="block font-sans text-gray-400 text-right  text-xs font-bold">
+              <time className="block  text-gray-400 text-right  text-xs font-bold">
                 02/2/2026
               </time>
             </Link>
@@ -215,11 +215,11 @@ export default async function SectionCategory({ params }) {
               allowFullScreen
             ></iframe>
             <Link href="">
-              <h2 className="font-sans w-60 p-2 hover:underline">
+              <h2 className=" w-60 p-2 hover:underline">
                 Líderes de la UE se reúnen para trazar un nuevo rumbo tras
                 amenazas de Trump sobre Groenlandia.
               </h2>
-              <time className="block font-sans text-gray-400 text-right  text-xs font-bold">
+              <time className="block  text-gray-400 text-right  text-xs font-bold">
                 02/2/2026
               </time>
             </Link>
