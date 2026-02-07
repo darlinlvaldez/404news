@@ -17,9 +17,7 @@ export default function Header() {
 
   return (
     <header className="w-full p-4 bg-green-800 border-b border-green-900">
-      
       <div className="flex items-center justify-between">
-        
         <Link href="/" className="cursor-pointer">
           <Image className="w-32 lg:w-40 object-contain" width={160} height={80}
             src="/images/404news-logo.png" alt="404 News"/>
@@ -61,20 +59,6 @@ export default function Header() {
         </div>
       </div>
 
-      {menuOpen && (
-        <nav className="lg:hidden mt-4 text-white font-bold">
-          <ul className="flex flex-col gap-3 uppercase">
-            <li><Link className={linkClass("/")} href="/">Inicio</Link></li>
-            <li><Link className={linkClass("/section")} href="/section">Tendencias</Link></li>
-            <li><Link className={linkClass("/section/ia-inteligencia-artificial")} href="/section/ia-inteligencia-artificial">IA</Link></li>
-            <li><Link className={linkClass("/section/computadoras-pc")} href="/section/computadoras-pc">PC</Link></li>
-            <li><Link className={linkClass("/section/dispositivos-moviles")} href="/section/dispositivos-moviles">Móviles</Link></li>
-            <li><Link className={linkClass("/section/desarrollo-software-app")} href="/section/desarrollo-software-app">Software</Link></li>
-            <li><Link className={linkClass("/section/tecnologia-tecnology")} href="/section/tecnologia-tecnology">Tecnología General</Link></li>
-          </ul>
-        </nav>
-      )}
-
       {searchOpen && (
         <div className="w-full mt-4 flex justify-center animate-in fade-in slide-in-from-top-1">
           <div className="relative w-3/4 md:w-1/2">
@@ -89,6 +73,20 @@ export default function Header() {
             </svg>
           </div>
         </div>
+      )}
+
+      {menuOpen && (
+        <nav className="lg:hidden mt-4 text-white font-bold">
+          <ul className="flex flex-col gap-3 uppercase">
+            <li><Link className={linkClass("/")} href="/">Inicio</Link></li>
+            <li><Link className={linkClass("/section")} href="/section">Tendencias</Link></li>
+            <li><Link className={linkClass("/section/ia-inteligencia-artificial")} href="/section/ia-inteligencia-artificial">IA</Link></li>
+            <li><Link className={linkClass("/section/computadoras-pc")} href="/section/computadoras-pc">PC</Link></li>
+            <li><Link className={linkClass("/section/dispositivos-moviles")} href="/section/dispositivos-moviles">Móviles</Link></li>
+            <li><Link className={linkClass("/section/desarrollo-software-app")} href="/section/desarrollo-software-app">Software</Link></li>
+            <li><Link className={linkClass("/section/tecnologia-tecnology")} href="/section/tecnologia-tecnology">Tecnología General</Link></li>
+          </ul>
+        </nav>
       )}
     </header>
   );

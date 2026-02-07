@@ -8,7 +8,7 @@ export const metadata = {
 export default function Contact() {
   return (
     <>
-    <div className="flex-1 flex items-center justify-center p-6 py-12 lg:py-24 font-sans min-h-screen flex-col bg-gray-50">
+    <div className="flex-1 flex items-center justify-center p-6 py-12 lg:py-24 min-h-screen flex-col bg-gray-50">
         <div className="w-full max-w-5xl bg-white shadow-2xl flex flex-col md:flex-row overflow-hidden rounded-sm">
             
             <div className="flex-[1.5] p-8 lg:p-12">
@@ -33,7 +33,7 @@ export default function Contact() {
                     </div>
                     
                     <div className="pt-4">
-                        <button type="submit" className="bg-green-800 hover:bg-green-700 text-white px-8 py-3 rounded-md shadow-lg transition-all text-sm font-medium uppercase tracking-wider">
+                        <button type="submit" className="bg-green-800 hover:bg-green-700 text-white px-8 py-3 cursor-pointer rounded-md shadow-lg transition-all text-sm font-medium uppercase tracking-wider">
                             Enviar
                         </button>
                     </div>
