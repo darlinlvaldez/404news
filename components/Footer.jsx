@@ -6,7 +6,7 @@ export default function Footer() {
     <footer className="w-full mt-10">
       <div className="bg-green-800 border-b border-green-900">
         <div className="mx-auto lg:w-[calc(15rem*4+3rem)] p-4">
-          <Link href="/" className="cursor-pointer">
+          <Link href="/" className="inline-block">
             <Image className="w-44 max-h-24 object-contain" width={160} height={80}  
             src="/images/404news-logo.png" alt="404 News"/>
           </Link>
