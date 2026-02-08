@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { formatDateAbsolute, formatDateRelative } from '@/utils/formatDate'
+import MoreNews from "@/components/MoreNews";
 
 export const metadata = {
   title: "404 News",
@@ -101,28 +102,7 @@ export default async function Principal() {
       </div>
     </main>
 
-    <h2 className="mx-auto w-fit m-2 text-xl font-semibold uppercase text-neutral-700 lg:w-[calc(15rem*4+3rem)]">
-      Más noticias
-    </h2>
-
-    <section className="flex flex-col justify-center text-sm items-center lg:flex-row lg:flex-wrap lg:gap-4">
-      {moreNews.map(item => (
-        <article key={item.id} className="mb-10 relative">
-          <Link href={`/news-details/${item.slug}`}>
-            <img className="w-60 h-40 object-cover rounded"
-              src={item.cover_image} alt={item.title} width={160} height={80}/>
-
-            <h2 className="w-60 text-sm mt-1 hover:underline">
-              {item.title}
-            </h2>
-
-            <time className="block text-gray-400 text-right text-sm font-bold">
-              {formatDateAbsolute(item.created_at)}
-            </time>
-          </Link>
-        </article>
-      ))}
-    </section>
+    <MoreNews moreNews={moreNews}/>
   </div>
   </>
   );

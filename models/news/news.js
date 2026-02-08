@@ -51,10 +51,8 @@ getNews.getByCategorySlug = async function (slug) {
       c.name AS category
     FROM news n
     JOIN categories c ON n.category_id = c.id
-    WHERE c.slug = ?
-      AND n.status = 'published'
-      AND n.active = 1
-      AND c.active = 1
+    WHERE c.slug = ? AND n.status = 'published'
+      AND n.active = 1 AND c.active = 1
     ORDER BY n.created_at DESC
   `, [slug]);
 
@@ -73,10 +71,7 @@ getNews.getDetailNews = async function (slug) {
       n.created_at
     FROM news n
     JOIN authors a ON n.author_id = a.id
-    WHERE 
-      n.slug = ?
-      AND n.status = 'published'
-      AND n.active = 1
+    WHERE n.slug = ? AND n.status = 'published' AND n.active = 1
     LIMIT 1
     `,
     [slug]

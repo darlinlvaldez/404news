@@ -1,5 +1,7 @@
 import Link from "next/link" 
 import ShareMenu from "@/components/ShareMenu";
+import getNews from "@/models/news/news";
+import MoreNews from "@/components/MoreNews";
 import { formatDateAbsolute } from '@/utils/formatDate'
 
 export const metadata = {
@@ -33,6 +35,10 @@ export default async function DetailNews({ params }) {
 
   const news = data.detailNews;
 
+  let moreNews = await getNews.getLatestNews(5);
+
+  moreNews = moreNews.filter(n => n.id !== news.id);
+
   return (
     <>
     <div className="flex-1  min-h-screen flex flex-col">
@@ -47,7 +53,7 @@ export default async function DetailNews({ params }) {
                     </h1>
 
                     <p className="text-sm mt-4 text-gray-500">
-                        By <Link href="#">{news.author}</Link>
+                        Por <Link href="#">{news.author}</Link>
                     </p>
 
                     <div className="relative mt-6">
@@ -64,7 +70,7 @@ export default async function DetailNews({ params }) {
                 </header>
 
                 <figure className="mb-4">
-                    <img className="object-cover rounded w-full"
+                    <img className="w-full max-w-3x1 max-h-[30rem] object-cover rounded"
                         src={news.cover_image} alt={news.title}/>
                 </figure>
                 
@@ -164,67 +170,8 @@ export default async function DetailNews({ params }) {
         </main>
     </div>
 
-    <h2 className="mx-auto w-fit m-2 text-xl uppercase lg:w-[calc(15rem*4+3rem)]">
-        Más noticias
-    </h2>
-    <section className="flex flex-col justify-center text-xs items-center lg:flex-row lg:gap-4">
-      <article className="mb-10 relative">
-        <Link href="">
-        <img className="w-60 h-40 object-cover rounded"
-          src="https://dims.apnews.com/dims4/default/2f34a09/2147483647/strip/true/crop/6019x4011+0+1/resize/980x653!/format/webp/quality/90/?url=https%3A%2F%2Fassets.apnews.com%2F28%2F9f%2F93d5e092f51bc2bb2771224ed2b2%2F0d35f6187e7a449a9a99924b9a427420"
-          alt="Reunión de líderes de la Unión Europea"/>
-          <h2 className=" w-60 mt-1 hover:underline">
-            Líderes de la UE se reúnen para trazar un nuevo rumbo tras
-            amenazas de Trump sobre Groenlandia.
-          </h2>
-          <time className="block  text-gray-400 text-right text-xs font-bold">
-            02/2/2026
-          </time></Link>
-      </article>
-
-      <article className="mb-10 relative">
-        <Link href="">
-        <img className="w-60 h-40 object-cover rounded"
-          src="https://dims.apnews.com/dims4/default/2f34a09/2147483647/strip/true/crop/6019x4011+0+1/resize/980x653!/format/webp/quality/90/?url=https%3A%2F%2Fassets.apnews.com%2F28%2F9f%2F93d5e092f51bc2bb2771224ed2b2%2F0d35f6187e7a449a9a99924b9a427420"
-          alt="Reunión de líderes de la Unión Europea"/>
-          <h2 className=" w-60 mt-1 hover:underline">
-            Líderes de la UE se reúnen para trazar un nuevo rumbo tras
-            amenazas de Trump sobre Groenlandia.
-          </h2>
-          <time className="block  text-gray-400 text-right  text-xs font-bold">
-            02/2/2026
-          </time></Link>
-      </article>
-
-      <article className="mb-10 relative">
-        <Link href="">
-        <img className="w-60 h-40 object-cover rounded"
-          src="https://dims.apnews.com/dims4/default/2f34a09/2147483647/strip/true/crop/6019x4011+0+1/resize/980x653!/format/webp/quality/90/?url=https%3A%2F%2Fassets.apnews.com%2F28%2F9f%2F93d5e092f51bc2bb2771224ed2b2%2F0d35f6187e7a449a9a99924b9a427420"
-          alt="Reunión de líderes de la Unión Europea"/>
-          <h2 className=" w-60 mt-1 hover:underline">
-            Líderes de la UE se reúnen para trazar un nuevo rumbo tras
-            amenazas de Trump sobre Groenlandia.
-          </h2>
-          <time className="block  text-gray-400 text-right  text-xs font-bold anima">
-            02/2/2026
-          </time></Link>
-      </article>
-
-      <article className="mb-10 relative">
-        <Link href="">
-        <img className="w-60 h-40 object-cover rounded"
-          src="https://dims.apnews.com/dims4/default/2f34a09/2147483647/strip/true/crop/6019x4011+0+1/resize/980x653!/format/webp/quality/90/?url=https%3A%2F%2Fassets.apnews.com%2F28%2F9f%2F93d5e092f51bc2bb2771224ed2b2%2F0d35f6187e7a449a9a99924b9a427420"
-          alt="Reunión de líderes de la Unión Europea"/>
-          <h2 className=" w-60 mt-1 hover:underline">
-            Líderes de la UE se reúnen para trazar un nuevo rumbo tras
-            amenazas de Trump sobre Groenlandia.
-          </h2>
-          <time className="block  text-gray-400 text-right  text-xs font-bold">
-            02/2/2026
-          </time></Link>
-      </article>
-    </section>
+    <MoreNews moreNews={moreNews} />
     </>
 
-      );
+    );
 }
