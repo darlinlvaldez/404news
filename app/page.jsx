@@ -27,8 +27,8 @@ export default async function Principal() {
   )
 
   const mainNews = cleanLatestNews.slice(0, 3);
-  const moreNews = cleanLatestNews.slice(3, 7);
-  const listNews = cleanLatestNews.slice(7, 12);     
+  const listNews = cleanLatestNews.slice(3, 9);   
+  const moreNews = cleanLatestNews.slice(9, 26);
 
   return (
   <>

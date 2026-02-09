@@ -34,8 +34,8 @@ export default async function SectionCategory({ params }) {
   const mainNews = news[0];              
   const secondaryNews = news.slice(1, 3); 
   const sideNews = news.slice(3, 5);     
-  const listNews = news.slice(5, 10);     
-  const moreNews = news.slice(10, 14);    
+  const listNews = news.slice(5, 11);     
+  const moreNews = news.slice(12, 28);    
 
   return (
     <>

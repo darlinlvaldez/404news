@@ -63,6 +63,7 @@ getNews.getDetailNews = async function (slug) {
   const [[news]] = await db.query(`
     SELECT 
       n.id,
+      c.id AS categoryId,
       a.name AS author,
       n.title,
       n.slug,
@@ -71,6 +72,7 @@ getNews.getDetailNews = async function (slug) {
       n.created_at
     FROM news n
     JOIN authors a ON n.author_id = a.id
+    JOIN categories c ON n.category_id = c.id
     WHERE n.slug = ? AND n.status = 'published' AND n.active = 1
     LIMIT 1
     `,
@@ -97,6 +99,41 @@ getNews.getDetailNews = async function (slug) {
   news.blocks = blocks;
 
   return news;
+};
+
+getNews.getRelatedNews = async function (categoryId,
+  { excludeId = null, limit = 4 } = {}
+) {
+  let query = `
+    SELECT 
+      n.id,
+      n.title,
+      n.slug,
+      n.excerpt,
+      n.cover_image,
+      n.created_at
+    FROM news n
+    WHERE n.category_id = ?
+      AND n.status = 'published'
+      AND n.active = 1
+  `;
+
+  const params = [categoryId];
+
+  if (excludeId) {
+    query += ` AND n.id != ?`;
+    params.push(excludeId);
+  }
+
+  query += ` ORDER BY n.created_at DESC`;
+
+  if (limit) {
+    query += ` LIMIT ?`;
+    params.push(limit);
+  }
+
+  const [rows] = await db.query(query, params);
+  return rows;
 };
 
 export default getNews;

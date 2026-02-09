@@ -5,6 +5,34 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 
+function NavLinks({ vertical = false, linkClass }) {
+  return (
+    <ul
+      className={`uppercase ${
+        vertical ? "flex flex-col gap-3" : "flex items-center gap-6"
+      }`}
+    >
+      {links.map((link) => (
+        <li key={link.href}>
+          <Link className={linkClass(link.href)} href={link.href}>
+            {link.label}
+          </Link>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+const links = [
+  { href: "/", label: "Inicio" },
+  { href: "/section", label: "Tendencias" },
+  { href: "/section/ia-inteligencia-artificial", label: "IA" },
+  { href: "/section/computadoras-pc", label: "PC" },
+  { href: "/section/dispositivos-moviles", label: "Móviles" },
+  { href: "/section/desarrollo-software-app", label: "Software" },
+  { href: "/section/tecnologia-tecnology", label: "Tecnología General" },
+];
+
 export default function Header() {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
@@ -24,15 +52,7 @@ export default function Header() {
         </Link>
 
         <nav className="hidden lg:block text-white font-bold">
-          <ul className="flex items-center gap-6 uppercase">
-            <li><Link className={linkClass("/")} href="/">Inicio</Link></li>
-            <li><Link className={linkClass("/section")} href="/section">Tendencias</Link></li>
-            <li><Link className={linkClass("/section/ia-inteligencia-artificial")} href="/section/ia-inteligencia-artificial">IA</Link></li>
-            <li><Link className={linkClass("/section/computadoras-pc")} href="/section/computadoras-pc">PC</Link></li>
-            <li><Link className={linkClass("/section/dispositivos-moviles")} href="/section/dispositivos-moviles">Móviles</Link></li>
-            <li><Link className={linkClass("/section/desarrollo-software-app")} href="/section/desarrollo-software-app">Software</Link></li>
-            <li><Link className={linkClass("/section/tecnologia-tecnology")} href="/section/tecnologia-tecnology">Tecnología General</Link></li>
-          </ul>
+          <NavLinks linkClass={linkClass} />
         </nav>
 
         <div className="flex items-center gap-2">
@@ -77,17 +97,10 @@ export default function Header() {
 
       {menuOpen && (
         <nav className="lg:hidden mt-4 text-white font-bold">
-          <ul className="flex flex-col gap-3 uppercase">
-            <li><Link className={linkClass("/")} href="/">Inicio</Link></li>
-            <li><Link className={linkClass("/section")} href="/section">Tendencias</Link></li>
-            <li><Link className={linkClass("/section/ia-inteligencia-artificial")} href="/section/ia-inteligencia-artificial">IA</Link></li>
-            <li><Link className={linkClass("/section/computadoras-pc")} href="/section/computadoras-pc">PC</Link></li>
-            <li><Link className={linkClass("/section/dispositivos-moviles")} href="/section/dispositivos-moviles">Móviles</Link></li>
-            <li><Link className={linkClass("/section/desarrollo-software-app")} href="/section/desarrollo-software-app">Software</Link></li>
-            <li><Link className={linkClass("/section/tecnologia-tecnology")} href="/section/tecnologia-tecnology">Tecnología General</Link></li>
-          </ul>
+          <NavLinks vertical linkClass={linkClass} />
         </nav>
       )}
+
     </header>
   );
 }

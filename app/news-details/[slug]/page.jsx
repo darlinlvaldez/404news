@@ -35,9 +35,8 @@ export default async function DetailNews({ params }) {
 
   const news = data.detailNews;
 
-  let moreNews = await getNews.getLatestNews(5);
-
-  moreNews = moreNews.filter(n => n.id !== news.id);
+  const moreNews = await getNews.getRelatedNews(
+  news.categoryId, { excludeId: news.id, limit: 4 });
 
   return (
     <>

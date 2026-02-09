@@ -6,7 +6,7 @@ export default function MoreNews({ moreNews }) {
     
     const moreNewsTitle = "mx-auto w-fit m-2 text-xl font-semibold uppercase text-neutral-700 lg:w-[calc(15rem*4+3rem)]"
   
-    const moreNewsSection = "flex flex-col justify-center text-sm items-center lg:flex-row lg:flex-wrap lg:gap-4"
+    const moreNewsSection = "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto"
     
     return (
     <>
@@ -21,7 +21,7 @@ export default function MoreNews({ moreNews }) {
                     <img className="w-60 h-40 object-cover rounded"
                     src={item.cover_image} alt={item.title} width={160} height={80}/>
 
-                    <h2 className="w-60 text-sm mt-1 hover:underline">
+                    <h2 className="w-60 text-sm mt-1 hover:underline line-clamp-2">
                         {item.title}
                     </h2>
 
