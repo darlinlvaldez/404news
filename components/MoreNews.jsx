@@ -6,7 +6,7 @@ export default function MoreNews({ moreNews }) {
     
     const moreNewsTitle = "mx-auto w-fit m-2 text-xl font-semibold uppercase text-neutral-700 lg:w-[calc(15rem*4+3rem)]"
   
-    const moreNewsSection = "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto"
+    const moreNewsSection = "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto"
     
     return (
     <>

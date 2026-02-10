@@ -1,6 +1,8 @@
 import Link from "next/link";
-import { formatDateAbsolute, formatDateRelative } from '@/utils/formatDate'
+import { formatDateRelative } from '@/utils/formatDate'
 import MoreNews from "@/components/MoreNews";
+import LatestWeekNews from "@/components/LatestWeekNews";
+import ListNews from "@/components/ListNews";
 
 export const metadata = {
   title: "404 News",
@@ -22,9 +24,7 @@ export default async function Principal() {
 
   const weekIds = new Set(latestWeekNews.map(n => n.id))
 
-  const cleanLatestNews = latestNews.filter(
-    n => !weekIds.has(n.id)
-  )
+  const cleanLatestNews = latestNews.filter( n => !weekIds.has(n.id))
 
   const mainNews = cleanLatestNews.slice(0, 3);
   const listNews = cleanLatestNews.slice(3, 9);   
@@ -32,46 +32,14 @@ export default async function Principal() {
 
   return (
   <>
-    <div className="flex-1  min-h-screen flex flex-col">
+    <div className="flex-1 min-h-screen flex flex-col">
       <main className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-4 gap-6 px-6 py-10">
           <aside className="lg:col-span-1">
           <h3 className="text-xl font-semibold uppercase text-gray-800">Ultimas Tendencias</h3>
       
-          {listNews.map((item) => (
-            <Link key={item.id} href={`/news-details/${item.slug}`}
-              className="block hover:underline border-t border-gray-300 mt-1">
-              <h4 className="text-sm leading-snug wrap-break-words pt-1">
-                {item.title}
-              </h4>
-            </Link>
-          ))}
+          <ListNews listNews={listNews}/>
 
-          {latestWeekNews.length > 0 && (
-          <>
-            <h2 className="mb-2 text-xl font-semibold uppercase mt-8 text-gray-800">
-              La semana pasada
-            </h2>
-
-            <section className="flex flex-col text-sm items-center lg:flex-row lg:flex-wrap lg:gap-4">
-              {latestWeekNews.map(item => (
-                <article key={item.id} className="mb-10 relative">
-                  <Link href={`/news-details/${item.slug}`}>
-                    <img className="w-60 max-w-xs h-40 object-cover rounded"
-                      src={item.cover_image} alt={item.title} width={160} height={80}/>
-
-                    <h2 className="text-sm w-60 mt-1 hover:underline">
-                      {item.title}
-                    </h2>
-
-                    <time className="block text-gray-400 text-right text-sm font-bold">
-                      {formatDateAbsolute(item.created_at)}
-                    </time>
-                  </Link>
-                </article>
-              ))}
-            </section>
-          </>
-        )}
+          <LatestWeekNews latestWeekNews={latestWeekNews}/>
         </aside>
 
         {mainNews.length > 0 && (
@@ -103,6 +71,7 @@ export default async function Principal() {
     </main>
 
     <MoreNews moreNews={moreNews}/>
+    
   </div>
   </>
   );

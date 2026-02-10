@@ -1,6 +1,7 @@
 import Link from "next/link"
 import { formatDateRelative } from '@/utils/formatDate'
 import MoreNews from "@/components/MoreNews";
+import ListNews from "@/components/ListNews";
 
 export const metadata = {
   title: "Section - 404 News",
@@ -35,7 +36,7 @@ export default async function SectionCategory({ params }) {
   const secondaryNews = news.slice(1, 3); 
   const sideNews = news.slice(3, 5);     
   const listNews = news.slice(5, 11);     
-  const moreNews = news.slice(12, 28);    
+  const moreNews = news.slice(11, 27);    
 
   return (
     <>
@@ -102,18 +103,8 @@ export default async function SectionCategory({ params }) {
             </section>
           )}
 
-          {listNews.length > 0 && (
-            <aside className="lg:col-span-1">
-              {listNews.map((item) => (
-                <Link key={item.id} href={`/news-details/${item.slug}`}
-                  className="block hover:underline border-t border-gray-300 pt-1">
-                  <h4 className="text-sm leading-snug wrap-break-words">
-                    {item.title}
-                  </h4>
-                </Link>
-              ))}
-            </aside>
-          )}
+          <ListNews listNews={listNews} />
+          
         </main>
 
         <MoreNews moreNews={moreNews} />
