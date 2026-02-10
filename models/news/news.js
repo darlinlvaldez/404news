@@ -59,12 +59,13 @@ getNews.getByCategorySlug = async function (slug) {
   return rows;
 };
 
-getNews.getDetailNews = async function (slug) {
+getNews.getDetailsNews = async function (slug) {
   const [[news]] = await db.query(`
     SELECT 
       n.id,
       c.id AS categoryId,
       a.name AS author,
+      a.slug AS author_slug,
       n.title,
       n.slug,
       n.excerpt,
@@ -133,6 +134,40 @@ getNews.getRelatedNews = async function (categoryId,
   }
 
   const [rows] = await db.query(query, params);
+  return rows;
+};
+
+getNews.getNewsAuthor = async function (slug) {
+  const [rows] = await db.query(`
+    SELECT 
+      a.id AS author_id,
+      a.name,
+      a.bio,
+      a.slug AS author_slug,
+      a.avatar,
+      a.active AS author_active,
+
+      n.id AS news_id,
+      n.title,
+      n.slug AS news_slug,
+      n.excerpt,
+      n.cover_image,
+      n.status,
+      n.created_at,
+      n.active AS news_active
+
+    FROM authors a
+    LEFT JOIN news n 
+      ON n.author_id = a.id
+      AND n.status = 'published'
+      AND n.active = 1
+
+    WHERE a.slug = ?
+      AND a.active = 1
+
+    ORDER BY n.created_at DESC
+  `, [slug]);
+
   return rows;
 };
 

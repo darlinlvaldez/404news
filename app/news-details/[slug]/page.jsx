@@ -1,6 +1,6 @@
 import Link from "next/link" 
 import ShareMenu from "@/components/ShareMenu";
-import getNews from "@/models/news/news";
+import newsControllers from "@/controllers/news/news";
 import MoreNews from "@/components/MoreNews";
 import { formatDateAbsolute } from '@/utils/formatDate'
 
@@ -11,34 +11,19 @@ export const metadata = {
   },
 };
 
-async function getDetailNews(slug) {
-  const res = await fetch(
-    `http://localhost:3000/api/news/detail-news/${slug}`,
-    { cache: "no-store" }
-  );
-
-  if (!res.ok) {
-    throw new Error("Error al cargar la categoría");
-  }
-
-  return res.json();
-}
-
 export default async function DetailNews({ params }) {
-  const { slug } = await params;
+    const { slug } = await params;
 
-  const data = await getDetailNews(slug);
+    const data = await newsControllers.detailsNews(slug);
 
-  if (!data.ok) {
+    if (!data.ok) {
     return <p>Error cargando la noticia</p>;
-  }
+    }
 
-  const news = data.detailNews;
+    const news = data.detailNews;
+    const moreNews = data.relatedNews;
 
-  const moreNews = await getNews.getRelatedNews(
-  news.categoryId, { excludeId: news.id, limit: 4 });
-
-  return (
+    return (
     <>
     <div className="flex-1  min-h-screen flex flex-col">
 
@@ -52,7 +37,7 @@ export default async function DetailNews({ params }) {
                     </h1>
 
                     <p className="text-sm mt-4 text-gray-500">
-                        Por <Link href="#">{news.author}</Link>
+                        Por <Link href={`/author/${news.author_slug}`}>{news.author}</Link>
                     </p>
 
                     <div className="relative mt-6">

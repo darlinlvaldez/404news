@@ -3,24 +3,10 @@ import { formatDateRelative } from '@/utils/formatDate'
 import MoreNews from "@/components/MoreNews";
 import LatestWeekNews from "@/components/LatestWeekNews";
 import ListNews from "@/components/ListNews";
-
-export const metadata = {
-  title: "404 News",
-  icons: {
-    icon: "/images/news-logo.png",
-  },
-};
-
-async function getNews() {
-  const res = await fetch("http://localhost:3000/api/news", {
-    cache: "no-store"
-  });
-  const data = await res.json();
-  return data;
-}
+import newsController from "@/controllers/news/news";
 
 export default async function Principal() {
-  const { latestNews, latestWeekNews } = await getNews();
+  const { latestNews, latestWeekNews } = await newsController.latestNews();
 
   const weekIds = new Set(latestWeekNews.map(n => n.id))
 

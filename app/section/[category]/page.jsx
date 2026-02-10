@@ -2,6 +2,7 @@ import Link from "next/link"
 import { formatDateRelative } from '@/utils/formatDate'
 import MoreNews from "@/components/MoreNews";
 import ListNews from "@/components/ListNews";
+import newsController from "@/controllers/news/news";
 
 export const metadata = {
   title: "Section - 404 News",
@@ -10,23 +11,10 @@ export const metadata = {
   },
 };
 
-async function getNewsByCategory(slug) {
-  const res = await fetch(
-    `http://localhost:3000/api/news/category/${slug}`,
-    { cache: "no-store" }
-  );
-
-  if (!res.ok) {
-    throw new Error("Error al cargar la categoría");
-  }
-
-  return res.json();
-}
-
 export default async function SectionCategory({ params }) {
   const { category } = await params;
 
-  const data = await getNewsByCategory(category);
+  const data = await newsController.newsByCategory(category);
 
   if (!data.ok) return <p>Error cargando noticias</p>;
 

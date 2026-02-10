@@ -2,7 +2,7 @@ import news from "../../models/news/news";
 
 const newsController = {};
 
-newsController.fetchLatestNews = async function() {
+newsController.latestNews = async function() {
   try {
     const latestNews = await news.getLatestNews(20, 0);
     const newsWeek = await news.getLastWeekNews(3)
@@ -14,28 +14,50 @@ newsController.fetchLatestNews = async function() {
   }
 }
 
-newsController.fetchByCategory = async function (slug) {
+newsController.newsByCategory = async function (slug) {
   try {
-    const newsByCategory = await news.getByCategorySlug(slug);
-    return { ok: true, news: newsByCategory };
+    const category = await news.getByCategorySlug(slug);
+    return { ok: true, news: category };
   } catch (error) {
     console.error(error);
     return { ok: false, message: "Error al obtener noticias" };
   }
 };
 
-newsController.fetchDetailNews = async function (slug) {
+newsController.detailsNews = async function (slug) {
   try {
-    const detailNews = await news.getDetailNews(slug);
+    const detailNews = await news.getDetailsNews(slug);
 
     if (!detailNews) {
       return { ok: false, message: "Noticia no encontrada" };
     }
 
-    return { ok: true, detailNews };
+    const relatedNews = await news.getRelatedNews(
+      detailNews.categoryId,
+      { excludeId: detailNews.id, limit: 4 }
+    );
+
+    return { ok: true, detailNews, relatedNews };
+
   } catch (error) {
     console.error(error);
     return { ok: false, message: "Error al obtener la noticia" };
+  }
+};
+
+newsController.newsAuthor = async function (slug) {
+  try {
+    const data = await news.getNewsAuthor(slug);
+
+    if (!data || data.length === 0) {
+      return { ok: false, message: "Autor no encontrado" };
+    }
+
+    return { ok: true, data };
+
+  } catch (error) {
+    console.error(error);
+    return { ok: false, message: "Error al obtener autor" };
   }
 };
 
