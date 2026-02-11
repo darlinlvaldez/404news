@@ -2,6 +2,24 @@ import db from "../../lib/db";
 
 const getNews = {};
 
+getNews.getNewsSearch = async function (term) {
+  const [rows] = await db.query(`
+    SELECT 
+      id,
+      title,
+      slug,
+      excerpt,
+      cover_image,
+      created_at
+    FROM news
+    WHERE status = 'published' AND active = 1
+      AND (title LIKE ? OR excerpt LIKE ? )
+    ORDER BY created_at DESC
+  `, [`%${term}%`, `%${term}%`]);
+
+  return rows;
+}
+
 getNews.getLatestNews = async function (limit, offset = 0) {
   const [rows] = await db.query(`
     SELECT 
@@ -84,12 +102,12 @@ getNews.getDetailsNews = async function (slug) {
 
   const [blocks] = await db.query(`
     SELECT 
-    id,
-    block_type,
-    content,
-    image_url,
-    alt_text,
-    position
+      id,
+      block_type,
+      content,
+      image_url,
+      alt_text,
+      position
     FROM news_blocks
     WHERE news_id = ?
     ORDER BY position ASC
@@ -146,7 +164,6 @@ getNews.getNewsAuthor = async function (slug) {
       a.slug AS author_slug,
       a.avatar,
       a.active AS author_active,
-
       n.id AS news_id,
       n.title,
       n.slug AS news_slug,
@@ -155,15 +172,11 @@ getNews.getNewsAuthor = async function (slug) {
       n.status,
       n.created_at,
       n.active AS news_active
-
     FROM authors a
-    LEFT JOIN news n 
-      ON n.author_id = a.id
+    LEFT JOIN news n ON n.author_id = a.id
       AND n.status = 'published'
       AND n.active = 1
-
-    WHERE a.slug = ?
-      AND a.active = 1
+    WHERE a.slug = ? AND a.active = 1
 
     ORDER BY n.created_at DESC
   `, [slug]);

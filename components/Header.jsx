@@ -1,9 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
 
 function NavLinks({ vertical = false, linkClass }) {
   return (
@@ -37,6 +38,16 @@ export default function Header() {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
+
+  const router = useRouter();
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const handleSearch = (e) => {
+    if (e.key === "Enter" && searchTerm.trim()) {
+      router.push(`/search?q=${encodeURIComponent(searchTerm)}`);
+      setSearchOpen(false);
+    }
+  };
 
   const linkClass = (path) =>
     `px-2 py-2 transition ${
@@ -82,7 +93,8 @@ export default function Header() {
       {searchOpen && (
         <div className="w-full mt-4 flex justify-center animate-in fade-in slide-in-from-top-1">
           <div className="relative w-3/4 md:w-1/2">
-            <input className="w-full p-3 pr-12 bg-green-700 text-white border border-green-600 
+            <input value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} onKeyDown={handleSearch} 
+            className="w-full p-3 pr-12 bg-green-700 text-white border border-green-600 
               rounded-md focus:outline-none focus:border-white transition-all"
               type="text" placeholder="Buscar 404 News" autoFocus/>
 
