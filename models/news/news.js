@@ -2,22 +2,39 @@ import db from "../../lib/db";
 
 const getNews = {};
 
-getNews.getNewsSearch = async function (term) {
-  const [rows] = await db.query(`
-    SELECT 
-      id,
-      title,
-      slug,
-      excerpt,
-      cover_image,
-      created_at
-    FROM news
-    WHERE status = 'published' AND active = 1
-      AND (title LIKE ? OR excerpt LIKE ? )
-    ORDER BY created_at DESC
-  `, [`%${term}%`, `%${term}%`]);
+getNews.getNewsSearch = async function (term, page = 1, limit = 9) {
+  return getNews.getPaginatedNews({
+    whereClause: "AND (title LIKE ? OR excerpt LIKE ?)",
+    params: [`%${term}%`, `%${term}%`],
+    page,
+    limit
+  });
+};
 
-  return rows;
+getNews.getPaginatedNews = async function ({ whereClause, params = [], page = 1, limit = 9 }) {
+  const offset = (page - 1) * limit;
+
+  const [countRows] = await db.query(`
+    SELECT COUNT(*) as total
+    FROM news
+    WHERE status = 'published'
+      AND active = 1
+      ${whereClause}
+  `, params);
+
+  const total = countRows[0].total;
+
+  const [rows] = await db.query(`
+    SELECT id, title, slug, excerpt, cover_image, created_at
+    FROM news
+    WHERE status = 'published'
+      AND active = 1
+      ${whereClause}
+    ORDER BY created_at DESC
+    LIMIT ? OFFSET ?
+  `, [...params, limit, offset]);
+
+  return { results: rows, total, limit };
 }
 
 getNews.getLatestNews = async function (limit, offset = 0) {
@@ -155,33 +172,31 @@ getNews.getRelatedNews = async function (categoryId,
   return rows;
 };
 
-getNews.getNewsAuthor = async function (slug) {
-  const [rows] = await db.query(`
-    SELECT 
-      a.id AS author_id,
-      a.name,
-      a.bio,
-      a.slug AS author_slug,
-      a.avatar,
-      a.active AS author_active,
-      n.id AS news_id,
-      n.title,
-      n.slug AS news_slug,
-      n.excerpt,
-      n.cover_image,
-      n.status,
-      n.created_at,
-      n.active AS news_active
-    FROM authors a
-    LEFT JOIN news n ON n.author_id = a.id
-      AND n.status = 'published'
-      AND n.active = 1
-    WHERE a.slug = ? AND a.active = 1
+getNews.getNewsAuthor = async function (slug, page = 1, limit = 9) {
 
-    ORDER BY n.created_at DESC
+  const [authorRows] = await db.query(`
+    SELECT id, name, bio, slug, avatar
+    FROM authors
+    WHERE slug = ? AND active = 1
   `, [slug]);
 
-  return rows;
+  if (!authorRows.length) return null;
+
+  const author = authorRows[0];
+
+  const paginated = await getNews.getPaginatedNews({
+    whereClause: "AND author_id = ?",
+    params: [author.id],
+    page,
+    limit
+  });
+
+  return {
+    author,
+    news: paginated.results,
+    total: paginated.total,
+    limit
+  };
 };
 
 export default getNews;

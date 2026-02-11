@@ -6,6 +6,7 @@ import ListNews from "@/components/ListNews";
 import newsController from "@/controllers/news/news";
 
 export default async function Principal() {
+  
   const { latestNews, latestWeekNews } = await newsController.latestNews();
 
   const weekIds = new Set(latestWeekNews.map(n => n.id))

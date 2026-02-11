@@ -2,19 +2,21 @@ import news from "../../models/news/news";
 
 const newsController = {};
 
-newsController.searchNews = async function (term) {
+newsController.searchNews = async function (term, page) {
   try {
     if (!term || !term.trim()) {
-      return { ok: false, message: "Término de búsqueda vacío" };
+      return { ok: false, message: "Término vacío" };
     }
 
-    const results = await news.getNewsSearch(term.trim());
+    const limit = 9;
 
-    return { ok: true, results };
+    const data = await news.getNewsSearch(term.trim(), page, limit);
+
+    return {ok: true, results: data.results, total: data.total, limit};
 
   } catch (error) {
     console.error(error);
-    return { ok: false, message: "Error al buscar noticias" };
+    return { ok: false, message: "Error al buscar" };
   }
 };
 
@@ -61,15 +63,20 @@ newsController.detailsNews = async function (slug) {
   }
 };
 
-newsController.newsAuthor = async function (slug) {
+newsController.newsAuthor = async function (slug, page) {
   try {
-    const data = await news.getNewsAuthor(slug);
 
-    if (!data || data.length === 0) {
+    const limit = 9;
+
+    const data = await news.getNewsAuthor(slug, page, limit);
+
+    if (!data) {
       return { ok: false, message: "Autor no encontrado" };
     }
 
-    return { ok: true, data };
+    return {
+      ok: true, author: data.author, news: data.news,
+      total: data.total, limit };
 
   } catch (error) {
     console.error(error);
