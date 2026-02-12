@@ -50,6 +50,8 @@ newsController.detailsNews = async function (slug) {
       return { ok: false, message: "Noticia no encontrada" };
     }
 
+    await news.incrementViews(slug);
+
     const relatedNews = await news.getRelatedNews(
       detailNews.categoryId,
       { excludeId: detailNews.id, limit: 4 }

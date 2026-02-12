@@ -2,6 +2,14 @@ import db from "../../lib/db";
 
 const getNews = {};
 
+getNews.incrementViews = async function (slug) {
+  await db.query(`
+    UPDATE news
+    SET views = views + 1
+    WHERE slug = ?
+  `, [slug]);
+};
+
 getNews.getNewsSearch = async function (term, page = 1, limit = 9) {
   return getNews.getPaginatedNews({
     whereClause: "AND (title LIKE ? OR excerpt LIKE ?)",

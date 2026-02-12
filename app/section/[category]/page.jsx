@@ -59,7 +59,7 @@ export default async function SectionCategory({ params }) {
                     <Link href={`/news-details/${item.slug}`}>
                       <img className="h-50 w-80 object-cover rounded"
                         src={item.cover_image} alt={item.title}/>
-                      <h2 className=" w-60 mt-1 text-sm text-gray-800 hover:underline">
+                      <h2 className=" w-60 mt-1 text-sm text-gray-800 hover:underline line-clamp-2">
                         {item.title}
                       </h2>
                       <time className="block  text-gray-400 text-right text-sm font-bold">
@@ -79,7 +79,7 @@ export default async function SectionCategory({ params }) {
                   <Link href={`/news-details/${item.slug}`}>
                     <img className="w-full h-72 object-cover rounded"
                       src={item.cover_image} alt={item.title}/>
-                    <h2 className=" text-gray-800 text-sm font-bold mt-1 hover:underline">
+                    <h2 className="text-gray-800 text-sm font-bold mt-1 hover:underline line-clamp-2">
                       {item.title}
                     </h2>
                     <time className="block text-right text-sm text-gray-400 font-bold">
