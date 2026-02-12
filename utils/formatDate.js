@@ -3,27 +3,30 @@ export function formatDateRelative(dateString) {
   const date = new Date(dateString)
 
   const diffMs = now - date
+
+  const diffMinutes = Math.floor(diffMs / (1000 * 60))
+  const diffHours = Math.floor(diffMs / (1000 * 60 * 60))
   const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24))
 
-  if (diffDays === 0) {
-    return 'Hoy'
+  if (diffMinutes < 60) {
+    return `Hace ${diffMinutes} minuto${diffMinutes !== 1 ? 's' : ''}`
   }
 
-  if (diffDays > 0 && diffDays < 7) {
-    return `Hace ${diffDays} día${diffDays > 1 ? 's' : ''}`
+  if (diffHours < 24) {
+    return `Hace ${diffHours} hora${diffHours !== 1 ? 's' : ''}`
   }
 
-  if (diffDays >= 7 && diffDays < 14) {
-    return 'La semana pasada'
+  if (diffDays < 7) {
+    return `Hace ${diffDays} día${diffDays !== 1 ? 's' : ''}`
   }
 
-    return formatDateAbsolute(dateString)
+  return formatDateAbsolute(dateString)
 }
 
 export function formatDateAbsolute(dateString) {
   return new Date(dateString).toLocaleDateString('es-ES', {
-    day: '2-digit',
-    month: '2-digit',
+    day: 'numeric',
+    month: 'long',
     year: 'numeric'
   })
 }

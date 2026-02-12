@@ -32,19 +32,22 @@ export default async function Principal() {
         {mainNews.length > 0 && (
           <section className="lg:col-span-2 flex flex-col">
             {mainNews.map((item) => (
-            <article key={item.id} className="mb-10 relative group">
+            <article key={item.id} className="mb-10 relative rounded overflow-hidden">
               <Link href={`/news-details/${item.slug}`}>
-              <img className="w-full h-96 object-cover rounded"
+              <img className="w-full h-96 object-cover"
                 src={item.cover_image} alt={item.title} width={160} height={80}/>
-              <div className="absolute w-full top-0 text-right bg-black/20 opacity-0 group-hover:opacity-100 duration-200">
+
+              <div className="absolute w-full top-0 text-right bg-linear-to-b from-black via-black/40 to-transparent">
                 <time className="block  text-white text-right font-bold p-4">
                   {formatDateRelative(item.created_at)}
-              </time>
+                </time>
               </div>
-              <div className="absolute w-full bottom-0 bg-black/20 opacity-0 group-hover:opacity-100 duration-200">
-                <h2 className=" text-white font-bold p-4">
+
+              <div className="absolute w-full bottom-0 p-4 bg-linear-to-t from-black via-black/40 
+              to-transparent hover:decoration-gray-200 hover:underline">
+                <h3 className="text-2xl text-white md:text-2xl font-bold mb-2 leading-tight">
                   {item.title}
-                </h2>
+                </h3>
               </div></Link>
             </article>
             ))} 
@@ -56,9 +59,6 @@ export default async function Principal() {
         </div>
       </div>
     </main>
-
-    <MoreNews moreNews={moreNews}/>
-    
   </div>
 
   <div className="text-gray-900">
@@ -81,43 +81,42 @@ export default async function Principal() {
                 <div className="aspect-video lg:aspect-auto lg:h-full relative">
                     <img className="w-full h-full object-cover"
                     src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQAcFIgmR11sR4m14xJF66rEgodDIUp8vgAzQ&s" 
-                    alt="Noticia Principal" />
-
-                    <div className="absolute bottom-0 p-6 text-white bg-black/20 opacity-0 group-hover:opacity-100 duration-200">
+                    alt="Noticia Principal"/>
+                    <div className="absolute w-full top-0 text-right bg-linear-to-b from-black via-black/40 to-transparent">
+                      <time className="block  text-white text-right font-bold p-4">
+                        20/1/2026
+                      </time>
+                    </div>
+                    <div className="absolute bottom-0 p-6 text-white bg-linear-to-t from-black via-black/40 to-transparent hover:decoration-gray-200 hover:underline">
                         <h3 className="text-2xl md:text-3xl font-bold mb-2 leading-tight">La revolución de la inteligencia artificial transforma el mercado laboral global</h3>
                         <p className="text-gray-200 line-clamp-2 text-sm md:text-base">Nuevos informes sugieren un cambio de paradigma en la productividad empresarial y la necesidad de nuevas habilidades técnicas.</p>
-                        <div className="mt-4 flex items-center gap-3 text-xs text-gray-300">
-                            <span>Hace 2 horas</span>
-                            <span>•</span>
-                            <span>Por Elena García</span>
-                        </div>
                     </div>
                 </div>
             </div>
 
             <div className="overflow-hidden group cursor-pointer">
                 <div className="relative h-48">
-                    <img className="w-full h-full rounded-lg object-cover group-hover:opacity-90"
+                    <img className="w-full h-full rounded object-cover"
                     src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=600" 
                     alt="Tecnología"/>
                 </div>
-                <div className="py-2">
+                <div className="py-2 hover:underline">
                     <h4 className="font-bold text-lg leading-snug">Nuevos avances en energía de fusión nuclear</h4>
                     <p className="text-gray-500 text-sm mt-2 line-clamp-2">Científicos logran un récord de temperatura en el reactor experimental...</p>
-                    <div className="mt-4 text-xs text-gray-400">Hace 4 horas</div>
+                    <div className="mt-4 text-sm text-gray-400">Hace 4 horas</div>
                 </div>
             </div>
 
             <div className="overflow-hidden group cursor-pointer">
                 <div className="relative h-48">
-                    <img className="w-full h-full rounded-lg object-cover group-hover:opacity-90"
+                    <img className="w-full h-full rounded object-cover"
                     src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=600" 
                     alt="Tecnología"/>
                 </div>
-                <div className="py-2">
+                <div className="py-2 hover:underline">
                     <h4 className="font-bold text-lg leading-snug">Nuevos avances en energía de fusión nuclear</h4>
                     <p className="text-gray-500 text-sm mt-2 line-clamp-2">Científicos logran un récord de temperatura en el reactor experimental...</p>
-                    <div className="mt-4 text-xs text-gray-400">Hace 4 horas</div>
+                    <div className="mt-4 text-sm text-gray-400">Hace 4 horas</div>
                 </div>
             </div>
 
@@ -145,6 +144,8 @@ export default async function Principal() {
         </div>
         </div>
     </div>
+
+    <MoreNews moreNews={moreNews}/>
 
   </>
   );
