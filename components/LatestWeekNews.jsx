@@ -6,7 +6,7 @@ export default function LatestWeekNews({latestWeekNews}) {
 
     return (
         <>
-        <h2 className="mb-2 text-xl font-semibold uppercase mt-8 text-gray-800">
+        <h2 className="mb-2 text-xl font-semibold uppercase text-gray-800">
             La semana pasada
         </h2>
 

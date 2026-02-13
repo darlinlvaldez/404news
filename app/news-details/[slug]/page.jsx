@@ -1,3 +1,4 @@
+import { headers } from "next/headers";
 import Link from "next/link" 
 import ShareMenu from "@/components/ShareMenu";
 import newsControllers from "@/controllers/news/news";
@@ -14,10 +15,14 @@ export const metadata = {
 export default async function DetailNews({ params }) {
     const { slug } = await params;
 
-    const data = await newsControllers.detailsNews(slug);
+    const headersList = await headers();
+    const ip = headersList.get("x-forwarded-for")?.split(",")[0] ||
+      headersList.get("x-real-ip") || "unknown";
+
+    const data = await newsControllers.detailsNews(slug, ip);
 
     if (!data.ok) {
-    return <p>Error cargando la noticia</p>;
+        return <p>Error cargando la noticia</p>;
     }
 
     const news = data.detailNews;

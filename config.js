@@ -8,6 +8,7 @@ const config = {
   DB_PASSWORD: process.env.DB_PASSWORD,
   DB_DATABASE: process.env.DB_DATABASE,
   DB_PORT: Number(process.env.DB_PORT),
+  REDIS_URL: process.env.REDIS_URL,
 };
 
 export default config;

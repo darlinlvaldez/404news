@@ -1,4 +1,6 @@
 import news from "../../models/news/news";
+import syncViewsToDatabase from "../../models/news/redis";
+import incrementViewRedis from "../news/redis";
 
 const newsController = {};
 
@@ -42,7 +44,7 @@ newsController.newsByCategory = async function (slug) {
   }
 };
 
-newsController.detailsNews = async function (slug) {
+newsController.detailsNews = async function (slug, ip) {
   try {
     const detailNews = await news.getDetailsNews(slug);
 
@@ -50,7 +52,7 @@ newsController.detailsNews = async function (slug) {
       return { ok: false, message: "Noticia no encontrada" };
     }
 
-    await news.incrementViews(slug);
+    await incrementViewRedis(slug, ip);
 
     const relatedNews = await news.getRelatedNews(
       detailNews.categoryId,

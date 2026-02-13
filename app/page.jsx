@@ -26,7 +26,9 @@ export default async function Principal() {
       
           <ListNews listNews={listNews}/>
 
-          <LatestWeekNews latestWeekNews={latestWeekNews}/>
+          <div className="mt-10">
+            <LatestWeekNews latestWeekNews={latestWeekNews} />
+          </div>
         </aside>
 
         {mainNews.length > 0 && (
@@ -54,9 +56,10 @@ export default async function Principal() {
           </section>
           )}
           <div className="lg:col-span-1">
-        <div className=" bg-gray-100 rounded p-4">
-          Publicidad / extra
-        </div>
+            <LatestWeekNews latestWeekNews={latestWeekNews}/>
+          <div className="mt-6">
+            <ListNews listNews={listNews}/>
+          </div>
       </div>
     </main>
   </div>
@@ -127,7 +130,6 @@ export default async function Principal() {
                 </svg>
                 Última hora
               </h4>
-
                 <Link href="" className="block hover:underline border-t border-gray-300 mt-1">
                     <h4 className="text-sm leading-snug wrap-break-words pt-1 line-clamp-2">Líderes de la UE se reúnen para trazar un nuevo rumbo tras
                             amenazas de Trump sobre Groenlandia.</h4>
