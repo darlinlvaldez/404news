@@ -11,9 +11,10 @@ export default async function syncViewsToDatabase(slug) {
   
   await db.query(`
     UPDATE news
-    SET views = ?
-    WHERE slug = ?`, 
-    [Number(views), slug]);
+    SET views = views + ?
+    WHERE slug = ?`,
+    [Number(views), slug]
+  );
 
   await redis.del(counterKey);
 }
