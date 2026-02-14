@@ -19,8 +19,8 @@ export default async function Principal() {
 
   return (
   <>
-    <div className="flex-1 min-h-screen flex flex-col">
-      <main className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-4 gap-6 px-6 py-10">
+    <div className="max-w-7xl mx-auto px-6">
+      <main className="grid grid-cols-1 lg:grid-cols-4 gap-6 py-16">
           <aside className="lg:col-span-1">
           <h3 className="text-xl font-semibold uppercase text-gray-800">Ultimas Tendencias</h3>
       
@@ -62,10 +62,8 @@ export default async function Principal() {
           </div>
       </div>
     </main>
-  </div>
 
-  <div className="text-gray-900">
-    <div className="max-w-7xl mx-auto px-4 py-12">
+    <div className="text-gray-900">
         <div className="flex items-center justify-between mb-8 border-b border-gray-200 pb-4">
             <div className="flex items-center gap-2">
                 <span className="w-3 h-8 bg-red-600 rounded-full"></span>
@@ -144,11 +142,11 @@ export default async function Principal() {
                 </Link>
             </div>
         </div>
-        </div>
+      </div>
+    <div className="py-20">
+      <MoreNews moreNews={moreNews}/>
     </div>
-
-    <MoreNews moreNews={moreNews}/>
-
+  </div>
   </>
   );
 }

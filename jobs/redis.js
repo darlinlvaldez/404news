@@ -9,5 +9,5 @@ export function startSyncJob() {
     } catch (err) {
       console.error("Error sincronizando vistas:", err);
     }
-  }, 1000 * 300); 
+  }, 1000 * 60 * 30); 
 }

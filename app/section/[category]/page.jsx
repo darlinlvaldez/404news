@@ -24,12 +24,12 @@ export default async function SectionCategory({ params }) {
   const secondaryNews = news.slice(1, 3); 
   const sideNews = news.slice(3, 5);     
   const listNews = news.slice(5, 11);     
-  const moreNews = news.slice(11, 27);    
+  const moreNews = news.slice(1, 27);    
 
   return (
     <>
-      <div className="flex-1  min-h-screen flex flex-col">
-        <main className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-4 gap-6 px-6 py-10">
+      <div className="max-w-7xl mx-auto flex-1 min-h-screen flex flex-col">
+        <main className="grid grid-cols-1 lg:grid-cols-4 gap-6 px-6 py-10">
           <header className="lg:col-span-4 mb-6">
             <h1 className="text-3xl font-bold text-gray-800">
               {news[0]?.category}
@@ -96,7 +96,6 @@ export default async function SectionCategory({ params }) {
         </main>
 
         <MoreNews moreNews={moreNews} />
-      </div>
 
       <div className="">
         <h2 className="mx-auto w-fit m-2 text-xl uppercase lg:w-[calc(15rem*4+3rem)]">
@@ -186,6 +185,7 @@ export default async function SectionCategory({ params }) {
           </article>
         </section>
       </div>
+    </div>
     </>
   );
 }
