@@ -18,7 +18,6 @@ export default function Footer() {
           <div className="">
             <h3 className="text-xl font-bold mb-2 uppercase">Categorías</h3>
             <ul className="space-y-2">
-              <li><Link className="hover:underline" href="news.html">Tendencias</Link></li>
               <li><Link className="hover:underline" href="/section/ia-inteligencia-artificial">IA</Link></li>
               <li><Link className="hover:underline" href="/section/computadoras-pc">PCs</Link></li>
               <li><Link className="hover:underline" href="/section/desarrollo-software-app">Software</Link></li>

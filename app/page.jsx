@@ -7,27 +7,27 @@ import newsController from "@/controllers/news/news";
 
 export default async function Principal() {
   
-  const { latestNews, latestWeekNews } = await newsController.latestNews();
+  const { latestNews, latestWeekNews, trendingNews } = await newsController.latestNews();
 
   const weekIds = new Set(latestWeekNews.map(n => n.id))
-
   const cleanLatestNews = latestNews.filter( n => !weekIds.has(n.id))
 
+  const latestWeekLeft = latestWeekNews.slice(0, 3)
+  const latestWeekRight = latestWeekNews.slice(3, 6)
+
   const mainNews = cleanLatestNews.slice(0, 3);
-  const listNews = cleanLatestNews.slice(3, 9);   
-  const moreNews = cleanLatestNews.slice(9, 26);
+  const listNewsLeft = cleanLatestNews.slice(3, 9);
+  const listNewsRight = cleanLatestNews.slice(9, 15);
+  const moreNews = cleanLatestNews.slice(15, 30);
 
   return (
   <>
     <div className="max-w-7xl mx-auto px-6">
       <main className="grid grid-cols-1 lg:grid-cols-4 gap-6 py-16">
-          <aside className="lg:col-span-1">
-          <h3 className="text-xl font-semibold uppercase text-gray-800">Ultimas Tendencias</h3>
-      
-          <ListNews listNews={listNews}/>
-
+          <aside className="lg:col-span-1">      
+          <ListNews listNews={listNewsLeft}/>
           <div className="mt-10">
-            <LatestWeekNews latestWeekNews={latestWeekNews} />
+            <LatestWeekNews latestWeekNews={latestWeekLeft}/>
           </div>
         </aside>
 
@@ -40,7 +40,7 @@ export default async function Principal() {
                 src={item.cover_image} alt={item.title} width={160} height={80}/>
 
               <div className="absolute w-full top-0 text-right bg-linear-to-b from-black via-black/40 to-transparent">
-                <time className="block  text-white text-right font-bold p-4">
+                <time className="block text-white text-right font-bold p-4">
                   {formatDateRelative(item.created_at)}
                 </time>
               </div>
@@ -56,97 +56,75 @@ export default async function Principal() {
           </section>
           )}
           <div className="lg:col-span-1">
-            <LatestWeekNews latestWeekNews={latestWeekNews}/>
+            <LatestWeekNews latestWeekNews={latestWeekRight}/>
           <div className="mt-6">
-            <ListNews listNews={listNews}/>
+            <ListNews listNews={listNewsRight}/>
           </div>
       </div>
     </main>
 
-    <div className="text-gray-900">
-        <div className="flex items-center justify-between mb-8 border-b border-gray-200 pb-4">
+    {trendingNews && trendingNews.length > 0 && (
+        <div className="text-gray-900 mt-4">
+          <div className="flex items-center justify-between mb-8 border-b border-gray-200 pb-4">
             <div className="flex items-center gap-2">
-                <span className="w-3 h-8 bg-red-600 rounded-full"></span>
-                <h2 className="text-3xl font-bold tracking-tight">Tendencias de Hoy</h2>
+              <span className="w-3 h-8 bg-red-600 rounded-full"></span>
+              <h2 className="text-3xl font-bold tracking-tight">Tendencias</h2>
             </div>
-            <a href="#" className="text-red-600 font-semibold hover:underline flex items-center gap-1">
-                Ver todo
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="9 5l7 7-7 7" />
-                </svg>
-            </a>
-        </div>
+          </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
             <div className="lg:col-span-2 lg:row-span-2 group cursor-pointer relative overflow-hidden rounded-lg">
-                <div className="aspect-video lg:aspect-auto lg:h-full relative">
+              {trendingNews[0] && (
+                <Link href={`/news-details/${trendingNews[0].slug}`}>
+                  <div className="aspect-video lg:aspect-auto lg:h-full relative">
                     <img className="w-full h-full object-cover"
-                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQAcFIgmR11sR4m14xJF66rEgodDIUp8vgAzQ&s" 
-                    alt="Noticia Principal"/>
+                      src={trendingNews[0].cover_image} alt={trendingNews[0].title} />
                     <div className="absolute w-full top-0 text-right bg-linear-to-b from-black via-black/40 to-transparent">
-                      <time className="block  text-white text-right font-bold p-4">
-                        20/1/2026
+                      <time className="block text-white text-right font-bold p-4">
+                        {formatDateRelative(trendingNews[0].created_at)}
                       </time>
                     </div>
                     <div className="absolute bottom-0 p-6 text-white bg-linear-to-t from-black via-black/40 to-transparent hover:decoration-gray-200 hover:underline">
-                        <h3 className="text-2xl md:text-3xl font-bold mb-2 leading-tight">La revolución de la inteligencia artificial transforma el mercado laboral global</h3>
-                        <p className="text-gray-200 line-clamp-2 text-sm md:text-base">Nuevos informes sugieren un cambio de paradigma en la productividad empresarial y la necesidad de nuevas habilidades técnicas.</p>
+                      <h3 className="text-2xl md:text-3xl font-bold mb-2 leading-tight">{trendingNews[0].title}</h3>
+                      <p className="text-gray-200 line-clamp-2 text-sm md:text-base">{trendingNews[0].excerpt}</p>
                     </div>
-                </div>
+                  </div>
+                </Link>
+              )}
             </div>
 
-            <div className="overflow-hidden group cursor-pointer">
-                <div className="relative h-48">
-                    <img className="w-full h-full rounded object-cover"
-                    src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=600" 
-                    alt="Tecnología"/>
-                </div>
-                <div className="py-2 hover:underline">
-                    <h4 className="font-bold text-lg leading-snug">Nuevos avances en energía de fusión nuclear</h4>
-                    <p className="text-gray-500 text-sm mt-2 line-clamp-2">Científicos logran un récord de temperatura en el reactor experimental...</p>
-                    <div className="mt-4 text-sm text-gray-400">Hace 4 horas</div>
-                </div>
-            </div>
-
-            <div className="overflow-hidden group cursor-pointer">
-                <div className="relative h-48">
-                    <img className="w-full h-full rounded object-cover"
-                    src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=600" 
-                    alt="Tecnología"/>
-                </div>
-                <div className="py-2 hover:underline">
-                    <h4 className="font-bold text-lg leading-snug">Nuevos avances en energía de fusión nuclear</h4>
-                    <p className="text-gray-500 text-sm mt-2 line-clamp-2">Científicos logran un récord de temperatura en el reactor experimental...</p>
-                    <div className="mt-4 text-sm text-gray-400">Hace 4 horas</div>
-                </div>
-            </div>
+            {trendingNews.slice(1, 3).map((item) => (
+              <div key={item.id} className="overflow-hidden group cursor-pointer">
+                <Link href={`/news-details/${item.slug}`}>
+                  <div className="relative h-48">
+                    <img className="w-full h-full rounded object-cover" src={item.cover_image} alt={item.title}/>
+                  </div>
+                  <div className="py-2 hover:underline">
+                    <h4 className="font-bold text-lg leading-snug">{item.title}</h4>
+                    <p className="text-gray-500 text-sm mt-2 line-clamp-2">{item.excerpt}</p>
+                    <div className="block text-gray-400 text-right text-sm font-bold">{formatDateRelative(item.created_at)}</div>
+                  </div>
+                </Link>
+              </div>
+            ))}
 
             <div className="lg:col-span-2 p-1">
               <h4 className="text-xl font-bold mb-2 flex items-center gap-1">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6l4 2M12 4a8 8 0 100 16 8 8 0 000-16z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6l4 2M12 4a8 8 0 100 16 8 8 0 000-16z" />
                 </svg>
                 Última hora
               </h4>
-                <Link href="" className="block hover:underline border-t border-gray-300 mt-1">
-                    <h4 className="text-sm leading-snug wrap-break-words pt-1 line-clamp-2">Líderes de la UE se reúnen para trazar un nuevo rumbo tras
-                            amenazas de Trump sobre Groenlandia.</h4>
-                </Link>
-                <Link href="" className="block hover:underline border-t border-gray-300 mt-1 ">
-                    <h4 className="text-sm leading-snug pt-1 wrap-break-words">Líderes de la UE se reúnen para trazar un nuevo rumbo tras
-                            amenazas de Trump sobre Groenlandia.</h4>
-                </Link>
-                <Link href="" className="block hover:underline border-t border-gray-300 mt-1">
-                    <h4 className="text-sm leading-snug pt-1 wrap-break-words">Líderes de la UE se reúnen para trazar un nuevo rumbo tras
-                            amenazas de Trump sobre Groenlandia.</h4>
-                </Link>
+
+              <ListNews listNews={trendingNews.slice(3, 6)} clamp="line-clamp-1"/>
             </div>
+          </div>
         </div>
+        )}
+      <div className="mt-30">
+        <MoreNews moreNews={moreNews}/>
       </div>
-    <div className="py-20">
-      <MoreNews moreNews={moreNews}/>
     </div>
-  </div>
-  </>
+    </>
   );
 }

@@ -2,14 +2,6 @@ import db from "../../lib/db";
 
 const getNews = {};
 
-getNews.incrementViews = async function (slug) {
-  await db.query(`
-    UPDATE news
-    SET views = views + 1
-    WHERE slug = ?
-  `, [slug]);
-};
-
 getNews.getNewsSearch = async function (term, page = 1, limit = 9) {
   return getNews.getPaginatedNews({
     whereClause: "AND (title LIKE ? OR excerpt LIKE ?)",
@@ -76,6 +68,27 @@ getNews.getLastWeekNews = async function(limit) {
     AND n.created_at >= DATE_SUB(NOW(), INTERVAL 14 DAY)
     AND n.created_at < DATE_SUB(NOW(), INTERVAL 7 DAY)
     ORDER BY n.created_at DESC
+    LIMIT ?
+  `, [limit])
+
+  return rows
+}
+
+getNews.getTrendingNews = async function(limit) {
+  const [rows] = await db.query(`
+    SELECT 
+      n.id,
+      n.title,
+      n.slug,
+      n.excerpt,
+      n.cover_image,
+      n.created_at,
+      n.views
+    FROM news n
+    WHERE n.status = 'published'
+      AND n.active = 1
+      AND n.created_at >= DATE_SUB(NOW(), INTERVAL 3 DAY)
+    ORDER BY n.views DESC
     LIMIT ?
   `, [limit])
 

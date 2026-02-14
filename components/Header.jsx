@@ -26,7 +26,6 @@ function NavLinks({ vertical = false, linkClass }) {
 
 const links = [
   { href: "/", label: "Inicio" },
-  { href: "/section", label: "Tendencias" },
   { href: "/section/ia-inteligencia-artificial", label: "IA" },
   { href: "/section/computadoras-pc", label: "PC" },
   { href: "/section/dispositivos-moviles", label: "Móviles" },

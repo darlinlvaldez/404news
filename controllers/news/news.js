@@ -1,5 +1,4 @@
 import news from "../../models/news/news";
-import syncViewsToDatabase from "../../models/news/redis";
 import incrementViewRedis from "../news/redis";
 
 const newsController = {};
@@ -25,9 +24,10 @@ newsController.searchNews = async function (term, page) {
 newsController.latestNews = async function() {
   try {
     const latestNews = await news.getLatestNews(20, 0);
-    const newsWeek = await news.getLastWeekNews(3)
+    const newsWeek = await news.getLastWeekNews(6)
+    const trendingNews = await news.getTrendingNews(6);
 
-    return { ok: true, latestNews, latestWeekNews: newsWeek };
+    return { ok: true, latestNews, latestWeekNews: newsWeek, trendingNews };
   } catch (error) {
     console.error(error);
     return { ok: false, message: "Error al obtener noticias" };
