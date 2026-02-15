@@ -37,7 +37,8 @@ newsController.latestNews = async function() {
 newsController.newsByCategory = async function (slug) {
   try {
     const category = await news.getByCategorySlug(slug);
-    return { ok: true, news: category };
+    const mostRead = await news.getMostReadByCategory(slug, 4);
+    return { ok: true, news: category, mostRead };
   } catch (error) {
     console.error(error);
     return { ok: false, message: "Error al obtener noticias" };

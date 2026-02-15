@@ -115,6 +115,30 @@ getNews.getByCategorySlug = async function (slug) {
   return rows;
 };
 
+getNews.getMostReadByCategory = async function (slug, limit) {
+  const [rows] = await db.query(`
+    SELECT 
+      n.id,
+      n.title,
+      n.slug,
+      n.excerpt,
+      n.cover_image,
+      n.created_at,
+      n.views
+    FROM news n
+    JOIN categories c ON n.category_id = c.id
+    WHERE c.slug = ?
+      AND n.status = 'published'
+      AND n.active = 1
+      AND c.active = 1
+      AND n.created_at >= DATE_SUB(NOW(), INTERVAL 21 DAY)
+    ORDER BY n.views DESC
+    LIMIT ?
+  `, [slug, limit]);
+
+  return rows;
+};
+
 getNews.getDetailsNews = async function (slug) {
   const [[news]] = await db.query(`
     SELECT 
