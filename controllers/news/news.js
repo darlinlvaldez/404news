@@ -36,9 +36,15 @@ newsController.latestNews = async function() {
 
 newsController.newsByCategory = async function (slug) {
   try {
-    const category = await news.getByCategorySlug(slug);
-    const mostRead = await news.getMostReadByCategory(slug, 4);
-    return { ok: true, news: category, mostRead };
+
+    const mostRead = await news.getMostReadByCategory(slug, 12);
+
+    const mostReadIds = mostRead.map(n => n.id);
+
+    const categoryNews = await news.getByCategorySlug(slug, mostReadIds);
+
+    return { ok: true, news: categoryNews, mostRead };
+
   } catch (error) {
     console.error(error);
     return { ok: false, message: "Error al obtener noticias" };
@@ -57,7 +63,7 @@ newsController.detailsNews = async function (slug, ip) {
 
     const relatedNews = await news.getRelatedNews(
       detailNews.categoryId,
-      { excludeId: detailNews.id, limit: 4 }
+      { excludeId: detailNews.id, limit: 8 }
     );
 
     return { ok: true, detailNews, relatedNews };

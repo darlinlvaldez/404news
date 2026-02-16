@@ -2,7 +2,9 @@ export function formatDateRelative(dateString) {
   const now = new Date()
   const date = new Date(dateString)
 
-  const diffMs = now - date
+  let diffMs = now - date
+
+  if (diffMs < 0) diffMs = 0
 
   const diffMinutes = Math.floor(diffMs / (1000 * 60))
   const diffHours = Math.floor(diffMs / (1000 * 60 * 60))

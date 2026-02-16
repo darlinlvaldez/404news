@@ -24,6 +24,11 @@ export default async function Principal() {
   <>
     <div className="max-w-7xl mx-auto px-6">
       <main className="grid grid-cols-1 lg:grid-cols-4 gap-6 py-16">
+
+        <h1 className="sr-only">
+          404 News – Noticias de tecnología y tendencias
+        </h1>
+        
           <aside className="lg:col-span-1">      
           <ListNews listNews={listNewsLeft}/>
           <div className="mt-10">
@@ -68,7 +73,7 @@ export default async function Principal() {
           <div className="flex items-center justify-between mb-8 border-b border-gray-200 pb-4">
             <div className="flex items-center gap-2">
               <span className="w-3 h-8 bg-red-600 rounded-full"></span>
-              <h2 className="text-3xl font-bold tracking-tight">Tendencias</h2>
+              <h3 className="text-3xl font-bold tracking-tight">Tendencias</h3>
             </div>
           </div>
 
@@ -85,7 +90,7 @@ export default async function Principal() {
                       </time>
                     </div>
                     <div className="absolute bottom-0 p-6 text-white bg-linear-to-t from-black via-black/40 to-transparent hover:decoration-gray-200 hover:underline">
-                      <h3 className="text-2xl md:text-3xl font-bold mb-2 leading-tight">{trendingNews[0].title}</h3>
+                      <h4 className="text-2xl md:text-3xl font-bold mb-2 leading-tight">{trendingNews[0].title}</h4>
                       <p className="text-gray-200 line-clamp-2 text-sm md:text-base">{trendingNews[0].excerpt}</p>
                     </div>
                   </div>

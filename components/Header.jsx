@@ -50,7 +50,7 @@ export default function Header() {
 
   const linkClass = (path) =>
     `px-2 py-2 transition ${
-      pathname === path ? "border-b-2 border-white" : "hover:border-b-2 hover:border-white"
+      pathname === path ? "border-b-4 border-white" : "hover:border-b-4 hover:border-white"
     }`;
 
   return (

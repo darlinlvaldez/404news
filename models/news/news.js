@@ -95,7 +95,12 @@ getNews.getTrendingNews = async function(limit) {
   return rows
 }
 
-getNews.getByCategorySlug = async function (slug) {
+getNews.getByCategorySlug = async function (slug, excludeIds = []) {
+
+  const placeholders = excludeIds.length
+    ? `AND n.id NOT IN (${excludeIds.map(() => '?').join(',')})`
+    : '';
+
   const [rows] = await db.query(`
     SELECT 
       n.id,
@@ -107,15 +112,19 @@ getNews.getByCategorySlug = async function (slug) {
       c.name AS category
     FROM news n
     JOIN categories c ON n.category_id = c.id
-    WHERE c.slug = ? AND n.status = 'published'
-      AND n.active = 1 AND c.active = 1
+    WHERE c.slug = ?
+      AND n.status = 'published'
+      AND n.active = 1
+      AND c.active = 1
+      ${placeholders}
     ORDER BY n.created_at DESC
-  `, [slug]);
+  `, [slug, ...excludeIds]);
 
   return rows;
 };
 
 getNews.getMostReadByCategory = async function (slug, limit) {
+
   const [rows] = await db.query(`
     SELECT 
       n.id,
@@ -128,6 +137,7 @@ getNews.getMostReadByCategory = async function (slug, limit) {
     FROM news n
     JOIN categories c ON n.category_id = c.id
     WHERE c.slug = ?
+      AND n.views > 0
       AND n.status = 'published'
       AND n.active = 1
       AND c.active = 1
@@ -183,7 +193,7 @@ getNews.getDetailsNews = async function (slug) {
 };
 
 getNews.getRelatedNews = async function (categoryId,
-  { excludeId = null, limit = 4 } = {}
+  { excludeId = null, limit = 8 } = {}
 ) {
   let query = `
     SELECT 
