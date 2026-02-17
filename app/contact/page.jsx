@@ -8,7 +8,7 @@ export const metadata = {
 export default function Contact() {
   return (
     <>
-    <div className="flex-1 flex items-center justify-center p-6 py-12 lg:py-24 min-h-screen flex-col bg-gray-50">
+    <div className="flex-1 flex items-center justify-center p-6 py-12 lg:py-24 min-h-screen flex-col">
         <div className="w-full max-w-5xl bg-white shadow-2xl flex flex-col md:flex-row overflow-hidden rounded-sm">
             
             <div className="flex-[1.5] p-8 lg:p-12">
