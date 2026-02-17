@@ -12,7 +12,7 @@ export default function ListNews ({
       {listNews.map((item) => (
         <Link 
           key={item.id} 
-          href={`/news-details/${item.slug}`}
+          href={`/news/news-details/${item.slug}`}
           className="block hover:underline border-t border-gray-300 mt-1"
         >
           <h4 className={`${titleClass} leading-snug wrap-break-words pt-1 ${clamp}`}>

@@ -13,7 +13,7 @@ export default function LatestWeekNews({latestWeekNews}) {
         <section className="flex flex-col items-center lg:flex-row lg:flex-wrap lg:gap-4">
             {latestWeekNews.map(item => (
             <article key={item.id} className="mb-5 relative">
-                <Link href={`/news-details/${item.slug}`}>
+                <Link href={`/news/news-details/${item.slug}`}>
                 <img className="w-60 max-w-xs h-40 object-cover rounded"
                     src={item.cover_image} alt={item.title} width={160} height={80}/>
 

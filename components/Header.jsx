@@ -26,11 +26,11 @@ function NavLinks({ vertical = false, linkClass }) {
 
 const links = [
   { href: "/", label: "Inicio" },
-  { href: "/section/ia-inteligencia-artificial", label: "IA" },
-  { href: "/section/computadoras-pc", label: "PC" },
-  { href: "/section/dispositivos-moviles", label: "Móviles" },
-  { href: "/section/desarrollo-software-app", label: "Software" },
-  { href: "/section/tecnologia-tecnology", label: "Tecnología General" },
+  { href: "/news/section/ia-inteligencia-artificial", label: "IA" },
+  { href: "/news/section/computadoras-pc", label: "PC" },
+  { href: "/news/section/dispositivos-moviles", label: "Móviles" },
+  { href: "/news/section/desarrollo-software-app", label: "Software" },
+  { href: "/news/section/tecnologia-tecnology", label: "Tecnología General" },
 ];
 
 export default function Header() {

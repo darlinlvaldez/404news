@@ -23,7 +23,7 @@ newsController.searchNews = async function (term, page) {
 
 newsController.latestNews = async function() {
   try {
-    const latestNews = await news.getLatestNews(20, 0);
+    const latestNews = await news.getLatestNews(31, 0);
     const newsWeek = await news.getLastWeekNews(6)
     const trendingNews = await news.getTrendingNews(6);
 

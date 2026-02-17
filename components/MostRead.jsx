@@ -24,7 +24,7 @@ export default function MostRead({ mostRead }) {
         <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full">
             {visibleNews.map((news, index) => (
             <article key={news.id} className="mb-10 relative">
-                <Link href={`/news-details/${news.slug}`}>
+                <Link href={`/news/news-details/${news.slug}`}>
                     <div className="relative">
                         <div className="absolute top-2 left-2 flex items-center gap-1 bg-black/60 text-white px-2 py-1 rounded backdrop-blur-sm z-10">
                             <span className="text-xs font-bold">{index + 1}</span>

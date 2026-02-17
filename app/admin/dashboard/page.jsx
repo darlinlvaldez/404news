@@ -1,24 +1,6 @@
-export default async function Principal() {
+export default async function AdminPanel() {
 
     return (
-<div className="bg-gray-900 text-gray-100 flex min-h-screen">
-
-    <aside className="w-64 bg-green-800 hidden md:flex flex-col shadow-xl">
-        <div className="p-6 border-b border-green-700">
-            <h1 className="text-2xl font-bold tracking-tight">AdminPanel</h1>
-        </div>
-        <nav className="flex-1 p-4 space-y-2 text-green-100">
-            <a href="#" className="block p-3 rounded-lg bg-green-900 font-semibold shadow-inner">Dashboard</a>
-            <a href="#" className="block p-3 rounded-lg hover:bg-green-700 transition">Noticias</a>
-            <a href="#" className="block p-3 rounded-lg hover:bg-green-700 transition">Categorías</a>
-            <a href="#" className="block p-3 rounded-lg hover:bg-green-700 transition">Tickets</a>
-            <a href="#" className="block p-3 rounded-lg hover:bg-green-700 transition">Autores</a>
-        </nav>
-        <div className="p-4 border-t border-green-700">
-            <button className="w-full bg-red-600 hover:bg-red-700 text-white py-2 rounded-md transition text-sm">Cerrar Sesión</button>
-        </div>
-    </aside>
-
     <main className="flex-1 flex flex-col overflow-hidden bg-gray-800">
         
         <header className="h-16 bg-gray-900 flex items-center justify-between px-8 border-b border-gray-700">
@@ -171,10 +153,8 @@ export default async function Principal() {
         </section>
 
         <footer className="p-4 bg-gray-900 border-t border-gray-700 text-center text-xs text-gray-500">
-            &copy; 2024 AdminPanel de Noticias. Todos los derechos reservados.
+            &copy; 2026 404 NEWS
         </footer>
     </main>
-
-    </div>
     )
 }    

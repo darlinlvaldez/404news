@@ -1,4 +1,6 @@
 import Link from "next/link";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
 import { formatDateRelative } from '@/utils/formatDate'
 import MoreNews from "@/components/MoreNews";
 import LatestWeekNews from "@/components/LatestWeekNews";
@@ -12,17 +14,19 @@ export default async function Principal() {
   const weekIds = new Set(latestWeekNews.map(n => n.id))
   const cleanLatestNews = latestNews.filter( n => !weekIds.has(n.id))
 
-  const latestWeekLeft = latestWeekNews.slice(0, 3)
-  const latestWeekRight = latestWeekNews.slice(3, 6)
-
+  
   const mainNews = cleanLatestNews.slice(0, 3);
   const listNewsLeft = cleanLatestNews.slice(3, 9);
   const listNewsRight = cleanLatestNews.slice(9, 15);
-  const moreNews = cleanLatestNews.slice(15, 30);
+  const moreNews = cleanLatestNews.slice(15, 31);
+
+  const latestWeekLeft = latestWeekNews.slice(0, 3)
+  const latestWeekRight = latestWeekNews.slice(3, 6)
 
   return (
   <>
-    <div className="max-w-7xl mx-auto px-6">
+  <Header />
+    <div className="flex-1 max-w-7xl mx-auto px-6">
       <main className="grid grid-cols-1 lg:grid-cols-4 gap-6 py-16">
 
         <h1 className="sr-only">
@@ -40,7 +44,7 @@ export default async function Principal() {
           <section className="lg:col-span-2 flex flex-col">
             {mainNews.map((item) => (
             <article key={item.id} className="mb-10 relative rounded overflow-hidden">
-              <Link href={`/news-details/${item.slug}`}>
+              <Link href={`/news/news-details/${item.slug}`}>
               <img className="w-full h-96 object-cover"
                 src={item.cover_image} alt={item.title} width={160} height={80}/>
 
@@ -80,7 +84,7 @@ export default async function Principal() {
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
             <div className="lg:col-span-2 lg:row-span-2 group cursor-pointer relative overflow-hidden rounded-lg">
               {trendingNews[0] && (
-                <Link href={`/news-details/${trendingNews[0].slug}`}>
+                <Link href={`/news/news-details/${trendingNews[0].slug}`}>
                   <div className="aspect-video lg:aspect-auto lg:h-full relative">
                     <img className="w-full h-full object-cover"
                       src={trendingNews[0].cover_image} alt={trendingNews[0].title} />
@@ -100,7 +104,7 @@ export default async function Principal() {
 
             {trendingNews.slice(1, 3).map((item) => (
               <div key={item.id} className="overflow-hidden group cursor-pointer">
-                <Link href={`/news-details/${item.slug}`}>
+                <Link href={`/news/news-details/${item.slug}`}>
                   <div className="relative h-48">
                     <img className="w-full h-full rounded object-cover" src={item.cover_image} alt={item.title}/>
                   </div>
@@ -130,6 +134,7 @@ export default async function Principal() {
         <MoreNews moreNews={moreNews}/>
       </div>
     </div>
+    <Footer />
     </>
   );
 }

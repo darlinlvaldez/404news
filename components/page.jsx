@@ -1,0 +1,45 @@
+export default function SideBar() {
+
+    const buttonLogaut = `w-full bg-gray-900 hover:bg-gray-800 text-white py-2 rounded-md 
+    transition text-sm cursor-pointer flex items-center justify-center gap-2`
+    
+    return (
+    <div className="bg-gray-900 text-gray-100 flex min-h-screen">
+        <aside className="w-64 bg-green-800 hidden md:flex flex-col shadow-xl">
+            <div className="p-6 border-b border-green-700">
+                <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full overflow-hidden bg-gray-700">
+                        <img src="/public/images/notfoundimage.jpg" alt="Usuario" className="w-full h-full object-cover"/>
+                    </div>
+                    <div className="flex flex-col">
+                        <span className="text-sm font-semibold text-white">
+                            Darlin Valdez
+                        </span>
+                        <span className="text-xs text-green-200">
+                            Administrador
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <nav className="flex-1 p-4 space-y-2 text-green-100">
+                <a href="/admin/dashboard" className="block p-3 rounded-lg bg-green-900 font-semibold shadow-inner">Dashboard</a>
+                <a href="#" className="block p-3 rounded-lg hover:bg-green-700 transition">Noticias</a>
+                <a href="#" className="block p-3 rounded-lg hover:bg-green-700 transition">Categorías</a>
+                <a href="#" className="block p-3 rounded-lg hover:bg-green-700 transition">Tickets</a>
+                <a href="#" className="block p-3 rounded-lg hover:bg-green-700 transition">Autores</a>
+            </nav>
+
+            <div className="p-4 border-t border-green-700">
+                <button className={buttonLogaut}>
+
+                <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h6a2 2 0 012 2v1"/>
+                </svg> 
+                Cerrar Sesión
+                </button>
+            </div>
+        </aside>
+    </div>
+    )
+}    

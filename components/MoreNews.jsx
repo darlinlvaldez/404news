@@ -18,7 +18,7 @@ export default function MoreNews({ moreNews }) {
     <section className={moreNewsSection}>
         {moreNews.map(item => (
             <article key={item.id} className="mb-10 relative">
-                <Link href={`/news-details/${item.slug}`}>
+                <Link href={`/news/news-details/${item.slug}`}>
                     <img className="w-full h-48 object-cover rounded"
                     src={item.cover_image} alt={item.title} width={160} height={80}/>
 

@@ -18,11 +18,11 @@ export default function Footer() {
           <div className="">
             <h3 className="text-xl font-bold mb-2 uppercase">Categorías</h3>
             <ul className="space-y-2">
-              <li><Link className="hover:underline" href="/section/ia-inteligencia-artificial">IA</Link></li>
-              <li><Link className="hover:underline" href="/section/computadoras-pc">PCs</Link></li>
-              <li><Link className="hover:underline" href="/section/desarrollo-software-app">Software</Link></li>
-              <li><Link className="hover:underline" href="/section/dispositivos-moviles">Móviles</Link></li>
-              <li><Link className="hover:underline" href="/section/tecnologia-tecnology">Tecnología General</Link></li>
+              <li><Link className="hover:underline" href="/news/section/ia-inteligencia-artificial">IA</Link></li>
+              <li><Link className="hover:underline" href="/news/section/computadoras-pc">PCs</Link></li>
+              <li><Link className="hover:underline" href="/news/section/desarrollo-software-app">Software</Link></li>
+              <li><Link className="hover:underline" href="/news/section/dispositivos-moviles">Móviles</Link></li>
+              <li><Link className="hover:underline" href="/news/section/tecnologia-tecnology">Tecnología General</Link></li>
             </ul>
           </div>
           <div className="">
@@ -35,7 +35,7 @@ export default function Footer() {
             </ul>
           </div>
         </div>
-        <p className="text-center font-normal text-white py-4">© 2026 404 NEWS</p>
+        <p className="text-center font-normal text-white py-4">&copy; 2026 404 NEWS</p>
       </div>
     </footer>
   );
