@@ -1,13 +1,12 @@
 export default async function AdminPanel() {
 
     return (
-    <main className="flex-1 flex flex-col overflow-hidden bg-gray-800">
+    <div className="flex-1 flex flex-col overflow-hidden bg-gray-800">
         
         <header className="h-16 bg-gray-900 flex items-center justify-between px-8 border-b border-gray-700">
             <h2 className="text-xl font-semibold">Resumen General</h2>
             <div className="flex items-center space-x-4">
-                <span className="text-sm text-gray-400">Hoy: 16 Feb, 2024</span>
-                <div className="w-8 h-8 rounded-full bg-green-600 flex items-center justify-center font-bold">A</div>
+                <time className="text-sm text-gray-400">Hoy: 16 Feb, 2024</time>
             </div>
         </header>
 
@@ -151,10 +150,6 @@ export default async function AdminPanel() {
             </div>
 
         </section>
-
-        <footer className="p-4 bg-gray-900 border-t border-gray-700 text-center text-xs text-gray-500">
-            &copy; 2026 404 NEWS
-        </footer>
-    </main>
+    </div>
     )
 }    

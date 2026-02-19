@@ -38,7 +38,7 @@ export default function NewsResults({
 
         <div className="space-y">
             {results.map((news) => (
-            <Link key={news.id} href={`/news/news-details/${news.slug}`}>
+            <Link key={news.id} href={`/news-details/${news.slug}`}>
                 <article className={articleNews}>
                 <div className="flex flex-col sm:flex-row">
                     <div className="sm:w-48 h-32 shrink-0 bg-gray-200">

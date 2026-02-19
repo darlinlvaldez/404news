@@ -43,7 +43,7 @@ export default function Header() {
 
   const handleSearch = (e) => {
     if (e.key === "Enter" && searchTerm.trim()) {
-      router.push(`/search?q=${encodeURIComponent(searchTerm)}`);
+      router.push(`/news/search?q=${encodeURIComponent(searchTerm)}`);
       setSearchOpen(false);
     }
   };
@@ -100,7 +100,7 @@ export default function Header() {
             <svg className="w-5 h-5 text-white absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none"
               xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2.5" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round"
-                d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"/>
             </svg>
           </div>
         </div>

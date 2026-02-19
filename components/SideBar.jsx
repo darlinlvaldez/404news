@@ -1,4 +1,15 @@
+"use client";
+
+import { usePathname } from "next/navigation"
+import Link from "next/link"
+
 export default function SideBar() {
+    const pathname = usePathname()
+
+    const getLinkClasses = (path) => 
+        `block p-3 rounded-lg transition ${ pathname === path
+            ? "bg-green-900 font-semibold shadow-inner" : "hover:bg-green-700"}`
+
 
     const buttonLogaut = `w-full bg-gray-900 hover:bg-gray-800 text-white py-2 rounded-md 
     transition text-sm cursor-pointer flex items-center justify-center gap-2`
@@ -23,11 +34,12 @@ export default function SideBar() {
             </div>
 
             <nav className="flex-1 p-4 space-y-2 text-green-100">
-                <a href="/admin/dashboard" className="block p-3 rounded-lg bg-green-900 font-semibold shadow-inner">Dashboard</a>
-                <a href="#" className="block p-3 rounded-lg hover:bg-green-700 transition">Noticias</a>
-                <a href="#" className="block p-3 rounded-lg hover:bg-green-700 transition">Categorías</a>
-                <a href="#" className="block p-3 rounded-lg hover:bg-green-700 transition">Tickets</a>
-                <a href="#" className="block p-3 rounded-lg hover:bg-green-700 transition">Autores</a>
+                <Link href="/admin/dashboard" className={getLinkClasses("/admin/dashboard")}>Dashboard</Link>
+                <Link href="/admin/news" className={getLinkClasses("/admin/news")}>Noticias</Link>
+                <Link href="/admin/categories" className={getLinkClasses("/admin/categories")}>Categorías</Link>
+                <Link href="/admin/authors" className={getLinkClasses("/admin/authors")}>Autores</Link>
+                <Link href="/admin/users" className={getLinkClasses("/admin/users")}>Usuarios</Link>
+                <Link href="/admin/tickets" className={getLinkClasses("/admin/tickets")}>Tickets</Link>
             </nav>
 
             <div className="p-4 border-t border-green-700">
