@@ -42,7 +42,7 @@ export default async function DetailNews({ params }) {
                     </h1>
 
                     <p className="text-sm mt-4 text-gray-500">
-                        Por <Link href={`/author/${news.author_slug}`}>{news.author}</Link>
+                        Por <Link href={`/news/author/${news.author_slug}`}>{news.author}</Link>
                     </p>
 
                     <div className="relative mt-6">

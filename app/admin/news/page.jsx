@@ -1,141 +1,232 @@
-export default function NewsTable () {
+"use client";
 
-    return (
-    <div className="flex-1 flex flex-col overflow-hidden bg-gray-800">
-        
-        <header className="h-16 bg-gray-900 flex items-center justify-between px-8 border-b border-gray-700">
-            <h2 className="text-xl font-semibold">Gestión de Noticias</h2>
-            <div className="flex items-center space-x-4">
-                <a href="create_news.html" className="bg-green-700 hover:bg-green-600 text-white px-4 py-2 rounded-lg font-bold text-sm transition flex items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4" />
-                    </svg>
-                    Nueva Noticia
-                </a>
-            </div>
-        </header>
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import {formatDateAbsolute} from "@/utils/formatDate"
 
-        <section className="flex-1 overflow-y-auto p-8 space-y-6">
-            
-            <div className="bg-gray-900 p-4 rounded-xl border border-gray-700 flex flex-wrap gap-4 items-center justify-between shadow-lg">
-                <div className="relative w-full md:w-96">
-                    <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-500">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" stroke-lidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                        </svg>
-                    </span>
-                    <input type="text" placeholder="Buscar por título o autor..." className="w-full bg-gray-800 border border-gray-700 rounded-lg pl-10 pr-4 py-2 text-sm focus:outline-none focus:border-green-600 transition text-gray-100"/>
-                </div>
-                
-                <div className="flex items-center space-x-3">
-                    <select className="bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-sm text-gray-300 focus:outline-none focus:border-green-600">
-                        <option value="">Todos los estados</option>
-                        <option value="draft">Borrador</option>
-                        <option value="review">En revisión</option>
-                        <option value="published">Publicado</option>
-                    </select>
-                </div>
-            </div>
+import { 
+  Plus, 
+  Search, 
+  Edit3, 
+  Eye, 
+  Calendar, 
+  Tag, 
+  ChevronLeft, 
+  ChevronRight, 
+  Newspaper,
+  CheckCircle2,
+  Clock,
+  FileEdit
+} from 'lucide-react';
 
-            <div className="bg-gray-900 rounded-xl border border-gray-700 overflow-hidden shadow-xl">
-                <div className="overflow-x-auto">
-                    <table className="w-full text-left">
-                        <thead className="bg-gray-800/50 text-gray-400 text-xs uppercase font-bold">
-                            <tr>
-                                <th className="px-6 py-4">Título</th>
-                                <th className="px-6 py-4">Autor</th>
-                                <th className="px-6 py-4">Categoría</th>
-                                <th className="px-6 py-4">Estado</th>
-                                <th className="px-6 py-4">Vistas</th>
-                                <th className="px-6 py-4">Fecha</th>
-                                <th className="px-6 py-4 text-right">Acción</th>
-                            </tr>
-                        </thead>
-                        <tbody className="divide-y divide-gray-800">
-                            <tr className="hover:bg-gray-800/30 transition">
-                                <td className="px-6 py-4">
-                                    <p className="text-sm font-semibold text-gray-100 truncate w-64">Avances tecnológicos en energía solar 2024</p>
-                                    <p className="text-[10px] text-gray-500">ID: #96</p>
-                                </td>
-                                <td className="px-6 py-4 text-sm text-gray-300">Juan Pérez</td>
-                                <td className="px-6 py-4">
-                                    <span className="bg-gray-800 text-gray-300 px-2 py-1 rounded text-[10px]">Tecnología</span>
-                                </td>
-                                <td className="px-6 py-4">
-                                    <span className="px-2 py-1 rounded-full text-[10px] font-bold uppercase bg-green-500/10 text-green-500 border border-green-500/20">Published</span>
-                                </td>
-                                <td className="px-6 py-4 text-sm font-mono">1,402</td>
-                                <td className="px-6 py-4 text-xs text-gray-400">18 Feb, 2024</td>
-                                <td className="px-6 py-4 text-right">
-                                    <a href="edit_news.html?id=96" className="inline-flex items-center text-blue-400 hover:text-blue-300 font-semibold text-sm transition">
-                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                        </svg>
-                                        Editar
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr className="hover:bg-gray-800/30 transition">
-                                <td className="px-6 py-4">
-                                    <p className="text-sm font-semibold text-gray-100 truncate w-64">Entrevista exclusiva: CEO de Innovate</p>
-                                    <p className="text-[10px] text-gray-500">ID: #95</p>
-                                </td>
-                                <td className="px-6 py-4 text-sm text-gray-300">Ana García</td>
-                                <td className="px-6 py-4">
-                                    <span className="bg-gray-800 text-gray-300 px-2 py-1 rounded text-[10px]">Negocios</span>
-                                </td>
-                                <td className="px-6 py-4">
-                                    <span className="px-2 py-1 rounded-full text-[10px] font-bold uppercase bg-yellow-500/10 text-yellow-500 border border-yellow-500/20">Review</span>
-                                </td>
-                                <td className="px-6 py-4 text-sm font-mono">245</td>
-                                <td className="px-6 py-4 text-xs text-gray-400">17 Feb, 2024</td>
-                                <td className="px-6 py-4 text-right">
-                                    <a href="edit_news.html?id=95" className="inline-flex items-center text-blue-400 hover:text-blue-300 font-semibold text-sm transition">
-                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                        </svg>
-                                        Editar
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr className="hover:bg-gray-800/30 transition">
-                                <td className="px-6 py-4">
-                                    <p className="text-sm font-semibold text-gray-100 truncate w-64">Lanzamiento de la nueva red 6G</p>
-                                    <p className="text-[10px] text-gray-500">ID: #94</p>
-                                </td>
-                                <td className="px-6 py-4 text-sm text-gray-300">Marcos Ruiz</td>
-                                <td className="px-6 py-4">
-                                    <span className="bg-gray-800 text-gray-300 px-2 py-1 rounded text-[10px]">Ciencia</span>
-                                </td>
-                                <td className="px-6 py-4">
-                                    <span className="px-2 py-1 rounded-full text-[10px] font-bold uppercase bg-gray-500/10 text-gray-400 border border-gray-500/20">Draft</span>
-                                </td>
-                                <td className="px-6 py-4 text-sm font-mono">0</td>
-                                <td className="px-6 py-4 text-xs text-gray-400">16 Feb, 2024</td>
-                                <td className="px-6 py-4 text-right">
-                                    <a href="edit_news.html?id=94" className="inline-flex items-center text-blue-400 hover:text-blue-300 font-semibold text-sm transition">
-                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                        </svg>
-                                        Editar
-                                    </a>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div className="p-4 bg-gray-900/50 border-t border-gray-800 flex items-center justify-between">
-                    <span className="text-xs text-gray-500">Mostrando 3 de 97 noticias</span>
-                    <div className="flex space-x-2">
-                        <button className="px-3 py-1 bg-gray-800 border border-gray-700 rounded text-xs hover:bg-gray-700 disabled:opacity-50" disabled>Anterior</button>
-                        <button className="px-3 py-1 bg-gray-800 border border-gray-700 rounded text-xs hover:bg-gray-700">Siguiente</button>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </div>
-    )
-} 
+export default function NewsTable() {
+    const [news, setNews] = useState([]);
+    const [total, setTotal] = useState(0);
+    const [page, setPage] = useState(1);
 
+    const [statusFilter, setStatusFilter] = useState("");
+    const [isOpen, setIsOpen] = useState(false);
 
+    const limit = 50;
+    const totalPages = Math.ceil(total / limit);
+    const showingFrom = (page - 1) * limit + 1;
+    const showingTo = Math.min(page * limit, total);
+
+    useEffect(() => {
+
+    const offset = (page - 1) * limit;
+
+    const params = new URLSearchParams({ limit, offset });
+    if (statusFilter) params.append("status", statusFilter);
+
+    fetch(`/api/admin/news?limit=${limit}&offset=${offset}`)
+        .then(res => res.json())
+        .then(data => {
+        if (data.ok) {
+            setNews(data.news);
+            setTotal(data.total);
+        }
+        });
+
+    }, [page, statusFilter]);
+
+    const getStatusStyle = (status) => {
+        switch (status) {
+        case 'published': return 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20';
+        case 'review': return 'bg-amber-500/10 text-amber-500 border-amber-500/20';
+        case 'draft': return 'bg-slate-500/10 text-slate-400 border-slate-500/20';
+        default: return 'bg-gray-500/10 text-gray-500 border-gray-500/20';
+        }
+    };
+
+    const getStatusIcon = (status) => {
+        switch (status) {
+        case 'published': return <CheckCircle2 size={12} className="mr-1.5" />;
+        case 'review': return <Clock size={12} className="mr-1.5" />;
+        case 'draft': return <FileEdit size={12} className="mr-1.5" />;
+        default: return null;
+        }
+    };
     
+    const getVisiblePages = () => {
+    const maxVisible = 5;
+    const start = Math.max(1, page - 2);
+    const end = Math.min(totalPages, start + maxVisible - 1);
+    return Array.from({ length: end - start + 1 }, (_, i) => start + i);
+};
+
+  return (
+    <div className="flex-1 flex flex-col overflow-hidden bg-[#0b0f1a] text-gray-200 font-sans">
+      
+      <header className="h-20 bg-[#161b2a] flex items-center justify-between px-8 border-b border-slate-800 shadow-sm">
+        <div className="flex items-center space-x-4">
+          <div className="p-2.5 bg-emerald-600/10 rounded-xl text-emerald-500">
+            <Newspaper size={24} />
+          </div>
+          <div>
+            <h2 className="text-xl font-black text-white tracking-tight">Gestión de Noticias</h2>
+            <p className="text-[10px] text-slate-500 uppercase font-bold tracking-widest">Publicaciones del portal</p>
+          </div>
+        </div>
+        
+        <button className="bg-emerald-600 hover:bg-emerald-500 text-white px-6 py-3 rounded-2xl font-black text-xs uppercase tracking-widest transition flex items-center shadow-lg shadow-emerald-900/20">
+          <Plus size={18} className="mr-2" />
+          Nueva Noticia
+        </button>
+      </header>
+
+      <section className="flex-1 overflow-y-auto p-8 space-y-6">
+        
+        <div className="bg-[#161b2a] p-5 rounded-[2rem] border border-slate-800 flex flex-wrap gap-4 items-center justify-between shadow-xl">
+          <div className="relative w-full md:w-[450px]">
+            <Search className="absolute inset-y-0 left-4 flex items-center text-slate-600 my-auto" size={18} />
+            <input 
+              type="text" 
+              placeholder="Buscar por título, ID o autor..." 
+              className="w-full bg-[#0b0f1a] border border-slate-800 rounded-2xl pl-12 pr-4 py-3.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600/50 transition text-gray-100 placeholder:text-slate-700"
+            />
+          </div>
+          
+          
+        <div className="flex items-center space-x-3 w-full md:w-auto">
+            <select
+                value={statusFilter}
+                onChange={(e) => setStatusFilter(e.target.value)}
+                onMouseDown={() => setIsOpen(!isOpen)}
+                onBlur={() => setIsOpen(false)}       
+                className={`bg-[#0b0f1a] border border-slate-800 px-5 py-3.5 text-xs font-bold text-slate-400
+                focus:outline-none focus:border-emerald-600 appearance-none cursor-pointer pr-10
+                ${isOpen ? "rounded-t-2xl" : "rounded-2xl"} `} >
+                <option value="">Todos los estados</option>
+                <option value="draft">Borrador</option>
+                <option value="review">En revisión</option>
+                <option value="published">Publicado</option>
+            </select>
+            </div>
+        </div>
+
+        <div className="bg-[#161b2a] rounded-[2rem] border border-slate-800 overflow-hidden shadow-2xl">
+          <div className="overflow-x-auto">
+            <table className="w-full text-left border-collapse">
+              <thead>
+                <tr className="bg-slate-800/30 text-slate-500 text-[10px] uppercase font-black tracking-[0.15em] border-b border-slate-800">
+                  <th className="px-8 py-6">Detalles del Artículo</th>
+                  <th className="px-8 py-6">Autoría</th>
+                  <th className="px-8 py-6">Categoría</th>
+                  <th className="px-8 py-6">Estado</th>
+                  <th className="px-8 py-6">Analítica</th>
+                  <th className="px-8 py-6 text-right">Acciones</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-800">
+                {news.map((item) => (
+                  <tr key={item.id} className="hover:bg-slate-800/20 transition-all group">
+                    <td className="px-8 py-6">
+                    <div className="max-w-xs md:max-w-sm">
+                        <p className="text-sm font-bold text-white group-hover:text-emerald-400 transition truncate mb-1">
+                            {item.title}
+                        </p>
+                        <div className="flex items-center space-x-2 text-xs font-mono text-slate-600">
+                            <span className="bg-slate-900 px-2 py-0.5 rounded border border-slate-800">
+                                ID: #{item.id}
+                            </span>
+                            <span className="flex items-center text-slate-500 uppercase font-bold tracking-tighter">
+                                <Calendar size={11} className="mr-1"/>{formatDateAbsolute(item.created_at)}
+                            </span>
+                        </div>
+                    </div>
+                    </td>
+                    <td className="px-8 py-6">
+                      <div className="flex items-center text-sm text-slate-300">
+                        <div className="w-7 h-7 rounded-lg bg-slate-800 flex items-center justify-center mr-3 border border-slate-700 text-[10px] font-bold">
+                          {item.author.split(' ').map(n => n[0]).join('')}
+                        </div>
+                        {item.author}
+                      </div>
+                    </td>
+                    <td className="px-8 py-6">
+                      <div className="flex items-center text-xs text-slate-400">
+                        <Tag size={12} className="mr-2 text-emerald-500" />
+                        {item.category}
+                      </div>
+                    </td>
+                    <td className="px-8 py-6">
+                      <span className={`inline-flex items-center px-3 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest border 
+                        ${getStatusStyle(item.status)}`}> {getStatusIcon(item.status)} {item.status}
+                      </span>
+                    </td>
+                    <td className="px-8 py-6 text-sm">
+                      <div className="flex flex-col">
+                        <span className="flex items-center text-slate-300 font-mono font-bold">
+                          <Eye size={13} className="mr-2 text-slate-600" />{item.views}
+                        </span>
+                      </div>
+                    </td>
+                    <td className="px-8 py-6 text-right">
+                      <div className="flex justify-end space-x-2">
+                        <Link href={`/admin/news/create`}
+                            className="p-3 bg-slate-800/50 hover:bg-emerald-600 text-slate-400 hover:text-white rounded-xl transition-all shadow-lg active:scale-95 flex items-center justify-center">
+                            <Edit3 size={16}/>
+                        </Link>
+                    </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <div className="p-6 bg-slate-800/20 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest"> Mostrando <span className="text-emerald-500">{showingTo - showingFrom + 1}</span>
+                {" "}de{" "} <span className="text-white">{total}</span> noticias
+            </span>
+            <div className="flex items-center space-x-3">
+              <button disabled={page === 1} onClick={() => setPage(prev => prev - 1)}
+              className="p-2.5 bg-slate-800 border border-slate-700 rounded-xl text-slate-500 hover:bg-slate-700 transition disabled:opacity-20 disabled:cursor-not-allowed" >
+                <ChevronLeft size={18}/>
+              </button> 
+            <div className="flex space-x-1">
+                {getVisiblePages().map((number) => {
+                    const isActive = page === number;
+
+                    return (
+                    <button key={number} onClick={() => setPage(number)}
+                        className={`w-9 h-9 flex items-center justify-center rounded-xl text-xs font-black transition
+                        ${isActive ? "bg-emerald-600 text-white" : "bg-slate-800 text-slate-400 hover:bg-slate-700"}`} >
+                        {number}
+                    </button>
+                    );
+                })}
+            </div>
+
+            <button disabled={page === totalPages} onClick={() => setPage(prev => prev + 1)} 
+                className="p-2.5 bg-slate-800 border border-slate-700 rounded-xl text-slate-400 hover:bg-slate-700 transition">
+                <ChevronRight size={18}/>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+}
