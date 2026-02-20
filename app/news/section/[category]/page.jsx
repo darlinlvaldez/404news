@@ -41,7 +41,7 @@ export default async function SectionCategory({ params }) {
           <section className="lg:col-span-2 flex flex-col">
             {mainNews && (
               <article className="mb-10 relative">
-                <Link href={`/news-details/${mainNews.slug}`}>
+                <Link href={`/news/news-details/${mainNews.slug}`}>
                   <img className="w-full h-96 object-cover rounded"
                     src={mainNews.cover_image} alt={mainNews.title}/>
                   <h2 className="text-gray-800 font-bold mt-1 hover:underline">
@@ -58,7 +58,7 @@ export default async function SectionCategory({ params }) {
               <section className="flex flex-col justify-center items-center lg:flex-row lg:gap-4">
                 {secondaryNews.map((item) => (
                   <article key={item.id} className="mb-10 relative">
-                    <Link href={`/news-details/${item.slug}`}>
+                    <Link href={`/news/news-details/${item.slug}`}>
                       <img className="h-50 w-80 object-cover rounded"
                         src={item.cover_image} alt={item.title}/>
                       <h2 className=" w-60 mt-1 text-sm text-gray-800 hover:underline line-clamp-2">
@@ -78,7 +78,7 @@ export default async function SectionCategory({ params }) {
             <section className="lg:col-span-1 flex flex-col">
               {sideNews.map((item) => (
                 <article key={item.id} className="mb-10 relative">
-                  <Link href={`/news-details/${item.slug}`}>
+                  <Link href={`/news/news-details/${item.slug}`}>
                     <img className="w-full h-72 object-cover rounded"
                       src={item.cover_image} alt={item.title}/>
                     <h2 className="text-gray-800 text-sm font-bold mt-1 hover:underline line-clamp-2">

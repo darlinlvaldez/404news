@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import {formatDateAbsolute} from "@/utils/formatDate"
 
@@ -23,32 +23,63 @@ export default function NewsTable() {
     const [news, setNews] = useState([]);
     const [total, setTotal] = useState(0);
     const [page, setPage] = useState(1);
-
+    const [search, setSearch] = useState("");
+    
     const [statusFilter, setStatusFilter] = useState("");
     const [isOpen, setIsOpen] = useState(false);
+    const dropdownRef = useRef(null);
 
     const limit = 50;
     const totalPages = Math.ceil(total / limit);
     const showingFrom = (page - 1) * limit + 1;
     const showingTo = Math.min(page * limit, total);
 
+    const [debouncedSearch, setDebouncedSearch] = useState("");
+
+    useEffect(() => {
+      const handleClickOutside = (event) => {
+        if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+          setIsOpen(false);
+        }
+      };
+
+      document.addEventListener("mousedown", handleClickOutside);
+
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+      };
+    }, []);
+
+    useEffect(() => {
+      const delay = setTimeout(() => {
+        setDebouncedSearch(search);
+      }, 400);
+
+      return () => clearTimeout(delay);
+    }, [search]);
+
     useEffect(() => {
 
     const offset = (page - 1) * limit;
 
-    const params = new URLSearchParams({ limit, offset });
-    if (statusFilter) params.append("status", statusFilter);
+    const params = new URLSearchParams({
+      limit,
+      offset,
+    });
 
-    fetch(`/api/admin/news?limit=${limit}&offset=${offset}`)
-        .then(res => res.json())
-        .then(data => {
+    if (statusFilter) {params.append("status", statusFilter)}
+    if (debouncedSearch) params.append("search", debouncedSearch);
+
+    fetch(`/api/admin/news?${params.toString()}`)
+      .then(res => res.json())
+      .then(data => {
         if (data.ok) {
-            setNews(data.news);
-            setTotal(data.total);
+          setNews(data.news);
+          setTotal(data.total);
         }
-        });
+      });
 
-    }, [page, statusFilter]);
+  }, [page, statusFilter, debouncedSearch]);
 
     const getStatusStyle = (status) => {
         switch (status) {
@@ -67,6 +98,13 @@ export default function NewsTable() {
         default: return null;
         }
     };
+
+    const statusOptions = [
+      { value: "", label: "Todos los estados" },
+      { value: "published", label: "Publicado" },
+      { value: "review", label: "En revisión" },
+      { value: "draft", label: "Borrador" },
+    ];
     
     const getVisiblePages = () => {
     const maxVisible = 5;
@@ -81,7 +119,7 @@ export default function NewsTable() {
       <header className="h-20 bg-[#161b2a] flex items-center justify-between px-8 border-b border-slate-800 shadow-sm">
         <div className="flex items-center space-x-4">
           <div className="p-2.5 bg-emerald-600/10 rounded-xl text-emerald-500">
-            <Newspaper size={24} />
+            <Newspaper size={24}/>
           </div>
           <div>
             <h2 className="text-xl font-black text-white tracking-tight">Gestión de Noticias</h2>
@@ -90,42 +128,55 @@ export default function NewsTable() {
         </div>
         
         <button className="bg-emerald-600 hover:bg-emerald-500 text-white px-6 py-3 rounded-2xl font-black text-xs uppercase tracking-widest transition flex items-center shadow-lg shadow-emerald-900/20">
-          <Plus size={18} className="mr-2" />
+          <Plus size={18} className="mr-2"/>
           Nueva Noticia
         </button>
       </header>
 
       <section className="flex-1 overflow-y-auto p-8 space-y-6">
         
-        <div className="bg-[#161b2a] p-5 rounded-[2rem] border border-slate-800 flex flex-wrap gap-4 items-center justify-between shadow-xl">
-          <div className="relative w-full md:w-[450px]">
+        <div className="bg-[#161b2a] p-5 rounded-4x1 border border-slate-800 flex flex-wrap gap-4 items-center justify-between shadow-xl">
+          <div className="relative w-full md:w-112.5">
             <Search className="absolute inset-y-0 left-4 flex items-center text-slate-600 my-auto" size={18} />
-            <input 
-              type="text" 
-              placeholder="Buscar por título, ID o autor..." 
-              className="w-full bg-[#0b0f1a] border border-slate-800 rounded-2xl pl-12 pr-4 py-3.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600/50 transition text-gray-100 placeholder:text-slate-700"
-            />
+            <input type="text" 
+            value={search} onChange={(e) => {
+              setSearch(e.target.value);
+              setPage(1); 
+            }} 
+            placeholder="Buscar por título, ID o autor..." 
+            className="w-full bg-[#0b0f1a] border border-slate-800 rounded-2xl pl-12 pr-4 py-3.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600/50 transition text-gray-100 placeholder:text-slate-700"/>
+        </div>
+          
+        <div ref={dropdownRef} className="relative w-full md:w-56">
+          <button onClick={() => setIsOpen(!isOpen)}
+            className={`bg-[#0b0f1a] border border-slate-800 px-5 py-3.5 text-xs font-bold 
+            focus:outline-none focus:border-emerald-600 cursor-pointer w-full text-left
+            flex justify-between items-center
+            ${isOpen ? "rounded-t-2xl" : "rounded-2xl"}`}>
+            <span className="text-slate-400">
+              {statusOptions.find(opt => opt.value === statusFilter)?.label}
+            </span>
+          </button>
+
+            {isOpen && (
+              <ul className="absolute w-full bg-[#0b0f1a] border border-emerald-600 border-t-0 rounded-b-2xl overflow-hidden z-10">
+                {statusOptions.map((option) => (
+                  <li key={option.value}
+                    onClick={() => {
+                      setStatusFilter(option.value);
+                      setIsOpen(false);
+                      setPage(1);
+                    }}
+                    className="px-5 py-3 text-xs hover:bg-slate-800 cursor-pointer text-slate-400">
+                    {option.label}
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
-          
-          
-        <div className="flex items-center space-x-3 w-full md:w-auto">
-            <select
-                value={statusFilter}
-                onChange={(e) => setStatusFilter(e.target.value)}
-                onMouseDown={() => setIsOpen(!isOpen)}
-                onBlur={() => setIsOpen(false)}       
-                className={`bg-[#0b0f1a] border border-slate-800 px-5 py-3.5 text-xs font-bold text-slate-400
-                focus:outline-none focus:border-emerald-600 appearance-none cursor-pointer pr-10
-                ${isOpen ? "rounded-t-2xl" : "rounded-2xl"} `} >
-                <option value="">Todos los estados</option>
-                <option value="draft">Borrador</option>
-                <option value="review">En revisión</option>
-                <option value="published">Publicado</option>
-            </select>
-            </div>
         </div>
 
-        <div className="bg-[#161b2a] rounded-[2rem] border border-slate-800 overflow-hidden shadow-2xl">
+        <div className="bg-[#161b2a] rounded-4xl border border-slate-800 overflow-hidden shadow-2xl">
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>

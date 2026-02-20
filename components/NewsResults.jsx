@@ -38,7 +38,7 @@ export default function NewsResults({
 
         <div className="space-y">
             {results.map((news) => (
-            <Link key={news.id} href={`/news-details/${news.slug}`}>
+            <Link key={news.id} href={`/news/news-details/${news.slug}`}>
                 <article className={articleNews}>
                 <div className="flex flex-col sm:flex-row">
                     <div className="sm:w-48 h-32 shrink-0 bg-gray-200">
@@ -66,7 +66,7 @@ export default function NewsResults({
 
             {page > 1 && (
             <Link
-                href={`${basePath}?${queryParams}&page=${page - 1}`}
+                href={`/news/${basePath}?${queryParams}&page=${page - 1}`}
                 className="px-4 py-2 bg-gray-200 rounded">
                 Anterior
             </Link>
@@ -75,7 +75,7 @@ export default function NewsResults({
             {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
             <Link
                 key={p}
-                href={`${basePath}?${queryParams}&page=${p}`}
+                href={`/news/${basePath}?${queryParams}&page=${p}`}
                 className={`px-4 py-2 rounded ${
                 p === page ? "bg-green-800 text-white" : "bg-gray-200"
                 }`}>
@@ -85,7 +85,7 @@ export default function NewsResults({
 
             {page < totalPages && (
             <Link
-                href={`${basePath}?${queryParams}&page=${page + 1}`}
+                href={`/news/${basePath}?${queryParams}&page=${page + 1}`}
                 className="px-4 py-2 bg-gray-200 rounded">
                 Siguiente
             </Link>
