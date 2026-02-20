@@ -13,7 +13,6 @@ repository.getNewsTable = async function (
     FROM news n
     LEFT JOIN authors a ON n.author_id = a.id
     LEFT JOIN categories c ON n.category_id = c.id
-    WHERE n.active = 1
   `;
 
   const params = [];
@@ -54,6 +53,72 @@ repository.getNewsTable = async function (
   );
 
   return { rows, total };
+};
+
+repository.createNews = async (newsData, blocks) => {
+  const connection = await db.getConnection();
+
+  try {
+    await connection.beginTransaction();
+
+    const [newsResult] = await connection.query(
+      `INSERT INTO news 
+       (title, slug, excerpt, cover_image, author_id, category_id, status, views)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+      [
+        newsData.title,
+        newsData.slug,
+        newsData.excerpt,
+        newsData.cover_image,
+        newsData.author_id,
+        newsData.category_id,
+        newsData.status,
+        newsData.views
+      ]
+    );
+
+    const newsId = newsResult.insertId;
+
+    for (const block of blocks) {
+      await connection.query(
+        `INSERT INTO news_blocks 
+         (news_id, block_type, content, image_url, alt_text, position)
+         VALUES (?, ?, ?, ?, ?, ?)`,
+        [
+          newsId,
+          block.block_type,
+          block.content || null,
+          block.image_url || null,
+          block.alt_text || null,
+          block.position
+        ]
+      );
+    }
+
+    await connection.commit();
+
+    return newsId;
+
+  } catch (error) {
+    await connection.rollback();
+    throw error;
+  } finally {
+    connection.release();
+  }
+};
+
+repository.getAuthors = async function () {
+  const [rows] = await db.query(
+    `SELECT id, name FROM authors WHERE active = 1 ORDER BY name ASC`
+  );
+  return rows;
+};
+
+repository.getCategories = async function () {
+  const [rows] = await db.query(
+    `SELECT id, name FROM categories WHERE active = 1 ORDER BY name ASC`
+  );
+  return rows;
 };
 
 export default repository;

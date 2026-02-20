@@ -56,6 +56,7 @@ const App = () => {
     }
   }, [newsData.title]);
 
+
   const addBlock = (type) => {
     const newBlock = {
       id: Date.now(),
@@ -89,51 +90,14 @@ const App = () => {
     setBlocks(updatedPositions);
   };
 
-  const handleSave = async () => {
-  const payload = { 
-    news: newsData, 
-    blocks: blocks 
+  const handleSave = () => {
+    const payload = { 
+      news: newsData, 
+      blocks: blocks 
+    };
+    console.log('Payload estructurado para API:', payload);
+    alert('¡Cambios guardados con éxito!');
   };
-
-  try {
-    const response = await fetch("/api/admin/news", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(payload)
-    });
-
-    const result = await response.json();
-
-    if (result.ok) {
-      alert("Noticia guardada correctamente");
-    } else {
-      alert(result.message);
-    }
-
-  } catch (error) {
-    console.error(error);
-    alert("Error al guardar");
-  }
-};
-
-const [authors, setAuthors] = useState([]);
-const [categories, setCategories] = useState([]);
-
-useEffect(() => {
-  const fetchFormData = async () => {
-    const res = await fetch("/api/admin/news/form");
-    const data = await res.json();
-
-    if (data.ok) {
-      setAuthors(data.authors);
-      setCategories(data.categories);
-    }
-  };
-
-  fetchFormData();
-}, []);
 
   return (
       <div className="flex-1 overflow-y-auto">
@@ -195,9 +159,11 @@ useEffect(() => {
                 <div>
                   <label className="block text-xs font-bold text-gray-500 uppercase mb-2 ml-1">Imagen de Portada (URL)</label>
                   <div className="relative">
-                    <input type="text" name="cover_image" value={newsData.cover_image} onChange={handleInputChange}
+                    <input 
+                      type="text" name="cover_image" value={newsData.cover_image} onChange={handleInputChange}
                       placeholder="https://ejemplo.com/imagen.jpg"
-                      className="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-green-600 outline-none pr-10"/>
+                      className="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-green-600 outline-none pr-10"
+                    />
                     <ImageIcon className="absolute right-3 top-3 text-gray-600" size={18} />
                   </div>
                 </div>
@@ -215,28 +181,18 @@ useEffect(() => {
               <div className="md:col-span-2 grid grid-cols-1 sm:grid-cols-3 gap-6 pt-4 border-t border-gray-800">
                 <div>
                   <label className="block text-xs font-bold text-gray-500 uppercase mb-2 ml-1">Autor</label>
-                  <select name="author_id"
-  value={newsData.author_id}
-  onChange={handleInputChange} className="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-green-600 transition">
+                  <select name="author_id" value={newsData.author_id} onChange={handleInputChange} className="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-green-600 transition">
                     <option value="">Seleccionar Autor</option>
-                    {authors.map(author => (
-    <option key={author.id} value={author.id}>
-      {author.name}
-    </option>
-  ))}
+                    <option value="1">Juan Pérez</option>
+                    <option value="2">Ana García</option>
                   </select>
                 </div>
                 <div>
                   <label className="block text-xs font-bold text-gray-500 uppercase mb-2 ml-1">Categoría</label>
-                  <select name="category_id"
-  value={newsData.category_id}
-  onChange={handleInputChange} className="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-green-600 transition">
+                  <select name="category_id" value={newsData.category_id} onChange={handleInputChange} className="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-green-600 transition">
                     <option value="">Seleccionar Categoría</option>
-                    {categories.map(category => (
-    <option key={category.id} value={category.id}>
-      {category.name}
-    </option>
-  ))}
+                    <option value="1">Tecnología</option>
+                    <option value="2">Mundo</option>
                   </select>
                 </div>
                 <div>
@@ -245,7 +201,8 @@ useEffect(() => {
                     name="status" 
                     value={newsData.status} 
                     onChange={handleInputChange} 
-                    className={`w-full border border-gray-700 rounded-xl px-4 py-3 text-sm font-bold transition ${newsData.status === 'published' ? 'bg-green-900/20 text-green-500 border-green-800' : 'bg-gray-800 text-gray-100'}`}>
+                    className={`w-full border border-gray-700 rounded-xl px-4 py-3 text-sm font-bold transition ${newsData.status === 'published' ? 'bg-green-900/20 text-green-500 border-green-800' : 'bg-gray-800 text-gray-100'}`}
+                  >
                     <option value="draft">Borrador</option>
                     <option value="review">En Revisión</option>
                     <option value="published">Publicado</option>

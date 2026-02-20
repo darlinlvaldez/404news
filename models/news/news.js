@@ -18,7 +18,6 @@ getNews.getPaginatedNews = async function ({ whereClause, params = [], page = 1,
     SELECT COUNT(*) as total
     FROM news
     WHERE status = 'published'
-      AND active = 1
       ${whereClause}
   `, params);
 
@@ -28,7 +27,6 @@ getNews.getPaginatedNews = async function ({ whereClause, params = [], page = 1,
     SELECT id, title, slug, excerpt, cover_image, created_at
     FROM news
     WHERE status = 'published'
-      AND active = 1
       ${whereClause}
     ORDER BY created_at DESC
     LIMIT ? OFFSET ?
@@ -47,7 +45,7 @@ getNews.getLatestNews = async function (limit, offset = 0) {
       n.cover_image,
       n.created_at
     FROM news n
-    WHERE n.status = 'published' AND n.active = 1
+    WHERE n.status = 'published'
     ORDER BY n.created_at DESC
     LIMIT ? OFFSET ?
   `, [limit, offset])
@@ -64,7 +62,7 @@ getNews.getLastWeekNews = async function(limit) {
       n.cover_image,
       n.created_at
     FROM news n
-    WHERE n.status = 'published' AND n.active = 1
+    WHERE n.status = 'published'
     AND n.created_at >= DATE_SUB(NOW(), INTERVAL 14 DAY)
     AND n.created_at < DATE_SUB(NOW(), INTERVAL 7 DAY)
     ORDER BY n.created_at DESC
@@ -86,7 +84,6 @@ getNews.getTrendingNews = async function(limit) {
       n.views
     FROM news n
     WHERE n.status = 'published'
-      AND n.active = 1
       AND n.created_at >= DATE_SUB(NOW(), INTERVAL 3 DAY)
     ORDER BY n.views DESC
     LIMIT ?
@@ -114,7 +111,6 @@ getNews.getByCategorySlug = async function (slug, excludeIds = []) {
     JOIN categories c ON n.category_id = c.id
     WHERE c.slug = ?
       AND n.status = 'published'
-      AND n.active = 1
       AND c.active = 1
       ${placeholders}
     ORDER BY n.created_at DESC
@@ -139,7 +135,6 @@ getNews.getMostReadByCategory = async function (slug, limit) {
     WHERE c.slug = ?
       AND n.views > 0
       AND n.status = 'published'
-      AND n.active = 1
       AND c.active = 1
       AND n.created_at >= DATE_SUB(NOW(), INTERVAL 21 DAY)
     ORDER BY n.views DESC
@@ -164,7 +159,7 @@ getNews.getDetailsNews = async function (slug) {
     FROM news n
     JOIN authors a ON n.author_id = a.id
     JOIN categories c ON n.category_id = c.id
-    WHERE n.slug = ? AND n.status = 'published' AND n.active = 1
+    WHERE n.slug = ? AND n.status = 'published'
     LIMIT 1
     `,
     [slug]
@@ -206,7 +201,6 @@ getNews.getRelatedNews = async function (categoryId,
     FROM news n
     WHERE n.category_id = ?
       AND n.status = 'published'
-      AND n.active = 1
   `;
 
   const params = [categoryId];

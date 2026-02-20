@@ -14,3 +14,19 @@ export async function GET(request) {
 
   return NextResponse.json(result);
 }
+
+export async function POST(req) {
+  try {
+    const body = await req.json();
+
+    const result = await newsController.create(body);
+
+    return NextResponse.json(result);
+
+  } catch (error) {
+    return NextResponse.json(
+      { ok: false, message: "Error interno del servidor" },
+      { status: 500 }
+    );
+  }
+}

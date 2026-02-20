@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import {formatDateAbsolute} from "@/utils/formatDate"
 
@@ -27,7 +27,6 @@ export default function NewsTable() {
     
     const [statusFilter, setStatusFilter] = useState("");
     const [isOpen, setIsOpen] = useState(false);
-    const dropdownRef = useRef(null);
 
     const limit = 50;
     const totalPages = Math.ceil(total / limit);
@@ -35,20 +34,6 @@ export default function NewsTable() {
     const showingTo = Math.min(page * limit, total);
 
     const [debouncedSearch, setDebouncedSearch] = useState("");
-
-    useEffect(() => {
-      const handleClickOutside = (event) => {
-        if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-          setIsOpen(false);
-        }
-      };
-
-      document.addEventListener("mousedown", handleClickOutside);
-
-      return () => {
-        document.removeEventListener("mousedown", handleClickOutside);
-      };
-    }, []);
 
     useEffect(() => {
       const delay = setTimeout(() => {
@@ -62,10 +47,7 @@ export default function NewsTable() {
 
     const offset = (page - 1) * limit;
 
-    const params = new URLSearchParams({
-      limit,
-      offset,
-    });
+    const params = new URLSearchParams({ limit, offset });
 
     if (statusFilter) {params.append("status", statusFilter)}
     if (debouncedSearch) params.append("search", debouncedSearch);
@@ -127,10 +109,10 @@ export default function NewsTable() {
           </div>
         </div>
         
-        <button className="bg-emerald-600 hover:bg-emerald-500 text-white px-6 py-3 rounded-2xl font-black text-xs uppercase tracking-widest transition flex items-center shadow-lg shadow-emerald-900/20">
-          <Plus size={18} className="mr-2"/>
-          Nueva Noticia
-        </button>
+        <Link href="/admin/news/create" 
+        className="bg-emerald-600 hover:bg-emerald-500 text-white px-6 py-3 rounded-2xl 
+        font-black text-xs uppercase tracking-widest transition flex items-center shadow-lg shadow-emerald-900/20">
+          <Plus size={18} className="mr-2" />Nueva Noticia</Link>
       </header>
 
       <section className="flex-1 overflow-y-auto p-8 space-y-6">
@@ -147,11 +129,12 @@ export default function NewsTable() {
             className="w-full bg-[#0b0f1a] border border-slate-800 rounded-2xl pl-12 pr-4 py-3.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600/50 transition text-gray-100 placeholder:text-slate-700"/>
         </div>
           
-        <div ref={dropdownRef} className="relative w-full md:w-56">
-          <button onClick={() => setIsOpen(!isOpen)}
+        <div className="relative w-full md:w-56">
+          <button tabIndex={0}
+          onClick={() => setIsOpen(prev => !prev)}
+            onBlur={() => setIsOpen(false)}
             className={`bg-[#0b0f1a] border border-slate-800 px-5 py-3.5 text-xs font-bold 
             focus:outline-none focus:border-emerald-600 cursor-pointer w-full text-left
-            flex justify-between items-center
             ${isOpen ? "rounded-t-2xl" : "rounded-2xl"}`}>
             <span className="text-slate-400">
               {statusOptions.find(opt => opt.value === statusFilter)?.label}
@@ -229,13 +212,13 @@ export default function NewsTable() {
                     <td className="px-8 py-6 text-sm">
                       <div className="flex flex-col">
                         <span className="flex items-center text-slate-300 font-mono font-bold">
-                          <Eye size={13} className="mr-2 text-slate-600" />{item.views}
+                          <Eye size={20} className="mr-2 text-slate-600" />{item.views}
                         </span>
                       </div>
                     </td>
                     <td className="px-8 py-6 text-right">
                       <div className="flex justify-end space-x-2">
-                        <Link href={`/admin/news/create`}
+                        <Link href={`/admin/news/edit`}
                             className="p-3 bg-slate-800/50 hover:bg-emerald-600 text-slate-400 hover:text-white rounded-xl transition-all shadow-lg active:scale-95 flex items-center justify-center">
                             <Edit3 size={16}/>
                         </Link>
@@ -253,7 +236,7 @@ export default function NewsTable() {
             </span>
             <div className="flex items-center space-x-3">
               <button disabled={page === 1} onClick={() => setPage(prev => prev - 1)}
-              className="p-2.5 bg-slate-800 border border-slate-700 rounded-xl text-slate-500 hover:bg-slate-700 transition disabled:opacity-20 disabled:cursor-not-allowed" >
+              className="p-2.5 bg-slate-800 border border-slate-700 rounded-xl cursor-pointer text-slate-500 hover:bg-slate-700 transition disabled:opacity-20 disabled:cursor-not-allowed">
                 <ChevronLeft size={18}/>
               </button> 
             <div className="flex space-x-1">
@@ -262,7 +245,7 @@ export default function NewsTable() {
 
                     return (
                     <button key={number} onClick={() => setPage(number)}
-                        className={`w-9 h-9 flex items-center justify-center rounded-xl text-xs font-black transition
+                        className={`w-9 h-9 flex items-center justify-center rounded-xl text-xs font-black transition cursor-pointer
                         ${isActive ? "bg-emerald-600 text-white" : "bg-slate-800 text-slate-400 hover:bg-slate-700"}`} >
                         {number}
                     </button>
@@ -271,7 +254,7 @@ export default function NewsTable() {
             </div>
 
             <button disabled={page === totalPages} onClick={() => setPage(prev => prev + 1)} 
-                className="p-2.5 bg-slate-800 border border-slate-700 rounded-xl text-slate-400 hover:bg-slate-700 transition">
+                className="p-2.5 bg-slate-800 border border-slate-700 rounded-xl text-slate-400 hover:bg-slate-700 transition cursor-pointer">
                 <ChevronRight size={18}/>
               </button>
             </div>
