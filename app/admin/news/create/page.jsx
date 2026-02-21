@@ -73,7 +73,6 @@ export default function CreateNews() {
     <div className="flex-1 overflow-y-auto">
       <NewsHeader 
         title={newsData.title}
-        views={newsData.views}
         onSave={onSave}
         onBack={onBack}
       />

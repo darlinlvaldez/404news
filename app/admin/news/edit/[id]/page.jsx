@@ -2,80 +2,96 @@
 
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
-import { useNewsForm } from '@/hooks/seNewsForm';
+import { useNewsForm } from '@/components/UseNewsForm';
 import { NewsHeader } from '@/components/NewsHeader';
 import { GeneralData } from '@/components/GeneralData';
 import { ContentBlocks } from '@/components/ContentBlocks';
 import { ActionButtons } from '@/components/ActionButtons';
 
-export default function EditNews({ params }) {
+import { useParams } from "next/navigation";
+
+export default function EditNews() {
+  const params = useParams();
+  const id = params.id;
+
   const router = useRouter();
   const [loading, setLoading] = useState(true);
+
+  const [authors, setAuthors] = useState([]);
+  const [categories, setCategories] = useState([]);
   
-  useEffect(() => {
-    const fetchNews = async () => {
-      try {
-        const newsDataFromAPI = {
-          id: params.id,
-          title: 'Noticia de ejemplo',
-          slug: 'noticia-de-ejemplo',
-          excerpt: 'Este es un resumen de ejemplo',
-          cover_image: 'https://ejemplo.com/imagen.jpg',
-          author_id: '1',
-          category_id: '1',
-          status: 'published',
-          active: true,
-          views: 150
-        };
+const {
+  newsData,
+  blocks,
+  showDeleteConfirm,
+  setShowDeleteConfirm,
+  handleInputChange,
+  addBlock,
+  removeBlock,
+  updateBlock,
+  moveBlock,
+  handleSave,
+  handleDelete,
+  setFormData
+} = useNewsForm();
 
-        const blocksFromAPI = [
-          { id: 1, block_type: 'heading', content: 'Título de ejemplo', position: 1 },
-          { id: 2, block_type: 'paragraph', content: 'Párrafo de ejemplo', position: 2 },
-          { id: 3, block_type: 'image', content: '', image_url: 'https://ejemplo.com/img.jpg', alt_text: 'Descripción', position: 3 }
-        ];
+useEffect(() => {
+  const fetchFormData = async () => {
+    try {
+      const response = await fetch("/api/admin/news/form-data");
+      const data = await response.json();
 
-        setFormData(newsDataFromAPI, blocksFromAPI);
-        setLoading(false);
-      } catch (error) {
-        console.error('Error cargando noticia:', error);
-        setLoading(false);
+      if (data.ok) {
+        setAuthors(data.authors);
+        setCategories(data.categories);
       }
-    };
-
-    fetchNews();
-  }, [params.id]);
-
-  const {
-    newsData,
-    blocks,
-    showDeleteConfirm,
-    setShowDeleteConfirm,
-    handleInputChange,
-    addBlock,
-    removeBlock,
-    updateBlock,
-    moveBlock,
-    handleSave,
-    handleDelete,
-    setFormData
-  } = useNewsForm();
-
-  const onSave = () => {
-    handleSave((payload) => {
-      alert('¡Noticia actualizada con éxito!');
-      router.push('/noticias');
-    });
+    } catch (error) {
+      console.error(error);
+    }
   };
 
+  fetchFormData();
+}, []);
+
+useEffect(() => {
+  if (!id) return;
+
+  const fetchNews = async () => {
+    try {
+      const response = await fetch(`/api/admin/news/${id}`);
+      const data = await response.json();
+
+      if (data.ok) {
+        setFormData(data.news, data.blocks);
+      }
+
+      setLoading(false);
+
+    } catch (error) {
+      console.error(error);
+      setLoading(false);
+    }
+  };
+
+  fetchNews();
+}, [id]);
+
+  const onSave = () => {
+  handleSave(id, () => {
+    alert('¡Noticia actualizada con éxito!');
+    router.push('/admin/news');
+  });
+};
+
   const onDelete = () => {
-    handleDelete(() => {
-      alert('Noticia eliminada del sistema');
-      router.push('/noticias');
+    handleDelete(id, () => {
+      alert("Noticia eliminada del sistema");
+      router.push("/admin/news");
     });
   };
 
   const onBack = () => {
-    router.push('/noticias');
+    router.push('/admin/news');
   };
 
   if (loading) {
@@ -99,6 +115,8 @@ export default function EditNews({ params }) {
         <GeneralData 
           newsData={newsData}
           onInputChange={handleInputChange}
+          authors={authors}
+          categories={categories}
         />
 
         <ContentBlocks 

@@ -74,7 +74,7 @@ export default function NewsTable() {
 
     const getStatusIcon = (status) => {
         switch (status) {
-        case 'published': return <CheckCircle2 size={12} className="mr-1.5" />;
+        case 'published': return <CheckCircle2 size={20} className="mr-1.5" />;
         case 'review': return <Clock size={12} className="mr-1.5" />;
         case 'draft': return <FileEdit size={12} className="mr-1.5" />;
         default: return null;
@@ -185,7 +185,7 @@ export default function NewsTable() {
                                 ID: #{item.id}
                             </span>
                             <span className="flex items-center text-slate-500 uppercase font-bold tracking-tighter">
-                                <Calendar size={11} className="mr-1"/>{formatDateAbsolute(item.created_at)}
+                                <Calendar size={15} className="mr-1"/>{formatDateAbsolute(item.created_at)}
                             </span>
                         </div>
                     </div>
@@ -199,13 +199,13 @@ export default function NewsTable() {
                       </div>
                     </td>
                     <td className="px-8 py-6">
-                      <div className="flex items-center text-xs text-slate-400">
-                        <Tag size={12} className="mr-2 text-emerald-500" />
+                      <div className="flex items-center text-sm text-slate-300">
+                        <Tag size={15} className="mr-2 text-emerald-500" />
                         {item.category}
                       </div>
                     </td>
                     <td className="px-8 py-6">
-                      <span className={`inline-flex items-center px-3 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest border 
+                      <span className={`inline-flex items-center px-3 py-1.5 rounded-xl text-xs font-black uppercase tracking-widest border 
                         ${getStatusStyle(item.status)}`}> {getStatusIcon(item.status)} {item.status}
                       </span>
                     </td>
@@ -218,7 +218,7 @@ export default function NewsTable() {
                     </td>
                     <td className="px-8 py-6 text-right">
                       <div className="flex justify-end space-x-2">
-                        <Link href={`/admin/news/edit`}
+                        <Link href={`/admin/news/edit/${item.id}`}
                             className="p-3 bg-slate-800/50 hover:bg-emerald-600 text-slate-400 hover:text-white rounded-xl transition-all shadow-lg active:scale-95 flex items-center justify-center">
                             <Edit3 size={16}/>
                         </Link>

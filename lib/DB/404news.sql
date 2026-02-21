@@ -74,7 +74,7 @@ CREATE TABLE `news` (
   `cover_image` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `author_id` int DEFAULT NULL,
   `category_id` int DEFAULT NULL,
-  `status` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'draft',
+  `status` enum('draft','review','published') COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'draft',
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `views` int NOT NULL DEFAULT '0',
@@ -85,7 +85,7 @@ CREATE TABLE `news` (
   CONSTRAINT `fk_news_author` FOREIGN KEY (`author_id`) REFERENCES `authors` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `fk_news_category` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `news_chk_1` CHECK ((`status` in (_utf8mb4'draft',_utf8mb4'review',_utf8mb4'published')))
-) ENGINE=InnoDB AUTO_INCREMENT=98 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=99 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `news` */
 
@@ -177,7 +177,7 @@ insert  into `news`(`id`,`title`,`slug`,`excerpt`,`cover_image`,`author_id`,`cat
 (93,'Tests genéticos en embriones: avances y dilemas éticos en 2026','tests-geneticos-embriones-avances-etica','MIT señala esta tendencia como una de las que experimentarán impulso durante el año, con debates sobre sus límites','https://www.institutobernabeu.com/wp-content/uploads/2026/01/22-01-land-1-1.jpg',1,5,'published','2026-01-14 15:45:00','2026-02-15 14:08:30',0),
 (95,'Traducción simultánea en tiempo real: aprender idiomas dejará de ser imprescindible','traduccion-simultanea-tiempo-real-idiomas','Apple y Google ya tienen sistemas compatibles con auriculares para eliminar barreras lingüísticas','https://s.yimg.com/ny/api/res/1.2/3on7NM503A1zi79M6BSJeg--/YXBwaWQ9aGlnaGxhbmRlcjt3PTEyNDI7aD02OTk7Y2Y9d2VicA--/https://media.zenfs.com/es/fast_company_mexico_606/bbb60e598aeef3ae09c93eb7a1d10e25',2,2,'published','2026-01-14 17:15:00','2026-02-15 14:09:17',0),
 (96,'IA conquista el espacio: primer modelo entrenado en órbita por Nvidia y StarCloud','ia-espacio-modelo-entrenado-orbita','Las condiciones térmicas y energéticas del espacio ofrecen ventajas para centros de datos','https://www.hd-tecnologia.com/imagenes/articulos/2025/10/NVIDIA-llevara-la-inteligencia-artificial-al-espacio-exterior-con-el-primer-centro-de-datos-orbital-del-mundo-2.jpg',3,5,'published','2026-01-14 18:00:00','2026-02-15 14:09:50',0),
-(97,'claro claroclaroclaroclaroclaroclaro','claro-claroclaroclaroclaroclaroclaro','claro claro claro claro claro claro claro claro claro claro claro claro claro claro claro claro','https://upload.wikimedia.org/wikipedia/commons/0/0c/Claro.svg',1,4,'published','2026-02-20 13:55:43','2026-02-20 13:56:49',0);
+(98,'claro claro claro ','claro-claro-claro','claro claro claro claro claro','https://localo.com/es/assets/img/definitions/what-is-google-translate.webp',3,3,'published','2026-02-21 13:01:39','2026-02-21 13:29:44',0);
 
 /*Table structure for table `news_blocks` */
 
@@ -187,7 +187,7 @@ CREATE TABLE `news_blocks` (
   `id` int NOT NULL AUTO_INCREMENT,
   `news_id` int NOT NULL,
   `block_type` enum('paragraph','image','heading') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
+  `content` text COLLATE utf8mb4_general_ci NOT NULL,
   `image_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `alt_text` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `position` int NOT NULL,
@@ -195,7 +195,7 @@ CREATE TABLE `news_blocks` (
   PRIMARY KEY (`id`),
   KEY `fk_blocks_news` (`news_id`),
   CONSTRAINT `fk_blocks_news` FOREIGN KEY (`news_id`) REFERENCES `news` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=58 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=92 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `news_blocks` */
 
@@ -203,23 +203,23 @@ insert  into `news_blocks`(`id`,`news_id`,`block_type`,`content`,`image_url`,`al
 (1,1,'heading','La revolución multimodal de la IA','https://blog.donweb.com/wp-content/uploads/2025/08/Lo-nuevo-de-GPT-5.jpeg',NULL,1,'2026-02-05 12:46:12'),
 (2,1,'paragraph','OpenAI ha presentado oficialmente GPT-5, su modelo de lenguaje más avanzado hasta la fecha. Lo que diferencia a esta versión es su capacidad nativa para entender y generar contenido en múltiples formatos: texto, imágenes, audio y video.',NULL,NULL,2,'2026-02-05 12:46:12'),
 (3,1,'paragraph','Según los desarrolladores, GPT-5 puede mantener conversaciones coherentes mientras analiza documentos visuales, generando respuestas que integran información de todas las modalidades.',NULL,NULL,3,'2026-02-05 12:46:12'),
-(4,1,'image',NULL,'gpt5-multimodal-diagram.jpg','Arquitectura multimodal de GPT-5',4,'2026-02-05 12:46:12'),
+(4,1,'image','','gpt5-multimodal-diagram.jpg','Arquitectura multimodal de GPT-5',4,'2026-02-05 12:46:12'),
 (5,3,'heading','Diseño sin bisel revolucionario',NULL,NULL,1,'2026-02-05 12:46:12'),
 (6,3,'paragraph','Samsung ha desvelado el Galaxy S30, su nuevo smartphone insignia que presenta una pantalla plegable completamente libre de biseles. La tecnología \"Flex Infinity Display\" permite un ángulo de visión ininterrumpido de 180 grados.',NULL,NULL,2,'2026-02-05 12:46:12'),
 (7,3,'paragraph','El dispositivo utiliza un nuevo tipo de vidrio ultra-flexible desarrollado conjuntamente con Corning, ofreciendo una resistencia al rayado 3 veces mayor que las generaciones anteriores.',NULL,NULL,3,'2026-02-05 12:46:12'),
-(8,3,'image',NULL,'galaxy-s30-flex.jpg','Samsung Galaxy S30 completamente desplegado',4,'2026-02-05 12:46:12'),
+(8,3,'image','','galaxy-s30-flex.jpg','Samsung Galaxy S30 completamente desplegado',4,'2026-02-05 12:46:12'),
 (9,5,'heading','Copilot integrado en el sistema',NULL,NULL,1,'2026-02-05 12:46:12'),
 (10,5,'paragraph','Microsoft ha anunciado Windows 13, que incluye por primera vez un asistente de IA nativo llamado \"Windows Copilot\". Esta herramienta está integrada directamente en el sistema operativo y puede ejecutarse localmente sin necesidad de conexión a internet.',NULL,NULL,2,'2026-02-05 12:46:12'),
 (11,5,'paragraph','Windows Copilot puede automatizar tareas complejas, optimizar el rendimiento del sistema y ofrecer sugerencias contextuales basadas en el uso del usuario.',NULL,NULL,3,'2026-02-05 12:46:12'),
-(12,5,'image',NULL,'windows-copilot-interface.jpg','Interfaz de Windows Copilot en acción',4,'2026-02-05 12:46:12'),
+(12,5,'image','','windows-copilot-interface.jpg','Interfaz de Windows Copilot en acción',4,'2026-02-05 12:46:12'),
 (13,7,'heading','La computación cuántica llega al hogar',NULL,NULL,1,'2026-02-05 12:46:12'),
 (14,7,'paragraph','IBM ha anunciado el procesador cuántico \"Q-ONE Consumer\", el primero diseñado específicamente para computadoras personales. Con 128 qubits de potencia, ofrece capacidades de cálculo que superan a los supercomputadores de hace una década.',NULL,NULL,2,'2026-02-05 12:46:12'),
 (15,7,'paragraph','El procesador viene integrado en placas madre especializadas que mantienen los qubits a temperaturas cercanas al cero absoluto, usando un sistema de refrigeración compacto.',NULL,NULL,3,'2026-02-05 12:46:12'),
-(16,7,'image',NULL,'quantum-processor-motherboard.jpg','Placa madre con procesador cuántico',4,'2026-02-05 12:46:12'),
+(16,7,'image','','quantum-processor-motherboard.jpg','Placa madre con procesador cuántico',4,'2026-02-05 12:46:12'),
 (17,9,'heading','Conectividad global a velocidad de fibra',NULL,NULL,1,'2026-02-05 12:46:12'),
 (18,9,'paragraph','Varios proyectos de constelación satelital, liderados por SpaceX, Amazon y OneWeb, han alcanzado cobertura global completa. Los usuarios en cualquier punto del planeta pueden acceder a internet de 1 Gbps con latencias menores a 20ms.',NULL,NULL,2,'2026-02-05 12:46:12'),
 (19,9,'paragraph','Esta tecnología está revolucionando especialmente las zonas rurales y en desarrollo, donde la infraestructura terrestre es limitada o inexistente.',NULL,NULL,3,'2026-02-05 12:46:12'),
-(20,9,'image',NULL,'satellite-constellation-globe.jpg','Cobertura global de constelación satelital',4,'2026-02-05 12:46:12'),
+(20,9,'image','','satellite-constellation-globe.jpg','Cobertura global de constelación satelital',4,'2026-02-05 12:46:12'),
 (21,2,'heading','IA transforma el diagnóstico médico',NULL,NULL,1,'2026-02-05 12:46:24'),
 (22,2,'paragraph','El sistema \"MediScan AI\" ha demostrado una precisión del 98% en la detección temprana de cáncer de pulmón, mama y próstata en estudios clínicos.',NULL,NULL,2,'2026-02-05 12:46:24'),
 (23,4,'heading','La fotografía cuántica llega al iPhone',NULL,NULL,1,'2026-02-05 12:46:24'),
@@ -233,25 +233,26 @@ insert  into `news_blocks`(`id`,`news_id`,`block_type`,`content`,`image_url`,`al
 (31,11,'heading','Meta avanza en IA open-source con Llama 3.2',NULL,NULL,1,'2026-02-05 20:49:46'),
 (32,11,'paragraph','Meta ha lanzado Llama 3.2, la última versión de su modelo de lenguaje open-source que destaca especialmente en razonamiento matemático y lógico. En benchmarks como GSM8K y MATH, supera a GPT-4 con un 85% de precisión.',NULL,NULL,2,'2026-02-05 20:49:46'),
 (33,11,'paragraph','El modelo está disponible en tres tamaños: 8B, 70B y 405B parámetros, siendo esta última versión la que compite directamente con los modelos premium del mercado.',NULL,NULL,3,'2026-02-05 20:49:46'),
-(34,11,'image',NULL,'llama3-2-benchmarks.jpg','Resultados de benchmarks de Llama 3.2 vs competencia',4,'2026-02-05 20:49:46'),
+(34,11,'image','','llama3-2-benchmarks.jpg','Resultados de benchmarks de Llama 3.2 vs competencia',4,'2026-02-05 20:49:46'),
 (35,14,'heading','Google innova con sensor térmico en smartphone',NULL,NULL,1,'2026-02-05 20:49:46'),
 (36,14,'paragraph','El Google Pixel 9 Pro incluye un sensor térmico FLIR que permite medir temperatura de objetos desde -20°C hasta 400°C. Esta función tiene aplicaciones prácticas en detección de sobrecalentamiento eléctrico, verificación de aislamiento térmico y monitoreo de salud.',NULL,NULL,2,'2026-02-05 20:49:46'),
 (37,14,'paragraph','El Tensor G4, fabricado en 3nm, incluye un TPU dedicada para procesamiento de imágenes térmicas en tiempo real.',NULL,NULL,3,'2026-02-05 20:49:46'),
-(38,14,'image',NULL,'pixel9-thermal-imaging.jpg','Pixel 9 Pro mostrando imagen térmica de un circuito',4,'2026-02-05 20:49:46'),
+(38,14,'image','','pixel9-thermal-imaging.jpg','Pixel 9 Pro mostrando imagen térmica de un circuito',4,'2026-02-05 20:49:46'),
 (39,17,'heading','Desarrollo asistido por IA integrado en VS Code',NULL,NULL,1,'2026-02-05 20:49:46'),
 (40,17,'paragraph','Microsoft ha integrado GitHub Copilot Chat directamente en Visual Studio Code como función nativa. Los desarrolladores pueden ahora conversar con la IA sobre su código, pedir explicaciones, refactorizaciones y sugerencias sin cambiar de ventana.',NULL,NULL,2,'2026-02-05 20:49:46'),
 (41,17,'paragraph','La versión 1.90 de VS Code incluye también \"Inline Chat\" que permite hacer preguntas contextuales directamente en el editor de código.',NULL,NULL,3,'2026-02-05 20:49:46'),
-(42,17,'image',NULL,'vscode-copilot-chat.jpg','Interfaz de Copilot Chat en Visual Studio Code',4,'2026-02-05 20:49:46'),
+(42,17,'image','','vscode-copilot-chat.jpg','Interfaz de Copilot Chat en Visual Studio Code',4,'2026-02-05 20:49:46'),
 (43,20,'heading','AMD lanza arquitectura Zen 5 con Ryzen 9000',NULL,NULL,1,'2026-02-05 20:49:46'),
 (44,20,'paragraph','AMD presenta los procesadores Ryzen 9000 basados en la nueva arquitectura Zen 5. El flagship Ryzen 9 9950X ofrece 24 núcleos/48 hilos con frecuencias boost de hasta 6GHz y TDP de 170W.',NULL,NULL,2,'2026-02-05 20:49:46'),
 (45,20,'paragraph','Las mejoras incluyen un 35% más de IPC (Instrucciones Por Ciclo), cache L3 aumentada a 128MB y soporte nativo para DDR5-6400. La fabricación en 4nm TSMC permite mayor eficiencia energética.',NULL,NULL,3,'2026-02-05 20:49:46'),
-(46,20,'image',NULL,'ryzen-9000-architecture.jpg','Diagrama de arquitectura Zen 5 de AMD',4,'2026-02-05 20:49:46'),
+(46,20,'image','','ryzen-9000-architecture.jpg','Diagrama de arquitectura Zen 5 de AMD',4,'2026-02-05 20:49:46'),
 (47,23,'heading','Starlink alcanza hitos de crecimiento masivo',NULL,NULL,1,'2026-02-05 20:49:46'),
 (48,23,'paragraph','SpaceX ha anunciado que Starlink supera los 5 millones de usuarios activos en 75 países. El servicio ofrece ahora velocidades de hasta 500 Mbps con latencias de 20ms mediante la constelación de satélites de segunda generación.',NULL,NULL,2,'2026-02-05 20:49:46'),
 (49,23,'paragraph','La empresa ha desplegado más de 5,000 satélites activos y planea lanzar la versión \"Mini\" del terminal para movilidad, con 40% menos tamaño y consumo.',NULL,NULL,3,'2026-02-05 20:49:46'),
-(50,23,'image',NULL,'starlink-global-coverage.jpg','Mapa de cobertura global de Starlink',4,'2026-02-05 20:49:46'),
-(56,97,'heading',NULL,NULL,NULL,1,'2026-02-20 13:55:43'),
-(57,97,'paragraph',NULL,NULL,NULL,2,'2026-02-20 13:55:43');
+(50,23,'image','','starlink-global-coverage.jpg','Mapa de cobertura global de Starlink',4,'2026-02-05 20:49:46'),
+(89,98,'heading','wow wow wow',NULL,NULL,1,'2026-02-21 13:29:44'),
+(90,98,'image','','https://www.gstatic.com/marketing-cms/5e/ec/5b5baeb34571b791b2020d4cacad/meta-image.png','seacrh',2,'2026-02-21 13:29:44'),
+(91,98,'paragraph','wow wow wow wow wow wow wow wow wow wow wow wow wow wow wow wow wow wow wow wow wow wow wow wow',NULL,NULL,3,'2026-02-21 13:29:44');
 
 /*Table structure for table `users` */
 
@@ -262,7 +263,7 @@ CREATE TABLE `users` (
   `username` varchar(100) NOT NULL,
   `email` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
-  `role` enum('superadmin','admin','support','editor') NOT NULL DEFAULT 'editor',
+  `role` enum('superadmin','admin','support','editor','author') NOT NULL DEFAULT 'editor',
   `active` tinyint(1) DEFAULT '1',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),

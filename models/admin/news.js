@@ -13,6 +13,7 @@ repository.getNewsTable = async function (
     FROM news n
     LEFT JOIN authors a ON n.author_id = a.id
     LEFT JOIN categories c ON n.category_id = c.id
+    WHERE 1=1
   `;
 
   const params = [];
@@ -35,8 +36,7 @@ repository.getNewsTable = async function (
   const total = countResult[0].total;
 
   const [rows] = await db.query(
-    `
-    SELECT 
+    `SELECT 
       n.id,
       n.title,
       n.slug,
@@ -98,6 +98,124 @@ repository.createNews = async (newsData, blocks) => {
     await connection.commit();
 
     return newsId;
+
+  } catch (error) {
+    await connection.rollback();
+    throw error;
+  } finally {
+    connection.release();
+  }
+};
+
+repository.updateNews = async (newsId, newsData, blocks) => {
+  const connection = await db.getConnection();
+
+  try {
+    await connection.beginTransaction();
+
+    await connection.query(
+      `UPDATE news SET
+        title = ?,
+        slug = ?,
+        excerpt = ?,
+        cover_image = ?,
+        author_id = ?,
+        category_id = ?,
+        status = ?
+       WHERE id = ?`,
+      [
+        newsData.title,
+        newsData.slug,
+        newsData.excerpt,
+        newsData.cover_image,
+        newsData.author_id,
+        newsData.category_id,
+        newsData.status,
+        newsId
+      ]
+    );
+
+    await connection.query(
+      `DELETE FROM news_blocks WHERE news_id = ?`,
+      [newsId]
+    );
+
+    for (const block of blocks) {
+      await connection.query(
+        `INSERT INTO news_blocks
+         (news_id, block_type, content, image_url, alt_text, position)
+         VALUES (?, ?, ?, ?, ?, ?)`,
+        [
+          newsId,
+          block.block_type,
+          block.content,
+          block.image_url,
+          block.alt_text,
+          block.position
+        ]
+      );
+    }
+
+    await connection.commit();
+
+    return newsId;
+
+  } catch (error) {
+    await connection.rollback();
+    throw error;
+  } finally {
+    connection.release();
+  }
+};
+
+repository.getNewsById = async (id) => {
+
+  const [news] = await db.query(
+    `SELECT * FROM news WHERE id = ?`,
+    [id]
+  );
+
+  const [blocks] = await db.query(
+    `SELECT * FROM news_blocks
+     WHERE news_id = ?
+     ORDER BY position ASC`,
+    [id]
+  );
+
+  return {
+    news: news[0],
+    blocks
+  };
+};
+
+repository.deleteNews = async (newsId) => {
+  const connection = await db.getConnection();
+
+  try {
+    await connection.beginTransaction();
+
+    const [existing] = await connection.query(
+      `SELECT id FROM news WHERE id = ?`,
+      [newsId]
+    );
+
+    if (existing.length === 0) {
+      throw new Error("Noticia no encontrada");
+    }
+
+    await connection.query(
+      `DELETE FROM news_blocks WHERE news_id = ?`,
+      [newsId]
+    );
+
+    await connection.query(
+      `DELETE FROM news WHERE id = ?`,
+      [newsId]
+    );
+
+    await connection.commit();
+
+    return true;
 
   } catch (error) {
     await connection.rollback();

@@ -43,6 +43,107 @@ newsController.create = async function ({ news, blocks }) {
   }
 };
 
+newsController.update = async function ({ id, news, blocks }) {
+  try {
+
+    if (!id) {
+      return {
+        ok: false,
+        message: "ID requerido"
+      };
+    }
+
+    if (!news.title || !news.slug) {
+      return {
+        ok: false,
+        message: "Título y slug son obligatorios"
+      };
+    }
+
+    await repository.updateNews(id, news, blocks);
+
+    return {
+      ok: true,
+      message: "Noticia actualizada correctamente"
+    };
+
+  } catch (error) {
+    console.error(error);
+    return {
+      ok: false,
+      message: "Error al actualizar la noticia"
+    };
+  }
+};
+
+newsController.getById = async function (id) {
+  try {
+
+    if (!id) {
+      return {
+        ok: false,
+        message: "ID inválido"
+      };
+    }
+
+    const data = await repository.getNewsById(id);
+
+    if (!data.news) {
+      return {
+        ok: false,
+        message: "Noticia no encontrada"
+      };
+    }
+
+    return {
+      ok: true,
+      news: data.news,
+      blocks: data.blocks
+    };
+
+  } catch (error) {
+    console.error(error);
+    return {
+      ok: false,
+      message: "Error al obtener la noticia"
+    };
+  }
+};
+
+newsController.delete = async function (id) {
+  try {
+
+    if (!id) {
+      return {
+        ok: false,
+        message: "ID requerido"
+      };
+    }
+
+    await repository.deleteNews(id);
+
+    return {
+      ok: true,
+      message: "Noticia eliminada correctamente"
+    };
+
+  } catch (error) {
+    console.error(error);
+
+    if (error.message === "Noticia no encontrada") {
+      return {
+        ok: false,
+        message: "La noticia no existe"
+      };
+    }
+
+    return {
+      ok: false,
+      message: "Error al eliminar la noticia"
+    };
+  }
+};
+
 newsController.getFormData = async function () {
   try {
     const authors = await repository.getAuthors();
