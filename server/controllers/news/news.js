@@ -1,5 +1,5 @@
 import news from "../../models/news/news";
-import incrementViewRedis from "../news/redis";
+import incrementView from "../news/redis";
 
 const newsController = {};
 
@@ -59,7 +59,7 @@ newsController.detailsNews = async function (slug, ip) {
       return { ok: false, message: "Noticia no encontrada" };
     }
 
-    await incrementViewRedis(slug, ip);
+    await incrementView(slug, ip);
 
     const relatedNews = await news.getRelatedNews(
       detailNews.categoryId,

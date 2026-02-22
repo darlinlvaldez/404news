@@ -1,9 +1,9 @@
 import Link from "next/link"
+import newsController from "@/server/controllers/news/news";
 import { formatDateRelative } from '@/utils/formatDate'
 import MoreNews from "@/components/MoreNews";
 import ListNews from "@/components/ListNews";
 import MostRead from "@/components/MostRead";
-import newsController from "@/controllers/news/news";
 
 export const metadata = {
   title: "Section - 404 News",

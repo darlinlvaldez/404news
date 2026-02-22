@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import newsController from "@/controllers/admin/news";
+import newsController from "@/server/controllers/admin/news";
 
 export async function GET(request) {
 

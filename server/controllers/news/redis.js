@@ -1,6 +1,6 @@
-import redis from "@/lib/redis";
+import redis from "@/server/lib/redis";
 
-export default async function incrementViewRedis(slug, ip) {
+export default async function incrementView(slug, ip) {
 
   const viewKey = `news:viewed:${slug}:${ip}`;
   const counterKey = `news:views:${slug}`;

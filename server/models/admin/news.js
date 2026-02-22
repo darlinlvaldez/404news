@@ -1,4 +1,4 @@
-import db from "@/lib/db.js";
+import db from "@/server/lib/db.js";
 
 const repository = {}; 
 

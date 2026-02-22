@@ -11,12 +11,8 @@ import {
   XCircle,
 } from 'lucide-react';
 
-const App = () => {
-  const [categories, setCategories] = useState([
-    { id: 1, name: 'Tecnología', slug: 'tecnologia', active: 1, created_at: '2024-02-15 10:00:00' },
-    { id: 2, name: 'Mundo', slug: 'mundo', active: 1, created_at: '2024-02-16 11:30:00' },
-    { id: 3, name: 'Deportes', slug: 'deportes', active: 0, created_at: '2024-02-17 09:15:00' },
-  ]);
+export default function CategoriesPage () {
+  const [categories, setCategories] = useState([]);
 
   const [formData, setFormData] = useState({
     id: null,
@@ -29,16 +25,10 @@ const App = () => {
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
-    if (formData.name && !isEditing) {
-      const generatedSlug = formData.name
-        .toLowerCase()
-        .trim()
-        .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-        .replace(/[^\w ]+/g, '')
-        .replace(/ +/g, '-');
-      setFormData(prev => ({ ...prev, slug: generatedSlug }));
-    }
-  }, [formData.name, isEditing]);
+  fetch("/api/admin/categories")
+    .then(res => res.json())
+    .then(data => setCategories(data));
+}, []);
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -59,20 +49,37 @@ const App = () => {
     setIsEditing(false);
   };
 
-  const handleSave = (e) => {
-    e.preventDefault();
-    if (isEditing) {
-      setCategories(categories.map(c => c.id === formData.id ? { ...formData } : c));
-    } else {
-      const newCategory = {
-        ...formData,
-        id: categories.length + 1,
-        created_at: new Date().toISOString().slice(0, 19).replace('T', ' ')
-      };
-      setCategories([newCategory, ...categories]);
-    }
-    handleCancel();
-  };
+  const handleSave = async (e) => {
+  e.preventDefault();
+
+  if (isEditing) {
+    await fetch(`/api/admin/categories/${formData.id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData),
+    });
+  } else {
+    await fetch("/api/admin/categories", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData),
+    });
+  }
+
+  const res = await fetch("/api/admin/categories");
+  const data = await res.json();
+  setCategories(data);
+
+  handleCancel();
+};
+
+const handleDelete = async (id) => {
+  await fetch(`/api/admin/categories/${id}`, {
+    method: "DELETE",
+  });
+
+  setCategories(prev => prev.filter(c => c.id !== id));
+};
 
   const filteredCategories = categories.filter(c => 
     c.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
@@ -203,7 +210,7 @@ const App = () => {
                           >
                             <Edit3 size={16} />
                           </button>
-                          <button 
+                          <button onClick={() => handleDelete(cat.id)}
                             className="p-2 bg-gray-800 hover:bg-red-600 text-gray-400 hover:text-white rounded-xl transition shadow-md"
                             title="Eliminar"
                           >
@@ -232,5 +239,3 @@ const App = () => {
     </div>
   );
 };
-
-export default App;

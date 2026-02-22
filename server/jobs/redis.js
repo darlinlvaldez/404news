@@ -1,4 +1,4 @@
-import syncAllViews from "@/models/news/redis";
+import syncAllViews from "@/server/models/news/redis";
 
 export function startSyncJob() {
   setInterval(async () => {

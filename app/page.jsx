@@ -1,11 +1,11 @@
 import Link from "next/link";
+import newsController from "@/server/controllers/news/news";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { formatDateRelative } from '@/utils/formatDate'
 import MoreNews from "@/components/MoreNews";
 import LatestWeekNews from "@/components/LatestWeekNews";
 import ListNews from "@/components/ListNews";
-import newsController from "@/controllers/news/news";
 
 export default async function Principal() {
   

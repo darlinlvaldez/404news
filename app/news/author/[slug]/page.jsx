@@ -1,4 +1,4 @@
-import newsController from "@/controllers/news/news";
+import newsController from "@/server/controllers/news/news";
 import NewsResults  from "@/components/NewsResults";
 
 function authorStyles () {

@@ -1,7 +1,7 @@
 import { headers } from "next/headers";
 import Link from "next/link" 
+import newsControllers from "@/server/controllers/news/news";
 import ShareMenu from "@/components/ShareMenu";
-import newsControllers from "@/controllers/news/news";
 import MoreNews from "@/components/MoreNews";
 import { formatDateAbsolute } from '@/utils/formatDate'
 
