@@ -28,7 +28,8 @@ CREATE TABLE `authors` (
   `avatar` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `active` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `uk_authors_slug` (`slug`)
+  UNIQUE KEY `uk_authors_slug` (`slug`),
+  UNIQUE KEY `slug` (`slug`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `authors` */
@@ -50,8 +51,10 @@ CREATE TABLE `categories` (
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `active` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `uk_categories_slug` (`slug`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  UNIQUE KEY `uk_categories_slug` (`slug`),
+  UNIQUE KEY `slug` (`slug`),
+  UNIQUE KEY `unique_name` (`name`)
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `categories` */
 
@@ -80,6 +83,7 @@ CREATE TABLE `news` (
   `views` int NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `uk_news_slug` (`slug`),
+  UNIQUE KEY `slug` (`slug`),
   KEY `fk_news_author` (`author_id`),
   KEY `fk_news_category` (`category_id`),
   CONSTRAINT `fk_news_author` FOREIGN KEY (`author_id`) REFERENCES `authors` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
