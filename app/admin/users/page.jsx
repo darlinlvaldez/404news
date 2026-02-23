@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from 'react';
+
 import { 
   Trash2, 
   PlusCircle, 
@@ -16,12 +17,8 @@ import {
   Key
 } from 'lucide-react';
 
-const App = () => {
-  const [users, setUsers] = useState([
-    { id: 1, username: 'admin_master', email: 'admin@sistema.com', role: 'superadmin', active: 1, created_at: '2024-01-10 08:30:00' },
-    { id: 2, username: 'editor_central', email: 'editor@prensa.com', role: 'editor', active: 1, created_at: '2024-02-05 14:20:00' },
-    { id: 3, username: 'soporte_tecnico', email: 'support@ayuda.com', role: 'support', active: 0, created_at: '2024-02-15 09:00:00' },
-  ]);
+export default function UsersAccount () {
+  const [users, setUsers] = useState([]);
 
   const [formData, setFormData] = useState({
     id: null,
@@ -31,6 +28,20 @@ const App = () => {
     role: 'editor',
     active: 1
   });
+
+const fetchUsers = async () => {
+  try {
+    const res = await fetch("/api/admin/users");
+    const data = await res.json();
+    setUsers(data);
+  } catch (error) {
+    console.error("Error loading users:", error);
+  }
+};
+
+useEffect(() => {
+  fetchUsers();
+}, []);
 
   const [isEditing, setIsEditing] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
@@ -54,20 +65,44 @@ const App = () => {
     setIsEditing(false);
   };
 
-  const handleSave = (e) => {
-    e.preventDefault();
+const handleSave = async (e) => {
+  e.preventDefault();
+
+  try {
     if (isEditing) {
-      setUsers(users.map(u => u.id === formData.id ? { ...formData } : u));
+      await fetch(`/api/admin/users/${formData.id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
     } else {
-      const newUser = {
-        ...formData,
-        id: users.length + 1,
-        created_at: new Date().toISOString().slice(0, 19).replace('T', ' ')
-      };
-      setUsers([newUser, ...users]);
+      await fetch("/api/admin/users", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
     }
+
+    await fetchUsers(); 
     handleCancel();
-  };
+  } catch (error) {
+    console.error("Error saving user:", error);
+  }
+};
+
+const handleDelete = async (id) => {
+  if (!confirm("Are you sure you want to delete this user?")) return;
+
+  try {
+    await fetch(`/api/admin/users/${id}`, {
+      method: "DELETE",
+    });
+
+    await fetchUsers();
+  } catch (error) {
+    console.error("Error deleting user:", error);
+  }
+};
 
   const filteredUsers = users.filter(u => 
     u.username.toLowerCase().includes(searchTerm.toLowerCase()) || 
@@ -262,7 +297,7 @@ const App = () => {
                           >
                             <Edit3 size={16} />
                           </button>
-                          <button 
+                          <button onClick={() => handleDelete(user.id)}
                             className="p-2.5 bg-gray-800 hover:bg-red-600 text-gray-400 hover:text-white rounded-xl transition shadow-md"
                             title="Eliminar"
                           >
@@ -290,5 +325,3 @@ const App = () => {
     </div>
   );
 };
-
-export default App;

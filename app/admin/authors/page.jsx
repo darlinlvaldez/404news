@@ -9,6 +9,8 @@ import {
   Edit3,
   Users,
   Camera,
+  CheckCircle,
+  XCircle
 } from 'lucide-react';
 
 const App = () => {
@@ -212,12 +214,12 @@ const App = () => {
                       </td>
                       <td className="px-8 py-6">
                         {author.active === 1 ? (
-                          <div className="flex items-center text-green-500 text-[10px] font-bold uppercase tracking-wider">
-                            <span className="w-2 h-2 bg-green-500 rounded-full mr-2 shadow-[0_0_8px_rgba(34,197,94,0.6)]"></span> Activo
+                          <div className="flex items-center text-green-500 text-[10px] font-bold uppercase">
+                            <CheckCircle size={14} className="mr-2" /> Activo
                           </div>
                         ) : (
-                          <div className="flex items-center text-gray-600 text-[10px] font-bold uppercase tracking-wider">
-                            <span className="w-2 h-2 bg-gray-600 rounded-full mr-2"></span> Inactivo
+                          <div className="flex items-center text-gray-500 text-[10px] font-bold uppercase">
+                            <XCircle size={14} className="mr-2" /> Suspendido
                           </div>
                         )}
                       </td>
