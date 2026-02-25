@@ -1,31 +1,54 @@
 import { NextResponse } from "next/server";
 import newsController from "@/server/controllers/admin/news";
+import { requireAuth } from "@/server/utils/auth";
+import { handleError } from "@/server/utils/handleError";
 
 export async function GET(req, context) {
-  const { id } = await context.params;
+  try {
+    await requireAuth(req, ["superadmin", "admin", "editor"]);
 
-  const result = await newsController.getById(id);
+    const { id } = await context.params;
 
-  return NextResponse.json(result);
+    const result = await newsController.getById(id);
+
+    return NextResponse.json(result);
+
+  } catch (error) {
+    return handleError(error);
+  }
 }
 
 export async function PUT(req, context) {
-  const { id } = await context.params;
-  const body = await req.json();
+  try {
+    await requireAuth(req, ["superadmin", "admin", "editor"]);
 
-  const result = await newsController.update({
-    id,
-    news: body.news,
-    blocks: body.blocks
-  });
+    const { id } = await context.params;
+    const body = await req.json();
 
-  return NextResponse.json(result);
+    const result = await newsController.update({
+      id,
+      news: body.news,
+      blocks: body.blocks
+    });
+
+    return NextResponse.json(result);
+
+  } catch (error) {
+    return handleError(error);
+  }
 }
 
 export async function DELETE(req, context) {
-  const { id } = await context.params;
+  try {
+    await requireAuth(req, ["superadmin", "admin"]);
 
-  const result = await newsController.delete(id);
+    const { id } = await context.params;
 
-  return NextResponse.json(result);
+    const result = await newsController.delete(id);
+
+    return NextResponse.json(result);
+
+  } catch (error) {
+    return handleError(error);
+  }
 }

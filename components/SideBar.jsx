@@ -3,7 +3,7 @@
 import { usePathname } from "next/navigation"
 import Link from "next/link"
 
-export default function SideBar() {
+export default function SideBar({user}) {
     const pathname = usePathname()
 
     const handleLogout = async () => {
@@ -14,6 +14,15 @@ export default function SideBar() {
         window.location.href = "/admin/login";
     };
 
+    const links = [
+        { name: "Dashboard", href: "/admin/dashboard", roles: ["superadmin", "admin", "editor", "support"] },
+        { name: "Noticias", href: "/admin/news", roles: ["superadmin", "admin", "editor"] },
+        { name: "Categorías", href: "/admin/categories", roles: ["superadmin", "admin"] },
+        { name: "Autores", href: "/admin/authors", roles: ["superadmin", "admin", "editor"] },
+        { name: "Usuarios", href: "/admin/users", roles: ["superadmin", "admin"] },
+        { name: "Tickets", href: "/admin/tickets", roles: ["superadmin", "admin", "support"] },
+    ];
+
     const getLinkClasses = (path) => 
         `block p-3 rounded-lg transition ${ pathname === path
             ? "bg-green-900 font-semibold shadow-inner" : "hover:bg-green-700"}`
@@ -21,7 +30,7 @@ export default function SideBar() {
 
     const buttonLogaut = `w-full bg-gray-900 hover:bg-gray-800 text-white py-2 rounded-md 
     transition text-sm cursor-pointer flex items-center justify-center gap-2`
-    
+  
     return (
     <div className="bg-gray-900 text-gray-100 flex min-h-screen">
         <aside className="w-64 bg-green-800 hidden md:flex flex-col shadow-xl">
@@ -32,22 +41,23 @@ export default function SideBar() {
                     </div>
                     <div className="flex flex-col">
                         <span className="text-sm font-semibold text-white">
-                            Darlin Valdez
+                            {user.name}
                         </span>
                         <span className="text-xs text-green-200">
-                            Administrador
+                            {user.role}
                         </span>
                     </div>
                 </div>
             </div>
 
             <nav className="flex-1 p-4 space-y-2 text-green-100">
-                <Link href="/admin/dashboard" className={getLinkClasses("/admin/dashboard")}>Dashboard</Link>
-                <Link href="/admin/news" className={getLinkClasses("/admin/news")}>Noticias</Link>
-                <Link href="/admin/categories" className={getLinkClasses("/admin/categories")}>Categorías</Link>
-                <Link href="/admin/authors" className={getLinkClasses("/admin/authors")}>Autores</Link>
-                <Link href="/admin/users" className={getLinkClasses("/admin/users")}>Usuarios</Link>
-                <Link href="/admin/tickets" className={getLinkClasses("/admin/tickets")}>Tickets</Link>
+            {links.filter(link => link.roles.includes(user.role))
+                .map(link => (
+                <Link key={link.href} href={link.href}
+                    className={getLinkClasses(link.href)}>
+                    {link.name}
+                </Link>
+                ))}
             </nav>
 
             <div className="p-4 border-t border-green-700">

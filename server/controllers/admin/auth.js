@@ -19,7 +19,7 @@ export async function loginAdmin(username, password) {
     throw new Error("ACCOUNT_BLOCKED");
   }
 
-  const token = generateToken({
+  const token = await generateToken({
     id: user.id,
     role: user.role
   });

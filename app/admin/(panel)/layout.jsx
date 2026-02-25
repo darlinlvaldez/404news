@@ -1,11 +1,29 @@
-import SideBar from "../../../components/SideBar";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
+import { verifyToken } from "@/server/utils/jwt";
+import SideBar from "@/components/SideBar";
 
-export default function AdminLayout({ children }) {
+export default async function AdminLayout({ children }) {
+  const cookieStore = await cookies();  
+  const token = cookieStore.get("admin_token")?.value;
+
+  if (!token) {
+    redirect("/admin/login");
+  }
+
+  let user;
+
+  try {
+    user = await verifyToken(token);
+  } catch {
+    redirect("/admin/login");
+  }
+
   return (
     <div className="h-screen flex overflow-hidden bg-gray-900 text-gray-100">
 
       <aside className="w-64 bg-green-800 hidden md:flex flex-col shadow-xl overflow-y-auto">
-        <SideBar />
+        <SideBar user={user} />
       </aside>
 
       <main className="flex-1 flex flex-col overflow-hidden">

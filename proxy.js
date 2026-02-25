@@ -15,8 +15,20 @@ export async function proxy(req) {
   }
 
   try {
-    await verifyToken(token);
+    const payload = await verifyToken(token);
+
+    const { role } = payload;
+
+    if (pathname.startsWith("/admin/users") && role !== "superadmin") {
+      return NextResponse.redirect(new URL("/admin/dashboard", req.url));
+    }
+
+    if (pathname.startsWith("/admin/settings") && role !== "superadmin") {
+      return NextResponse.redirect(new URL("/admin/dashboard", req.url));
+    }
+
     return NextResponse.next();
+
   } catch {
     return NextResponse.redirect(new URL("/admin/login", req.url));
   }

@@ -42,7 +42,15 @@ usersController.create = async (data) => {
 
 usersController.update = async (id, data) => {
   try {
-    return await users.update(id, data);
+    const updatedData = { ...data };
+
+    if (data.password) {
+      const saltRounds = 10;
+      updatedData.password = await bcrypt.hash(data.password, saltRounds);
+    }
+
+    return await users.update(id, updatedData);
+
   } catch (error) {
     console.error("Error updating user:", error);
     throw new Error("Error updating user");
