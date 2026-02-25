@@ -1,5 +1,5 @@
 import bcrypt from "bcrypt";
-import { findByUsername } from "@/server/models/auth";
+import { findByUsername } from "@/server/models/admin/auth";
 import { generateToken } from "@/server/utils/jwt";
 
 export async function loginAdmin(username, password) {

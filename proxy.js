@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { verifyToken } from "@/server/utils/jwt";
 
-export function middleware(req) {
+export async function proxy(req) {
   const { pathname } = req.nextUrl;
 
   if (pathname === "/admin/login") {
@@ -15,7 +15,7 @@ export function middleware(req) {
   }
 
   try {
-    verifyToken(token);
+    await verifyToken(token);
     return NextResponse.next();
   } catch {
     return NextResponse.redirect(new URL("/admin/login", req.url));

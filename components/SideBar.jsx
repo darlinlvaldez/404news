@@ -6,6 +6,14 @@ import Link from "next/link"
 export default function SideBar() {
     const pathname = usePathname()
 
+    const handleLogout = async () => {
+        await fetch("/api/admin/logout", {
+            method: "POST"
+        });
+        
+        window.location.href = "/admin/login";
+    };
+
     const getLinkClasses = (path) => 
         `block p-3 rounded-lg transition ${ pathname === path
             ? "bg-green-900 font-semibold shadow-inner" : "hover:bg-green-700"}`
@@ -43,7 +51,7 @@ export default function SideBar() {
             </nav>
 
             <div className="p-4 border-t border-green-700">
-                <button className={buttonLogaut}>
+                <button onClick={handleLogout} className={buttonLogaut}>
 
                 <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h6a2 2 0 012 2v1"/>

@@ -1,4 +1,5 @@
 import users from "@/server/models/admin/users";
+import bcrypt from "bcrypt";
 
 const usersController = {};
 
@@ -22,7 +23,17 @@ usersController.getById = async (id) => {
 
 usersController.create = async (data) => {
   try {
-    return await users.create(data);
+    const saltRounds = 10;
+
+    const hashedPassword = await bcrypt.hash(data.password, saltRounds);
+
+    const userData = {
+      ...data,
+      password: hashedPassword
+    };
+
+    return await users.create(userData);
+
   } catch (error) {
     console.error("Error creating user:", error);
     throw new Error("Error creating user");
