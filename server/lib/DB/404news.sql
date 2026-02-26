@@ -26,19 +26,21 @@ CREATE TABLE `authors` (
   `bio` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `slug` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `avatar` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `active` tinyint(1) NOT NULL DEFAULT '1',
+  `user_id` int NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uk_authors_slug` (`slug`),
-  UNIQUE KEY `slug` (`slug`)
+  UNIQUE KEY `slug` (`slug`),
+  KEY `fk_author_user` (`user_id`),
+  CONSTRAINT `fk_author_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `authors` */
 
-insert  into `authors`(`id`,`name`,`bio`,`slug`,`avatar`,`active`) values 
-(1,'Ana Torres','Periodista especializada en inteligencia artificial con más de 10 años de experiencia','ana-torres','',1),
-(2,'Carlos Mendoza','Analista de hardware y dispositivos móviles, colaborador habitual en revistas especializadas','carlos-mendoza','',1),
-(3,'Laura Vega','Desarrolladora de software y experta en nuevas tecnologías','laura-vega','',1),
-(4,'Miguel Ruiz','Ingeniero en sistemas y especialista en hardware de PCs','miguel-ruiz','',1);
+insert  into `authors`(`id`,`name`,`bio`,`slug`,`avatar`,`user_id`) values 
+(1,'Ana Torres','Periodista especializada en inteligencia artificial con más de 10 años de experiencia','ana-torres','',2),
+(2,'Carlos Mendoza','Analista de hardware y dispositivos móviles, colaborador habitual en revistas especializadas','carlos-mendoza','',3),
+(3,'Laura Vega','Desarrolladora de software y experta en nuevas tecnologías','laura-vega','',4),
+(4,'Miguel Ruiz','Ingeniero en sistemas y especialista en hardware de PCs','miguel-ruiz','',5);
 
 /*Table structure for table `categories` */
 
@@ -77,7 +79,7 @@ CREATE TABLE `news` (
   `cover_image` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `author_id` int DEFAULT NULL,
   `category_id` int DEFAULT NULL,
-  `status` enum('draft','review','published') COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'draft',
+  `status` enum('draft','review','published') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'draft',
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `views` int NOT NULL DEFAULT '0',
@@ -191,7 +193,7 @@ CREATE TABLE `news_blocks` (
   `id` int NOT NULL AUTO_INCREMENT,
   `news_id` int NOT NULL,
   `block_type` enum('paragraph','image','heading') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `content` text COLLATE utf8mb4_general_ci NOT NULL,
+  `content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `image_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `alt_text` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `position` int NOT NULL,
@@ -272,9 +274,16 @@ CREATE TABLE `users` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 /*Data for the table `users` */
+
+insert  into `users`(`id`,`username`,`email`,`password`,`role`,`active`,`created_at`) values 
+(1,'darlin','darlinlvaldez@gmail.com','$2b$10$2LKClehgb5ifsKKVHQDh/u8E3VmxyjYjVW3Pd0Cuty9vBrkvSraZy','superadmin',1,'2026-02-24 19:52:21'),
+(2,'ana torres','anatorres@gmail.com','$2b$10$u1rbukGt2wC9qla7UxwUJ..lJtNTH9chXxArqMwBmBGe24FQoQ/IG','author',1,'2026-02-25 19:36:00'),
+(3,'carlos mendoza','carlosmendoza@gmail.com','$2b$10$LsGLMl3rGkp8hWf1KrMBMuTScmSf5yeP8QUKIgQnhi.br/1haltxK','author',1,'2026-02-25 19:37:15'),
+(4,'laura vega','lauravega@gmail.com','$2b$10$hTBJsFQ2H3Eu9sJTnfIYCuxq2y37VBHW84xscLDwubL8oKfCkhGKO','author',1,'2026-02-25 19:37:50'),
+(5,'miguel ruiz','miguelruiz@gmail.com','$2b$10$oS13OGYebsgM9c31EFOfMOfziqnGX6TFoxeKuG94S/cwIY2q1FCsS','author',1,'2026-02-25 19:38:15');
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

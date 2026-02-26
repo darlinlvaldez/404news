@@ -4,10 +4,10 @@ import db from "@/server/lib/db";
 
 export async function GET() {
   try {
-    const username = "darlin";
-    const email = "darlinlvaldez@gmail.com";
+    const username = "miguel ruiz";
+    const email = "miguelruiz@gmail.com";
     const password = "darlin";
-    const role = "superadmin";
+    const role = "author";
 
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(password, saltRounds);

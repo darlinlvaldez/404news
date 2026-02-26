@@ -4,14 +4,17 @@ const users = {};
 
 users.getAll = async () => {
   const [rows] = await db.query(
-    "SELECT id, username, email, role, active, created_at FROM users ORDER BY created_at DESC"
+    `SELECT id, username, email, role, active, created_at 
+    FROM users 
+    WHERE role != 'author' 
+    ORDER BY created_at DESC`
   );
   return rows;
 };
 
 users.getById = async (id) => {
   const [rows] = await db.query(
-    "SELECT id, username, email, role, active FROM users WHERE id = ?",
+    "SELECT id, username, email, role, active FROM users WHERE id = ? AND role != 'author'",
     [id]
   );
   return rows[0];

@@ -226,7 +226,7 @@ getNews.getNewsAuthor = async function (slug, page = 1, limit = 9) {
   const [authorRows] = await db.query(`
     SELECT id, name, bio, slug, avatar
     FROM authors
-    WHERE slug = ? AND active = 1
+    WHERE slug = ? 
   `, [slug]);
 
   if (!authorRows.length) return null;
