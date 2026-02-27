@@ -4,7 +4,7 @@ const authors = {};
 
 authors.getAll = async () => {
   const [rows] = await db.query(
-    `SELECT a.*, u.email, u.username, u.role, u.active as user_active
+    `SELECT a.*, u.email, u.username, u.role, u.active
      FROM authors a
      JOIN users u ON a.user_id = u.id`
   );
@@ -13,7 +13,7 @@ authors.getAll = async () => {
 
 authors.getById = async (id) => {
   const [rows] = await db.query(
-    `SELECT a.*, u.email, u.username, u.role, u.active as user_active
+    `SELECT a.*, u.email, u.username, u.role, u.active
      FROM authors a
      JOIN users u ON a.user_id = u.id
      WHERE a.id = ?`,

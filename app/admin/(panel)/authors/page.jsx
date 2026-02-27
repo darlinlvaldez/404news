@@ -30,32 +30,7 @@ export default function AuthorsPage() {
     avatar: '',
   };
 
-  const [authors, setAuthors] = useState([
-    { 
-      id: 1, 
-      user_id: 101,
-      name: 'Juan Pérez', 
-      email: 'juan@404news.com',
-      username: 'juanperez',
-      role: 'author',
-      bio: 'Periodista especializado en tecnología con 10 años de experiencia.', 
-      slug: 'juan-perez', 
-      avatar: 'https://i.pravatar.cc/150?u=1', 
-      active: 1 
-    },
-    { 
-      id: 2, 
-      user_id: 102,
-      name: 'Ana García', 
-      email: 'ana@404news.com',
-      username: 'anagarcia',
-      role: 'editor',
-      bio: 'Analista internacional y experta en política económica.', 
-      slug: 'ana-garcia', 
-      avatar: 'https://i.pravatar.cc/150?u=2', 
-      active: 1 
-    }
-  ]);
+  const [authors, setAuthors] = useState([]);
 
   const [formData, setFormData] = useState(initialFormState);
   const [isEditing, setIsEditing] = useState(false);
@@ -63,21 +38,21 @@ export default function AuthorsPage() {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    if (formData.name && !isEditing) {
-      const baseString = formData.name
-        .toLowerCase()
-        .trim()
-        .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-        .replace(/[^\w ]+/g, '')
-        .replace(/ +/g, '-');
-      
-      setFormData(prev => ({ 
-        ...prev, 
-        slug: baseString,
-        username: baseString.replace(/-/g, '') 
-      }));
+  const fetchAuthors = async () => {
+    setIsLoading(true);
+    try {
+      const res = await fetch("/api/admin/authors");
+      const data = await res.json();
+      setAuthors(data);
+    } catch (err) {
+      console.error("Error fetching authors:", err);
+    } finally {
+      setIsLoading(false);
     }
-  }, [formData.name, isEditing]);
+  };
+
+  fetchAuthors();
+}, []);
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -99,24 +74,53 @@ export default function AuthorsPage() {
   };
 
   const handleSave = async (e) => {
-    e.preventDefault();
-    setIsLoading(true);
-    
-    setTimeout(() => {
-      if (isEditing) {
-        setAuthors(authors.map(a => a.id === formData.id ? { ...formData } : a));
-      } else {
-        const newAuthor = {
-          ...formData,
-          id: authors.length + 1,
-          user_id: Math.floor(Math.random() * 1000)
-        };
-        setAuthors([newAuthor, ...authors]);
-      }
-      setIsLoading(false);
-      handleCancel();
-    }, 800);
-  };
+  e.preventDefault();
+  setIsLoading(true);
+
+  try {
+    const method = isEditing ? "PUT" : "POST";
+    const url = isEditing 
+      ? `/api/admin/authors/${formData.id}` 
+      : `/api/admin/authors`;
+
+    const res = await fetch(url, {
+      method,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData),
+    });
+
+    const result = await res.json();
+
+    if (isEditing) {
+      setAuthors(authors.map(a => a.id === result.id ? result : a));
+    } else {
+      setAuthors([result, ...authors]);
+    }
+
+    handleCancel();
+  } catch (err) {
+    console.error("Error saving author:", err);
+  } finally {
+    setIsLoading(false);
+  }
+};
+
+const handleDelete = async (id) => {
+  if (!confirm("¿Seguro que quieres eliminar este autor?")) return;
+
+  setIsLoading(true);
+  try {
+    const res = await fetch(`/api/admin/authors/${id}`, {
+      method: "DELETE",
+    });
+    const result = await res.json();
+    setAuthors(authors.filter(a => a.id !== result.deletedId));
+  } catch (err) {
+    console.error("Error deleting author:", err);
+  } finally {
+    setIsLoading(false);
+  }
+};
 
   const filteredAuthors = authors.filter(a => 
     a.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
@@ -134,7 +138,6 @@ export default function AuthorsPage() {
 
       <div className="max-w-6xl mx-auto px-6 py-10 space-y-10">
         
-        {/* Formulario de Registro Dual (User + Author) */}
         <section className="bg-[#161b2a] rounded-[2.5rem] border border-slate-800 shadow-2xl relative overflow-hidden">
           <div className={`absolute top-0 left-0 w-full h-1.5 transition-colors duration-500 ${isEditing ? 'bg-blue-500' : 'bg-emerald-600'}`}></div>
           
@@ -157,7 +160,6 @@ export default function AuthorsPage() {
             </div>
 
             <form onSubmit={handleSave} className="space-y-8">
-              {/* Sección: Datos de Cuenta (users) */}
               <div className="space-y-4">
                 <div className="flex items-center space-x-2 text-emerald-500 mb-4">
                   <KeyRound size={14} />
@@ -204,7 +206,6 @@ export default function AuthorsPage() {
                 </div>
               </div>
 
-              {/* Sección: Datos de Perfil (authors) */}
               <div className="pt-6 border-t border-slate-800/50 space-y-4">
                 <div className="flex items-center space-x-2 text-emerald-500 mb-4">
                   <Camera size={14} />
@@ -274,7 +275,6 @@ export default function AuthorsPage() {
           </div>
         </section>
 
-        {/* Listado con Filtros */}
         <section className="space-y-6">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 px-2">
             <h3 className="text-xl font-bold flex items-center text-slate-400">
@@ -310,7 +310,7 @@ export default function AuthorsPage() {
                     <tr key={author.id} className="hover:bg-slate-800/20 transition group">
                       <td className="px-8 py-6">
                         <div className="flex items-center space-x-4">
-                          <img src={author.avatar} alt={author.name} className="w-14 h-14 rounded-2xl object-cover bg-slate-900 border border-slate-800 shadow-lg" />
+                          <img src={author.avatar || "/images/notfoundimage.jpg"} alt={author.name} className="w-14 h-14 rounded-2xl object-cover bg-slate-900 border border-slate-800 shadow-lg" />
                           <div>
                             <div className="text-sm font-bold text-white group-hover:text-emerald-500 transition-colors">{author.name}</div>
                             <div className="text-[10px] text-slate-500 font-mono mt-1">{author.email}</div>
@@ -318,7 +318,7 @@ export default function AuthorsPage() {
                         </div>
                       </td>
                       <td className="px-8 py-6">
-                        <p className="text-xs text-slate-400 max-w-xs line-clamp-2 leading-relaxed">"{author.bio}"</p>
+                        <p className="text-xs text-slate-400 max-w-xs line-clamp-2 leading-relaxed">{author.bio}</p>
                       </td>
                       <td className="px-8 py-6">
                         <span className="px-3 py-1.5 bg-slate-900 border border-slate-800 rounded-xl text-[9px] font-black text-slate-400 uppercase tracking-widest">
@@ -339,7 +339,7 @@ export default function AuthorsPage() {
                           >
                             <Edit3 size={16} />
                           </button>
-                          <button 
+                          <button onClick={() => handleDelete(author.id)}
                             className="p-3 bg-[#0b0f1a] hover:bg-red-600 text-slate-600 hover:text-white rounded-xl transition shadow-md"
                           >
                             <Trash2 size={16} />

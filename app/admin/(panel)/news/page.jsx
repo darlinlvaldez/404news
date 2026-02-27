@@ -96,9 +96,9 @@ export default function NewsTable() {
 };
 
   return (
-    <div className="flex-1 flex flex-col overflow-hidden bg-[#0b0f1a] text-gray-200 font-sans">
+    <div className="flex-1 flex flex-col overflow-hidden bg-gray-800 text-gray-200 font-sans">
       
-      <header className="h-20 bg-[#161b2a] flex items-center justify-between px-8 border-b border-slate-800 shadow-sm">
+      <header className="h-20 bg-gray-900 flex items-center justify-between px-8 border-b border-gray-700 shadow-sm">
         <div className="flex items-center space-x-4">
           <div className="p-2.5 bg-emerald-600/10 rounded-xl text-emerald-500">
             <Newspaper size={24}/>
@@ -117,7 +117,7 @@ export default function NewsTable() {
 
       <section className="flex-1 overflow-y-auto p-8 space-y-6">
         
-        <div className="bg-[#161b2a] p-5 rounded-4x1 border border-slate-800 flex flex-wrap gap-4 items-center justify-between shadow-xl">
+        <div className="bg-gray-900 p-5 rounded-4xl border border-gray-700 flex flex-wrap gap-4 items-center justify-between shadow-xl">
           <div className="relative w-full md:w-112.5">
             <Search className="absolute inset-y-0 left-4 flex items-center text-slate-600 my-auto" size={18} />
             <input type="text" 
@@ -133,7 +133,7 @@ export default function NewsTable() {
           <button tabIndex={0}
           onClick={() => setIsOpen(prev => !prev)}
             onBlur={() => setIsOpen(false)}
-            className={`bg-[#0b0f1a] border border-slate-800 px-5 py-3.5 text-xs font-bold 
+            className={`bg-gray-900 border border-gray-700 px-5 py-3.5 text- font-bold 
             focus:outline-none focus:border-emerald-600 cursor-pointer w-full text-left
             ${isOpen ? "rounded-t-2xl" : "rounded-2xl"}`}>
             <span className="text-slate-400">
@@ -159,11 +159,11 @@ export default function NewsTable() {
           </div>
         </div>
 
-        <div className="bg-[#161b2a] rounded-4xl border border-slate-800 overflow-hidden shadow-2xl">
+        <div className="bg-gray-900 rounded-4xl border border-gray-700 overflow-hidden shadow-2xl">
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="bg-slate-800/30 text-slate-500 text-[10px] uppercase font-black tracking-[0.15em] border-b border-slate-800">
+                <tr className="bg-gray-900 text-slate-500 text-xs uppercase font-black tracking-tight border-b border-slate-800">
                   <th className="px-8 py-6">Detalles del Artículo</th>
                   <th className="px-8 py-6">Autoría</th>
                   <th className="px-8 py-6">Categoría</th>
@@ -219,7 +219,7 @@ export default function NewsTable() {
                     <td className="px-8 py-6 text-right">
                       <div className="flex justify-end space-x-2">
                         <Link href={`/admin/news/edit/${item.id}`}
-                            className="p-3 bg-slate-800/50 hover:bg-emerald-600 text-slate-400 hover:text-white rounded-xl transition-all shadow-lg active:scale-95 flex items-center justify-center">
+                            className="p-3 bg-gray-900 hover:bg-blue-600 text-slate-400 hover:text-white rounded-xl transition-all shadow-lg active:scale-95 flex items-center justify-center">
                             <Edit3 size={16}/>
                         </Link>
                     </div>
@@ -230,13 +230,13 @@ export default function NewsTable() {
             </table>
           </div>
 
-          <div className="p-6 bg-slate-800/20 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="p-6 bg-gray-900 border-t border-gray-700 flex flex-col sm:flex-row items-center justify-between gap-4">
             <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest"> Mostrando <span className="text-emerald-500">{showingTo - showingFrom + 1}</span>
                 {" "}de{" "} <span className="text-white">{total}</span> noticias
             </span>
             <div className="flex items-center space-x-3">
               <button disabled={page === 1} onClick={() => setPage(prev => prev - 1)}
-              className="p-2.5 bg-slate-800 border border-slate-700 rounded-xl cursor-pointer text-slate-500 hover:bg-slate-700 transition disabled:opacity-20 disabled:cursor-not-allowed">
+              className="p-2.5 bg-gray-800 border border-gray-700 rounded-xl cursor-pointer text-gray-400 hover:bg-gray-700 transition disabled:opacity-20 disabled:cursor-not-allowed">
                 <ChevronLeft size={18}/>
               </button> 
             <div className="flex space-x-1">
@@ -246,7 +246,7 @@ export default function NewsTable() {
                     return (
                     <button key={number} onClick={() => setPage(number)}
                         className={`w-9 h-9 flex items-center justify-center rounded-xl text-xs font-black transition cursor-pointer
-                        ${isActive ? "bg-emerald-600 text-white" : "bg-slate-800 text-slate-400 hover:bg-slate-700"}`} >
+                        ${isActive ? "bg-green-800 text-white" :  "bg-gray-800 border border-gray-700 text-gray-400 hover:bg-gray-700"}`} >
                         {number}
                     </button>
                     );
@@ -254,7 +254,7 @@ export default function NewsTable() {
             </div>
 
             <button disabled={page === totalPages} onClick={() => setPage(prev => prev + 1)} 
-                className="p-2.5 bg-slate-800 border border-slate-700 rounded-xl text-slate-400 hover:bg-slate-700 transition cursor-pointer">
+                className="p-2.5 bg-gray-800 border border-gray-700 rounded-xl text-gray-400 hover:bg-gray-700 transition cursor-pointer">
                 <ChevronRight size={18}/>
               </button>
             </div>
