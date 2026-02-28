@@ -65,10 +65,10 @@ export default function NewsTable() {
 
     const getStatusStyle = (status) => {
         switch (status) {
-        case 'published': return 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20';
-        case 'review': return 'bg-amber-500/10 text-amber-500 border-amber-500/20';
-        case 'draft': return 'bg-slate-500/10 text-slate-400 border-slate-500/20';
-        default: return 'bg-gray-500/10 text-gray-500 border-gray-500/20';
+        case 'published': return 'text-green-600 border-green-800';
+        case 'review': return 'text-amber-500 border-amber-500/20';
+        case 'draft': return 'text-slate-400 border-slate-500/20';
+        default: return 'text-gray-500 border-gray-500/20';
         }
     };
 
@@ -110,7 +110,7 @@ export default function NewsTable() {
         </div>
         
         <Link href="/admin/news/create" 
-        className="bg-emerald-600 hover:bg-emerald-500 text-white px-6 py-3 rounded-2xl 
+        className="bg-green-800 hover:bg-green-700 text-white px-6 py-3 rounded-2xl 
         font-black text-xs uppercase tracking-widest transition flex items-center shadow-lg shadow-emerald-900/20">
           <Plus size={18} className="mr-2" />Nueva Noticia</Link>
       </header>
@@ -126,15 +126,16 @@ export default function NewsTable() {
               setPage(1); 
             }} 
             placeholder="Buscar por título, ID o autor..." 
-            className="w-full bg-[#0b0f1a] border border-slate-800 rounded-2xl pl-12 pr-4 py-3.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600/50 transition text-gray-100 placeholder:text-slate-700"/>
+            className="w-full bg-gray-950 border border-slate-800 rounded-2xl pl-12 pr-4 py-3.5 text-sm 
+            focus:outline-none focus:ring-2 focus:ring-green-800 transition text-gray-100 placeholder:text-slate-700"/>
         </div>
           
         <div className="relative w-full md:w-56">
           <button tabIndex={0}
           onClick={() => setIsOpen(prev => !prev)}
             onBlur={() => setIsOpen(false)}
-            className={`bg-gray-900 border border-gray-700 px-5 py-3.5 text- font-bold 
-            focus:outline-none focus:border-emerald-600 cursor-pointer w-full text-left
+            className={`bg-gray-950 border border-gray-700 px-5 py-3.5 text- font-bold 
+            focus:outline-none focus:border-green-800 cursor-pointer w-full text-left
             ${isOpen ? "rounded-t-2xl" : "rounded-2xl"}`}>
             <span className="text-slate-400">
               {statusOptions.find(opt => opt.value === statusFilter)?.label}
@@ -142,7 +143,7 @@ export default function NewsTable() {
           </button>
 
             {isOpen && (
-              <ul className="absolute w-full bg-[#0b0f1a] border border-emerald-600 border-t-0 rounded-b-2xl overflow-hidden z-10">
+              <ul className="absolute w-full bg-[#0b0f1a] border border-green-800 border-t-0 rounded-b-2xl overflow-hidden z-10">
                 {statusOptions.map((option) => (
                   <li key={option.value}
                     onClick={() => {
@@ -177,7 +178,7 @@ export default function NewsTable() {
                   <tr key={item.id} className="hover:bg-slate-800/20 transition-all group">
                     <td className="px-8 py-6">
                     <div className="max-w-xs md:max-w-sm">
-                        <p className="text-sm font-bold text-white group-hover:text-emerald-400 transition truncate mb-1">
+                        <p className="text-sm font-bold text-white group-hover:text-green-500 transition truncate mb-1">
                             {item.title}
                         </p>
                         <div className="flex items-center space-x-2 text-xs font-mono text-slate-600">

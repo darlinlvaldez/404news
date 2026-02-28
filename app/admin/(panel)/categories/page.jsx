@@ -90,7 +90,7 @@ const handleDelete = async (id) => {
     <div className="min-h-screen bg-gray-800 text-gray-100 flex font-sans">
 
       <div className="flex-1 overflow-y-auto">
-        <header className="sticky top-0 z-20 bg-gray-900/90 backdrop-blur-md px-8 py-4 border-b border-gray-700 flex justify-between items-center">
+        <header className="sticky top-0 z-20 bg-gray-900 backdrop-blur-md px-8 py-4 border-b border-gray-700 flex justify-between items-center">
           <div>
             <h2 className="text-lg font-bold leading-none">Gestión de Categorías</h2>
             <span className="text-[10px] text-gray-500 uppercase font-bold tracking-tighter">Configuración del Sistema</span>
@@ -119,22 +119,20 @@ const handleDelete = async (id) => {
             <form onSubmit={handleSave} className="grid grid-cols-1 md:grid-cols-3 gap-6 items-end">
               <div className="md:col-span-1">
                 <label className="block text-xs font-bold text-gray-500 uppercase mb-2 ml-1">Nombre de Categoría</label>
-                <input 
-                  type="text" name="name" value={formData.name} onChange={handleInputChange} required
+                <input type="text" name="name" value={formData.name} onChange={handleInputChange}
                   placeholder="Ej. Tecnología, Salud..."
-                  className="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-green-600 outline-none transition"
+                  className="w-full bg-gray-950 border border-gray-700 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-green-600 outline-none transition"
                 />
               </div>
               <div className="md:col-span-1">
                 <label className="block text-xs font-bold text-gray-500 uppercase mb-2 ml-1">URL (Slug)</label>
-                <input 
-                  type="text" name="slug" value={formData.slug} onChange={handleInputChange} required
+                <input type="text" name="slug" value={formData.slug} onChange={handleInputChange}
                   className="w-full bg-gray-950 border border-gray-700 rounded-xl px-4 py-3 text-sm text-gray-400 font-mono outline-none"
                 />
               </div>
               <div className="flex items-center space-x-4">
-                <div className="flex-1 bg-gray-800/50 p-3 rounded-xl border border-gray-700 flex items-center justify-between">
-                  <span className="text-[10px] font-bold text-gray-500 uppercase ml-1">Activa</span>
+                <div className="flex-1 bg-gray-900 p-3 rounded-xl border border-gray-700 flex items-center justify-between">
+                  <span className="text-[10px] font-bold text-gray-500 uppercase ml-1">Estado</span>
                   <label className="relative inline-flex items-center cursor-pointer">
                     <input type="checkbox" name="active" checked={formData.active === 1} onChange={handleInputChange} className="sr-only peer" />
                     <div className="w-10 h-5 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-green-600"></div>
@@ -142,8 +140,8 @@ const handleDelete = async (id) => {
                 </div>
                 <button 
                   type="submit"
-                  className={`px-6 py-3 rounded-xl font-bold flex items-center transition shadow-lg ${isEditing ? 'bg-blue-600 hover:bg-blue-500' : 'bg-green-600 hover:bg-green-500'}`}
-                >
+                  className={`px-6 py-3 rounded-xl font-bold flex items-center transition shadow-lg 
+                  ${isEditing ? 'bg-blue-600 hover:bg-blue-500' : 'bg-green-600 hover:bg-green-500'}`}>
                   <Save size={18} className="mr-2" /> {isEditing ? 'Actualizar' : 'Guardar'}
                 </button>
               </div>
@@ -157,12 +155,10 @@ const handleDelete = async (id) => {
                 Listado de Categorías
               </h3>
               <div className="relative">
-                <input 
-                  type="text" 
-                  placeholder="Buscar categorías..." 
-                  value={searchTerm}
+                <input type="text" placeholder="Buscar categorías..." value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="bg-gray-900 border border-gray-700 rounded-2xl pl-10 pr-4 py-2.5 text-sm w-full md:w-80 focus:ring-2 focus:ring-green-600 outline-none transition"
+                  className="bg-gray-950 border border-gray-700 rounded-2xl pl-10 pr-4 py-2.5 
+                  text-sm w-full md:w-80 focus:ring-2 focus:ring-green-600 outline-none transition"
                 />
                 <Search className="absolute left-3 top-3 text-gray-600" size={16} />
               </div>
