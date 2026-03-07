@@ -13,7 +13,6 @@ import {
   Tag, 
   ChevronLeft, 
   ChevronRight, 
-  Newspaper,
   CheckCircle2,
   Clock,
   FileEdit
@@ -65,9 +64,9 @@ export default function NewsTable() {
 
     const getStatusStyle = (status) => {
         switch (status) {
-        case 'published': return 'text-green-600 border-green-800';
+        case 'published': return 'text-green-500 border-green-800';
         case 'review': return 'text-amber-500 border-amber-500/20';
-        case 'draft': return 'text-slate-400 border-slate-500/20';
+        case 'draft': return 'text-slate-500 border-slate-600/20';
         default: return 'text-gray-500 border-gray-500/20';
         }
     };
@@ -100,9 +99,6 @@ export default function NewsTable() {
       
       <header className="h-20 bg-gray-900 flex items-center justify-between px-8 border-b border-gray-700 shadow-sm">
         <div className="flex items-center space-x-4">
-          <div className="p-2.5 bg-emerald-600/10 rounded-xl text-emerald-500">
-            <Newspaper size={24}/>
-          </div>
           <div>
             <h2 className="text-xl font-black text-white tracking-tight">Gestión de Noticias</h2>
             <p className="text-[10px] text-slate-500 uppercase font-bold tracking-widest">Publicaciones del portal</p>
@@ -110,33 +106,34 @@ export default function NewsTable() {
         </div>
         
         <Link href="/admin/news/create" 
-        className="bg-green-800 hover:bg-green-700 text-white px-6 py-3 rounded-2xl 
-        font-black text-xs uppercase tracking-widest transition flex items-center shadow-lg shadow-emerald-900/20">
-          <Plus size={18} className="mr-2" />Nueva Noticia</Link>
+          className="bg-green-800 hover:bg-green-700 text-white px-6 py-3 rounded-2xl font-black text-xs 
+          uppercase tracking-widest transition flex items-center shadow-lg shadow-emerald-900/20">
+          <Plus size={18} className="mr-2" />Nueva Noticia
+        </Link>
       </header>
 
       <section className="flex-1 overflow-y-auto p-8 space-y-6">
         
         <div className="bg-gray-900 p-5 rounded-4xl border border-gray-700 flex flex-wrap gap-4 items-center justify-between shadow-xl">
-          <div className="relative w-full md:w-112.5">
-            <Search className="absolute inset-y-0 left-4 flex items-center text-slate-600 my-auto" size={18} />
+          <div className="relative w-full md:w-96">
+            <Search className="absolute inset-y-0 left-4 flex items-center text-gray-500 my-auto pointer-events-none" size={18} />
             <input type="text" 
             value={search} onChange={(e) => {
               setSearch(e.target.value);
               setPage(1); 
             }} 
             placeholder="Buscar por título, ID o autor..." 
-            className="w-full bg-gray-950 border border-slate-800 rounded-2xl pl-12 pr-4 py-3.5 text-sm 
-            focus:outline-none focus:ring-2 focus:ring-green-800 transition text-gray-100 placeholder:text-slate-700"/>
-        </div>
+            className="w-full bg-gray-950 border border-gray-700 rounded-2xl pl-12 pr-4 py-3.5 text-sm
+            text-gray-100 placeholder:text-gray-500"/>
+          </div>
           
         <div className="relative w-full md:w-56">
           <button tabIndex={0}
           onClick={() => setIsOpen(prev => !prev)}
             onBlur={() => setIsOpen(false)}
-            className={`bg-gray-950 border border-gray-700 px-5 py-3.5 text- font-bold 
+            className={`bg-gray-950 border border-gray-700 px-5 py-3.5 font-bold 
             focus:outline-none focus:border-green-800 cursor-pointer w-full text-left
-            ${isOpen ? "rounded-t-2xl" : "rounded-2xl"}`}>
+            ${isOpen ? "rounded-t-2xl border-green-800" : "rounded-2xl"}`}>
             <span className="text-slate-400">
               {statusOptions.find(opt => opt.value === statusFilter)?.label}
             </span>
@@ -151,7 +148,7 @@ export default function NewsTable() {
                       setIsOpen(false);
                       setPage(1);
                     }}
-                    className="px-5 py-3 text-xs hover:bg-slate-800 cursor-pointer text-slate-400">
+                    className="px-5 py-3 text-xs hover:bg-gray-800 cursor-pointer text-gray-400">
                     {option.label}
                   </li>
                 ))}
@@ -164,7 +161,7 @@ export default function NewsTable() {
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="bg-gray-900 text-slate-500 text-xs uppercase font-black tracking-tight border-b border-slate-800">
+                <tr className="bg-gray-900 text-gray-400 text-xs uppercase font-black tracking-tight border-b border-slate-800">
                   <th className="px-8 py-6">Detalles del Artículo</th>
                   <th className="px-8 py-6">Autoría</th>
                   <th className="px-8 py-6">Categoría</th>
