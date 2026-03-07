@@ -120,7 +120,7 @@ const handleDelete = async (id) => {
   };
 
   return (
-      <div className="flex-1 overflow-y-auto">
+      <div className="flex-1 overflow-y-auto bg-gray-800">
         <header className="sticky top-0 z-20 bg-gray-900/90 backdrop-blur-md px-8 py-4 border-b border-gray-700 flex justify-between items-center">
           <div>
             <h2 className="text-lg font-bold leading-none">Gestión de Accesos</h2>
@@ -152,69 +152,61 @@ const handleDelete = async (id) => {
                 <div>
                   <label className="block text-xs font-bold text-gray-500 uppercase mb-2 ml-1">Nombre de Usuario</label>
                   <div className="relative">
-                    <input 
-                      type="text" name="username" value={formData.username} onChange={handleInputChange} required
-                      placeholder="usuario_123"
-                      className="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-green-600 outline-none pl-10 transition"
+                    <input type="text" name="username" value={formData.username} onChange={handleInputChange} placeholder="usuario_123"
+                      className="w-full bg-gray-950 border border-gray-700 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-green-600 outline-none pl-10 transition"
                     />
-                    <User className="absolute left-3 top-3.5 text-gray-600" size={16} />
+                    <User className="absolute left-3 top-3.5 text-gray-500" size={20} />
                   </div>
                 </div>
                 <div>
                   <label className="block text-xs font-bold text-gray-500 uppercase mb-2 ml-1">Correo Electrónico</label>
                   <div className="relative">
-                    <input 
-                      type="email" name="email" value={formData.email} onChange={handleInputChange} required
-                      placeholder="correo@ejemplo.com"
-                      className="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-green-600 outline-none pl-10 transition"
+                    <input type="email" name="email" value={formData.email} onChange={handleInputChange} placeholder="correo@ejemplo.com"
+                      className="w-full bg-gray-950 border border-gray-700 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-green-600 outline-none pl-10 transition"
                     />
-                    <Mail className="absolute left-3 top-3.5 text-gray-600" size={16} />
+                    <Mail className="absolute left-3 top-3.5 text-gray-500" size={20} />
                   </div>
                 </div>
                 <div>
                   <label className="block text-xs font-bold text-gray-500 uppercase mb-2 ml-1">Rol de Usuario</label>
                   <div className="relative">
-                    <select 
-                      name="role" value={formData.role} onChange={handleInputChange}
-                      className="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-green-600 outline-none appearance-none transition"
+                    <select name="role" value={formData.role} onChange={handleInputChange}
+                      className="w-full bg-gray-950 border border-gray-700 cursor-pointer rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-green-600 outline-none appearance-none transition"
                     >
                       <option value="superadmin">Superadmin</option>
                       <option value="admin">Administrador</option>
                       <option value="support">Soporte</option>
                       <option value="editor">Editor</option>
                     </select>
-                    <ShieldCheck className="absolute right-4 top-3.5 text-gray-600 pointer-events-none" size={16} />
+                    <ShieldCheck className="absolute right-4 top-3.5 text-gray-500 pointer-events-none" size={20} />
                   </div>
                 </div>
                 <div>
                   <label className="block text-xs font-bold text-gray-500 uppercase mb-2 ml-1">Contraseña {isEditing && '(Opcional)'}</label>
                   <div className="relative">
-                    <input 
-                      type="password" name="password" value={formData.password} onChange={handleInputChange} required={!isEditing}
-                      placeholder="••••••••"
-                      className="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-green-600 outline-none pl-10 transition"
+                    <input type="password" name="password" value={formData.password} onChange={handleInputChange} required={!isEditing} placeholder="••••••••"
+                      className="w-full bg-gray-950 border border-gray-700 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-green-600 outline-none pl-10 transition"
                     />
-                    <Key className="absolute left-3 top-3.5 text-gray-600" size={16} />
+                    <Key className="absolute left-3 top-3.5 text-gray-500" size={20} />
                   </div>
                 </div>
                 <div className="flex items-end md:col-span-2">
-                  <div className="w-full bg-gray-800/50 p-3 rounded-xl border border-gray-700 flex items-center justify-between">
+                  <div className="w-full bg-gray-900 p-3 rounded-xl border border-gray-700 flex items-center justify-between">
                     <div className="flex flex-col ml-1">
                         <span className="text-[10px] font-bold text-gray-300 uppercase">Estado de la cuenta</span>
                         <span className="text-[9px] text-gray-500 italic">Determina si el usuario puede iniciar sesión</span>
                     </div>
                     <label className="relative inline-flex items-center cursor-pointer">
                       <input type="checkbox" name="active" checked={formData.active === 1} onChange={handleInputChange} className="sr-only peer" />
-                      <div className="w-12 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[4px] after:left-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-green-600"></div>
+                      <div className="w-12 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-1 after:left-1 after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-green-600"></div>
                     </label>
                   </div>
                 </div>
               </div>
 
               <div className="flex justify-end pt-4 border-t border-gray-800">
-                <button 
-                  type="submit"
-                  className={`px-10 py-4 rounded-2xl font-bold flex items-center transition shadow-lg ${isEditing ? 'bg-orange-600 hover:bg-orange-500 shadow-orange-900/20' : 'bg-green-600 hover:bg-green-500 shadow-green-900/20'}`}
+                <button type="submit" className={`px-10 py-4 rounded-2xl font-bold flex items-center transition shadow-lg 
+                ${isEditing ? 'bg-orange-600 hover:bg-orange-500 shadow-orange-900/20' : 'bg-green-600 hover:bg-green-500 shadow-green-900/20'}`}
                 >
                   <Save size={18} className="mr-2" /> {isEditing ? 'Confirmar Cambios' : 'Registrar Usuario'}
                 </button>
@@ -229,14 +221,11 @@ const handleDelete = async (id) => {
                 Directorio de Usuarios
               </h3>
               <div className="relative">
-                <input 
-                  type="text" 
-                  placeholder="Buscar usuario o email..." 
-                  value={searchTerm}
+                <input type="text" placeholder="Buscar usuario o email..." value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="bg-gray-900 border border-gray-700 rounded-2xl pl-10 pr-4 py-3 text-sm w-full md:w-96 focus:ring-2 focus:ring-green-600 outline-none transition shadow-inner"
+                  className="bg-gray-950 border border-gray-700 rounded-2xl pl-10 pr-4 py-3 text-sm w-full md:w-96 focus:ring-2 focus:ring-green-600 outline-none transition shadow-inner"
                 />
-                <Search className="absolute left-3 top-3.5 text-gray-600" size={16} />
+                <Search className="absolute left-3 top-3.5 text-gray-500" size={20} />
               </div>
             </div>
 
@@ -290,18 +279,17 @@ const handleDelete = async (id) => {
                       </td>
                       <td className="px-8 py-6 text-right">
                         <div className="flex justify-end space-x-2 opacity-60 group-hover:opacity-100 transition">
-                          <button 
-                            onClick={() => handleEdit(user)}
+                          <button onClick={() => handleEdit(user)}
                             className="p-2.5 bg-gray-800 hover:bg-orange-600 text-gray-400 hover:text-white rounded-xl transition shadow-md"
                             title="Editar"
                           >
-                            <Edit3 size={16} />
+                            <Edit3 size={20} />
                           </button>
                           <button onClick={() => handleDelete(user.id)}
                             className="p-2.5 bg-gray-800 hover:bg-red-600 text-gray-400 hover:text-white rounded-xl transition shadow-md"
                             title="Eliminar"
                           >
-                            <Trash2 size={16} />
+                            <Trash2 size={20} />
                           </button>
                         </div>
                       </td>
@@ -316,7 +304,7 @@ const handleDelete = async (id) => {
                   )}
                 </tbody>
               </table>
-              <div className="bg-gray-900/50 p-4 border-t border-gray-800 flex justify-between items-center px-8">
+              <div className="bg-gray-800/50 p-4 border-t border-gray-800 flex justify-between items-center px-8">
                 <span className="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Registros activos: {users.filter(u => u.active).length}</span>
               </div>
             </div>

@@ -1,7 +1,7 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { verifyToken } from "@/server/utils/jwt";
-import SideBar from "@/components/SideBar";
+import SideBar from "@/components/admin/SideBar";
 
 export default async function AdminLayout({ children }) {
   const cookieStore = await cookies();  

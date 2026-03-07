@@ -2,7 +2,7 @@
 
 import { ArrowLeft, Eye, Save } from 'lucide-react';
 
-export const NewsHeader = ({ title, views, onSave, onBack }) => {
+export const Header = ({ children, views, onSave, onBack }) => {
   return (
     <header className="sticky top-0 z-20 bg-gray-900/90 backdrop-blur-md px-8 py-4 border-b border-gray-700 flex justify-between items-center">
       <div className="flex items-center space-x-4">
@@ -10,8 +10,7 @@ export const NewsHeader = ({ title, views, onSave, onBack }) => {
           <ArrowLeft size={20}/>
         </button>
         <div>
-          <h2 className="text-lg font-bold leading-none">{title || 'Nueva Noticia'}</h2>
-          <span className="text-[10px] text-gray-500 uppercase font-bold tracking-tighter">Editor de Contenido</span>
+          {children}
         </div>
       </div>
       <div className="flex items-center space-x-3">
@@ -28,3 +27,20 @@ export const NewsHeader = ({ title, views, onSave, onBack }) => {
     </header>
   );
 };
+
+function HeaderTitle({ children }) {
+  return (
+    <h2 className="text-lg font-bold leading-none">{children}</h2>
+  );
+}
+
+function HeaderSubtitle({ children }) {
+  return (
+    <span className="text-[10px] text-gray-500 uppercase font-bold tracking-tighter">
+      {children}
+    </span>
+  );
+}
+
+Header.Title = HeaderTitle;
+Header.Subtitle = HeaderSubtitle;

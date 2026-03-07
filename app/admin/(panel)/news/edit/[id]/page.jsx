@@ -2,11 +2,11 @@
 
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
-import { useNewsForm } from '@/components/UseNewsForm';
-import { NewsHeader } from '@/components/NewsHeader';
-import { GeneralData } from '@/components/GeneralData';
-import { ContentBlocks } from '@/components/ContentBlocks';
-import { ActionButtons } from '@/components/ActionButtons';
+import { useNewsForm } from '@/components/admin/news/UseNewsForm';
+import { Header } from '@/components/admin/Header';
+import { GeneralData } from '@/components/admin/news/GeneralData';
+import { ContentBlocks } from '@/components/admin/news/ContentBlocks';
+import { ActionButtons } from '@/components/admin/news/ActionButtons';
 
 import { useParams } from "next/navigation";
 
@@ -104,12 +104,14 @@ useEffect(() => {
 
   return (
     <div className="flex-1 overflow-y-auto">
-      <NewsHeader 
-        title={newsData.title}
+      <Header
         views={newsData.views}
         onSave={onSave}
         onBack={onBack}
-      />
+        >
+        <Header.Title>Noticia</Header.Title>
+        <Header.Subtitle>Editor de Contenido</Header.Subtitle>
+      </Header>
 
       <div className="max-w-4xl mx-auto px-6 py-10 space-y-12">
         <GeneralData 

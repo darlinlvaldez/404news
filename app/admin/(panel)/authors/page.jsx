@@ -169,7 +169,7 @@ const handleDelete = async (id) => {
                   <div className="space-y-2">
                     <label className="text-sm font-black text-gray-500 uppercase ml-1">Email Profesional</label>
                     <div className="relative group">
-                      <Mail className="absolute left-4 top-1/2 -trangray-y-1/2 text-gray-600 group-focus-within:text-green-700 transition-colors" size={20} />
+                      <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-600 group-focus-within:text-green-700 transition-colors" size={20} />
                       <input type="email" name="email" value={formData.email} onChange={handleInputChange} placeholder="email@gmail.com"
                         className="w-full bg-gray-950 border border-gray-700 rounded-xl pl-12 pr-4 py-3.5 text-sm 
                         focus:ring-2 focus:ring-green-700 outline-none transition text-white"
@@ -179,7 +179,7 @@ const handleDelete = async (id) => {
                   <div className="space-y-2">
                     <label className="text-sm font-black text-gray-500 uppercase ml-1">Contraseña</label>
                     <div className="relative group">
-                      <Lock className="absolute left-4 top-1/2 -trangray-y-1/2 text-gray-600 group-focus-within:text-green-700 transition-colors" size={20}/>
+                      <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-600 group-focus-within:text-green-700 transition-colors" size={20}/>
                       <input type="password" name="password" value={formData.password} onChange={handleInputChange} 
                         required={!isEditing} placeholder={isEditing ? "••••••••" : "Mínimo 6 caracteres"}
                         className="w-full bg-gray-950 border border-gray-700 rounded-xl pl-12 pr-4 py-3.5 text-sm focus:ring-2 focus:ring-green-700 outline-none transition text-white"
