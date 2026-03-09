@@ -3,6 +3,9 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import {formatDateAbsolute} from "@/utils/formatDate"
+import Select from "@/components/admin/ui/Select"
+import Input from "@/components/admin/ui/Input"
+import { Container, Th } from "@/components/admin/ui/Table";
 
 import { 
   Plus, 
@@ -25,7 +28,6 @@ export default function NewsTable() {
     const [search, setSearch] = useState("");
     
     const [statusFilter, setStatusFilter] = useState("");
-    const [isOpen, setIsOpen] = useState(false);
 
     const limit = 50;
     const totalPages = Math.ceil(total / limit);
@@ -116,58 +118,38 @@ export default function NewsTable() {
         
         <div className="bg-gray-900 p-5 rounded-4xl border border-gray-700 flex flex-wrap gap-4 items-center justify-between shadow-xl">
           <div className="relative w-full md:w-96">
-            <Search className="absolute inset-y-0 left-4 flex items-center text-gray-500 my-auto pointer-events-none" size={18} />
-            <input type="text" 
-            value={search} onChange={(e) => {
+            <Input
+            className="w-full md:w-96"
+            value={search}
+            onChange={(e) => {
               setSearch(e.target.value);
-              setPage(1); 
-            }} 
-            placeholder="Buscar por título, ID o autor..." 
-            className="w-full bg-gray-950 border border-gray-700 rounded-2xl pl-12 pr-4 py-3.5 text-sm
-            text-gray-100 placeholder:text-gray-500"/>
+              setPage(1);
+            }}
+            placeholder="Buscar por título, ID o autor..."
+            icon={Search}
+          />
           </div>
           
-        <div className="relative w-full md:w-56">
-          <button tabIndex={0}
-          onClick={() => setIsOpen(prev => !prev)}
-            onBlur={() => setIsOpen(false)}
-            className={`bg-gray-950 border border-gray-700 px-5 py-3.5 font-bold 
-            focus:outline-none focus:border-green-800 cursor-pointer w-full text-left
-            ${isOpen ? "rounded-t-2xl border-green-800" : "rounded-2xl"}`}>
-            <span className="text-slate-400">
-              {statusOptions.find(opt => opt.value === statusFilter)?.label}
-            </span>
-          </button>
-
-            {isOpen && (
-              <ul className="absolute w-full bg-[#0b0f1a] border border-green-800 border-t-0 rounded-b-2xl overflow-hidden z-10">
-                {statusOptions.map((option) => (
-                  <li key={option.value}
-                    onClick={() => {
-                      setStatusFilter(option.value);
-                      setIsOpen(false);
-                      setPage(1);
-                    }}
-                    className="px-5 py-3 text-xs hover:bg-gray-800 cursor-pointer text-gray-400">
-                    {option.label}
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
+          <Select className="w-full md:w-56"
+          options={statusOptions}
+          value={statusFilter}
+          onChange={(value) => {
+            setStatusFilter(value);
+            setPage(1);
+          }}
+        />
+        
         </div>
 
-        <div className="bg-gray-900 rounded-4xl border border-gray-700 overflow-hidden shadow-2xl">
-          <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse">
+            <Container>
               <thead>
                 <tr className="bg-gray-900 text-gray-400 text-xs uppercase font-black tracking-tight border-b border-slate-800">
-                  <th className="px-8 py-6">Detalles del Artículo</th>
-                  <th className="px-8 py-6">Autoría</th>
-                  <th className="px-8 py-6">Categoría</th>
-                  <th className="px-8 py-6">Estado</th>
-                  <th className="px-8 py-6">Analítica</th>
-                  <th className="px-8 py-6 text-right">Acciones</th>
+                  <Th className="px-8 py-6">Detalles del Artículo</Th>
+                  <Th className="px-8 py-6">Autoría</Th>
+                  <Th className="px-8 py-6">Categoría</Th>
+                  <Th className="px-8 py-6">Estado</Th>
+                  <Th className="px-8 py-6">Analítica</Th>
+                  <Th className="px-8 py-6 text-right">Acciones</Th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-800">
@@ -225,8 +207,7 @@ export default function NewsTable() {
                   </tr>
                 ))}
               </tbody>
-            </table>
-          </div>
+            </Container>
 
           <div className="p-6 bg-gray-900 border-t border-gray-700 flex flex-col sm:flex-row items-center justify-between gap-4">
             <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest"> Mostrando <span className="text-emerald-500">{showingTo - showingFrom + 1}</span>
@@ -257,7 +238,6 @@ export default function NewsTable() {
               </button>
             </div>
           </div>
-        </div>
       </section>
     </div>
   );

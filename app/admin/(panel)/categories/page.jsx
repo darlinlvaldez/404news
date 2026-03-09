@@ -135,7 +135,7 @@ const handleDelete = async (id) => {
                   <span className="text-[10px] font-bold text-gray-500 uppercase ml-1">Estado</span>
                   <label className="relative inline-flex items-center cursor-pointer">
                     <input type="checkbox" name="active" checked={formData.active === 1} onChange={handleInputChange} className="sr-only peer" />
-                    <div className="w-10 h-5 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-green-600"></div>
+                    <div className="w-10 h-5 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-green-600"></div>
                   </label>
                 </div>
                 <button 
@@ -164,7 +164,7 @@ const handleDelete = async (id) => {
               </div>
             </div>
 
-            <div className="bg-gray-900 rounded-3xl border border-gray-700 overflow-hidden shadow-xl">
+            <div className="bg-gray-900 rounded-4xl border border-gray-700 overflow-hidden shadow-xl">
               <table className="w-full text-left">
                 <thead className="bg-gray-800/50 text-gray-500 text-[10px] uppercase font-black tracking-widest">
                   <tr>
@@ -199,8 +199,7 @@ const handleDelete = async (id) => {
                       </td>
                       <td className="px-8 py-5 text-right">
                         <div className="flex justify-end space-x-2">
-                          <button 
-                            onClick={() => handleEdit(cat)}
+                          <button onClick={() => handleEdit(cat)}
                             className="p-2 bg-gray-800 hover:bg-blue-600 text-gray-400 hover:text-white rounded-xl transition shadow-md"
                             title="Editar"
                           >
