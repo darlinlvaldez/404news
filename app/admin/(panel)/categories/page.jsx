@@ -1,6 +1,8 @@
 "use client";
 
 import { useState, useEffect } from 'react';
+import { Header } from '@/components/admin/Header';
+import {ActionButton, SaveButton} from "@/components/admin/ui/ActionButtons"
 import { 
   Trash2, 
   PlusCircle, 
@@ -90,12 +92,10 @@ const handleDelete = async (id) => {
     <div className="min-h-screen bg-gray-800 text-gray-100 flex font-sans">
 
       <div className="flex-1 overflow-y-auto">
-        <header className="sticky top-0 z-20 bg-gray-900 backdrop-blur-md px-8 py-4 border-b border-gray-700 flex justify-between items-center">
-          <div>
-            <h2 className="text-lg font-bold leading-none">Gestión de Categorías</h2>
-            <span className="text-[10px] text-gray-500 uppercase font-bold tracking-tighter">Configuración del Sistema</span>
-          </div>
-        </header>
+        <Header>
+        <Header.Title>Noticia</Header.Title>
+        <Header.Subtitle>Editor de Contenido</Header.Subtitle>
+      </Header>
 
         <div className="max-w-5xl mx-auto px-6 py-10 space-y-10">
           
@@ -138,12 +138,13 @@ const handleDelete = async (id) => {
                     <div className="w-10 h-5 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-green-600"></div>
                   </label>
                 </div>
-                <button 
+                <SaveButton
                   type="submit"
-                  className={`px-6 py-3 rounded-xl font-bold flex items-center transition shadow-lg 
-                  ${isEditing ? 'bg-blue-600 hover:bg-blue-500' : 'bg-green-600 hover:bg-green-500'}`}>
-                  <Save size={18} className="mr-2" /> {isEditing ? 'Actualizar' : 'Guardar'}
-                </button>
+                  icon={Save}
+                  variant={isEditing ? "blue" : "green"}
+                >
+                  {isEditing ? "Actualizar" : "Guardar"}
+                </SaveButton>
               </div>
             </form>
           </section>
@@ -199,18 +200,18 @@ const handleDelete = async (id) => {
                       </td>
                       <td className="px-8 py-5 text-right">
                         <div className="flex justify-end space-x-2">
-                          <button onClick={() => handleEdit(cat)}
-                            className="p-2 bg-gray-800 hover:bg-blue-600 text-gray-400 hover:text-white rounded-xl transition shadow-md"
+                          <ActionButton
+                            icon={Edit3}
                             title="Editar"
-                          >
-                            <Edit3 size={16} />
-                          </button>
-                          <button onClick={() => handleDelete(cat.id)}
-                            className="p-2 bg-gray-800 hover:bg-red-600 text-gray-400 hover:text-white rounded-xl transition shadow-md"
+                            hoverColor="hover:bg-blue-600"
+                            onClick={() => handleEdit(cat)}
+                          />
+                          <ActionButton
+                            icon={Trash2}
                             title="Eliminar"
-                          >
-                            <Trash2 size={16} />
-                          </button>
+                            hoverColor="hover:bg-red-600"
+                            onClick={() => handleDelete(cat.id)}
+                          />
                         </div>
                       </td>
                     </tr>

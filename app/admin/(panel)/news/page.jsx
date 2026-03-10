@@ -144,12 +144,12 @@ export default function NewsTable() {
             <Container>
               <thead>
                 <tr className="bg-gray-900 text-gray-400 text-xs uppercase font-black tracking-tight border-b border-slate-800">
-                  <Th className="px-8 py-6">Detalles del Artículo</Th>
-                  <Th className="px-8 py-6">Autoría</Th>
-                  <Th className="px-8 py-6">Categoría</Th>
-                  <Th className="px-8 py-6">Estado</Th>
-                  <Th className="px-8 py-6">Analítica</Th>
-                  <Th className="px-8 py-6 text-right">Acciones</Th>
+                  <Th>Detalles del Artículo</Th>
+                  <Th>Autoría</Th>
+                  <Th>Categoría</Th>
+                  <Th>Estado</Th>
+                  <Th>Analítica</Th>
+                  <Th>Acciones</Th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-800">
