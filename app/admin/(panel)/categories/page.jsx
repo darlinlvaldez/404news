@@ -3,6 +3,8 @@
 import { useState, useEffect } from 'react';
 import { Header } from '@/components/admin/Header';
 import {ActionButton, SaveButton} from "@/components/admin/ui/ActionButtons"
+import Switch from "@/components/admin/ui/Switch";
+import { Container, Th } from "@/components/admin/ui/Table";
 import { 
   Trash2, 
   PlusCircle, 
@@ -92,9 +94,9 @@ const handleDelete = async (id) => {
     <div className="min-h-screen bg-gray-800 text-gray-100 flex font-sans">
 
       <div className="flex-1 overflow-y-auto">
-        <Header>
-        <Header.Title>Noticia</Header.Title>
-        <Header.Subtitle>Editor de Contenido</Header.Subtitle>
+      <Header>
+        <Header.Title>Categorias</Header.Title>
+        <Header.Subtitle>Gestion de Categorias</Header.Subtitle>
       </Header>
 
         <div className="max-w-5xl mx-auto px-6 py-10 space-y-10">
@@ -131,20 +133,21 @@ const handleDelete = async (id) => {
                 />
               </div>
               <div className="flex items-center space-x-4">
-                <div className="flex-1 bg-gray-900 p-3 rounded-xl border border-gray-700 flex items-center justify-between">
-                  <span className="text-[10px] font-bold text-gray-500 uppercase ml-1">Estado</span>
-                  <label className="relative inline-flex items-center cursor-pointer">
-                    <input type="checkbox" name="active" checked={formData.active === 1} onChange={handleInputChange} className="sr-only peer" />
-                    <div className="w-10 h-5 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-green-600"></div>
-                  </label>
+                <div className="flex-1 bg-gray-900 p-3 rounded-xl border border-gray-700">
+                  <Switch
+                    label="Estado"
+                    name="active"
+                    checked={formData.active === 1}
+                    onChange={handleInputChange}
+                  />
                 </div>
-                <SaveButton
-                  type="submit"
-                  icon={Save}
-                  variant={isEditing ? "blue" : "green"}
-                >
-                  {isEditing ? "Actualizar" : "Guardar"}
-                </SaveButton>
+                  <SaveButton
+                    type="submit"
+                    icon={Save}
+                    variant={isEditing ? "blue" : "green"}
+                  >
+                    {isEditing ? "Actualizar" : "Guardar"}
+                  </SaveButton>
               </div>
             </form>
           </section>
@@ -165,32 +168,31 @@ const handleDelete = async (id) => {
               </div>
             </div>
 
-            <div className="bg-gray-900 rounded-4xl border border-gray-700 overflow-hidden shadow-xl">
-              <table className="w-full text-left">
-                <thead className="bg-gray-800/50 text-gray-500 text-[10px] uppercase font-black tracking-widest">
+            <Container>
+               <thead className="bg-gray-800/50 text-gray-400 text-xs uppercase font-black tracking-widest">
                   <tr>
-                    <th className="px-8 py-5">ID</th>
-                    <th className="px-8 py-5">Nombre / Slug</th>
-                    <th className="px-8 py-5">Estado</th>
-                    <th className="px-8 py-5">Fecha Creación</th>
-                    <th className="px-8 py-5 text-right">Acciones</th>
+                    <Th>ID</Th>
+                    <Th>Nombre / Slug</Th>
+                    <Th>Estado</Th>
+                    <Th>Fecha Creación</Th>
+                    <Th>Acciones</Th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-800">
                   {filteredCategories.map((cat) => (
-                    <tr key={cat.id} className="hover:bg-gray-800/30 transition group">
-                      <td className="px-8 py-5 text-sm font-mono text-gray-500">#{cat.id}</td>
+                    <tr key={cat.id} className="hover:bg-gray-800/20 transition group">
+                      <td className="px-8 py-6 text-sm font-mono text-gray-500">#{cat.id}</td>
                       <td className="px-8 py-5">
                         <div className="text-sm font-bold text-gray-100">{cat.name}</div>
-                        <div className="text-[10px] text-gray-500 font-mono italic">{cat.slug}</div>
+                        <div className="text-xs text-gray-500 font-mono italic">{cat.slug}</div>
                       </td>
                       <td className="px-8 py-5">
                         {cat.active === 1 ? (
-                          <div className="flex items-center text-green-500 text-[10px] font-bold uppercase tracking-wider">
+                          <div className="flex items-center text-green-500 text-xs font-bold uppercase tracking-wider">
                             <CheckCircle size={12} className="mr-1.5" /> Activa
                           </div>
                         ) : (
-                          <div className="flex items-center text-gray-500 text-[10px] font-bold uppercase tracking-wider">
+                          <div className="flex items-center text-gray-500 text-xs font-bold uppercase tracking-wider">
                             <XCircle size={12} className="mr-1.5" /> Inactiva
                           </div>
                         )}
@@ -224,11 +226,18 @@ const handleDelete = async (id) => {
                     </tr>
                   )}
                 </tbody>
-              </table>
-              <div className="bg-gray-900/50 p-4 border-t border-gray-800 flex justify-between items-center px-8">
-                <span className="text-[10px] text-gray-500 font-bold uppercase">Total: {filteredCategories.length} categorías</span>
-              </div>
-            </div>
+              <tfoot>
+                <tr>
+                  <td colSpan="5" className="bg-gray-800/50 p-4 border-t border-gray-800">
+                    <div className="flex justify-between items-center">
+                      <span className="text-xs text-gray-400 font-bold pl-4 uppercase">
+                        Total: {filteredCategories.length} categorías
+                      </span>
+                    </div>
+                  </td>
+                </tr>
+              </tfoot>
+            </Container>
           </section>
         </div>
       </div>

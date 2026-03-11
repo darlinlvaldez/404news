@@ -143,7 +143,7 @@ export default function NewsTable() {
 
             <Container>
               <thead>
-                <tr className="bg-gray-900 text-gray-400 text-xs uppercase font-black tracking-tight border-b border-slate-800">
+                <tr className="bg-gray-800/50 text-gray-400 text-xs uppercase font-black tracking-tight border-b border-slate-800">
                   <Th>Detalles del Artículo</Th>
                   <Th>Autoría</Th>
                   <Th>Categoría</Th>
@@ -152,10 +152,10 @@ export default function NewsTable() {
                   <Th>Acciones</Th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-800">
+              <tbody className="divide-y divide-gray-800">
                 {news.map((item) => (
                   <tr key={item.id} className="hover:bg-slate-800/20 transition-all group">
-                    <td className="px-8 py-6">
+                    <td className="px-8 py-5">
                     <div className="max-w-xs md:max-w-sm">
                         <p className="text-sm font-bold text-white group-hover:text-green-500 transition truncate mb-1">
                             {item.title}
