@@ -126,8 +126,7 @@ export default function NewsTable() {
               setPage(1);
             }}
             placeholder="Buscar por título, ID o autor..."
-            icon={Search}
-          />
+            icon={Search}/>
           </div>
           
           <Select className="w-full md:w-56"
@@ -136,108 +135,112 @@ export default function NewsTable() {
           onChange={(value) => {
             setStatusFilter(value);
             setPage(1);
-          }}
-        />
-        
+          }}/>
         </div>
 
-            <Container>
-              <thead>
-                <tr className="bg-gray-800/50 text-gray-400 text-xs uppercase font-black tracking-tight border-b border-slate-800">
-                  <Th>Detalles del Artículo</Th>
-                  <Th>Autoría</Th>
-                  <Th>Categoría</Th>
-                  <Th>Estado</Th>
-                  <Th>Analítica</Th>
-                  <Th>Acciones</Th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-800">
-                {news.map((item) => (
-                  <tr key={item.id} className="hover:bg-slate-800/20 transition-all group">
-                    <td className="px-8 py-5">
-                    <div className="max-w-xs md:max-w-sm">
-                        <p className="text-sm font-bold text-white group-hover:text-green-500 transition truncate mb-1">
-                            {item.title}
-                        </p>
-                        <div className="flex items-center space-x-2 text-xs font-mono text-slate-600">
-                            <span className="bg-slate-900 px-2 py-0.5 rounded border border-slate-800">
-                                ID: #{item.id}
-                            </span>
-                            <span className="flex items-center text-slate-500 uppercase font-bold tracking-tighter">
-                                <Calendar size={15} className="mr-1"/>{formatDateAbsolute(item.created_at)}
-                            </span>
-                        </div>
-                    </div>
-                    </td>
-                    <td className="px-8 py-6">
-                      <div className="flex items-center text-sm text-slate-300">
-                        <div className="w-7 h-7 rounded-lg bg-slate-800 flex items-center justify-center mr-3 border border-slate-700 text-[10px] font-bold">
-                          {item.author.split(' ').map(n => n[0]).join('')}
-                        </div>
-                        {item.author}
-                      </div>
-                    </td>
-                    <td className="px-8 py-6">
-                      <div className="flex items-center text-sm text-slate-300">
-                        <Tag size={15} className="mr-2 text-emerald-500" />
-                        {item.category}
-                      </div>
-                    </td>
-                    <td className="px-8 py-6">
-                      <span className={`inline-flex items-center px-3 py-1.5 rounded-xl text-xs font-black uppercase tracking-widest border 
-                        ${getStatusStyle(item.status)}`}> {getStatusIcon(item.status)} {item.status}
-                      </span>
-                    </td>
-                    <td className="px-8 py-6 text-sm">
-                      <div className="flex flex-col">
-                        <span className="flex items-center text-slate-300 font-mono font-bold">
-                          <Eye size={20} className="mr-2 text-slate-600" />{item.views}
+        <Container>
+          <thead>
+            <tr className="bg-gray-800/50 text-gray-400 text-xs uppercase font-black tracking-tight border-b border-slate-800">
+              <Th>Detalles del Artículo</Th>
+              <Th>Autoría</Th>
+              <Th>Categoría</Th>
+              <Th>Estado</Th>
+              <Th>Analítica</Th>
+              <Th>Acciones</Th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-gray-800">
+            {news.map((item) => (
+              <tr key={item.id} className="hover:bg-slate-800/20 transition-all group">
+                <td className="px-8 py-5">
+                <div className="max-w-xs md:max-w-sm">
+                    <p className="text-sm font-bold text-white group-hover:text-green-500 transition truncate mb-1">
+                      {item.title}
+                    </p>
+                    <div className="flex items-center space-x-2 text-xs py-0.5 font-mono text-gray-500">
+                        <span>
+                          ID: #{item.id}
                         </span>
-                      </div>
-                    </td>
-                    <td className="px-8 py-6 text-right">
-                      <div className="flex justify-end space-x-2">
-                        <Link href={`/admin/news/edit/${item.id}`}
-                            className="p-3 bg-gray-900 hover:bg-blue-600 text-slate-400 hover:text-white rounded-xl transition-all shadow-lg active:scale-95 flex items-center justify-center">
-                            <Edit3 size={16}/>
-                        </Link>
+                        <span className="flex items-center text-gray-500 uppercase font-bold tracking-tighter">
+                            <Calendar size={15} className="mr-1"/>{formatDateAbsolute(item.created_at)}
+                        </span>
                     </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </Container>
+                </div>
+                </td>
+                <td className="px-8 py-6">
+                  <div className="flex items-center text-sm text-gray-300">
+                    <div className="w-7 h-7 rounded-lg bg-gray-800 flex items-center justify-center mr-3 border border-gray-700 text-xs font-bold">
+                      {item.author.split(' ').slice(0,2).map(n => n[0]).join('')}
+                    </div>
+                    {item.author}
+                  </div>
+                </td>
+                <td className="px-8 py-6">
+                  <div className="flex items-center text-sm text-slate-300">
+                    <Tag size={15} className="mr-2 text-emerald-500" />
+                    {item.category}
+                  </div>
+                </td>
+                <td className="px-8 py-6">
+                  <span className={`inline-flex items-center px-3 py-1.5 rounded-xl text-xs font-black uppercase tracking-widest border 
+                    ${getStatusStyle(item.status)}`}> {getStatusIcon(item.status)} {item.status}
+                  </span>
+                </td>
+                <td className="px-8 py-6 text-sm">
+                  <div className="flex flex-col">
+                    <span className="flex items-center text-slate-300 font-mono font-bold">
+                      <Eye size={20} className="mr-2 text-slate-600" />{item.views}
+                    </span>
+                  </div>
+                </td>
+                <td className="px-8 py-6 text-right">
+                  <div className="flex justify-end space-x-2">
+                    <Link href={`/admin/news/edit/${item.id}`}
+                        className="p-3 bg-gray-800 hover:bg-blue-600 text-slate-400 hover:text-white rounded-xl transition-all shadow-lg active:scale-95 flex items-center justify-center">
+                        <Edit3 size={18}/>
+                    </Link>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
 
-          <div className="p-6 bg-gray-900 border-t border-gray-700 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest"> Mostrando <span className="text-emerald-500">{showingTo - showingFrom + 1}</span>
-                {" "}de{" "} <span className="text-white">{total}</span> noticias
-            </span>
-            <div className="flex items-center space-x-3">
-              <button disabled={page === 1} onClick={() => setPage(prev => prev - 1)}
-              className="p-2.5 bg-gray-800 border border-gray-700 rounded-xl cursor-pointer text-gray-400 hover:bg-gray-700 transition disabled:opacity-20 disabled:cursor-not-allowed">
-                <ChevronLeft size={18}/>
-              </button> 
-            <div className="flex space-x-1">
-                {getVisiblePages().map((number) => {
-                    const isActive = page === number;
+          <tfoot>
+            <tr>
+              <td colSpan="6" className="bg-gray-800/50 border-t border-gray-800">
+                  <div className="p-6 bg-gray-900 border-t border-gray-900 flex flex-col sm:flex-row items-center justify-between gap-4">
+                  <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest"> Mostrando <span className="text-emerald-500">{showingTo - showingFrom + 1}</span>
+                      {" "}de{" "} <span className="text-white">{total}</span> noticias
+                  </span>
+                  <div className="flex items-center space-x-3">
+                    <button disabled={page === 1} onClick={() => setPage(prev => prev - 1)}
+                    className="p-2.5 bg-gray-800 border border-gray-700 rounded-xl cursor-pointer text-gray-400 hover:bg-gray-700 transition disabled:opacity-20 disabled:cursor-not-allowed">
+                      <ChevronLeft size={18}/>
+                    </button> 
+                  <div className="flex space-x-1">
+                      {getVisiblePages().map((number) => {
+                          const isActive = page === number;
 
-                    return (
-                    <button key={number} onClick={() => setPage(number)}
-                        className={`w-9 h-9 flex items-center justify-center rounded-xl text-xs font-black transition cursor-pointer
-                        ${isActive ? "bg-green-800 text-white" :  "bg-gray-800 border border-gray-700 text-gray-400 hover:bg-gray-700"}`} >
-                        {number}
+                          return (
+                          <button key={number} onClick={() => setPage(number)}
+                              className={`w-9 h-9 flex items-center justify-center rounded-xl text-xs font-black transition cursor-pointer
+                              ${isActive ? "bg-green-800 text-white" :  "bg-gray-800 border border-gray-700 text-gray-400 hover:bg-gray-700"}`} >
+                              {number}
+                          </button>
+                          );
+                      })}
+                  </div>
+
+                  <button disabled={page === totalPages} onClick={() => setPage(prev => prev + 1)} 
+                      className="p-2.5 bg-gray-800 border border-gray-700 rounded-xl text-gray-400 hover:bg-gray-700 transition cursor-pointer">
+                      <ChevronRight size={18}/>
                     </button>
-                    );
-                })}
-            </div>
-
-            <button disabled={page === totalPages} onClick={() => setPage(prev => prev + 1)} 
-                className="p-2.5 bg-gray-800 border border-gray-700 rounded-xl text-gray-400 hover:bg-gray-700 transition cursor-pointer">
-                <ChevronRight size={18}/>
-              </button>
-            </div>
-          </div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </tfoot>
+        </Container>
       </section>
     </div>
   );

@@ -10,7 +10,7 @@ export default function Switch({
     <div className="flex items-center justify-between">
       
       {label && (
-        <span className="text-[10px] font-bold text-gray-500 uppercase ml-1">
+        <span className="text-[10px] font-bold text-gray-400 uppercase ml-1">
           {label}
         </span>
       )}

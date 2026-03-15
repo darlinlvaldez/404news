@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Header } from '@/components/admin/Header';
 import {ActionButton, SaveButton} from "@/components/admin/ui/ActionButtons"
+import Input from "@/components/admin/ui/Input"
 import Switch from "@/components/admin/ui/Switch";
 import { Container, Th } from "@/components/admin/ui/Table";
 import { 
@@ -120,16 +121,20 @@ const handleDelete = async (id) => {
 
             <form onSubmit={handleSave} className="grid grid-cols-1 md:grid-cols-3 gap-6 items-end">
               <div className="md:col-span-1">
-                <label className="block text-xs font-bold text-gray-500 uppercase mb-2 ml-1">Nombre de Categoría</label>
-                <input type="text" name="name" value={formData.name} onChange={handleInputChange}
-                  placeholder="Ej. Tecnología, Salud..."
-                  className="w-full bg-gray-950 border border-gray-700 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-green-600 outline-none transition"
+                <label className="block text-xs font-bold text-gray-400 uppercase mb-2 ml-1">Nombre de Categoría</label>
+                <Input
+                className="w-full"
+                value={formData.name}
+                onChange={handleInputChange}
+                placeholder="Ej. Tecnología, Salud..."
                 />
               </div>
               <div className="md:col-span-1">
-                <label className="block text-xs font-bold text-gray-500 uppercase mb-2 ml-1">URL (Slug)</label>
-                <input type="text" name="slug" value={formData.slug} onChange={handleInputChange}
-                  className="w-full bg-gray-950 border border-gray-700 rounded-xl px-4 py-3 text-sm text-gray-400 font-mono outline-none"
+                <label className="block text-xs font-bold text-gray-400 uppercase mb-2 ml-1">URL (Slug)</label>
+                <Input
+                className="w-full"
+                value={formData.slug}
+                onChange={handleInputChange}
                 />
               </div>
               <div className="flex items-center space-x-4">
@@ -159,12 +164,13 @@ const handleDelete = async (id) => {
                 Listado de Categorías
               </h3>
               <div className="relative">
-                <input type="text" placeholder="Buscar categorías..." value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="bg-gray-950 border border-gray-700 rounded-2xl pl-10 pr-4 py-2.5 
-                  text-sm w-full md:w-80 focus:ring-2 focus:ring-green-600 outline-none transition"
+                <Input
+                className="w-96"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                placeholder="Buscar categorías..."
+                icon={Search}
                 />
-                <Search className="absolute left-3 top-3 text-gray-600" size={16} />
               </div>
             </div>
 
