@@ -26,7 +26,7 @@ export default function Switch({
 
         <div className="
           w-10 h-5 bg-gray-700 rounded-full peer-focus:outline-none
-          peer-checked:bg-green-600
+          peer-checked:bg-green-700
           after:content-['']
           after:absolute
           after:top-[2.3px]

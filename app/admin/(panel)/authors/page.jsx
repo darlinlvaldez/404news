@@ -307,10 +307,15 @@ const handleDelete = async (id) => {
                         </span>
                       </td>
                       <td className="px-8 py-6">
-                        <div className={`flex items-center text-xs font-black uppercase tracking-widest ${author.active === 1 ? 'text-green-600' : 'text-gray-600'}`}>
-                          {author.active === 1 ? <CheckCircle size={18} className="mr-2" /> : <XCircle size={18} className="mr-2" />}
-                          {author.active === 1 ? 'Activo' : 'Inactivo'}
-                        </div>
+                        {author.active === 1 ? (
+                          <div className="flex items-center text-green-500 text-xs font-bold uppercase tracking-wider">
+                            <CheckCircle size={12} className="mr-1.5" /> Activa
+                          </div>
+                        ) : (
+                          <div className="flex items-center text-gray-500 text-xs font-bold uppercase tracking-wider">
+                            <XCircle size={12} className="mr-1.5" /> Inactiva
+                          </div>
+                        )}
                       </td>
                       <td className="px-8 py-6 text-right">
                         <div className="flex justify-end space-x-2">

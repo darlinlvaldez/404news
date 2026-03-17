@@ -102,12 +102,12 @@ const handleDelete = async (id) => {
 
         <div className="max-w-5xl mx-auto px-6 py-10 space-y-10">
           
-          <section className="bg-gray-900 rounded-3xl border border-gray-700 p-8 shadow-2xl relative">
-            <div className={`absolute top-0 left-0 w-full h-1 rounded-t-3xl transition-colors duration-500 ${isEditing ? 'bg-blue-500' : 'bg-green-600'}`}></div>
+          <section className="bg-gray-900 rounded-4xl border border-gray-700 p-8 shadow-2xl relative overflow-hidden">
+            <div className={`absolute top-0 left-0 w-full h-1.5 transition-colors duration-500 ${isEditing ? 'bg-blue-500' : 'bg-green-800'}`}></div>
             
             <div className="flex items-center justify-between mb-8">
               <div className="flex items-center">
-                <div className={`p-2.5 rounded-2xl mr-4 ${isEditing ? 'bg-blue-900/30 text-blue-500' : 'bg-green-900/30 text-green-500'}`}>
+                <div className={`p-2.5 rounded-2xl mr-4 ${isEditing ? 'bg-blue-900/30 text-blue-500' : 'bg-green-900/30 text-green-700'}`}>
                   {isEditing ? <Edit3 size={22} /> : <PlusCircle size={22} />}
                 </div>
                 <h3 className="text-xl font-bold">{isEditing ? 'Editar Categoría' : 'Nueva Categoría'}</h3>
@@ -187,19 +187,19 @@ const handleDelete = async (id) => {
                 <tbody className="divide-y divide-gray-800">
                   {filteredCategories.map((cat) => (
                     <tr key={cat.id} className="hover:bg-gray-800/20 transition group">
-                      <td className="px-8 py-6 text-sm font-mono text-gray-500">#{cat.id}</td>
+                      <td className="px-8 py-6 text-sm font-mono text-white">#{cat.id}</td>
                       <td className="px-8 py-5">
-                        <div className="text-sm font-bold text-gray-100">{cat.name}</div>
-                        <div className="text-xs text-gray-500 font-mono italic">{cat.slug}</div>
+                        <h3 className="text-sm font-bold text-white group-hover:text-green-700">{cat.name}</h3>
+                        <span className="text-xs text-gray-500 font-mono italic">{cat.slug}</span>
                       </td>
                       <td className="px-8 py-5">
                         {cat.active === 1 ? (
                           <div className="flex items-center text-green-500 text-xs font-bold uppercase tracking-wider">
-                            <CheckCircle size={12} className="mr-1.5" /> Activa
+                            <CheckCircle size={15} className="mr-1.5" /> Activa
                           </div>
                         ) : (
                           <div className="flex items-center text-gray-500 text-xs font-bold uppercase tracking-wider">
-                            <XCircle size={12} className="mr-1.5" /> Inactiva
+                            <XCircle size={15} className="mr-1.5" /> Inactiva
                           </div>
                         )}
                       </td>

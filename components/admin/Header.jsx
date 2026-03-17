@@ -4,7 +4,7 @@ import { ArrowLeft, Eye, Save } from 'lucide-react';
 
 export const Header = ({ children, views, onSave, onBack }) => {
   return (
-    <header className="sticky top-0 z-20 bg-gray-900/90 backdrop-blur-md px-8 py-4 border-b border-gray-700 flex justify-between items-center">
+    <header className="sticky top-0 z-20 bg-gray-900 backdrop-blur-md px-8 py-4 border-b border-gray-700 flex justify-between items-center">
       <div className="flex items-center space-x-4">
         {onBack && (
           <button 
@@ -28,7 +28,8 @@ export const Header = ({ children, views, onSave, onBack }) => {
         {onSave && (
         <button 
           onClick={onSave}
-          className="bg-green-600 hover:bg-green-500 text-white px-6 py-2.5 rounded-xl font-bold flex items-center transition shadow-lg shadow-green-900/20">
+          className="bg-green-700 hover:bg-green-600 text-white px-6 py-2.5 rounded-xl font-bold flex items-center 
+          transition shadow-lg shadow-green-900/20 cursor-pointer">
           <Save size={18} className="mr-2" /> Guardar Noticia
         </button>
         )}

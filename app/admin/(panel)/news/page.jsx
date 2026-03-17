@@ -154,17 +154,17 @@ export default function NewsTable() {
               <tr key={item.id} className="hover:bg-slate-800/20 transition-all group">
                 <td className="px-8 py-5">
                 <div className="max-w-xs md:max-w-sm">
-                    <p className="text-sm font-bold text-white group-hover:text-green-500 transition truncate mb-1">
-                      {item.title}
-                    </p>
-                    <div className="flex items-center space-x-2 text-xs py-0.5 font-mono text-gray-500">
-                        <span>
-                          ID: #{item.id}
-                        </span>
-                        <span className="flex items-center text-gray-500 uppercase font-bold tracking-tighter">
-                            <Calendar size={15} className="mr-1"/>{formatDateAbsolute(item.created_at)}
-                        </span>
-                    </div>
+                  <p className="text-sm font-bold text-white group-hover:text-green-500 transition truncate mb-1">
+                    {item.title}
+                  </p>
+                  <div className="flex items-center space-x-2 text-xs py-0.5 font-mono text-gray-500">
+                    <span>
+                      ID: #{item.id}
+                    </span>
+                    <span className="flex items-center text-gray-500 uppercase font-bold tracking-tighter">
+                        <Calendar size={15} className="mr-1"/>{formatDateAbsolute(item.created_at)}
+                    </span>
+                  </div>
                 </div>
                 </td>
                 <td className="px-8 py-6">
