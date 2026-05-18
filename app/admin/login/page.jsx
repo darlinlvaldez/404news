@@ -101,7 +101,6 @@ export default function AdminLogin() {
             <div className="space-y-2">
               <div className="flex justify-between items-center px-1">
                 <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Contraseña</label>
-                <a href="#" className="text-[10px] font-bold text-emerald-500 hover:text-emerald-400 transition uppercase tracking-tighter">¿Olvidaste tu clave?</a>
               </div>
               <div className="relative group">
                 <div className="absolute inset-y-0 left-4 flex items-center text-slate-600 group-focus-within:text-emerald-500 transition-colors">
