@@ -4,11 +4,11 @@ import { Image as ImageIcon, AlignLeft } from 'lucide-react';
 
 export const GeneralData = ({ newsData, onInputChange, authors = [], categories = [] }) => {
   return (
-    <section className="bg-gray-900 rounded-3xl border border-gray-700 p-8 shadow-2xl relative">
-      <div className="absolute top-0 left-0 w-full h-1 bg-linear-to-r from-green-600 to-green-400 rounded-t-3xl"></div>
+    <section className="bg-gray-900 rounded-3xl border border-gray-700 p-8 shadow-2xl relative overflow-hidden">
+      <div className="absolute top-0 left-0 w-full h-1 bg-green-700 rounded-t-3xl"></div>
 
       <div className="flex items-center mb-8">
-        <div className="bg-green-900/30 p-2.5 rounded-2xl mr-4 text-green-500">
+        <div className="bg-green-900/30 p-2.5 rounded-2xl mr-4 text-green-600">
           <AlignLeft size={22} />
         </div>
         <h3 className="text-xl font-bold">Datos Generales</h3>

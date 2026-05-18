@@ -15,7 +15,7 @@ export const ContentBlocks = ({ blocks, onAddBlock, onRemoveBlock, onUpdateBlock
     <section className="space-y-8">
       <div className="flex items-center justify-between border-b border-gray-700 pb-4">
         <div className="flex items-center space-x-3">
-          <div className="bg-blue-900/30 p-2 rounded-xl text-blue-400">
+          <div className="bg-blue-900/30 p-2 rounded-xl text-blue-500">
             <PlusCircle size={20}/>
           </div>
           <h3 className="text-xl font-bold">Bloques de Contenido</h3>

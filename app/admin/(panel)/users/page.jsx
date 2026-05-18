@@ -130,12 +130,12 @@ const handleDelete = async (id) => {
 
         <div className="max-w-6xl mx-auto px-6 py-10 space-y-10">
           
-          <section className="bg-gray-900 rounded-3xl border border-gray-700 p-8 shadow-2xl relative">
-            <div className={`absolute top-0 left-0 w-full h-1 rounded-t-3xl transition-colors duration-500 ${isEditing ? 'bg-orange-500' : 'bg-green-600'}`}></div>
+          <section className="bg-gray-900 rounded-3xl border border-gray-700 p-8 shadow-2xl relative overflow-hidden">
+            <div className={`absolute top-0 left-0 w-full h-1.5 rounded-t-3xl transition-colors duration-500 ${isEditing ? 'bg-orange-500' : 'bg-green-700'}`}></div>
             
             <div className="flex items-center justify-between mb-8">
               <div className="flex items-center">
-                <div className={`p-2.5 rounded-2xl mr-4 ${isEditing ? 'bg-orange-900/30 text-orange-500' : 'bg-green-900/30 text-green-500'}`}>
+                <div className={`p-2.5 rounded-2xl mr-4 ${isEditing ? 'bg-orange-900/30 text-orange-500' : 'bg-green-900/30 text-green-600'}`}>
                   {isEditing ? <Edit3 size={22} /> : <PlusCircle size={22} />}
                 </div>
                 <h3 className="text-xl font-bold">{isEditing ? 'Actualizar Usuario' : 'Crear Nuevo Usuario'}</h3>
@@ -273,7 +273,7 @@ const handleDelete = async (id) => {
                           </div>
                         ) : (
                           <div className="flex items-center text-gray-500 text-[10px] font-bold uppercase">
-                            <XCircle size={14} className="mr-2" /> Suspendido
+                            <XCircle size={14} className="mr-2" /> Inactivo
                           </div>
                         )}
                       </td>

@@ -70,11 +70,8 @@ export default function CreateNews() {
   };
 
   return (
-    <div className="flex-1 overflow-y-auto">
-      <Header 
-        onSave={onSave}
-        onBack={onBack}
-      >
+    <div className="flex-1 overflow-y-auto bg-gray-800">
+      <Header onSave={onSave} onBack={onBack}>
         <Header.Title>Noticia</Header.Title>
         <Header.Subtitle>Crear Nueva Noticia </Header.Subtitle>
       </Header>

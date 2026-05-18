@@ -74,14 +74,14 @@ useEffect(() => {
   };
 
   fetchNews();
-}, [id]);
+  }, [id]);
 
-  const onSave = () => {
-  handleSave(id, () => {
-    alert('¡Noticia actualizada con éxito!');
-    router.push('/admin/news');
-  });
-};
+    const onSave = () => {
+    handleSave(id, () => {
+      alert('¡Noticia actualizada con éxito!');
+      router.push('/admin/news');
+    });
+  };
 
   const onDelete = () => {
     handleDelete(id, () => {
@@ -103,7 +103,7 @@ useEffect(() => {
   }
 
   return (
-    <div className="flex-1 overflow-y-auto">
+    <div className="flex-1 bg-gray-800 overflow-y-auto">
       <Header
         views={newsData.views}
         onSave={onSave}
