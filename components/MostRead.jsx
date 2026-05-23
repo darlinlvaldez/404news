@@ -5,12 +5,19 @@ import Link from "next/link";
 import { formatDateRelative } from "@/utils/formatDate";
 
 export default function MostRead({ mostRead }) {
+  
   const [showAll, setShowAll] = useState(false);
 
   const visibleNews = showAll ? mostRead : mostRead.slice(0, 4);
 
+  if (!mostRead || mostRead.length === 0) {
+    return null;
+  }
+
   const mostReadButton = `group flex items-center gap-2 px-10 py-3 border-2 border-gray-900 text-gray-900 text-sm
     font-bold rounded-full hover:bg-gray-900 hover:text-white transition-all active:scale-95 tracking-wide cursor-pointer`
+
+  const rakingStyle = `absolute top-2 left-2 flex items-center gap-1 bg-black/60 text-white px-2 py-1 rounded backdrop-blur-sm z-10`
 
   return (
     <>
@@ -26,7 +33,7 @@ export default function MostRead({ mostRead }) {
             <article key={news.id} className="mb-10 relative">
                 <Link href={`/news/news-details/${news.slug}`}>
                     <div className="relative">
-                        <div className="absolute top-2 left-2 flex items-center gap-1 bg-black/60 text-white px-2 py-1 rounded backdrop-blur-sm z-10">
+                        <div className={rakingStyle}>
                             <span className="text-xs font-bold">{index + 1}</span>
                         </div>
                         <img className="w-full h-48 object-cover rounded" src={news.cover_image} alt={news.title}/>
@@ -51,6 +58,7 @@ export default function MostRead({ mostRead }) {
             ))}
         </section>
         
+      {mostRead.length > 4 && (
       <div className="mt-12 flex justify-center">
         <button onClick={() => setShowAll(!showAll)} className={mostReadButton}>
           {showAll ? "VER MENOS" : "VER MÁS"}
@@ -60,6 +68,7 @@ export default function MostRead({ mostRead }) {
           </svg>
         </button>
       </div>
+      )}
     </>
   );
 }

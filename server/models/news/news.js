@@ -136,8 +136,7 @@ getNews.getMostReadByCategory = async function (slug, limit) {
       AND n.views > 0
       AND n.status = 'published'
       AND c.active = 1
-      AND n.created_at >= DATE_SUB(NOW(), INTERVAL 21 DAY)
-    ORDER BY n.views DESC
+      ORDER BY n.views / (DATEDIFF(NOW(), n.created_at) + 1) DESC
     LIMIT ?
   `, [slug, limit]);
 

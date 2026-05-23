@@ -63,7 +63,6 @@ export default function NewsResults({
         </div>
 
         <div className="flex justify-center gap-2 mt-8">
-
             {page > 1 && (
             <Link
                 href={`/news/${basePath}?${queryParams}&page=${page - 1}`}
