@@ -1,5 +1,5 @@
 import { cookies } from "next/headers";
-import { verifyToken } from "@/server/utils/jwt";
+import { verifyToken } from "../../../../server/utils/jwt";
 
 export async function GET() {
   const cookieStore = await cookies();

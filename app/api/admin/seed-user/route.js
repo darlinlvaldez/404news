@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import bcrypt from "bcrypt";
-import db from "@/server/lib/db"; 
+import db from "../../../../server/lib/db"; 
 
 export async function GET() {
   try {

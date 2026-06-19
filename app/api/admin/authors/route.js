@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
-import authorsController from "@/server/controllers/admin/authors";
-import { requireAuth } from "@/server/utils/auth";
-import { handleError } from "@/server/utils/handleError";
+import authorsController from "../../../../server/controllers/admin/authors";
+import { requireAuth } from "../../../../server/utils/auth";
+import { handleError } from "../../../../server/utils/handleError";
 
 export async function GET(request) {
   try {

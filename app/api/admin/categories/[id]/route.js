@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
-import categoryController from "@/server/controllers/admin/categories";
-import { requireAuth } from "@/server/utils/auth";
-import { handleError } from "@/server/utils/handleError";
+import categoryController from "../../../../../server/controllers/admin/categories";
+import { requireAuth } from "../../../../../server/utils/auth";
+import { handleError } from "../../../../../server/utils/handleError";
 
 export async function PUT(request, context) {
   try {

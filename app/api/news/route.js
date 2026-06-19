@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import news from "../../../controllers/news/news";
+import news from "../../../server/controllers/news/news";
 
 export async function GET() {
   const result = await news.fetchLatestNews();

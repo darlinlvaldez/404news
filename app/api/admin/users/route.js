@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import usersController from "@/server/controllers/admin/users";
+import usersController from "../../../../server/controllers/admin/users";
 
 export async function GET() {
   const users = await usersController.getAll();

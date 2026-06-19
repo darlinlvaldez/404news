@@ -1,4 +1,4 @@
-import newsController from "@/controllers/news/news";
+import newsController from "../../../../server/controllers/news/news";
 
 export async function GET(req) {
   const { searchParams } = new URL(req.url);
