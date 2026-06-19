@@ -1,7 +1,8 @@
-import redis from "../lib/redis.js";
+import getRedis from "../lib/redis.js";
 import syncViewsToDatabase from "../models/news/redis.js";
 
 export default async function syncAllViews() {
+  const redis = await getRedis();
   const keys = await redis.keys("news:views:*");
 
   for (const key of keys) {

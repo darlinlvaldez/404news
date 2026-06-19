@@ -1,7 +1,9 @@
 import db from "../../lib/db.js"
-import redis from "../../lib/redis.js";
+import getRedis from "../../lib/redis.js";
 
 export default async function syncViewsToDatabase(slug) {
+
+  const redis = await getRedis();
 
   const counterKey = `news:views:${slug}`;
 

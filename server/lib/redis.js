@@ -1,20 +1,24 @@
 import { createClient } from "redis";
-import config from '../../config.js';
+import config from "../../config.js";
 
 let redis;
 
-if (!global._redis) {
-  global._redis = createClient({
-    url: config.REDIS_URL,
-  });
+async function getRedis() {
 
-  global._redis.on("error", (err) => {
-    console.error("Redis error:", err);
-  });
+  if (!redis) {
 
-  await global._redis.connect();
+    redis = createClient({
+      url: config.REDIS_URL,
+    });
+
+    redis.on("error", (err) => {
+      console.error("Redis error:", err);
+    });
+
+    await redis.connect();
+  }
+
+  return redis;
 }
 
-redis = global._redis;
-
-export default redis;
+export default getRedis;
