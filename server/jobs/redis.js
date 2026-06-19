@@ -1,4 +1,4 @@
-import syncAllViews from "@/server/models/news/redis";
+import syncAllViews from "../helpers/redis.js";
 
 export function startSyncJob() {
   setInterval(async () => {
@@ -9,5 +9,5 @@ export function startSyncJob() {
     } catch (err) {
       console.error("Error sincronizando vistas:", err);
     }
-  }, 1000 * 60 * 30); 
+  }, 30 * 60 * 1000); 
 }

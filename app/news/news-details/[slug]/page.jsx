@@ -22,7 +22,7 @@ export default async function DetailNews({ params }) {
     const data = await newsControllers.detailsNews(slug, ip);
 
     if (!data.ok) {
-        return <p>Error cargando la noticia</p>;
+        return <p>Error al cargar la noticia</p>;
     }
 
     const news = data.detailNews;

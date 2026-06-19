@@ -1,4 +1,4 @@
-import redis from "@/server/lib/redis";
+import redis from "../../lib/redis.js";
 
 export default async function incrementView(slug, ip) {
 

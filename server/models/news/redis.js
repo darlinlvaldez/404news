@@ -1,5 +1,5 @@
-import db from "../../lib/db"
-import redis from "../../lib/redis";
+import db from "../../lib/db.js"
+import redis from "../../lib/redis.js";
 
 export default async function syncViewsToDatabase(slug) {
 
