@@ -1,11 +1,11 @@
 import { NextResponse } from "next/server";
 import usersController from "../../../../../server/controllers/admin/users";
-import { requireAdmin } from "../../../../../server/utils/auth";
+import { requireAuth } from "../../../../../server/utils/auth";
 import { handleError } from "../../../../../server/utils/handleError";
 
 export async function PUT(request, context) {
   try {
-    await requireAdmin(request);
+    await requireAuth(request);
 
     const { id } = context.params;
     const body = await request.json();
@@ -21,7 +21,7 @@ export async function PUT(request, context) {
 
 export async function DELETE(request, context) {
   try {
-    await requireAdmin(request);
+    await requireAuth(request);
 
     const { id } = context.params;
 
