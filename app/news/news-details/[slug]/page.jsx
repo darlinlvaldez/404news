@@ -16,7 +16,7 @@ export default async function DetailNews({ params }) {
     const { slug } = await params;
 
     const headersList = await headers();
-    const ip = headersList.get("x-forwarded-for")?.split(",")[0] ||
+    const ip = headersList.get("x-forwarded-for")?.split(",")[0].trim() ||
       headersList.get("x-real-ip") || "unknown";
 
     const data = await newsControllers.detailsNews(slug, ip);
