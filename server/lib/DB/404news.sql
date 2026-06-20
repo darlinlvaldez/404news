@@ -36,11 +36,15 @@ CREATE TABLE `authors` (
 
 /*Data for the table `authors` */
 
+LOCK TABLES `authors` WRITE;
+
 insert  into `authors`(`id`,`name`,`bio`,`slug`,`avatar`,`user_id`) values 
 (1,'Ana Torres','Periodista especializada en inteligencia artificial con más de 10 años de experiencia','ana-torres','',2),
 (2,'Carlos Mendoza','Analista de hardware y dispositivos móviles, colaborador habitual en revistas especializadas','carlos-mendoza','',3),
 (3,'Laura Vega','Desarrolladora de software y experta en nuevas tecnologías','laura-vega','',4),
 (4,'Miguel Ruiz','Ingeniero en sistemas y especialista en hardware de PCs','miguel-ruiz','',5);
+
+UNLOCK TABLES;
 
 /*Table structure for table `categories` */
 
@@ -60,12 +64,37 @@ CREATE TABLE `categories` (
 
 /*Data for the table `categories` */
 
+LOCK TABLES `categories` WRITE;
+
 insert  into `categories`(`id`,`name`,`slug`,`created_at`,`active`) values 
 (1,'Inteligencia Artificial','ia-inteligencia-artificial','2026-02-03 12:01:14',1),
 (2,'Dispositivos Móviles','dispositivos-moviles','2026-02-03 12:01:14',1),
 (3,'Software','desarrollo-software-app','2026-02-03 12:01:14',1),
 (4,'Computadoras (PC)','computadoras-pc','2026-02-03 12:01:14',1),
 (5,'Tecnología General','tecnologia-tecnology','2026-02-03 20:19:34',1);
+
+UNLOCK TABLES;
+
+/*Table structure for table `country_stats` */
+
+DROP TABLE IF EXISTS `country_stats`;
+
+CREATE TABLE `country_stats` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `news_id` int NOT NULL,
+  `country_code` char(2) COLLATE utf8mb4_general_ci NOT NULL,
+  `country_name` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `views` int NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`),
+  KEY `news_id` (`news_id`),
+  CONSTRAINT `country_stats_ibfk_1` FOREIGN KEY (`news_id`) REFERENCES `news` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+/*Data for the table `country_stats` */
+
+LOCK TABLES `country_stats` WRITE;
+
+UNLOCK TABLES;
 
 /*Table structure for table `news` */
 
@@ -95,9 +124,11 @@ CREATE TABLE `news` (
 
 /*Data for the table `news` */
 
+LOCK TABLES `news` WRITE;
+
 insert  into `news`(`id`,`title`,`slug`,`excerpt`,`cover_image`,`author_id`,`category_id`,`status`,`created_at`,`updated_at`,`views`) values 
 (1,'GPT-5 supera los límites de la generación de texto multimodal','gpt-5-supera-limites-texto-multimodal','OpenAI presenta su modelo más avanzado capaz de entender y generar contenido en múltiples formatos','https://www.iweaver.ai/wp-content/uploads/2025/08/ChatGPT-5.webp',1,1,'draft','2026-02-12 14:31:54','2026-02-19 15:18:42',7),
-(2,'Nuevo modelo de IA detecta enfermedades con 98% de precisión','ia-detecta-enfermedades-precision','Sistema de inteligencia artificial revoluciona el diagnóstico médico temprano','https://images.ecestaticos.com/MfuZbXrtEZBJSHTQghygcWF5u-g=/0x0:2272x1515/1200x1200/filters:fill(white):format(jpg)/f.elconfidencial.com%2Foriginal%2F194%2F3b6%2F83b%2F1943b683bccc82165c4ab61e16e7c727.jpg',1,1,'published','2026-02-02 14:30:00','2026-02-11 20:24:23',1),
+(2,'Nuevo modelo de IA detecta enfermedades con 98% de precisión','ia-detecta-enfermedades-precision','Sistema de inteligencia artificial revoluciona el diagnóstico médico temprano','https://images.ecestaticos.com/MfuZbXrtEZBJSHTQghygcWF5u-g=/0x0:2272x1515/1200x1200/filters:fill(white):format(jpg)/f.elconfidencial.com%2Foriginal%2F194%2F3b6%2F83b%2F1943b683bccc82165c4ab61e16e7c727.jpg',1,1,'published','2026-02-02 14:30:00','2026-06-18 20:40:18',2),
 (3,'Samsung Galaxy S30 con pantalla plegable sin bisel','samsung-galaxy-s30-pantalla-plegable','El nuevo flagship de Samsung presenta innovaciones en diseño y tecnología flexible','https://revistamercado.do/wp-content/uploads/2025/12/Samsung-lanza-su-tele%CC%81fono-plegable-triple-Galaxy-Z-TriFold-copy.jpg',2,2,'published','2026-02-01 11:45:00','2026-02-11 21:03:38',3),
 (4,'Apple iPhone 16: Cámara cuántica y carga inalámbrica a distancia','iphone-16-camara-cuantica','Apple anuncia su nuevo smartphone con tecnología de cámara revolucionaria','https://cdsassets.apple.com/live/7WUAS350/images/tech-specs/121031-iphone-16-pro.png',2,2,'published','2026-01-31 16:20:00','2026-02-11 19:52:17',1),
 (5,'Windows 13 incluye asistente de IA nativo','windows-13-asistente-ia-nativo','Microsoft integra Copilot directamente en el sistema operativo','https://i.blogs.es/876678/copilot-novedades/500_333.jpeg',3,3,'published','2026-01-30 10:10:00','2026-02-13 12:31:28',2),
@@ -112,7 +143,7 @@ insert  into `news`(`id`,`title`,`slug`,`excerpt`,`cover_image`,`author_id`,`cat
 (14,'Google Pixel 9 Pro con Tensor G4 y cámara térmica','google-pixel-9-pro-camara-termica','Nuevo sensor térmico permite ver temperatura y detectar problemas eléctricos','https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSTb4elrGyn1Pr8RfiUz2fehsNynWJ3X8XKBw&s',2,2,'published','2026-02-14 12:21:58','2026-02-14 12:23:28',9),
 (15,'Xiaomi presenta smartphone con batería de estado sólido de 6000mAh','xiaomi-bateria-estado-solido','Nueva tecnología de batería ofrece carga completa en 8 minutos y mayor seguridad','https://blob.tusbuenasnoticias.com/images/2025/12/30/vale-la-pena-el-poco-c85-con-bateria-de-6000-mah-y-doble-camara-en-remate-706e2adf-focus-0-0-1200-600.webp',2,2,'published','2026-01-20 09:50:00','2026-02-12 14:37:34',1),
 (16,'Nothing Phone (3) con pantalla holográfica retroiluminada','nothing-phone-3-pantalla-holografica','Interfaz Glyph Interface evoluciona con efectos de luz 3D y notificaciones contextuales','https://i.blogs.es/2a45d5/nothing3/450_1000.jpeg',2,2,'published','2026-01-19 13:40:00','2026-02-05 21:03:48',0),
-(17,'Visual Studio Code integra Copilot Chat de forma nativa','vscode-copilot-chat-nativo','Microsoft fusiona su IDE con herramientas de IA para desarrollo asistido','https://blog.underc0de.org/wp-content/uploads/2026/01/Sin-titulo-5.png',3,3,'published','2026-01-18 10:25:00','2026-02-05 21:04:26',0),
+(17,'Visual Studio Code integra Copilot Chat de forma nativa','vscode-copilot-chat-nativo','Microsoft fusiona su IDE con herramientas de IA para desarrollo asistido','https://blog.underc0de.org/wp-content/uploads/2026/01/Sin-titulo-5.png',3,3,'published','2026-01-18 10:25:00','2026-06-18 20:37:28',1),
 (18,'Kubernetes 1.30 simplifica la gestión de clusters con IA','kubernetes-1-30-gestion-ia','Nueva versión incluye operadores auto-curativos y optimización automática de recursos','https://www.muylinux.com/wp-content/uploads/2023/10/Kubernetes.png',3,3,'published','2026-01-17 15:10:00','2026-02-05 21:04:49',0),
 (19,'Linux 6.10 mejora soporte para hardware ARM y RISC-V','linux-6-10-soporte-arm-riscv','Kernel actualizado optimiza rendimiento en procesadores de arquitectura alternativa','https://blog.underc0de.org/wp-content/uploads/2024/07/R.jpg',3,3,'published','2026-01-16 12:05:00','2026-02-05 21:06:05',0),
 (20,'AMD Ryzen 9000: hasta 24 núcleos y frecuencia de 6GHz','amd-ryzen-9000-24-nucleos','Nueva arquitectura Zen 5 ofrece mejora del 35% en rendimiento single-thread','https://www.amd.com/content/dam/amd/en/images/products/processors/ryzen/2613900-ryzen-9-9950x.jpg',4,4,'published','2026-02-14 12:20:49','2026-02-14 12:20:51',8),
@@ -129,7 +160,7 @@ insert  into `news`(`id`,`title`,`slug`,`excerpt`,`cover_image`,`author_id`,`cat
 (31,'CES 2026: Innovaciones prácticas con IA en dispositivos y robots','ces-2026-innovaciones-practicas-ia','Más de 4 000 expositores en CES 2026 mostraron aplicaciones útiles de IA para robots, teléfonos y pantallas.','https://www.elheraldo.hn/binrepository/1260x945/0c0/0d0/none/45933/QPCK/el-heraldo-18_13182832_20260109141538.jpg',4,5,'published','2026-01-09 11:00:00','2026-02-09 14:27:42',0),
 (32,'Proyección: IA alcanzará 5 000 millones de usuarios para 2030','ia-5-mil-millones-usuarios-2030','Expertos proyectan que la IA podría llegar a 5 000 millones de usuarios para 2030 tras CES 2026.','https://www.hostinger.com/es/tutoriales/wp-content/uploads/sites/32/2023/12/Crecimiento-de-la-industria-de-la-IA-al-2030-scaled.png',1,1,'published','2026-01-07 18:30:00','2026-02-09 14:28:23',0),
 (33,'OpenAI lanza \"Omni Model\": un solo IA para texto, voz, visión y robótica','openai-omni-model-unificado','Arquitectura única elimina la necesidad de modelos especializados, reduciendo costos 90%','https://imagenes.computerhoy.20minutos.es/files/image_640_360/uploads/imagenes/2025/06/16/68e7f8b26a6e1.jpeg',1,1,'published','2026-02-16 10:06:55','2026-02-16 13:07:15',0),
-(34,'iPhone 17 Ultra: batería que se carga con luz ambiental','iphone-17-ultra-carga-solar','Apple integra células fotovoltaicas transparentes en pantalla que generan 30% de energía diaria','https://i.blogs.es/7442e4/analisis-iphone-17-pro-max-28/375_375.jpeg',2,2,'published','2026-02-28 16:10:00','2026-02-15 13:37:22',0),
+(34,'iPhone 17 Ultra: batería que se carga con luz ambiental','iphone-17-ultra-carga-solar','Apple integra células fotovoltaicas transparentes en pantalla que generan 30% de energía diaria','https://i.blogs.es/7442e4/analisis-iphone-17-pro-max-28/375_375.jpeg',2,2,'published','2026-02-28 16:10:00','2026-06-18 20:42:26',1),
 (35,'Samsung Galaxy Fold 6: pantalla que se auto-repara de rasguños','samsung-fold-6-autoreparacion','Tecnología \"Self-Healing Display\" utiliza polímeros que regeneran micro-rayones en 24 horas','https://www.repuestostic.com/63892-superlarge_default/cambio-pantalla-interna-samsung-galaxy-z-fold-6-f956-original-service-pack.jpg',2,2,'published','2026-02-25 10:15:00','2026-02-15 13:38:22',0),
 (36,'Google Project Ara revive: smartphone modular con actualizaciones mensuales','google-project-ara-modular-2026','Nueva versión permite cambiar procesador, cámara y batería como piezas de LEGO','https://www.zdnet.com/a/img/resize/e7aff3398e12f0fa70fd66238d743054c4c8b95e/2018/04/19/092cbf81-acac-4f3a-91a1-5a26abc1721f/postgresql-logo.png?auto=webp&fit=crop&height=900&width=1200',2,2,'published','2026-02-20 13:40:00','2026-02-15 13:41:22',0),
 (37,'Windows 12: Sistema operativo que aprende y se adapta a cada usuario','windows-12-os-adaptativo','IA integrada reconfigura interfaz, optimiza recursos y anticipa necesidades en tiempo real','https://i.blogs.es/03dfc6/captura-de-pantalla-2023-03-29-a-las-9.22.11/840_560.jpeg',3,3,'published','2026-02-18 09:25:00','2026-02-15 13:39:24',0),
@@ -185,6 +216,8 @@ insert  into `news`(`id`,`title`,`slug`,`excerpt`,`cover_image`,`author_id`,`cat
 (96,'IA conquista el espacio: primer modelo entrenado en órbita por Nvidia y StarCloud','ia-espacio-modelo-entrenado-orbita','Las condiciones térmicas y energéticas del espacio ofrecen ventajas para centros de datos','https://www.hd-tecnologia.com/imagenes/articulos/2025/10/NVIDIA-llevara-la-inteligencia-artificial-al-espacio-exterior-con-el-primer-centro-de-datos-orbital-del-mundo-2.jpg',3,5,'published','2026-01-14 18:00:00','2026-02-15 14:09:50',0),
 (98,'claro claro claro ','claro-claro-claro','claro claro claro claro claro','https://localo.com/es/assets/img/definitions/what-is-google-translate.webp',3,3,'published','2026-02-21 13:01:39','2026-02-21 13:29:44',0);
 
+UNLOCK TABLES;
+
 /*Table structure for table `news_blocks` */
 
 DROP TABLE IF EXISTS `news_blocks`;
@@ -204,6 +237,8 @@ CREATE TABLE `news_blocks` (
 ) ENGINE=InnoDB AUTO_INCREMENT=92 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `news_blocks` */
+
+LOCK TABLES `news_blocks` WRITE;
 
 insert  into `news_blocks`(`id`,`news_id`,`block_type`,`content`,`image_url`,`alt_text`,`position`,`created_at`) values 
 (1,1,'heading','La revolución multimodal de la IA','https://blog.donweb.com/wp-content/uploads/2025/08/Lo-nuevo-de-GPT-5.jpeg',NULL,1,'2026-02-05 12:46:12'),
@@ -260,6 +295,8 @@ insert  into `news_blocks`(`id`,`news_id`,`block_type`,`content`,`image_url`,`al
 (90,98,'image','','https://www.gstatic.com/marketing-cms/5e/ec/5b5baeb34571b791b2020d4cacad/meta-image.png','seacrh',2,'2026-02-21 13:29:44'),
 (91,98,'paragraph','wow wow wow wow wow wow wow wow wow wow wow wow wow wow wow wow wow wow wow wow wow wow wow wow',NULL,NULL,3,'2026-02-21 13:29:44');
 
+UNLOCK TABLES;
+
 /*Table structure for table `users` */
 
 DROP TABLE IF EXISTS `users`;
@@ -278,12 +315,16 @@ CREATE TABLE `users` (
 
 /*Data for the table `users` */
 
+LOCK TABLES `users` WRITE;
+
 insert  into `users`(`id`,`username`,`email`,`password`,`role`,`active`,`created_at`) values 
 (1,'darlin','darlinlvaldez@gmail.com','$2b$10$2LKClehgb5ifsKKVHQDh/u8E3VmxyjYjVW3Pd0Cuty9vBrkvSraZy','superadmin',1,'2026-02-24 19:52:21'),
 (2,'ana torres','anatorres@gmail.com','$2b$10$u1rbukGt2wC9qla7UxwUJ..lJtNTH9chXxArqMwBmBGe24FQoQ/IG','author',1,'2026-02-25 19:36:00'),
 (3,'carlos mendoza','carlosmendoza@gmail.com','$2b$10$LsGLMl3rGkp8hWf1KrMBMuTScmSf5yeP8QUKIgQnhi.br/1haltxK','author',1,'2026-02-25 19:37:15'),
 (4,'laura vega','lauravega@gmail.com','$2b$10$hTBJsFQ2H3Eu9sJTnfIYCuxq2y37VBHW84xscLDwubL8oKfCkhGKO','author',1,'2026-02-25 19:37:50'),
 (5,'miguel ruiz','miguelruiz@gmail.com','$2b$10$oS13OGYebsgM9c31EFOfMOfziqnGX6TFoxeKuG94S/cwIY2q1FCsS','author',1,'2026-02-25 19:38:15');
+
+UNLOCK TABLES;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
