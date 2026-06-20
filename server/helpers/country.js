@@ -1,4 +1,5 @@
 import getRedis from "../lib/redis.js";
+import config from "../../config.js";
 
 export default async function getCountryByIP(ip) {
   const redis = await getRedis();
@@ -16,7 +17,7 @@ export default async function getCountryByIP(ip) {
 
   try {
     const response = await fetch(
-      `http://ip-api.com/json/${ip}?fields=status,country,countryCode`,
+      `${config.IP_API_URL}/${ip}?fields=status,country,countryCode`
     );
 
     const data = await response.json();
