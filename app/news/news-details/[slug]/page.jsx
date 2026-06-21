@@ -4,6 +4,7 @@ import newsControllers from "@/server/controllers/news/news";
 import ShareMenu from "@/components/ShareMenu";
 import MoreNews from "@/components/MoreNews";
 import { formatDateAbsolute } from '@/utils/formatDate'
+import { cookies } from "next/headers";
 
 export const metadata = {
   title: "Details - 404 News",
@@ -19,7 +20,11 @@ export default async function DetailNews({ params }) {
     const ip = headersList.get("x-forwarded-for")?.split(",")[0].trim() ||
       headersList.get("x-real-ip") || "unknown";
 
-    const data = await newsControllers.detailsNews(slug, ip);
+    const cookieStore = await cookies();
+
+    const visitorId = cookieStore.get("visitor_id")?.value;
+
+    const data = await newsControllers.detailsNews(slug, ip, visitorId);
 
     if (!data.ok) {
         return <p>Error al cargar la noticia</p>;

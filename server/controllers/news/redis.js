@@ -1,12 +1,23 @@
 import getRedis from "../../lib/redis.js";
 import getCountryByIP from "../../helpers/country.js";
 
-export default async function incrementView(slug, ip) {
+export default async function incrementView(slug, ip, visitorId) {
+
+  console.log("incrementView ejecutado:", {
+    slug,
+    ip,
+    visitorId
+  });
 
   const redis = await getRedis();
-  const viewKey = `news:viewed:${slug}:${ip}`;
+  const viewKey = `news:viewed:${slug}:${visitorId}`;
   const counterKey = `news:views:${slug}`;
 
+  if (!visitorId) {
+    return;
+  }
+
+  console.log(viewKey)
   const isNewView = await redis.set(viewKey, 1, {
     EX: 3600,
     NX: true

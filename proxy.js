@@ -1,39 +1,24 @@
 import { NextResponse } from "next/server";
-import { verifyToken } from "@/server/utils/jwt";
+import { admin } from "@/server/middlewares/admin";
+import { visitor } from "@/server/middlewares/visitor";
 
 export async function proxy(req) {
+
   const { pathname } = req.nextUrl;
 
-  if (pathname === "/admin/login") {
-    return NextResponse.next();
+  if (pathname.startsWith("/admin")) {
+    return admin(req);
   }
 
-  const token = req.cookies.get("admin_token")?.value;
-
-  if (!token) {
-    return NextResponse.redirect(new URL("/admin/login", req.url));
+  if (pathname.startsWith("/news")) {
+    return visitor(req);
   }
-
-  try {
-    const payload = await verifyToken(token);
-
-    const { role } = payload;
-
-    if (pathname.startsWith("/admin/users") && role !== "superadmin") {
-      return NextResponse.redirect(new URL("/admin/dashboard", req.url));
-    }
-
-    if (pathname.startsWith("/admin/settings") && role !== "superadmin") {
-      return NextResponse.redirect(new URL("/admin/dashboard", req.url));
-    }
-
-    return NextResponse.next();
-
-  } catch {
-    return NextResponse.redirect(new URL("/admin/login", req.url));
-  }
+  return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/admin/:path*"],
+  matcher: [
+    "/admin/:path*",
+    "/news/:path*"
+  ],
 };

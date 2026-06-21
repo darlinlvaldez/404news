@@ -4,9 +4,8 @@ import config from "../../config.js";
 export default async function getCountryByIP(ip) {
   const redis = await getRedis();
 
-  if (ip === "::1" || ip === "127.0.0.1" || !ip) {
-    return null;
-  }
+  if (ip === "::1" || ip === "127.0.0.1" || !ip) 
+    { return null; }
 
   const cacheKey = `ip:country:${ip}`;
   const cached = await redis.get(cacheKey);

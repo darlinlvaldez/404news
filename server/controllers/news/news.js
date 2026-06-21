@@ -51,7 +51,7 @@ newsController.newsByCategory = async function (slug) {
   }
 };
 
-newsController.detailsNews = async function (slug, ip) {
+newsController.detailsNews = async function (slug, ip, visitorId) {
   try {
     const detailNews = await news.getDetailsNews(slug);
 
@@ -59,7 +59,7 @@ newsController.detailsNews = async function (slug, ip) {
       return { ok: false, message: "Noticia no encontrada" };
     }
 
-    await incrementView(slug, ip);
+    await incrementView(slug, ip, visitorId);
 
     const relatedNews = await news.getRelatedNews(
       detailNews.categoryId,
