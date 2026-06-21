@@ -2,3 +2,4 @@ node_modules
 .next
 /app/generated/prisma
 .env.local
+.env.production
