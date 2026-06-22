@@ -1,6 +1,10 @@
 import newsController from "@/server/controllers/news/news";
 import NewsResults from "@/components/NewsResults";
 
+export const metadata = {
+  title: "Search - 404 News"
+};
+
 export default async function SearchPage({ searchParams }) {
 
   const params = await searchParams;

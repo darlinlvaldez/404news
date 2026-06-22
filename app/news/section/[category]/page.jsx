@@ -6,10 +6,7 @@ import ListNews from "@/components/ListNews";
 import MostRead from "@/components/MostRead";
 
 export const metadata = {
-  title: "Section - 404 News",
-  icons: {
-    icon: "/images/news-logo.png",
-  },
+  title: "Section - 404 News"
 };
 
 export default async function SectionCategory({ params }) {

@@ -7,10 +7,7 @@ import { formatDateAbsolute } from '@/utils/formatDate'
 import { cookies } from "next/headers";
 
 export const metadata = {
-  title: "Details - 404 News",
-  icons: {
-    icon: "/image/news-logo.png",
-  },
+  title: "Details - 404 News"
 };
 
 export default async function DetailNews({ params }) {

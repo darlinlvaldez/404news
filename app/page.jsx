@@ -7,6 +7,13 @@ import MoreNews from "@/components/MoreNews";
 import LatestWeekNews from "@/components/LatestWeekNews";
 import ListNews from "@/components/ListNews";
 
+export const metadata = {
+  title: "404News",
+  icons: {
+    icon: "/images/404logo.png",
+  },
+};
+
 export default async function Principal() {
   
   const { latestNews, latestWeekNews, trendingNews } = await newsController.latestNews();
