@@ -11,7 +11,6 @@ export default async function incrementView(slug, ip, visitorId) {
     return;
   }
 
-  console.log(viewKey)
   const isNewView = await redis.set(viewKey, 1, {
     EX: 3600,
     NX: true

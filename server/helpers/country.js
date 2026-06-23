@@ -21,8 +21,6 @@ export default async function getCountryByIP(ip) {
 
     const data = await response.json();
 
-    console.log("IP-API RESPONSE:", data);
-
     if (data.status !== "success") {
       return null;
     }
