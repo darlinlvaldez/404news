@@ -2,9 +2,7 @@ import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import { startSyncJob } from "@/server/jobs/redis";
 
-// if (process.env.NODE_ENV === "production") {
-  startSyncJob();
-// }
+startSyncJob();
 
 export const metadata = {
   icons: {
