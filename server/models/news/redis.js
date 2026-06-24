@@ -1,7 +1,7 @@
 import db from "../../lib/db.js"
 import getRedis from "../../lib/redis.js";
 
-export default async function syncViewsToDatabase(slug) {
+export default async function syncNewsViews(slug) {
 
   const redis = await getRedis();
 

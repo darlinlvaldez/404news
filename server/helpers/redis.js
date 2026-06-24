@@ -1,5 +1,5 @@
 import getRedis from "../lib/redis.js";
-import syncViewsToDatabase from "../models/news/redis.js";
+import syncNewsViews from "../models/news/redis.js";
 import syncCountryViews from "../models/news/country.js";
 
 export default async function syncAllViews() {
@@ -8,7 +8,7 @@ export default async function syncAllViews() {
 
   for (const key of viewKeys) {
     const slug = key.replace("news:views:", "");
-    await syncViewsToDatabase(slug);
+    await syncNewsViews(slug);
   }
 
   const countryKeys = await redis.keys("news:country:*");
