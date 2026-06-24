@@ -1,14 +1,58 @@
 import { headers } from "next/headers";
 import Link from "next/link" 
 import newsControllers from "@/server/controllers/news/news";
+import { getCachedNews } from "@/server/services/news/cachedNews";
 import ShareMenu from "@/components/ShareMenu";
 import MoreNews from "@/components/MoreNews";
 import { formatDateAbsolute } from '@/utils/formatDate'
 import { cookies } from "next/headers";
 
-export const metadata = {
-  title: "Details - 404 News"
-};
+export async function generateMetadata({ params }) {
+    const { slug } = await params;
+
+    const data = await getCachedNews(slug);
+
+    if (!data.ok) {
+        return {
+            title: "Noticia no encontrada - 404 News",
+        };
+    }
+
+    const news = data.detailNews;
+
+    const description = news.blocks
+        .filter(block => block.block_type === "paragraph")
+        .map(block => block.content)
+        .join(" ")
+        .slice(0, 160);
+
+    return {
+        title: news.title,
+        description,
+
+        openGraph: {
+            title: news.title,
+            description,
+            url: `https://404news.up.railway.app/news/news-details/${slug}`,
+            type: "article",
+            images: [
+                {
+                    url: news.image,
+                    width: 1200,
+                    height: 630,
+                    alt: news.title,
+                }
+            ],
+        },
+
+        twitter: {
+            card: "summary_large_image",
+            title: news.title,
+            description,
+            images: [news.image],
+        },
+    };
+}
 
 export default async function DetailNews({ params }) {
     const { slug } = await params;
@@ -54,7 +98,7 @@ export default async function DetailNews({ params }) {
                         </div>
                     
                     <div className="absolute right-0 top-1/2 -translate-y-1/2">
-                        <ShareMenu/>
+                        <ShareMenu slug={slug}/>
                     </div>
                 </div>
 

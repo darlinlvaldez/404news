@@ -1,4 +1,5 @@
 import news from "../../models/news/news";
+import {getCachedNews} from "../../services/news/cachedNews";
 import incrementView from "../news/redis";
 
 const newsController = {};
@@ -53,7 +54,7 @@ newsController.newsByCategory = async function (slug) {
 
 newsController.detailsNews = async function (slug, ip, visitorId) {
   try {
-    const detailNews = await news.getDetailsNews(slug);
+    const detailNews = await getCachedNews(slug);
 
     if (!detailNews) {
       return { ok: false, message: "Noticia no encontrada" };

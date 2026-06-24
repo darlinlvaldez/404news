@@ -7,7 +7,6 @@ function getShareStyles(open) {
   const shareMenuStyles = `grid absolute top-full right-0 mt-2 gap-2 transition-all duration-300 ease-in-out 
   ${open ? "opacity-100 scale-100 pointer-events-auto" : "opacity-0 scale-95 pointer-events-none" }`;
 
-
   const toggleButtonStyles = `bg-green-700 w-12 h-12 rounded-full flex items-center justify-center 
   hover:bg-green-800 transition-colors z-10 relative cursor-pointer`;
 
@@ -19,12 +18,12 @@ function getShareStyles(open) {
   return { shareMenuStyles, toggleButtonStyles, shareItemBase, shareItemAnimation };
 }
 
-export default function ShareMenu() {
+export default function ShareMenu({ slug }) {
   const [open, setOpen] = useState(false);
 
   const { shareMenuStyles, toggleButtonStyles, shareItemBase, shareItemAnimation } = getShareStyles(open);
 
-  const shareUrl = "https://404news.up.railway.app";
+  const shareUrl = `https://404news.up.railway.app/news/news-details/${slug}`;
 
   return (
     <div className="absolute right-0 top-1/2 -translate-y-1/2 text-white">
