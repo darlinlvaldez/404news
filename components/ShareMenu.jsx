@@ -24,7 +24,7 @@ export default function ShareMenu() {
 
   const { shareMenuStyles, toggleButtonStyles, shareItemBase, shareItemAnimation } = getShareStyles(open);
 
-  const shareUrl = "https://404news.com";
+  const shareUrl = "https://404news.up.railway.app";
 
   return (
     <div className="absolute right-0 top-1/2 -translate-y-1/2 text-white">
