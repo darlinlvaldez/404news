@@ -10,15 +10,13 @@ import { cookies } from "next/headers";
 export async function generateMetadata({ params }) {
     const { slug } = await params;
 
-    const data = await getCachedNews(slug);
+    const news = await getCachedNews(slug);
 
-    if (!data.ok) {
+    if (!news) {
         return {
             title: "Noticia no encontrada - 404 News",
         };
     }
-
-    const news = data.detailNews;
 
     const description = news.blocks
         .filter(block => block.block_type === "paragraph")
@@ -37,7 +35,7 @@ export async function generateMetadata({ params }) {
             type: "article",
             images: [
                 {
-                    url: news.image,
+                    url: news.cover_image,
                     width: 1200,
                     height: 630,
                     alt: news.title,
@@ -49,7 +47,7 @@ export async function generateMetadata({ params }) {
             card: "summary_large_image",
             title: news.title,
             description,
-            images: [news.image],
+            images: [news.cover_image],
         },
     };
 }
