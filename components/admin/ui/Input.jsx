@@ -2,6 +2,8 @@
 
 export default function Input({
   value,
+  name,
+  type,
   onChange,
   placeholder,
   icon: Icon,
@@ -19,7 +21,8 @@ export default function Input({
       )}
 
       <input
-        type="text"
+        type={type}
+        name={name}
         value={value}
         onChange={onChange}
         placeholder={placeholder}

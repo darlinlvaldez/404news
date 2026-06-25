@@ -25,7 +25,6 @@ export default function Select({ options, value, onChange, className }) {
 
   return (
     <div ref={selectRef} className={`relative ${className}`}>
-      
       <button
         type="button"
         onClick={() => setIsOpen(prev => !prev)}
@@ -51,7 +50,6 @@ export default function Select({ options, value, onChange, className }) {
           ))}
         </ul>
       )}
-
     </div>
   );
 }

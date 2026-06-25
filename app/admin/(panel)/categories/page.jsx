@@ -37,8 +37,7 @@ export default function CategoriesPage () {
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setFormData(prev => ({
-      ...prev,
+    setFormData(prev => ({...prev,
       [name]: type === 'checkbox' ? (checked ? 1 : 0) : value
     }));
   };
@@ -123,18 +122,18 @@ const handleDelete = async (id) => {
               <div className="md:col-span-1">
                 <label className="block text-xs font-bold text-gray-400 uppercase mb-2 ml-1">Nombre de Categoría</label>
                 <Input
-                className="w-full"
-                value={formData.name}
-                onChange={handleInputChange}
-                placeholder="Ej. Tecnología, Salud..."
+                  className="w-full"
+                  value={formData.name}
+                  onChange={handleInputChange}
+                  placeholder="Ej. Tecnología, Salud..."
                 />
               </div>
               <div className="md:col-span-1">
                 <label className="block text-xs font-bold text-gray-400 uppercase mb-2 ml-1">URL (Slug)</label>
                 <Input
-                className="w-full"
-                value={formData.slug}
-                onChange={handleInputChange}
+                  className="w-full"
+                  value={formData.slug}
+                  onChange={handleInputChange}
                 />
               </div>
               <div className="flex items-center space-x-4">
@@ -147,10 +146,10 @@ const handleDelete = async (id) => {
                   />
                 </div>
                   <SaveButton
-                    type="submit"
-                    icon={Save}
-                    variant={isEditing ? "blue" : "green"}
-                  >
+                      type="submit"
+                      icon={Save}
+                      variant={isEditing ? "blue" : "green"}
+                    >
                     {isEditing ? "Actualizar" : "Guardar"}
                   </SaveButton>
               </div>

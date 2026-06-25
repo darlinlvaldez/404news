@@ -119,14 +119,14 @@ export default function NewsTable() {
         <div className="bg-gray-900 p-5 rounded-4xl border border-gray-700 flex flex-wrap gap-4 items-center justify-between shadow-xl">
           <div className="relative w-full md:w-96">
             <Input
-            className="w-full md:w-96"
-            value={search}
-            onChange={(e) => {
-              setSearch(e.target.value);
-              setPage(1);
-            }}
-            placeholder="Buscar por título, ID o autor..."
-            icon={Search}/>
+              className="w-full md:w-96"
+              value={search}
+              onChange={(e) => {
+                setSearch(e.target.value);
+                setPage(1);
+              }}
+              placeholder="Buscar por título, ID o autor..."
+              icon={Search}/>
           </div>
           
           <Select className="w-full md:w-56"

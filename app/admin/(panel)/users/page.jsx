@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-
+import Switch from "@/components/admin/ui/Switch";
+import Input from "@/components/admin/ui/Input"
 import { 
   Trash2, 
   PlusCircle, 
@@ -152,19 +153,29 @@ const handleDelete = async (id) => {
                 <div>
                   <label className="block text-xs font-bold text-gray-500 uppercase mb-2 ml-1">Nombre de Usuario</label>
                   <div className="relative">
-                    <input type="text" name="username" value={formData.username} onChange={handleInputChange} placeholder="usuario_123"
-                      className="w-full bg-gray-950 border border-gray-700 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-green-600 outline-none pl-10 transition"
+                    <Input
+                      className="w-full"
+                      type="text"
+                      
+                      placeholder="Ej. Juan Perez"
+                      value={formData.name}
+                      onChange={handleInputChange}
+                      icon={User}
                     />
-                    <User className="absolute left-3 top-3.5 text-gray-500" size={20} />
                   </div>
                 </div>
                 <div>
                   <label className="block text-xs font-bold text-gray-500 uppercase mb-2 ml-1">Correo Electrónico</label>
                   <div className="relative">
-                    <input type="email" name="email" value={formData.email} onChange={handleInputChange} placeholder="correo@ejemplo.com"
-                      className="w-full bg-gray-950 border border-gray-700 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-green-600 outline-none pl-10 transition"
-                    />
-                    <Mail className="absolute left-3 top-3.5 text-gray-500" size={20} />
+                    <Input
+                        className="w-full"
+                        type="email"
+                        name="email"
+                        placeholder="ejemplo@gmail.com"
+                        value={formData.email}
+                        onChange={handleInputChange}
+                        icon={Mail}
+                      />
                   </div>
                 </div>
                 <div>
@@ -184,22 +195,25 @@ const handleDelete = async (id) => {
                 <div>
                   <label className="block text-xs font-bold text-gray-500 uppercase mb-2 ml-1">Contraseña {isEditing && '(Opcional)'}</label>
                   <div className="relative">
-                    <input type="password" name="password" value={formData.password} onChange={handleInputChange} required={!isEditing} placeholder="••••••••"
-                      className="w-full bg-gray-950 border border-gray-700 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-green-600 outline-none pl-10 transition"
-                    />
-                    <Key className="absolute left-3 top-3.5 text-gray-500" size={20} />
+                    <Input
+                        className="w-full"
+                        placeholder="••••••••"
+                        value={formData.password}
+                        onChange={handleInputChange}
+                        icon={Key}
+                      />
                   </div>
                 </div>
                 <div className="flex items-end md:col-span-2">
                   <div className="w-full bg-gray-900 p-3 rounded-xl border border-gray-700 flex items-center justify-between">
                     <div className="flex flex-col ml-1">
-                        <span className="text-[10px] font-bold text-gray-300 uppercase">Estado de la cuenta</span>
-                        <span className="text-[9px] text-gray-500 italic">Determina si el usuario puede iniciar sesión</span>
+                        <span className="text-xs font-bold text-gray-300 uppercase">Estado de la cuenta</span>
                     </div>
-                    <label className="relative inline-flex items-center cursor-pointer">
-                      <input type="checkbox" name="active" checked={formData.active === 1} onChange={handleInputChange} className="sr-only peer" />
-                      <div className="w-12 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-1 after:left-1 after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-green-600"></div>
-                    </label>
+                      <Switch
+                        name="active"
+                        checked={formData.active === 1}
+                        onChange={handleInputChange}
+                      />
                   </div>
                 </div>
               </div>

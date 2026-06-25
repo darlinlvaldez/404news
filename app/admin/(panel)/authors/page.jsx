@@ -1,6 +1,8 @@
 "use client";
 
 import { useState, useEffect } from 'react';
+import Switch from "@/components/admin/ui/Switch";
+import Input from "@/components/admin/ui/Input"
 import { 
   Trash2, 
   Save, 
@@ -11,11 +13,14 @@ import {
   CheckCircle,
   XCircle,
   Mail,
+  Key,
+  User,
   Lock,
   UserCircle,
   ShieldAlert,
   KeyRound
 } from 'lucide-react';
+
 
 export default function AuthorsPage() {
   const initialFormState = {
@@ -170,20 +175,25 @@ const handleDelete = async (id) => {
                     <label className="text-sm font-black text-gray-500 uppercase ml-1">Email Profesional</label>
                     <div className="relative group">
                       <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-600 group-focus-within:text-green-700 transition-colors" size={20} />
-                      <input type="email" name="email" value={formData.email} onChange={handleInputChange} placeholder="email@gmail.com"
-                        className="w-full bg-gray-950 border border-gray-700 rounded-xl pl-12 pr-4 py-3.5 text-sm 
-                        focus:ring-2 focus:ring-green-700 outline-none transition text-white"
-                      />
+                      <Input
+                        className="w-full"
+                        value={formData.email}
+                        onChange={handleInputChange}
+                        icon={Mail}
+                        />
                     </div>
                   </div>
                   <div className="space-y-2">
                     <label className="text-sm font-black text-gray-500 uppercase ml-1">Contraseña</label>
                     <div className="relative group">
                       <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-600 group-focus-within:text-green-700 transition-colors" size={20}/>
-                      <input type="password" name="password" value={formData.password} onChange={handleInputChange} 
+                      <Input
+                        className="w-full"
                         required={!isEditing} placeholder={isEditing ? "••••••••" : "Mínimo 6 caracteres"}
-                        className="w-full bg-gray-950 border border-gray-700 rounded-xl pl-12 pr-4 py-3.5 text-sm focus:ring-2 focus:ring-green-700 outline-none transition text-white"
-                      />
+                        value={formData.password}
+                        onChange={handleInputChange}
+                        icon={Key}
+                        />
                     </div>
                   </div>
                 </div>
@@ -197,34 +207,40 @@ const handleDelete = async (id) => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
                     <label className="text-sm font-black text-gray-500 uppercase ml-1">Nombre para Mostrar</label>
-                    <input type="text" name="name" value={formData.name} onChange={handleInputChange} placeholder="Ej. Juan Pérez"
-                      className="w-full bg-gray-950 border border-gray-700 rounded-xl px-4 py-3.5 text-sm 
-                      focus:ring-2 focus:ring-green-700 outline-none transition text-white"
-                    />
+                    <Input
+                        className="w-full"
+                        placeholder="Ej. Juan Pérez"
+                        value={formData.name}
+                        onChange={handleInputChange}
+                        icon={User}
+                      />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-sm font-black text-gray-500 uppercase ml-1">Slug del Perfil (Auto)</label>
-                    <input type="text" name="slug" value={formData.slug} onChange={handleInputChange} required
-                      className="w-full bg-gray-950 border border-gray-700 focus:ring-2 focus:ring-green-700 
-                      rounded-xl px-4 py-3.5 text-sm text-white font-mono outline-none"
-                    />
+                    <label className="text-sm font-black text-gray-500 uppercase ml-1">Slug del Perfil</label>
+                    <Input
+                        className="w-full"
+                        placeholder="Ej. iPhone-17-Ultra-carga-solar"
+                        value={formData.slug}
+                        onChange={handleInputChange}
+                      />
                   </div>
                   <div className="space-y-2">
                     <label className="text-sm font-black text-gray-500 uppercase ml-1">URL Avatar / Foto</label>
-                    <input type="text" name="avatar" value={formData.avatar} onChange={handleInputChange} placeholder="https://images.com/perfil.jpg"
-                      className="w-full bg-gray-950 border border-gray-700 rounded-xl px-4 py-3.5 text-sm 
-                      focus:ring-2 focus:ring-green-700 outline-none transition text-white"
-                    />
+                    <Input
+                        className="w-full"
+                        value={formData.avatar}
+                        onChange={handleInputChange}
+                        icon={Camera}
+                      />
                   </div>
-                  <div className="flex items-end pb-1">
+                  <div className="flex items-end">
                     <div className="w-full p-3.5 rounded-xl border border-gray-700 flex items-center justify-between">
                       <span className="text-sm font-black text-gray-400 uppercase tracking-widest">Estado de la cuenta</span>
-                      <label className="relative inline-flex items-center cursor-pointer">
-                        <input type="checkbox" name="active" checked={formData.active === 1} onChange={handleInputChange} className="sr-only peer" />
-                        <div className="w-11 h-6 bg-gray-800 rounded-full peer peer-checked:after:trangray-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] 
-                        after:bg-gray-400 after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-700 peer-checked:after:bg-white">
-                        </div>
-                      </label>
+                      <Switch
+                        name="active"
+                        checked={formData.active === 1}
+                        onChange={handleInputChange}
+                      />
                     </div>
                   </div>
                 </div>
