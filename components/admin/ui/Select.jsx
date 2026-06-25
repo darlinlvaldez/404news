@@ -1,19 +1,34 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function Select({ options, value, onChange, className }) {
 
   const [isOpen, setIsOpen] = useState(false);
-
+  const selectRef = useRef(null);
+  
   const selected = options.find(opt => opt.value === value);
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (selectRef.current && !selectRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
-    <div className={`relative ${className}`}>
+    <div ref={selectRef} className={`relative ${className}`}>
       
-      <button tabIndex={0}
+      <button
+        type="button"
         onClick={() => setIsOpen(prev => !prev)}
-        onBlur={() => setIsOpen(false)}
         className={`bg-gray-950 border border-gray-700 px-5 py-3.5 font-bold
         focus:outline-none focus:border-green-800 cursor-pointer w-full text-left
         ${isOpen ? "rounded-t-2xl border-green-800" : "rounded-2xl"}`}>
@@ -26,7 +41,7 @@ export default function Select({ options, value, onChange, className }) {
         <ul className="absolute w-full bg-[#0b0f1a] border border-green-800 border-t-0 rounded-b-2xl overflow-hidden z-10">
           {options.map((option) => (
             <li key={option.value}
-              onClick={() => {
+              onMouseDown={() => {
                 onChange(option.value);
                 setIsOpen(false);
               }}

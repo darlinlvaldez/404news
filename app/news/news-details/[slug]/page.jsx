@@ -74,7 +74,7 @@ export default async function DetailNews({ params }) {
 
     return (
     <>
-    <div className="max-w-7xl mx-auto flex-1 min-h-screen flex flex-col">
+    <div className="max-w-7xl mx-auto flex-1 min-h-screen flex flex-col px-6">
 
         <main className="grid grid-cols-1 lg:grid-cols-5 gap-6 py-10 px-6">
 
@@ -201,7 +201,9 @@ export default async function DetailNews({ params }) {
                 </section>
             </aside>
         </main>
-        <MoreNews moreNews={moreNews} />
+        <div className="mt-30">
+            <MoreNews moreNews={moreNews} />
+        </div>
     </div>
     </>
     );

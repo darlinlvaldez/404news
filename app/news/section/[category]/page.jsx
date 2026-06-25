@@ -27,8 +27,8 @@ export default async function SectionCategory({ params }) {
 
   return (
     <>
-      <div className="max-w-7xl mx-auto flex-1 min-h-screen flex flex-col">
-        <main className="grid grid-cols-1 lg:grid-cols-4 gap-6 px-6 py-10">
+      <div className="max-w-7xl mx-auto flex-1 min-h-screen flex flex-col px-6">
+        <main className="grid grid-cols-1 lg:grid-cols-4 gap-6 py-10">
           <header className="lg:col-span-4 mb-6">
             <h1 className="text-3xl font-bold text-gray-800">
               {news[0]?.category}
@@ -52,7 +52,7 @@ export default async function SectionCategory({ params }) {
             )}
 
             {secondaryNews.length > 0 && (
-              <section className="flex flex-col justify-center items-center lg:flex-row lg:gap-4">
+              <section className="flex flex-col justify-center items-center lg:flex-col lg:gap-4">
                 {secondaryNews.map((item) => (
                   <article key={item.id} className="mb-10 relative">
                     <Link href={`/news/news-details/${item.slug}`}>

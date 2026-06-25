@@ -21,7 +21,6 @@ export default async function Principal() {
   const weekIds = new Set(latestWeekNews.map(n => n.id))
   const cleanLatestNews = latestNews.filter( n => !weekIds.has(n.id))
 
-  
   const mainNews = cleanLatestNews.slice(0, 3);
   const listNewsLeft = cleanLatestNews.slice(3, 9);
   const listNewsRight = cleanLatestNews.slice(9, 15);

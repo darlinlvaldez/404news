@@ -30,8 +30,7 @@ export async function POST(req) {
 
     const body = await req.json();
 
-    const result = await newsController.create({
-      ...body, authorId: user.id});
+    const result = await newsController.create({...body, authorId: user.id});
 
     return NextResponse.json(result);
 
