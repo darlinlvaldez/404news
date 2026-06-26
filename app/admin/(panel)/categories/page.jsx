@@ -91,16 +91,14 @@ const handleDelete = async (id) => {
   );
 
   return (
-    <div className="min-h-screen bg-gray-800 text-gray-100 flex font-sans">
-
-      <div className="flex-1 overflow-y-auto">
+    <div className="h-full flex flex-col bg-gray-800 text-gray-100 font-sans">
       <Header>
         <Header.Title>Categorias</Header.Title>
         <Header.Subtitle>Gestion de Categorias</Header.Subtitle>
-      </Header>
+      </Header> 
 
+      <div className="flex-1 overflow-y-auto">
         <div className="max-w-5xl mx-auto px-6 py-10 space-y-10">
-          
           <section className="bg-gray-900 rounded-4xl border border-gray-700 p-8 shadow-2xl relative overflow-hidden">
             <div className={`absolute top-0 left-0 w-full h-1.5 transition-colors duration-500 ${isEditing ? 'bg-blue-500' : 'bg-green-800'}`}></div>
             

@@ -26,8 +26,10 @@ export default async function AdminLayout({ children }) {
         <SideBar user={user} />
       </aside>
 
-      <main className="flex-1 flex flex-col overflow-hidden">
-        {children}
+      <main className="flex flex-col flex-1">
+        <div className="flex-1 overflow-y-auto">
+          {children}
+        </div>
 
         <footer className="p-4 bg-gray-900 border-t border-gray-700 text-center text-xs text-gray-500">
           &copy; 2026 404 NEWS

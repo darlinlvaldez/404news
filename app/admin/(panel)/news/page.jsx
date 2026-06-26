@@ -5,10 +5,10 @@ import Link from "next/link";
 import {formatDateAbsolute} from "@/utils/formatDate"
 import Select from "@/components/admin/ui/Select"
 import Input from "@/components/admin/ui/Input"
+import { Header } from '@/components/admin/Header';
 import { Container, Th } from "@/components/admin/ui/Table";
 
 import { 
-  Plus, 
   Search, 
   Edit3, 
   Eye, 
@@ -97,22 +97,12 @@ export default function NewsTable() {
 };
 
   return (
-    <div className="flex-1 flex flex-col overflow-hidden bg-gray-800 text-gray-200 font-sans">
+    <div className="h-full flex-1 flex flex-col overflow-hidden bg-gray-800 text-gray-200 font-sans">
       
-      <header className="h-20 bg-gray-900 flex items-center justify-between px-8 border-b border-gray-700 shadow-sm">
-        <div className="flex items-center space-x-4">
-          <div>
-            <h2 className="text-xl font-black text-white tracking-tight">Gestión de Noticias</h2>
-            <p className="text-[10px] text-slate-500 uppercase font-bold tracking-widest">Publicaciones del portal</p>
-          </div>
-        </div>
-        
-        <Link href="/admin/news/create" 
-          className="bg-green-800 hover:bg-green-700 text-white px-6 py-3 rounded-2xl font-black text-xs 
-          uppercase tracking-widest transition flex items-center shadow-lg shadow-emerald-900/20">
-          <Plus size={18} className="mr-2" />Nueva Noticia
-        </Link>
-      </header>
+      <Header>
+        <Header.Title>Categorias</Header.Title>
+        <Header.Subtitle>Gestion de Categorias</Header.Subtitle>
+      </Header>
 
       <section className="flex-1 overflow-y-auto p-8 space-y-6">
         
@@ -130,11 +120,11 @@ export default function NewsTable() {
           </div>
           
           <Select className="w-full md:w-56"
-          options={statusOptions}
-          value={statusFilter}
-          onChange={(value) => {
-            setStatusFilter(value);
-            setPage(1);
+            options={statusOptions}
+            value={statusFilter}
+            onChange={(value) => {
+              setStatusFilter(value);
+              setPage(1);
           }}/>
         </div>
 
