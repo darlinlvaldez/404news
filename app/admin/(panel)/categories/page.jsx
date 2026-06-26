@@ -93,8 +93,8 @@ const handleDelete = async (id) => {
   return (
     <div className="h-full flex flex-col bg-gray-800 text-gray-100 font-sans">
       <Header>
-        <Header.Title>Categorias</Header.Title>
-        <Header.Subtitle>Gestion de Categorias</Header.Subtitle>
+        <Header.Title>Categorías</Header.Title>
+        <Header.Subtitle>Gestion de Categorías</Header.Subtitle>
       </Header> 
 
       <div className="flex-1 overflow-y-auto">
@@ -130,6 +130,7 @@ const handleDelete = async (id) => {
                 <label className="block text-xs font-bold text-gray-400 uppercase mb-2 ml-1">URL (Slug)</label>
                 <Input
                   className="w-full"
+                  placeholder="Ej. tecnologia-tecnology"
                   value={formData.slug}
                   onChange={handleInputChange}
                 />
@@ -160,9 +161,8 @@ const handleDelete = async (id) => {
                 <Search size={20} className="mr-3 text-gray-500" />
                 Listado de Categorías
               </h3>
-              <div className="relative">
+              <div className="relative w-80">
                 <Input
-                className="w-96"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 placeholder="Buscar categorías..."

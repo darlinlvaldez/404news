@@ -18,7 +18,7 @@ import {
   ChevronRight, 
   CheckCircle2,
   Clock,
-  FileEdit
+  FileEdit,
 } from 'lucide-react';
 
 export default function NewsTable() {
@@ -99,9 +99,9 @@ export default function NewsTable() {
   return (
     <div className="h-full flex-1 flex flex-col overflow-hidden bg-gray-800 text-gray-200 font-sans">
       
-      <Header>
-        <Header.Title>Categorias</Header.Title>
-        <Header.Subtitle>Gestion de Categorias</Header.Subtitle>
+      <Header addNews href="/admin/news/create">
+        <Header.Title>Noticias</Header.Title>
+        <Header.Subtitle>Gestión de Noticas</Header.Subtitle>
       </Header>
 
       <section className="flex-1 overflow-y-auto p-8 space-y-6">

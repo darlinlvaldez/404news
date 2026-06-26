@@ -4,7 +4,9 @@ import { useState, useEffect } from 'react';
 import Switch from "@/components/admin/ui/Switch";
 import Input from "@/components/admin/ui/Input"
 import Select from "@/components/admin/ui/Select"
+import {ActionButton} from "@/components/admin/ui/ActionButtons"
 import { Header } from '@/components/admin/Header';
+import { Container, Th } from "@/components/admin/ui/Table";
 
 import { 
   Trash2, 
@@ -141,11 +143,11 @@ const handleDelete = async (id) => {
         <div className="flex-1 overflow-y-auto">
           <div className="max-w-6xl mx-auto px-6 py-10 space-y-10">
             <section className="bg-gray-900 rounded-3xl border border-gray-700 p-8 shadow-2xl relative overflow-hidden">
-              <div className={`absolute top-0 left-0 w-full h-1.5 rounded-t-3xl transition-colors duration-500 ${isEditing ? 'bg-orange-500' : 'bg-green-700'}`}></div>
+              <div className={`absolute top-0 left-0 w-full h-1.5 rounded-t-3xl transition-colors duration-500 ${isEditing ? 'bg-blue-500' : 'bg-green-700'}`}></div>
               
               <div className="flex items-center justify-between mb-8">
                 <div className="flex items-center">
-                  <div className={`p-2.5 rounded-2xl mr-4 ${isEditing ? 'bg-orange-900/30 text-orange-500' : 'bg-green-900/30 text-green-600'}`}>
+                  <div className={`p-2.5 rounded-2xl mr-4 ${isEditing ? 'bg-blue-900/30 text-blue-500' : 'bg-green-900/30 text-green-600'}`}>
                     {isEditing ? <Edit3 size={22} /> : <PlusCircle size={22} />}
                   </div>
                   <h3 className="text-xl font-bold">{isEditing ? 'Actualizar Usuario' : 'Crear Nuevo Usuario'}</h3>
@@ -232,8 +234,8 @@ const handleDelete = async (id) => {
                 </div>
 
                 <div className="flex justify-end pt-4 border-t border-gray-800">
-                  <button type="submit" className={`px-10 py-4 rounded-2xl font-bold flex items-center transition shadow-lg 
-                  ${isEditing ? 'bg-orange-600 hover:bg-orange-500 shadow-orange-900/20' : 'bg-green-600 hover:bg-green-500 shadow-green-900/20'}`}
+                  <button type="submit" className={`px-10 py-4 rounded-2xl font-bold flex cursor-pointer items-center transition shadow-lg 
+                  ${isEditing ? 'bg-blue-600 hover:bg-blue-500 shadow-orange-900/20' : 'bg-green-700 hover:bg-green-600 shadow-green-900/20'}`}
                   >
                     <Save size={18} className="mr-2" /> {isEditing ? 'Confirmar Cambios' : 'Registrar Usuario'}
                   </button>
@@ -242,86 +244,109 @@ const handleDelete = async (id) => {
             </section>
 
             <section className="space-y-6">
-              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <h3 className="text-xl font-bold flex items-center text-gray-400">
-                  <Users size={20} className="mr-3" />
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 px-2">
+                <h3 className="text-xl font-bold flex items-center text-white">
+                  <Users size={25} className="mr-4 text-green-700" />
                   Directorio de Usuarios
                 </h3>
-                <div className="relative">
-                  <input type="text" placeholder="Buscar usuario o email..." value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className="bg-gray-950 border border-gray-700 rounded-2xl pl-10 pr-4 py-3 text-sm w-full md:w-96 focus:ring-2 focus:ring-green-600 outline-none transition shadow-inner"
+
+                <div className="relative group">
+                  <Search
+                    className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-600 group-focus-within:text-green-700 transition-colors"
+                    size={20}
                   />
-                  <Search className="absolute left-3 top-3.5 text-gray-500" size={20} />
+                  <input
+                    type="text"
+                    placeholder="Buscar usuario o email..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="bg-gray-950 border border-gray-700 rounded-2xl pl-12 pr-4 py-3 text-sm w-full md:w-96 focus:ring-2 focus:ring-green-700 outline-none transition text-white"
+                  />
                 </div>
               </div>
 
-              <div className="bg-gray-900 rounded-3xl border border-gray-700 overflow-hidden shadow-xl">
-                <table className="w-full text-left">
-                  <thead className="bg-gray-800/50 text-gray-500 text-[10px] uppercase font-black tracking-widest border-b border-gray-800">
+              <Container>
+                  <thead className="bg-gray-800/30 text-gray-500 text-sm uppercase font-black tracking-[0.2em] border-b border-gray-800">
                     <tr>
-                      <th className="px-8 py-5">Usuario / ID</th>
-                      <th className="px-8 py-5">Contacto</th>
-                      <th className="px-8 py-5">Privilegios</th>
-                      <th className="px-8 py-5">Estado</th>
-                      <th className="px-8 py-5 text-right">Acciones</th>
+                      <Th>Usuario / ID</Th>
+                      <Th>Contacto</Th>
+                      <Th>Privilegios</Th>
+                      <Th>Estado</Th>
+                      <Th>Acciones</Th>
                     </tr>
                   </thead>
+
                   <tbody className="divide-y divide-gray-800">
                     {filteredUsers.map((user) => (
-                      <tr key={user.id} className="hover:bg-gray-800/30 transition group">
+                      <tr key={user.id} className="hover:bg-gray-800/20 transition group">
                         <td className="px-8 py-6">
                           <div className="flex items-center space-x-4">
-                            <div className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center border border-gray-700 text-gray-400 group-hover:border-green-600 transition">
-                              <User size={20} />
+                            <div className="w-14 h-14 rounded-2xl bg-gray-900 border border-gray-800 shadow-lg flex items-center justify-center">
+                              <User size={24} className="text-gray-400"/>
                             </div>
+
                             <div>
-                              <div className="text-sm font-bold text-gray-100">{user.username}</div>
-                              <div className="text-[10px] text-gray-500 font-mono italic">UID: {user.id}</div>
+                              <div className="text-base font-bold text-white group-hover:text-green-700 transition-colors">
+                                {user.username}
+                              </div>
+                              <div className="text-sm text-gray-500 font-mono mt-1">
+                                UID: {user.id}
+                              </div>
                             </div>
                           </div>
                         </td>
+
                         <td className="px-8 py-6">
-                          <div className="flex items-center text-xs text-gray-300">
-                              <Mail size={12} className="mr-2 text-gray-600" />
-                              {user.email}
+                          <div className="flex items-center text-sm text-gray-400">
+                            <Mail size={14} className="mr-2 text-gray-600" />
+                            {user.email}
                           </div>
-                          <div className="text-[9px] text-gray-600 mt-1 uppercase font-bold tracking-tighter">Creado: {user.created_at}</div>
+                          <div className="text-sm text-gray-500 font-mono mt-1">
+                            Creado: {user.created_at}
+                          </div>
                         </td>
+
                         <td className="px-8 py-6">
-                          <span className={`px-3 py-1 rounded-full text-[9px] font-black uppercase border ${getRoleBadge(user.role)}`}>
+                          <span
+                            className={`px-3 py-1.5 rounded-xl text-xs font-black uppercase tracking-widest 
+                              ${getRoleBadge( user.role )}`}>
                             {user.role}
                           </span>
                         </td>
+
                         <td className="px-8 py-6">
                           {user.active === 1 ? (
-                            <div className="flex items-center text-green-500 text-[10px] font-bold uppercase">
-                              <CheckCircle size={14} className="mr-2" /> Activo
+                            <div className="flex items-center text-green-500 text-xs font-bold uppercase tracking-wider">
+                              <CheckCircle size={12} className="mr-1.5" />
+                              Activo
                             </div>
                           ) : (
-                            <div className="flex items-center text-gray-500 text-[10px] font-bold uppercase">
-                              <XCircle size={14} className="mr-2" /> Inactivo
+                            <div className="flex items-center text-gray-500 text-xs font-bold uppercase tracking-wider">
+                              <XCircle size={12} className="mr-1.5" />
+                              Inactivo
                             </div>
                           )}
                         </td>
+
                         <td className="px-8 py-6 text-right">
-                          <div className="flex justify-end space-x-2 opacity-60 group-hover:opacity-100 transition">
-                            <button onClick={() => handleEdit(user)}
-                              className="p-2.5 bg-gray-800 hover:bg-orange-600 text-gray-400 hover:text-white rounded-xl transition shadow-md"
+                          <div className="flex justify-end space-x-2">
+                            <ActionButton
+                              icon={Edit3}
                               title="Editar"
-                            >
-                              <Edit3 size={20} />
-                            </button>
-                            <button onClick={() => handleDelete(user.id)}
-                              className="p-2.5 bg-gray-800 hover:bg-red-600 text-gray-400 hover:text-white rounded-xl transition shadow-md"
+                              hoverColor="hover:bg-blue-600"
+                              onClick={() => handleEdit(user)}
+                            />
+                            <ActionButton
+                              icon={Trash2}
                               title="Eliminar"
-                            >
-                              <Trash2 size={20} />
-                            </button>
+                              hoverColor="hover:bg-red-600"
+                              onClick={() => handleDelete(user.id)}
+                            />
                           </div>
                         </td>
                       </tr>
                     ))}
+
                     {filteredUsers.length === 0 && (
                       <tr>
                         <td colSpan="5" className="px-8 py-20 text-center text-gray-600 italic">
@@ -330,11 +355,18 @@ const handleDelete = async (id) => {
                       </tr>
                     )}
                   </tbody>
-                </table>
-                <div className="bg-gray-800/50 p-4 border-t border-gray-800 flex justify-between items-center px-8">
-                  <span className="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Registros activos: {users.filter(u => u.active).length}</span>
-                </div>
-              </div>
+                  <tfoot>
+                    <tr>
+                      <td colSpan="5" className="bg-gray-800/20 p-5 border-t border-gray-800">
+                        <div className="flex justify-between items-center">
+                          <span className="text-sm text-gray-500 font-black uppercase tracking-[0.2em]">
+                            Registros activos: {users.filter((u) => u.active).length}
+                          </span>
+                        </div>
+                      </td>
+                    </tr>
+                  </tfoot>
+              </Container>
             </section>
           </div>
       </div>

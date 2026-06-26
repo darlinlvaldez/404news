@@ -5,6 +5,7 @@ import Switch from "@/components/admin/ui/Switch";
 import Input from "@/components/admin/ui/Input"
 import {ActionButton} from "@/components/admin/ui/ActionButtons"
 import { Header } from '@/components/admin/Header';
+import { Container, Th } from "@/components/admin/ui/Table";
 
 import { 
   Trash2, 
@@ -136,8 +137,8 @@ const handleDelete = async (id) => {
   return (
     <div className="h-full flex flex-col overflow-y-auto bg-gray-800 text-gray-200 font-sans">
       <Header>
-        <Header.Title>Categorias</Header.Title>
-        <Header.Subtitle>Gestion de Categorias</Header.Subtitle>
+        <Header.Title>Autores</Header.Title>
+        <Header.Subtitle>Gestion de Autores</Header.Subtitle>
       </Header>
 
       <div className="flex-1 overflow-y-auto">
@@ -298,78 +299,82 @@ const handleDelete = async (id) => {
               </div>
             </div>
 
-            <div className="bg-gray-900 rounded-4xl border border-gray-700 overflow-hidden shadow-2xl">
-              <div className="overflow-x-auto">
-                <table className="w-full text-left">
-                  <thead className="bg-gray-800/30 text-gray-500 text-sm uppercase font-black tracking-[0.2em] border-b border-gray-800">
-                    <tr>
-                      <th className="px-8 py-6">Usuario & Perfil</th>
-                      <th className="px-8 py-6">Biografía</th>
-                      <th className="px-8 py-6">Rol</th>
-                      <th className="px-8 py-6">Estado</th>
-                      <th className="px-8 py-6 text-right">Acciones</th>
+            <Container>
+                <thead className="bg-gray-800/30 text-gray-500 text-sm uppercase font-black tracking-[0.2em] border-b border-gray-800">
+                  <tr>
+                    <Th>Usuario & Perfil</Th>
+                    <Th>Biografía</Th>
+                    <Th>Rol</Th>
+                    <Th>Estado</Th>
+                    <Th>Acciones</Th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-800">
+                  {filteredAuthors.map((author) => (
+                    <tr key={author.id} className="hover:bg-gray-800/20 transition group">
+                      <td className="px-8 py-6">
+                        <div className="flex items-center space-x-4">
+                          <img src={author.avatar || "/images/notfoundimage.jpg"} alt={author.name} 
+                          className="w-14 h-14 rounded-2xl object-cover bg-gray-900 border border-gray-800 shadow-lg" />
+                          <div>
+                            <div className="text-base font-bold text-white group-hover:text-green-700 transition-colors">{author.name}</div>
+                            <div className="text-sm text-gray-500 font-mono mt-1">{author.email}</div>
+                          </div>
+                        </div>
+                      </td>
+                      <td className="px-8 py-6">
+                        <p className="text-sm text-gray-400 max-w-xs line-clamp-2 leading-relaxed">{author.bio}</p>
+                      </td>
+                      <td className="px-8 py-6">
+                        <span className="px-3 py-1.5 bg-gray-900 border border-gray-800 rounded-xl text-xs font-black text-gray-400 uppercase tracking-widest">
+                          {author.role}
+                        </span>
+                      </td>
+                      <td className="px-8 py-6">
+                        {author.active === 1 ? (
+                          <div className="flex items-center text-green-500 text-xs font-bold uppercase tracking-wider">
+                            <CheckCircle size={12} className="mr-1.5" /> Activa
+                          </div>
+                        ) : (
+                          <div className="flex items-center text-gray-500 text-xs font-bold uppercase tracking-wider">
+                            <XCircle size={12} className="mr-1.5" /> Inactiva
+                          </div>
+                        )}
+                      </td>
+                      <td className="px-8 py-6 text-right">
+                        <div className="flex justify-end space-x-2">
+                          <ActionButton
+                            icon={Edit3}
+                            title="Editar"
+                            hoverColor="hover:bg-blue-600"
+                            onClick={() => handleEdit(author)}
+                          />
+                          <ActionButton
+                            icon={Trash2}
+                            title="Eliminar"
+                            hoverColor="hover:bg-red-600"
+                            onClick={() => handleDelete(author.id)}
+                          />
+                        </div>
+                      </td>
                     </tr>
-                  </thead>
-                  <tbody className="divide-y divide-gray-800">
-                    {filteredAuthors.map((author) => (
-                      <tr key={author.id} className="hover:bg-gray-800/20 transition group">
-                        <td className="px-8 py-6">
-                          <div className="flex items-center space-x-4">
-                            <img src={author.avatar || "/images/notfoundimage.jpg"} alt={author.name} 
-                            className="w-14 h-14 rounded-2xl object-cover bg-gray-900 border border-gray-800 shadow-lg" />
-                            <div>
-                              <div className="text-base font-bold text-white group-hover:text-green-700 transition-colors">{author.name}</div>
-                              <div className="text-sm text-gray-500 font-mono mt-1">{author.email}</div>
-                            </div>
-                          </div>
-                        </td>
-                        <td className="px-8 py-6">
-                          <p className="text-sm text-gray-400 max-w-xs line-clamp-2 leading-relaxed">{author.bio}</p>
-                        </td>
-                        <td className="px-8 py-6">
-                          <span className="px-3 py-1.5 bg-gray-900 border border-gray-800 rounded-xl text-xs font-black text-gray-400 uppercase tracking-widest">
-                            {author.role}
-                          </span>
-                        </td>
-                        <td className="px-8 py-6">
-                          {author.active === 1 ? (
-                            <div className="flex items-center text-green-500 text-xs font-bold uppercase tracking-wider">
-                              <CheckCircle size={12} className="mr-1.5" /> Activa
-                            </div>
-                          ) : (
-                            <div className="flex items-center text-gray-500 text-xs font-bold uppercase tracking-wider">
-                              <XCircle size={12} className="mr-1.5" /> Inactiva
-                            </div>
-                          )}
-                        </td>
-                        <td className="px-8 py-6 text-right">
-                          <div className="flex justify-end space-x-2">
-                            <ActionButton
-                              icon={Edit3}
-                              title="Editar"
-                              hoverColor="hover:bg-blue-600"
-                              onClick={() => handleEdit(author)}
-                            />
-                            <ActionButton
-                              icon={Trash2}
-                              title="Eliminar"
-                              hoverColor="hover:bg-red-600"
-                              onClick={() => handleDelete(author.id)}
-                            />
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-              <div className="bg-gray-800/20 p-5 border-t border-gray-800 flex justify-between items-center px-8">
-                <span className="text-sm text-gray-500 font-black uppercase tracking-[0.2em]">Total: {filteredAuthors.length} colaboradores</span>
-              </div>
-            </div>
-          </section>
-        </div>
+                  ))}
+                </tbody>
+              <tfoot>
+              <tr>
+                <td colSpan="5" className="bg-gray-800/20 p-5 border-t border-gray-800">
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm text-gray-500 font-black uppercase tracking-[0.2em]">
+                      Total: {filteredAuthors.length} colaboradores
+                    </span>
+                  </div>
+                </td>
+              </tr>
+            </tfoot>
+          </Container>
+        </section>
       </div>
     </div>
+  </div>
   );
 }
