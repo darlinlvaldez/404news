@@ -5,9 +5,61 @@ import MoreNews from "@/components/MoreNews";
 import ListNews from "@/components/ListNews";
 import MostRead from "@/components/MostRead";
 
-export const metadata = {
-  title: "Section - 404 News"
-};
+export async function generateMetadata({ params }) {
+  const { category } = await params;
+
+  const categoryMap = {
+    "ia-inteligencia-artificial": "Inteligencia Artificial",
+    "desarrollo-software-app": "Software",
+    "computadoras-pc": "Computadoras",
+    "tecnologia-tecnology": "Tecnología",
+    "dispositivos-moviles": "Dispositivos Móviles",
+  };
+
+  const categoryName = categoryMap[category] ?? category;
+
+  const title = `Noticias de ${categoryName} | 404 News`
+
+  const description =
+  "Mantente informado con las últimas noticias sobre tecnología, inteligencia artificial, programación, smartphones, hardware y software.";
+
+  return {
+    title,
+    description,
+
+    openGraph: {
+    title,
+    description,
+    siteName: "404News",
+    url: `https://404news.up.railway.app/news/section/${category}`,
+    type: "website",
+    locale: "es_ES",
+    images: [
+        {
+          url: "https://404news.up.railway.app/images/404news-logo.png",
+          width: 1200,
+          height: 630,
+          alt: "404News - Noticias de Tecnología",
+        },
+      ],
+    },
+
+    authors: [
+      {
+        name: "404News",
+      },
+    ],
+
+    alternates: {
+      canonical: `https://404news.up.railway.app/news/section/${category}`,
+    },
+
+    robots: {
+      index: true,
+      follow: true,
+    },
+  };
+}
 
 export default async function SectionCategory({ params }) {
   const { category } = await params;

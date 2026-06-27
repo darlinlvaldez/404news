@@ -7,12 +7,49 @@ import MoreNews from "@/components/MoreNews";
 import LatestWeekNews from "@/components/LatestWeekNews";
 import ListNews from "@/components/ListNews";
 
+const title = "404News | Noticias de Tecnología, IA y Dispositivos Móviles"
+
+const description = `Mantente informado con las últimas noticias sobre tecnología, inteligencia artificial, programación, smartphones, hardware y software.`
+
 export const metadata = {
-  title: "404News",
+  title,
+  description,
+
+  openGraph: {
+    title,
+    description,
+    siteName: "404News",
+    url: "https://404news.up.railway.app",
+    type: "website",
+    locale: "es_ES",
+    images: [
+        {
+            url: "https://404news.up.railway.app/images/404news-logo.png",
+            width: 1200,
+            height: 630,
+        },
+      ],
+    },
+
+  alternates: {
+    canonical: `https://404news.up.railway.app`,
+  },
+
+  authors: [
+    {
+      name: "404News",
+    },
+  ],
+
+  robots: {
+    index: true,
+    follow: true,
+  },
+
   icons: {
     icon: "/images/404logo.png",
   },
-};
+}
 
 export default async function Principal() {
   
@@ -36,7 +73,7 @@ export default async function Principal() {
       <main className="grid grid-cols-1 lg:grid-cols-4 gap-6 py-16">
 
         <h1 className="sr-only">
-          404 News – Noticias de tecnología y tendencias
+          404News - Noticias de tecnología, inteligencia artificial, programación y dispositivos móviles
         </h1>
         
           <aside className="lg:col-span-1">      

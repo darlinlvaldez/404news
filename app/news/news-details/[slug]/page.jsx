@@ -17,22 +17,29 @@ export async function generateMetadata({ params }) {
             title: "Noticia no encontrada - 404 News",
         };
     }
+ 
+    const text = news.blocks
+    .filter(block => block.block_type === "paragraph")
+    .map(block => block.content)
+    .join(" ");
 
-    const description = news.blocks
-        .filter(block => block.block_type === "paragraph")
-        .map(block => block.content)
-        .join(" ")
-        .slice(0, 160);
+    const description = text.length > 0 
+    ? (text.length > 160 ? text.slice(0, 157) + "..." : text)
+    : "Lee las últimas noticias de tecnología en 404 News.";
 
     return {
         title: news.title,
         description,
 
         openGraph: {
+            siteName: "404News",
             title: news.title,
             description,
             url: `https://404news.up.railway.app/news/news-details/${slug}`,
             type: "article",
+            locale: "es_ES",
+            publishedTime: news.created_at,
+            modifiedTime: news.updated_at,
             images: [
                 {
                     url: news.cover_image,
@@ -42,12 +49,23 @@ export async function generateMetadata({ params }) {
                 }
             ],
         },
+        
+        authors: [{ name: news.author }],
 
         twitter: {
             card: "summary_large_image",
             title: news.title,
             description,
             images: [news.cover_image],
+        },
+
+        alternates: {
+            canonical: `https://404news.up.railway.app/news/news-details/${slug}`,
+        },
+
+        robots: { 
+            index: true,
+            follow: true,
         },
     };
 }
@@ -72,8 +90,28 @@ export default async function DetailNews({ params }) {
     const news = data.detailNews;
     const moreNews = data.relatedNews;
 
+    const jsonLd = {
+        "@context": "https://schema.org",
+        "@type": "NewsArticle",
+        headline: news.title,
+        image: [news.cover_image],
+        datePublished: news.created_at,
+        dateModified: news.updated_at,
+        author: {
+            "@type": "Person",
+            name: news.author,
+        },
+    };
+
     return (
     <>
+    <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+            __html: JSON.stringify(jsonLd),
+        }}
+    />
+
     <div className="max-w-7xl mx-auto flex-1 min-h-screen flex flex-col px-6">
 
         <main className="grid grid-cols-1 lg:grid-cols-5 gap-6 py-10 px-6">
