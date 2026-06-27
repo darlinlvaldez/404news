@@ -5,7 +5,7 @@ import { ArrowLeft, Eye, Save, Plus } from 'lucide-react';
 
 export const Header = ({ children, views, onSave, addNews, href, onBack }) => {
   return (
-    <header className="sticky top-0 z-20 bg-gray-900 backdrop-blur-md px-8 py-4 border-b border-gray-700 flex justify-between items-center">
+    <header className="bg-gray-900 backdrop-blur-md px-8 py-4 border-b border-gray-700 flex justify-between items-center">
       <div className="flex items-center space-x-4">
         {onBack && (
           <button onClick={onBack} 
@@ -53,7 +53,7 @@ function HeaderTitle({ children }) {
 
 function HeaderSubtitle({ children }) {
   return (
-    <span className="text-[10px] text-gray-500 uppercase font-bold tracking-tighter">
+    <span className="text-xs text-gray-500 uppercase font-bold tracking-tighter">
       {children}
     </span>
   );

@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Header } from '@/components/admin/Header';
 import {ActionButton, SaveButton} from "@/components/admin/ui/ActionButtons"
+import {formatDateAbsolute} from "@/utils/formatDate"
 import Input from "@/components/admin/ui/Input"
 import Switch from "@/components/admin/ui/Switch";
 import { Container, Th } from "@/components/admin/ui/Table";
@@ -123,7 +124,7 @@ const handleDelete = async (id) => {
                   className="w-full"
                   value={formData.name}
                   onChange={handleInputChange}
-                  placeholder="Ej. Tecnología, Salud..."
+                  placeholder="Ej. Computadoras, IA..."
                 />
               </div>
               <div className="md:col-span-1">
@@ -172,7 +173,7 @@ const handleDelete = async (id) => {
             </div>
 
             <Container>
-               <thead className="bg-gray-800/50 text-gray-400 text-xs uppercase font-black tracking-widest">
+               <thead className="bg-gray-800/40 text-gray-400 tracking-widest border-b border-gray-800">
                   <tr>
                     <Th>ID</Th>
                     <Th>Nombre / Slug</Th>
@@ -183,7 +184,7 @@ const handleDelete = async (id) => {
                 </thead>
                 <tbody className="divide-y divide-gray-800">
                   {filteredCategories.map((cat) => (
-                    <tr key={cat.id} className="hover:bg-gray-800/20 transition group">
+                    <tr key={cat.id} className="hover:bg-gray-800/40 transition group">
                       <td className="px-8 py-6 text-sm font-mono text-white">#{cat.id}</td>
                       <td className="px-8 py-5">
                         <h3 className="text-sm font-bold text-white group-hover:text-green-700">{cat.name}</h3>
@@ -191,7 +192,7 @@ const handleDelete = async (id) => {
                       </td>
                       <td className="px-8 py-5">
                         {cat.active === 1 ? (
-                          <div className="flex items-center text-green-500 text-xs font-bold uppercase tracking-wider">
+                          <div className="flex items-center text-green-700 text-xs font-bold uppercase tracking-wider">
                             <CheckCircle size={15} className="mr-1.5" /> Activa
                           </div>
                         ) : (
@@ -200,8 +201,8 @@ const handleDelete = async (id) => {
                           </div>
                         )}
                       </td>
-                      <td className="px-8 py-5 text-xs text-gray-500 italic">
-                        {cat.created_at}
+                      <td className="px-8 py-5 text-sm font-bold text-gray-500">
+                        {formatDateAbsolute(cat.created_at)}
                       </td>
                       <td className="px-8 py-5 text-right">
                         <div className="flex justify-end space-x-2">
@@ -231,7 +232,7 @@ const handleDelete = async (id) => {
                 </tbody>
               <tfoot>
                 <tr>
-                  <td colSpan="5" className="bg-gray-800/50 p-4 border-t border-gray-800">
+                  <td colSpan="5" className="bg-gray-800/40 p-4 border-t border-gray-800">
                     <div className="flex justify-between items-center">
                       <span className="text-xs text-gray-400 font-bold pl-4 uppercase">
                         Total: {filteredCategories.length} categorías

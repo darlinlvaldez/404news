@@ -66,7 +66,7 @@ export default function NewsTable() {
 
     const getStatusStyle = (status) => {
         switch (status) {
-        case 'published': return 'text-green-500 border-green-800';
+        case 'published': return 'text-green-700 border-green-800';
         case 'review': return 'text-amber-500 border-amber-500/20';
         case 'draft': return 'text-slate-500 border-slate-600/20';
         default: return 'text-gray-500 border-gray-500/20';
@@ -130,7 +130,7 @@ export default function NewsTable() {
 
         <Container>
           <thead>
-            <tr className="bg-gray-800/50 text-gray-400 text-xs uppercase font-black tracking-tight border-b border-slate-800">
+            <tr className="bg-gray-800/40 text-gray-400 tracking-tight border-b border-slate-800">
               <Th>Detalles del Artículo</Th>
               <Th>Autoría</Th>
               <Th>Categoría</Th>
@@ -141,10 +141,10 @@ export default function NewsTable() {
           </thead>
           <tbody className="divide-y divide-gray-800">
             {news.map((item) => (
-              <tr key={item.id} className="hover:bg-slate-800/20 transition-all group">
+              <tr key={item.id} className="hover:bg-slate-800/40 transition-all group">
                 <td className="px-8 py-5">
                 <div className="max-w-xs md:max-w-sm">
-                  <p className="text-sm font-bold text-white group-hover:text-green-500 transition truncate mb-1">
+                  <p className="text-sm font-bold text-white group-hover:text-green-700 transition truncate mb-1">
                     {item.title}
                   </p>
                   <div className="flex items-center space-x-2 text-xs py-0.5 font-mono text-gray-500">
@@ -197,10 +197,10 @@ export default function NewsTable() {
 
           <tfoot>
             <tr>
-              <td colSpan="6" className="bg-gray-800/50 border-t border-gray-800">
-                  <div className="p-6 bg-gray-900 border-t border-gray-900 flex flex-col sm:flex-row items-center justify-between gap-4">
-                  <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest"> Mostrando <span className="text-emerald-500">{showingTo - showingFrom + 1}</span>
-                      {" "}de{" "} <span className="text-white">{total}</span> noticias
+              <td colSpan="6" className="border-t border-gray-800">
+                  <div className="p-6 bg-gray-800/40 border-t border-gray-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+                  <span className="text-ls font-black text-slate-500 uppercase tracking-widest"> Mostrando <span className="text-emerald-600">{showingTo - showingFrom + 1}</span>
+                      {" "}de{" "} <span className="text-gray-300">{total}</span> noticias
                   </span>
                   <div className="flex items-center space-x-3">
                     <button disabled={page === 1} onClick={() => setPage(prev => prev - 1)}

@@ -133,11 +133,11 @@ const handleDelete = async (id) => {
   ]
 
   return (
-    <div className="h-full flex flex-col overflow-y-auto bg-gray-800">
+    <div className="h-full flex flex-col overflow-y-auto bg-gray-800 font-sans">
 
       <Header>
-        <Header.Title>Categorias</Header.Title>
-        <Header.Subtitle>Gestion de Categorias</Header.Subtitle>
+        <Header.Title>Autores</Header.Title>
+        <Header.Subtitle>Gestion de Autores</Header.Subtitle>
       </Header>
 
         <div className="flex-1 overflow-y-auto">
@@ -162,7 +162,7 @@ const handleDelete = async (id) => {
               <form onSubmit={handleSave} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   <div>
-                    <label className="block text-xs font-bold text-gray-500 uppercase mb-2 ml-1">Nombre de Usuario</label>
+                    <label className="block text-sm font-bold text-gray-500 uppercase mb-2 ml-1">Nombre de Usuario</label>
                     <div className="relative">
                       <Input
                         className="w-full"
@@ -176,7 +176,7 @@ const handleDelete = async (id) => {
                     </div>
                   </div>
                   <div>
-                    <label className="block text-xs font-bold text-gray-500 uppercase mb-2 ml-1">Correo Electrónico</label>
+                    <label className="block text-sm font-bold text-gray-500 uppercase mb-2 ml-1">Correo Electrónico</label>
                     <div className="relative">
                       <Input
                           className="w-full"
@@ -190,7 +190,7 @@ const handleDelete = async (id) => {
                     </div>
                   </div>
                   <div>
-                    <label className="block text-xs font-bold text-gray-500 uppercase mb-2 ml-1">Rol de Usuario</label>
+                    <label className="block text-sm font-bold text-gray-500 uppercase mb-2 ml-1">Rol de Usuario</label>
                     <div className="relative">
                       <Select
                         className="w-full"
@@ -206,7 +206,7 @@ const handleDelete = async (id) => {
                     </div>
                   </div>
                   <div>
-                    <label className="block text-xs font-bold text-gray-500 uppercase mb-2 ml-1">Contraseña {isEditing && '(Opcional)'}</label>
+                    <label className="block text-sm font-bold text-gray-500 uppercase mb-2 ml-1">Contraseña {isEditing && '(Opcional)'}</label>
                     <div className="relative">
                       <Input
                           className="w-full"
@@ -257,7 +257,7 @@ const handleDelete = async (id) => {
                   />
                   <input
                     type="text"
-                    placeholder="Buscar usuario o email..."
+                    placeholder="Buscar por usuario o email..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     className="bg-gray-950 border border-gray-700 rounded-2xl pl-12 pr-4 py-3 text-sm w-full md:w-96 focus:ring-2 focus:ring-green-700 outline-none transition text-white"
@@ -266,7 +266,7 @@ const handleDelete = async (id) => {
               </div>
 
               <Container>
-                  <thead className="bg-gray-800/30 text-gray-500 text-sm uppercase font-black tracking-[0.2em] border-b border-gray-800">
+                  <thead className="bg-gray-800/40 text-gray-500 border-b border-gray-800">
                     <tr>
                       <Th>Usuario / ID</Th>
                       <Th>Contacto</Th>
@@ -278,7 +278,7 @@ const handleDelete = async (id) => {
 
                   <tbody className="divide-y divide-gray-800">
                     {filteredUsers.map((user) => (
-                      <tr key={user.id} className="hover:bg-gray-800/20 transition group">
+                      <tr key={user.id} className="hover:bg-gray-800/40 transition group">
                         <td className="px-8 py-6">
                           <div className="flex items-center space-x-4">
                             <div className="w-14 h-14 rounded-2xl bg-gray-900 border border-gray-800 shadow-lg flex items-center justify-center">
@@ -357,7 +357,7 @@ const handleDelete = async (id) => {
                   </tbody>
                   <tfoot>
                     <tr>
-                      <td colSpan="5" className="bg-gray-800/20 p-5 border-t border-gray-800">
+                      <td colSpan="5" className="bg-gray-800/40 p-5 border-t border-gray-800">
                         <div className="flex justify-between items-center">
                           <span className="text-sm text-gray-500 font-black uppercase tracking-[0.2em]">
                             Registros activos: {users.filter((u) => u.active).length}

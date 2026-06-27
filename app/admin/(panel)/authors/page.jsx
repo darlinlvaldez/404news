@@ -300,7 +300,7 @@ const handleDelete = async (id) => {
             </div>
 
             <Container>
-                <thead className="bg-gray-800/30 text-gray-500 text-sm uppercase font-black tracking-[0.2em] border-b border-gray-800">
+                <thead className="bg-gray-800/40 text-gray-500 border-b border-gray-800">
                   <tr>
                     <Th>Usuario & Perfil</Th>
                     <Th>Biografía</Th>
@@ -311,7 +311,7 @@ const handleDelete = async (id) => {
                 </thead>
                 <tbody className="divide-y divide-gray-800">
                   {filteredAuthors.map((author) => (
-                    <tr key={author.id} className="hover:bg-gray-800/20 transition group">
+                    <tr key={author.id} className="hover:bg-gray-800/40 transition group">
                       <td className="px-8 py-6">
                         <div className="flex items-center space-x-4">
                           <img src={author.avatar || "/images/notfoundimage.jpg"} alt={author.name} 
@@ -362,7 +362,7 @@ const handleDelete = async (id) => {
                 </tbody>
               <tfoot>
               <tr>
-                <td colSpan="5" className="bg-gray-800/20 p-5 border-t border-gray-800">
+                <td colSpan="5" className="bg-gray-800/40 p-5 border-t border-gray-800">
                   <div className="flex justify-between items-center">
                     <span className="text-sm text-gray-500 font-black uppercase tracking-[0.2em]">
                       Total: {filteredAuthors.length} colaboradores
