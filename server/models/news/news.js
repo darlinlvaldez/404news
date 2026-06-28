@@ -148,6 +148,8 @@ getNews.getDetailsNews = async function (slug) {
     SELECT 
       n.id,
       c.id AS categoryId,
+      c.name AS category,
+      c.slug AS category_slug,
       a.name AS author,
       a.slug AS author_slug,
       n.title,

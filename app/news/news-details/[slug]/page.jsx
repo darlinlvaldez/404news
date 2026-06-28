@@ -103,12 +103,44 @@ export default async function DetailNews({ params }) {
         },
     };
 
+    const breadcrumbJsonLd = {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        itemListElement: [
+            {
+                "@type": "ListItem",
+                position: 1,
+                name: "Inicio",
+                item: "https://404news.up.railway.app",
+            },
+            {
+                "@type": "ListItem",
+                position: 2,
+                name: news.category,
+                item: `https://404news.up.railway.app/news/section/${news.category_slug}`,
+            },
+            {
+                "@type": "ListItem",
+                position: 3,
+                name: news.title,
+                item: `https://404news.up.railway.app/news/news-details/${slug}`,
+            },
+        ],
+    };
+
     return (
     <>
     <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
             __html: JSON.stringify(jsonLd),
+        }}
+    />
+
+    <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+            __html: JSON.stringify(breadcrumbJsonLd),
         }}
     />
 

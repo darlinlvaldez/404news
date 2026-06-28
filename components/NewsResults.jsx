@@ -43,7 +43,7 @@ export default function NewsResults({
                 <div className="flex flex-col sm:flex-row">
                     <div className="sm:w-48 h-32 shrink-0 bg-gray-200">
                     <img className="w-full h-full object-cover"
-                        src={news.cover_image} alt="Portada"/>
+                        src={news.cover_image} alt={news.slug}/>
                     </div>
                     <div className="p-4 flex flex-col justify-center grow">
                     <time className="text-[11px] text-gray-400 font-medium">
