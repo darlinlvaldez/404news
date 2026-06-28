@@ -27,7 +27,29 @@ export default async function AuthorPage({ params, searchParams }) {
 
     const {headerAuthor, imageAuthor} = authorStyles();
 
-    return ( 
+    const jsonLd = {
+        "@context": "https://schema.org",
+        "@type": "ProfilePage",
+
+        mainEntity: {
+            "@type": "Person",
+            name: author.name,
+            image: author.image,
+            description: author.bio,
+        },
+
+        url: `https://404news.up.railway.app/news/author/${slug}`
+    };
+    
+    return (
+    <>
+    <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+            __html: JSON.stringify(jsonLd),
+        }}
+    />
+
     <div className="max-w-4xl mx-auto px-4 py-12">
         <header className={headerAuthor}>
             <div className="md:flex items-center p-8 md:p-10 gap-8">
@@ -59,5 +81,6 @@ export default async function AuthorPage({ params, searchParams }) {
             basePath={`/author/${author.slug}`}
             queryParams=""/>
     </div>
+    </>
   );
 }

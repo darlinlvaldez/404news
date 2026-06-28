@@ -66,8 +66,23 @@ export default async function Principal() {
   const latestWeekLeft = latestWeekNews.slice(0, 3)
   const latestWeekRight = latestWeekNews.slice(3, 6)
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: "404News",
+    description: "Noticias de tecnología, inteligencia artificial, programación, smartphones, hardware y software.",
+    url: "https://404news.up.railway.app"
+  };
+
   return (
   <>
+  <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{
+          __html: JSON.stringify(jsonLd),
+      }}
+  />
+  
   <Header />
     <div className="flex-1 max-w-7xl mx-auto px-6">
       <main className="grid grid-cols-1 lg:grid-cols-4 gap-6 py-16">

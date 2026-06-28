@@ -5,16 +5,16 @@ import MoreNews from "@/components/MoreNews";
 import ListNews from "@/components/ListNews";
 import MostRead from "@/components/MostRead";
 
-export async function generateMetadata({ params }) {
-  const { category } = await params;
-
-  const categoryMap = {
+const categoryMap = {
     "ia-inteligencia-artificial": "Inteligencia Artificial",
     "desarrollo-software-app": "Software",
     "computadoras-pc": "Computadoras",
     "tecnologia-tecnology": "Tecnología",
     "dispositivos-moviles": "Dispositivos Móviles",
   };
+  
+export async function generateMetadata({ params }) {
+  const { category } = await params;
 
   const categoryName = categoryMap[category] ?? category;
 
@@ -77,8 +77,24 @@ export default async function SectionCategory({ params }) {
   const listNews = news.slice(5, 11);     
   const moreNews = news.slice(11, 27);    
 
-  return (
+  const categoryName = categoryMap[category] ?? category;
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: `Noticias de ${categoryName}`,
+    description: `Todas las noticias de ${categoryName}`,
+    url: `https://404news.up.railway.app/news/category/${category}`,
+  };
+
+    return (
     <>
+    <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+            __html: JSON.stringify(jsonLd),
+        }}
+    />
       <div className="max-w-7xl mx-auto flex-1 min-h-screen flex flex-col px-6">
         <main className="grid grid-cols-1 lg:grid-cols-4 gap-6 py-10">
           <header className="lg:col-span-4 mb-6">
