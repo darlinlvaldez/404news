@@ -23,7 +23,7 @@ forSeo.getCategories = async function () {
   return rows;
 };
 
-getAuthors.getAuthors = async function () {
+forSeo.getAuthors = async function () {
   const [rows] = await db.query(`
     SELECT slug
     FROM authors
