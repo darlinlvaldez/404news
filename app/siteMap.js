@@ -1,4 +1,4 @@
-import forSeo from "@/server/service/seo";
+import forSeo from "@/server/services/news/seo";
 
 import config from "../config";
 
