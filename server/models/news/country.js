@@ -18,16 +18,18 @@ export default async function syncCountryViews(key) {
 
   const [news] = await db.query(
     `
-        SELECT id 
-        FROM news
-        WHERE slug = ?
-        `,
+    SELECT id 
+    FROM news
+    WHERE slug = ?
+    `,
     [slug],
   );
 
   if (!news.length) return;
 
   const newsId = news[0].id;
+
+  const createdAt = data.created_at || new Date();
 
   await db.query(
     `
@@ -36,14 +38,13 @@ export default async function syncCountryViews(key) {
           news_id,
           country_code,
           country_name,
-          views
+          views,
+          created_at
         )
 
-        VALUES(?,?,?,?)
-        ON DUPLICATE KEY UPDATE
-        views = views + VALUES(views)
+        VALUES(?,?,?,?,?)
         `,
-    [newsId, countryCode, countryName, Number(views)],
+    [newsId, countryCode, countryName, Number(views), createdAt],
   );
 
   await redis.del(key);

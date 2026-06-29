@@ -26,6 +26,15 @@ export default async function incrementView(slug, ip, visitorId) {
 
   const countryKey = `news:country:${slug}:${country.code}`;
 
-  await redis.hIncrBy(countryKey, "views", 1);
-  await redis.hSet(countryKey, "name", country.name);
+  const exists = await redis.exists(countryKey);
+
+  if (!exists) {
+    await redis.hSet(countryKey, {
+      views: 1,
+      name: country.name,
+      created_at: new Date().toISOString()
+    });
+  } else {
+    await redis.hIncrBy(countryKey, "views", 1);
+  }
 }
