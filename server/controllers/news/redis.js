@@ -32,8 +32,8 @@ export default async function incrementView(slug, ip, visitorId) {
     await redis.hSet(countryKey, {
       views: 1,
       name: country.name,
-      created_at: new Date().toISOString()
-    });
+      created_at: new Date().toISOString().slice(0, 19) .replace("T", " ")
+      });
   } else {
     await redis.hIncrBy(countryKey, "views", 1);
   }
