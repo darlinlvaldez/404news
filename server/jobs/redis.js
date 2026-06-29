@@ -16,5 +16,5 @@ export function startSyncJob() {
     } catch (err) {
       console.error(err);
     }
-  }, 5 * 60 * 1000);
+  }, 30 * 60 * 1000);
 }
