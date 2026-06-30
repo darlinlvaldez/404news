@@ -1,3 +1,30 @@
+import CurrentDate from '../../../../components/CurrentDate';
+import StatsCard from '../../../../components/admin/ui/StatsCard';
+import ViewsChart from '../../../../components/admin/ViewsChart';
+import Link from "next/link";
+
+import { 
+    CalendarCheck, 
+    FileText, 
+    Eye, 
+    Folder,
+    TrendingUp, 
+    Clock,
+    BarChart3,
+    Globe,
+    ArrowRight,
+    Activity } from 'lucide-react';
+
+    const data = [
+        { day: "Lun", views: 120 },
+        { day: "Mar", views: 180 },
+        { day: "Mié", views: 160 },
+        { day: "Jue", views: 240 },
+        { day: "Vie", views: 210 },
+        { day: "Sáb", views: 310 },
+        { day: "Dom", views: 280 },
+    ];
+
 export default async function AdminPanel() {
 
     return (
@@ -6,34 +33,124 @@ export default async function AdminPanel() {
         <header className="h-16 bg-gray-900 flex items-center justify-between px-8 border-b border-gray-700">
             <h2 className="text-xl font-semibold">Resumen General</h2>
             <div className="flex items-center space-x-4">
-                <time className="text-sm text-gray-400">Hoy: 16 Feb, 2024</time>
+                <time className="text-sm text-gray-400"><CurrentDate/></time>
             </div>
         </header>
 
         <section className="flex-1 overflow-y-auto p-8 space-y-8">
             
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-                <div className="bg-gray-900 p-5 rounded-xl border border-gray-700 shadow-lg">
-                    <p className="text-gray-400 text-xs uppercase font-bold tracking-wider">Publicadas hoy</p>
-                    <h3 className="text-3xl font-bold text-green-500 mt-1">32</h3>
-                </div>
-                <div className="bg-gray-900 p-5 rounded-xl border border-gray-700 shadow-lg">
-                    <p className="text-gray-400 text-xs uppercase font-bold tracking-wider">Borradores</p>
-                    <h3 className="text-3xl font-bold text-yellow-500 mt-1">12</h3>
-                </div>
-                <div className="bg-gray-900 p-5 rounded-xl border border-gray-700 shadow-lg">
-                    <p className="text-gray-400 text-xs uppercase font-bold tracking-wider">En revisión</p>
-                    <h3 className="text-3xl font-bold text-blue-500 mt-1">5</h3>
-                </div>
-                <div className="bg-gray-900 p-5 rounded-xl border border-gray-700 shadow-lg">
-                    <p className="text-gray-400 text-xs uppercase font-bold tracking-wider">Tickets</p>
-                    <h3 className="text-3xl font-bold text-red-500 mt-1">8</h3>
-                </div>
-                <div className="bg-gray-900 p-5 rounded-xl border border-gray-700 shadow-lg">
-                    <p className="text-gray-400 text-xs uppercase font-bold tracking-wider">Vistas hoy</p>
-                    <h3 className="text-3xl font-bold text-white mt-1">1,245</h3>
-                </div>
+            <div>
+                <h3 className="text-xl font-bold">Noticias</h3>
+                <p className="text-sm text-gray-400">
+                    Resumen general del contenido publicado.
+                </p>
             </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+                <StatsCard
+                    title="Total noticias"
+                    value="326"
+                    icon={FileText}
+                    color="text-blue-400"
+                />
+
+                <StatsCard
+                    title="Publicadas"
+                    value="281"
+                    icon={CalendarCheck}
+                    color="text-green-500"
+                />
+
+                <StatsCard
+                    title="Borradores"
+                    value="18"
+                    icon={FileText}
+                    color="text-yellow-500"
+                />
+
+                <StatsCard
+                    title="En espera"
+                    value="18"
+                    icon={Clock}
+                    color="text-red-500"
+                />
+
+                <StatsCard
+                    title="Publicadas hoy"
+                    value="12"
+                    icon={CalendarCheck}
+                    color="text-emerald-500"
+                />
+
+                <StatsCard
+                    title="Este mes"
+                    value="43"
+                    icon={CalendarCheck}
+                    color="text-cyan-400"
+                />
+
+                <StatsCard
+                    title="Categorías"
+                    value="9"
+                    icon={Folder}
+                    color="text-purple-400"
+                />
+            </div>
+
+            <div className=' border-b border-gray-700'></div>
+            
+            <div>
+                <h3 className="text-xl font-bold">Estadísticas de vistas</h3>
+                <p className="text-sm text-gray-400">
+                    Métricas de tráfico y rendimiento de las noticias.
+                </p>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+                <StatsCard
+                title="Total vistas"
+                value="18,520"
+                icon={Eye}
+                color="text-white"
+            />
+
+            <StatsCard
+                title="Hoy"
+                value="523"
+                icon={Eye}
+                color="text-green-500"
+            />
+
+            <StatsCard
+                title="Esta semana"
+                value="3,145"
+                icon={TrendingUp}
+                color="text-blue-500"
+            />
+
+            <StatsCard
+                title="Este mes"
+                value="14,250"
+                icon={BarChart3}
+                color="text-cyan-500"
+            />
+
+            <StatsCard
+                title="Países"
+                value="18"
+                icon={Globe}
+                color="text-purple-500"
+            />
+
+            <StatsCard
+                title="Promedio"
+                value="57"
+                icon={Activity}
+                color="text-orange-500"
+            />
+            </div>
+
+            <div className=' border-b border-gray-700'></div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 
@@ -141,14 +258,28 @@ export default async function AdminPanel() {
 
             <div className="bg-gray-900 p-6 rounded-xl border border-gray-700 shadow-lg">
                 <div className="flex items-center justify-between mb-6">
-                    <h4 className="font-bold text-lg">📈 Vistas últimos 7 días</h4>
-                    <span className="text-xs text-green-500 bg-green-500/10 px-2 py-1 rounded">+12% vs semana pasada</span>
-                </div>
-                <div className="h-64">
-                    <canvas id="viewsChart"></canvas>
-                </div>
-            </div>
+                    <h4 className="font-bold text-lg">
+                        Vistas últimos 7 días
+                    </h4>
 
+                    <span className="text-xs text-green-500 bg-green-500/10 px-2 py-1 rounded">
+                        +12% vs semana pasada
+                    </span>
+                </div>
+
+                <div className="h-64">
+                        <ViewsChart/>
+                    </div>
+                </div>
+
+                <div className="flex justify-end mt-6">
+                <Link href="/admin/analytics"
+                    className="inline-flex items-center gap-2 bg-green-700 hover:bg-green-600 transition px-4 py-2 rounded-lg text-sm font-medium"
+                >
+                    Ver analíticas
+                    <ArrowRight className="w-4 h-4" />
+                </Link>
+            </div>
         </section>
     </div>
     )
