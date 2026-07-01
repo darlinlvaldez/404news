@@ -18,7 +18,7 @@ export default function CurrentDate() {
 
   return (
     <time className="text-sm text-gray-400">
-      Today: {currentDate || '...'}
+      Hoy: {currentDate || '...'}
     </time>
   );
 }

@@ -1,6 +1,7 @@
 import CurrentDate from '../../../../components/CurrentDate';
 import StatsCard from '../../../../components/admin/ui/StatsCard';
 import ViewsChart from '../../../../components/admin/ViewsChart';
+import dashboard from "../../../../server/controllers/admin/dashboard";
 import Link from "next/link";
 
 import { 
@@ -15,17 +16,9 @@ import {
     ArrowRight,
     Activity } from 'lucide-react';
 
-    const data = [
-        { day: "Lun", views: 120 },
-        { day: "Mar", views: 180 },
-        { day: "Mié", views: 160 },
-        { day: "Jue", views: 240 },
-        { day: "Vie", views: 210 },
-        { day: "Sáb", views: 310 },
-        { day: "Dom", views: 280 },
-    ];
-
 export default async function AdminPanel() {
+
+    const stats = await dashboard.getStats();
 
     return (
     <div className="flex-1 flex flex-col overflow-hidden bg-gray-800">
@@ -49,49 +42,49 @@ export default async function AdminPanel() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
                 <StatsCard
                     title="Total noticias"
-                    value="326"
+                    value={stats.totalNews}
                     icon={FileText}
                     color="text-blue-400"
                 />
 
                 <StatsCard
                     title="Publicadas"
-                    value="281"
+                    value={stats.published}
                     icon={CalendarCheck}
                     color="text-green-500"
                 />
 
                 <StatsCard
-                    title="Borradores"
-                    value="18"
-                    icon={FileText}
-                    color="text-yellow-500"
-                />
-
-                <StatsCard
                     title="En espera"
-                    value="18"
+                    value={stats.pending}
                     icon={Clock}
                     color="text-red-500"
                 />
 
                 <StatsCard
+                    title="Borradores"
+                    value={stats.drafts}
+                    icon={FileText}
+                    color="text-yellow-500"
+                />
+
+                <StatsCard
                     title="Publicadas hoy"
-                    value="12"
+                    value={stats.today}
                     icon={CalendarCheck}
                     color="text-emerald-500"
                 />
 
                 <StatsCard
                     title="Este mes"
-                    value="43"
+                    value={stats.month}
                     icon={CalendarCheck}
                     color="text-cyan-400"
                 />
 
                 <StatsCard
                     title="Categorías"
-                    value="9"
+                    value={stats.categories}
                     icon={Folder}
                     color="text-purple-400"
                 />
@@ -109,42 +102,42 @@ export default async function AdminPanel() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
                 <StatsCard
                 title="Total vistas"
-                value="18,520"
+                value={stats.totalViews}
                 icon={Eye}
                 color="text-white"
             />
 
             <StatsCard
                 title="Hoy"
-                value="523"
+                value={stats.todayViews}
                 icon={Eye}
                 color="text-green-500"
             />
 
             <StatsCard
                 title="Esta semana"
-                value="3,145"
+                value={stats.weekViews}
                 icon={TrendingUp}
                 color="text-blue-500"
             />
 
             <StatsCard
                 title="Este mes"
-                value="14,250"
+                value={stats.monthViews}
                 icon={BarChart3}
                 color="text-cyan-500"
             />
 
             <StatsCard
                 title="Países"
-                value="18"
+                value={stats.countries}
                 icon={Globe}
                 color="text-purple-500"
             />
 
             <StatsCard
                 title="Promedio"
-                value="57"
+                value={stats.averageViews}
                 icon={Activity}
                 color="text-orange-500"
             />
@@ -169,46 +162,30 @@ export default async function AdminPanel() {
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-800">
-                                <tr className="hover:bg-gray-800/50 transition">
-                                    <td className="px-6 py-4 font-medium text-sm">Nueva IA revoluciona el mercado...</td>
-                                    <td className="px-6 py-4 text-green-400 font-bold text-sm">12,400</td>
-                                    <td className="px-6 py-4 text-gray-400 text-xs">15 Feb</td>
-                                    <td className="px-6 py-4 text-right">
-                                        <button className="bg-green-800 hover:bg-green-700 text-white px-3 py-1 rounded text-xs transition">Editar</button>
-                                    </td>
-                                </tr>
-                                <tr className="hover:bg-gray-800/50 transition">
-                                    <td className="px-6 py-4 font-medium text-sm">Crisis climática: Reporte 2024</td>
-                                    <td className="px-6 py-4 text-green-400 font-bold text-sm">8,920</td>
-                                    <td className="px-6 py-4 text-gray-400 text-xs">14 Feb</td>
-                                    <td className="px-6 py-4 text-right">
-                                        <button className="bg-green-800 hover:bg-green-700 text-white px-3 py-1 rounded text-xs transition">Editar</button>
-                                    </td>
-                                </tr>
-                                <tr className="hover:bg-gray-800/50 transition">
-                                    <td className="px-6 py-4 font-medium text-sm">Bitcoin alcanza nuevo máximo...</td>
-                                    <td className="px-6 py-4 text-green-400 font-bold text-sm">7,100</td>
-                                    <td className="px-6 py-4 text-gray-400 text-xs">Hoy</td>
-                                    <td className="px-6 py-4 text-right">
-                                        <button className="bg-green-800 hover:bg-green-700 text-white px-3 py-1 rounded text-xs transition">Editar</button>
-                                    </td>
-                                </tr>
-                                <tr className="hover:bg-gray-800/50 transition">
-                                    <td className="px-6 py-4 font-medium text-sm">Nuevos lanzamientos Apple TV</td>
-                                    <td className="px-6 py-4 text-green-400 font-bold text-sm">5,450</td>
-                                    <td className="px-6 py-4 text-gray-400 text-xs">12 Feb</td>
-                                    <td className="px-6 py-4 text-right">
-                                        <button className="bg-green-800 hover:bg-green-700 text-white px-3 py-1 rounded text-xs transition">Editar</button>
-                                    </td>
-                                </tr>
-                                <tr className="hover:bg-gray-800/50 transition">
-                                    <td className="px-6 py-4 font-medium text-sm">Descubrimientos en Marte</td>
-                                    <td className="px-6 py-4 text-green-400 font-bold text-sm">4,200</td>
-                                    <td className="px-6 py-4 text-gray-400 text-xs">10 Feb</td>
-                                    <td className="px-6 py-4 text-right">
-                                        <button className="bg-green-800 hover:bg-green-700 text-white px-3 py-1 rounded text-xs transition">Editar</button>
-                                    </td>
-                                </tr>
+                                {stats.topNews.length > 0 ? (
+                                    stats.topNews.map((news) => (
+                                        <tr key={news.id} className="hover:bg-gray-800/50 transition">
+                                            <td className="px-6 py-4 font-medium text-sm">{news.title}</td>
+                                            <td className="px-6 py-4 text-green-400 font-bold text-sm">{news.views}</td>
+                                            <td className="px-6 py-4 text-gray-400 text-xs">
+                                                {new Date(news.created_at).toLocaleDateString()}
+                                            </td>
+                                            <td className="px-6 py-4 text-right">
+                                                <Link href={`/admin/news/edit/${news.id}`}
+                                                    className="bg-green-800 hover:bg-green-700 text-white px-3 py-1 rounded text-xs transition"
+                                                >
+                                                    Editar
+                                                </Link>
+                                            </td>
+                                        </tr>
+                                    ))
+                                ) : (
+                                    <tr>
+                                        <td colSpan={4} className="px-6 py-8 text-center text-gray-400">
+                                            No hay noticias publicadas en las últimas 24 horas.
+                                        </td>
+                                    </tr>
+                                )}
                             </tbody>
                         </table>
                     </div>
@@ -268,7 +245,7 @@ export default async function AdminPanel() {
                 </div>
 
                 <div className="h-64">
-                        <ViewsChart/>
+                        <ViewsChart data={stats.chart}/>
                     </div>
                 </div>
 

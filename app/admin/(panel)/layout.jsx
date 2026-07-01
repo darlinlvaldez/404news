@@ -31,7 +31,7 @@ export default async function AdminLayout({ children }) {
           {children}
         </div>
 
-        <footer className="p-4 bg-gray-900 border-t rder-gray-700 text-center text-xs text-gray-500">
+        <footer className="p-4 bg-gray-900 border-t border-gray-700 text-center text-xs text-gray-500">
           &copy; 2026 404 NEWS
         </footer>
       </main>

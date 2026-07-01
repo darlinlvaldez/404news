@@ -10,24 +10,14 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-const data = [
-  { day: "Lun", views: 120 },
-  { day: "Mar", views: 180 },
-  { day: "Mié", views: 160 },
-  { day: "Jue", views: 240 },
-  { day: "Vie", views: 210 },
-  { day: "Sáb", views: 310 },
-  { day: "Dom", views: 280 },
-];
-
-export default function ViewsChart() {
+export default function ViewsChart({data}) {
   return (
     <ResponsiveContainer width="100%" height="100%">
       <LineChart data={data}>
         <CartesianGrid stroke="#374151" strokeDasharray="3 3" />
 
         <XAxis
-          dataKey="day"
+          dataKey="date"
           stroke="#9CA3AF"
         />
 
