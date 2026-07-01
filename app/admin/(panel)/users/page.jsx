@@ -143,7 +143,7 @@ const handleDelete = async (id) => {
         <div className="flex-1 overflow-y-auto">
           <div className="max-w-6xl mx-auto px-6 py-10 space-y-10">
             <section className="bg-gray-900 rounded-3xl border border-gray-700 p-8 shadow-2xl relative overflow-hidden">
-              <div className={`absolute top-0 left-0 w-full h-1.5 rounded-t-3xl transition-colors duration-500 ${isEditing ? 'bg-blue-500' : 'bg-green-700'}`}></div>
+              <div className={`absolute top-0 left-0 w-full h-1.5 rounded-t-3xl transition-colors duration-500 ${isEditing ? 'bg-blue-500' : 'bg-green-800'}`}></div>
               
               <div className="flex items-center justify-between mb-8">
                 <div className="flex items-center">

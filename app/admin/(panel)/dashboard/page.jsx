@@ -1,6 +1,7 @@
 import CurrentDate from '../../../../components/CurrentDate';
 import StatsCard from '../../../../components/admin/ui/StatsCard';
-import ViewsChart from '../../../../components/admin/ViewsChart';
+import ViewsChart from '../../../../components/admin/chart/ViewsChart';
+import CategoryChart from '../../../../components/admin/chart/CategoryChart';
 import dashboard from "../../../../server/controllers/admin/dashboard";
 import Link from "next/link";
 
@@ -14,34 +15,42 @@ import {
     BarChart3,
     Globe,
     ArrowRight,
-    Activity } from 'lucide-react';
+    Activity,
+    Newspaper,
+    Calendar} from 'lucide-react';
 
 export default async function AdminPanel() {
 
     const stats = await dashboard.getStats();
 
     return (
-    <div className="flex-1 flex flex-col overflow-hidden bg-gray-800">
+    <div className="h-full flex-1 flex flex-col overflow-hidden bg-gray-800 text-gray-200 font-sans">
         
-        <header className="h-16 bg-gray-900 flex items-center justify-between px-8 border-b border-gray-700">
-            <h2 className="text-xl font-semibold">Resumen General</h2>
+        <header className="sticky top-0 z-50 h-16 bg-gray-900 flex items-center justify-between px-8 border-b border-gray-700">
+            <h2 className="text-xl font-semibold">
+                Resumen General
+            </h2>
             <div className="flex items-center space-x-4">
                 <time className="text-sm text-gray-400"><CurrentDate/></time>
             </div>
         </header>
 
-        <section className="flex-1 overflow-y-auto p-8 space-y-8">
+        <section className="flex-1 overflow-y-auto p-8 space-y-6">
             
-            <div>
-                <h3 className="text-xl font-bold">Noticias</h3>
-                <p className="text-sm text-gray-400">
-                    Resumen general del contenido publicado.
-                </p>
+            <div className="flex items-center gap-2">
+                <Newspaper className="w-6 h-6" />
+                <div>
+                    <h3 className="text-xl font-bold">Noticias</h3>
+                    <p className="text-sm text-gray-400">
+                        Resumen general del contenido publicado.
+                    </p>
+                </div>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
                 <StatsCard
                     title="Total noticias"
+                    href="/admin/news"
                     value={stats.totalNews}
                     icon={FileText}
                     color="text-blue-400"
@@ -49,6 +58,7 @@ export default async function AdminPanel() {
 
                 <StatsCard
                     title="Publicadas"
+                    href="/admin/news?status=published"
                     value={stats.published}
                     icon={CalendarCheck}
                     color="text-green-500"
@@ -56,6 +66,7 @@ export default async function AdminPanel() {
 
                 <StatsCard
                     title="En espera"
+                    href="/admin/news?status=review"
                     value={stats.pending}
                     icon={Clock}
                     color="text-red-500"
@@ -63,6 +74,7 @@ export default async function AdminPanel() {
 
                 <StatsCard
                     title="Borradores"
+                    href="/admin/news?status=draft"
                     value={stats.drafts}
                     icon={FileText}
                     color="text-yellow-500"
@@ -84,6 +96,7 @@ export default async function AdminPanel() {
 
                 <StatsCard
                     title="Categorías"
+                    href="/admin/categories"
                     value={stats.categories}
                     icon={Folder}
                     color="text-purple-400"
@@ -92,11 +105,14 @@ export default async function AdminPanel() {
 
             <div className=' border-b border-gray-700'></div>
             
-            <div>
-                <h3 className="text-xl font-bold">Estadísticas de vistas</h3>
-                <p className="text-sm text-gray-400">
-                    Métricas de tráfico y rendimiento de las noticias.
-                </p>
+            <div className="flex items-center gap-2">
+                <BarChart3 className="w-6 h-6"/>
+                <div>
+                    <h3 className="text-xl font-bold">Estadísticas de vistas</h3>
+                    <p className="text-sm text-gray-400">
+                        Métricas de tráfico y rendimiento de las noticias.
+                    </p>
+                </div>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
@@ -124,7 +140,7 @@ export default async function AdminPanel() {
             <StatsCard
                 title="Este mes"
                 value={stats.monthViews}
-                icon={BarChart3}
+                icon={Calendar}
                 color="text-cyan-500"
             />
 
@@ -149,7 +165,7 @@ export default async function AdminPanel() {
                 
                 <div className="lg:col-span-2 bg-gray-900 rounded-xl border border-gray-700 overflow-hidden shadow-lg">
                     <div className="p-6 border-b border-gray-700 bg-gray-900/50">
-                        <h4 className="font-bold text-lg">Noticias más vistas (Top 5)</h4>
+                        <h4 className="font-bold text-lg">Noticias más vistas del día(Top 5)</h4>
                     </div>
                     <div className="overflow-x-auto">
                         <table className="w-full text-left">
@@ -233,27 +249,41 @@ export default async function AdminPanel() {
                 </div>
             </div>
 
-            <div className="bg-gray-900 p-6 rounded-xl border border-gray-700 shadow-lg">
-                <div className="flex items-center justify-between mb-6">
-                    <h4 className="font-bold text-lg">
-                        Vistas últimos 7 días
-                    </h4>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div className="bg-gray-900 p-6 rounded-xl border border-gray-700 shadow-lg">
+                    <div className="flex items-center justify-between mb-6">
+                        <h4 className="font-bold text-lg">
+                            Vistas últimos 7 días
+                        </h4>
 
-                    <span className="text-xs text-green-500 bg-green-500/10 px-2 py-1 rounded">
-                        +12% vs semana pasada
-                    </span>
-                </div>
+                        <span className="text-xs text-green-500 bg-green-500/10 px-2 py-1 rounded">
+                            +12% vs semana pasada
+                        </span>
+                    </div>
 
-                <div className="h-64">
-                        <ViewsChart data={stats.chart}/>
+                    <div className="h-64">
+                        <ViewsChart data={stats.viewsChart} />
                     </div>
                 </div>
 
-                <div className="flex justify-end mt-6">
+                <div className="bg-gray-900 p-6 rounded-xl border border-gray-700 shadow-lg">
+                    <div className="flex items-center justify-between mb-6">
+                        <h4 className="font-bold text-lg">
+                            Cantidad de Noticias por Categorías
+                        </h4>
+                    </div>
+
+                    <div className="h-64">
+                        <CategoryChart data={stats.categoryChart} />
+                    </div>
+                </div>
+            </div>
+
+            <div className="flex justify-end mt-6">
                 <Link href="/admin/analytics"
                     className="inline-flex items-center gap-2 bg-green-700 hover:bg-green-600 transition px-4 py-2 rounded-lg text-sm font-medium"
                 >
-                    Ver analíticas
+                    Ver Analíticas
                     <ArrowRight className="w-4 h-4" />
                 </Link>
             </div>
