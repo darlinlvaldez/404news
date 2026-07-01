@@ -1,12 +1,15 @@
+import Link from "next/link";
+
 export default function StatsCard({
   title,
   value,
   icon: Icon,
   color = "text-white",
-  subtitle = ""
+  subtitle = "",
+  href,
 }) {
-  return (
-    <div className="bg-gray-900 p-5 rounded-xl border border-gray-700 shadow-lg hover:border-gray-600 transition">
+  const content = (
+    <div className="bg-gray-900 p-5 rounded-xl border border-gray-700 shadow-lg hover:border-gray-600 transition hover:bg-gray-800">
       <div className="flex justify-between items-start">
         <p className="text-gray-400 text-xs uppercase font-bold tracking-wider">
           {title}
@@ -26,4 +29,14 @@ export default function StatsCard({
       )}
     </div>
   );
+
+  if (href) {
+    return (
+      <Link href={href}>
+        {content}
+      </Link>
+    );
+  }
+
+  return content;
 }

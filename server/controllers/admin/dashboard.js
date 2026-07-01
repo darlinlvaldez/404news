@@ -4,14 +4,15 @@ const dashboard = {};
 
 dashboard.getStats = async () => {
     try{
-        const [news, views, topNews, chart] = await Promise.all([
+        const [news, views, topNews, viewsChart, categoryChart] = await Promise.all([
         dashboardModel.getNewsStats(),
         dashboardModel.getViewsStats(),
         dashboardModel.getTopNewsLast24Hours(),
-        dashboardModel.getViewsChart(7)
+        dashboardModel.getViewsChart(7),
+        dashboardModel.getNewsByCategories()
     ]);
 
-    return {...news, ...views, topNews, chart};
+    return {...news, ...views, topNews, viewsChart, categoryChart};
     
     } catch(error) {
         console.error("Error getting data:", error);

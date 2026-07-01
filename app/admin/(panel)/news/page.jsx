@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import {formatDateAbsolute} from "@/utils/formatDate"
 import Select from "@/components/admin/ui/Select"
 import Input from "@/components/admin/ui/Input"
@@ -27,7 +28,11 @@ export default function NewsTable() {
     const [page, setPage] = useState(1);
     const [search, setSearch] = useState("");
     
-    const [statusFilter, setStatusFilter] = useState("");
+    const searchParams = useSearchParams();
+
+    const initialStatus = searchParams.get("status") ?? "";
+
+    const [statusFilter, setStatusFilter] = useState(initialStatus);
 
     const limit = 50;
     const totalPages = Math.ceil(total / limit);
