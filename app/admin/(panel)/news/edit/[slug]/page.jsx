@@ -12,7 +12,7 @@ import { useParams } from "next/navigation";
 
 export default function EditNews() {
   const params = useParams();
-  const id = params.id;
+  const slug = params.slug;
 
   const router = useRouter();
   const [loading, setLoading] = useState(true);
@@ -40,7 +40,7 @@ useEffect(() => {
     try {
       const response = await fetch("/api/admin/news/form-data");
       const data = await response.json();
-
+      
       if (data.ok) {
         setAuthors(data.authors);
         setCategories(data.categories);
@@ -54,11 +54,12 @@ useEffect(() => {
 }, []);
 
 useEffect(() => {
-  if (!id) return;
+  if (!slug) return;
 
   const fetchNews = async () => {
     try {
-      const response = await fetch(`/api/admin/news/${id}`);
+
+      const response = await fetch(`/api/admin/news/${slug}`);
       const data = await response.json();
 
       if (data.ok) {
@@ -74,17 +75,17 @@ useEffect(() => {
   };
 
   fetchNews();
-  }, [id]);
+  }, [slug]);
 
     const onSave = () => {
-    handleSave(id, () => {
+    handleSave(slug, () => {
       alert('¡Noticia actualizada con éxito!');
       router.push('/admin/news');
     });
   };
 
   const onDelete = () => {
-    handleDelete(id, () => {
+    handleDelete(slug, () => {
       alert("Noticia eliminada del sistema");
       router.push("/admin/news");
     });

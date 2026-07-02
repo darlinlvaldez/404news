@@ -43,13 +43,13 @@ newsController.create = async function ({ news, blocks }) {
   }
 };
 
-newsController.update = async function ({ id, news, blocks }) {
+newsController.update = async function ({ slug, news, blocks }) {
   try {
 
-    if (!id) {
+    if (!slug) {
       return {
         ok: false,
-        message: "ID requerido"
+        message: "Slug requerido"
       };
     }
 
@@ -60,7 +60,7 @@ newsController.update = async function ({ id, news, blocks }) {
       };
     }
 
-    await repository.updateNews(id, news, blocks);
+    await repository.updateNews(slug, news, blocks);
 
     return {
       ok: true,
@@ -76,17 +76,17 @@ newsController.update = async function ({ id, news, blocks }) {
   }
 };
 
-newsController.getById = async function (id) {
+newsController.getBySlug = async function (slug) {
   try {
 
-    if (!id) {
+    if (!slug) {
       return {
         ok: false,
         message: "ID inválido"
       };
     }
 
-    const data = await repository.getNewsById(id);
+    const data = await repository.getNewsBySlug(slug);
 
     if (!data.news) {
       return {
@@ -110,17 +110,17 @@ newsController.getById = async function (id) {
   }
 };
 
-newsController.delete = async function (id) {
+newsController.delete = async function (slug) {
   try {
 
-    if (!id) {
+    if (!slug) {
       return {
         ok: false,
         message: "ID requerido"
       };
     }
 
-    await repository.deleteNews(id);
+    await repository.deleteNews(slug);
 
     return {
       ok: true,
@@ -155,6 +155,8 @@ newsController.getFormData = async function () {
       categories
     };
   } catch (error) {
+    console.error("repository.getAuthors:", error);
+    throw error;
     return {
       ok: false,
       message: "Error cargando datos del formulario"

@@ -107,10 +107,22 @@ repository.createNews = async (newsData, blocks) => {
   }
 };
 
-repository.updateNews = async (newsId, newsData, blocks) => {
+repository.updateNews = async (newsSlug, newsData, blocks) => {
   const connection = await db.getConnection();
 
   try {
+
+    const [news] = await connection.query(
+        `SELECT id FROM news WHERE slug = ?`,
+        [newsSlug]
+    );
+
+    if (!news.length) {
+        throw new Error("Noticia no encontrada");
+    }
+
+    const newsId = news[0].id;
+
     await connection.beginTransaction();
 
     await connection.query(
@@ -122,7 +134,7 @@ repository.updateNews = async (newsId, newsData, blocks) => {
         author_id = ?,
         category_id = ?,
         status = ?
-       WHERE id = ?`,
+       WHERE slug = ?`,
       [
         newsData.title,
         newsData.slug,
@@ -131,7 +143,7 @@ repository.updateNews = async (newsId, newsData, blocks) => {
         newsData.author_id,
         newsData.category_id,
         newsData.status,
-        newsId
+        newsSlug
       ]
     );
 
@@ -168,18 +180,24 @@ repository.updateNews = async (newsId, newsData, blocks) => {
   }
 };
 
-repository.getNewsById = async (id) => {
+repository.getNewsBySlug = async (slug) => {
 
   const [news] = await db.query(
-    `SELECT * FROM news WHERE id = ?`,
-    [id]
+    `SELECT * FROM news WHERE Slug = ?`,
+    [slug]
   );
+
+  if (!news.length) {
+    return { news: null, blocks: [] };
+  }
+
+  const newsId = news[0].id;
 
   const [blocks] = await db.query(
     `SELECT * FROM news_blocks
      WHERE news_id = ?
      ORDER BY position ASC`,
-    [id]
+    [newsId]
   );
 
   return {
@@ -188,16 +206,18 @@ repository.getNewsById = async (id) => {
   };
 };
 
-repository.deleteNews = async (newsId) => {
+repository.deleteNews = async (newsSlug) => {
   const connection = await db.getConnection();
 
   try {
     await connection.beginTransaction();
 
     const [existing] = await connection.query(
-      `SELECT id FROM news WHERE id = ?`,
-      [newsId]
+      `SELECT id FROM news WHERE slug = ?`,
+      [newsSlug]
     );
+
+    const newsId = existing[0].id;
 
     if (existing.length === 0) {
       throw new Error("Noticia no encontrada");
@@ -209,8 +229,8 @@ repository.deleteNews = async (newsId) => {
     );
 
     await connection.query(
-      `DELETE FROM news WHERE id = ?`,
-      [newsId]
+      `DELETE FROM news WHERE slug = ?`,
+      [newsSlug]
     );
 
     await connection.commit();
@@ -226,9 +246,16 @@ repository.deleteNews = async (newsId) => {
 };
 
 repository.getAuthors = async function () {
-  const [rows] = await db.query(
-    `SELECT id, name FROM authors WHERE active = 1 ORDER BY name ASC`
-  );
+  const [rows] = await db.query(`
+    SELECT
+      a.id,
+      a.name
+    FROM authors a
+    JOIN users u ON a.user_id = u.id
+    WHERE u.active = 1
+    ORDER BY a.name ASC
+  `);
+
   return rows;
 };
 

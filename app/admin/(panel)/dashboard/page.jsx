@@ -187,7 +187,7 @@ export default async function AdminPanel() {
                                                 {new Date(news.created_at).toLocaleDateString()}
                                             </td>
                                             <td className="px-6 py-4 text-right">
-                                                <Link href={`/admin/news/edit/${news.id}`}
+                                                <Link href={`/admin/news/edit/${news.slug}`}
                                                     className="bg-green-800 hover:bg-green-700 text-white px-3 py-1 rounded text-xs transition"
                                                 >
                                                     Editar

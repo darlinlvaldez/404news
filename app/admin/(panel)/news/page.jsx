@@ -190,7 +190,7 @@ export default function NewsTable() {
                 </td>
                 <td className="px-8 py-6 text-right">
                   <div className="flex justify-end space-x-2">
-                    <Link href={`/admin/news/edit/${item.id}`}
+                    <Link href={`/admin/news/edit/${item.slug}`}
                         className="p-3 bg-gray-800 hover:bg-blue-600 text-slate-400 hover:text-white rounded-xl transition-all shadow-lg active:scale-95 flex items-center justify-center">
                         <Edit3 size={18}/>
                     </Link>
