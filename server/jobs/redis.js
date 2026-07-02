@@ -4,8 +4,6 @@ let started = false;
 
 export function startSyncJob() {
 
-  console.log("Iniciando Sync Job");
-
   if (started) return;
 
   started = true;

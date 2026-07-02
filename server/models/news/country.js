@@ -31,6 +31,7 @@ export default async function syncCountryViews(key) {
 
   const createdAt = data.created_at || new Date();
 
+  try {
   await db.query(
     `
         INSERT INTO country_stats
@@ -48,4 +49,8 @@ export default async function syncCountryViews(key) {
   );
 
   await redis.del(key);
+
+  } catch (err) {
+    console.error(`Error sincronizando ${key}:`, err);
+  }
 }
