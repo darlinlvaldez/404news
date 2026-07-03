@@ -2,12 +2,12 @@
 
 import { useEffect, useRef, useState } from "react";
 
-export default function Select({ options, value, onChange, className }) {
+export default function Select({ options, value, onChange, name, className, placeholder }) {
 
   const [isOpen, setIsOpen] = useState(false);
   const selectRef = useRef(null);
   
-  const selected = options.find(opt => opt.value === value);
+  const selected = options.find(opt => String(opt.value) === String(value)); 
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -31,8 +31,8 @@ export default function Select({ options, value, onChange, className }) {
         className={`bg-gray-950 border border-gray-700 px-5 py-3.5 font-bold
         focus:outline-none focus:border-green-800 cursor-pointer w-full text-left
         ${isOpen ? "rounded-t-2xl border-green-800" : "rounded-2xl"}`}>
-        <span className="text-slate-400">
-          {selected?.label}
+        <span className={selected ? "text-white" : "text-slate-400"}>
+          {selected?.label || placeholder}
         </span>
       </button>
 
@@ -41,7 +41,17 @@ export default function Select({ options, value, onChange, className }) {
           {options.map((option) => (
             <li key={option.value}
               onMouseDown={() => {
-                onChange(option.value);
+                if (name) {
+                  onChange({
+                    target: {
+                      name,
+                      value: option.value,
+                    },
+                  });
+                } else {
+                  onChange(option.value);
+                }
+
                 setIsOpen(false);
               }}
               className="px-5 py-3 text-xs hover:bg-gray-800 cursor-pointer text-gray-400">

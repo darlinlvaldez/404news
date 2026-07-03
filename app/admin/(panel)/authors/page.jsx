@@ -23,7 +23,6 @@ import {
   KeyRound
 } from 'lucide-react';
 
-
 export default function AuthorsPage() {
   const initialFormState = {
     username: '',

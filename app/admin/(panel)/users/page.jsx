@@ -31,7 +31,7 @@ export default function UsersAccount () {
     username: '',
     email: '',
     password: '',
-    role: 'editor',
+    role: '',
     active: 1
   });
 
@@ -194,6 +194,7 @@ const handleDelete = async (id) => {
                     <div className="relative">
                       <Select
                         className="w-full"
+                        placeholder="Selecciona un rol"
                         value={formData.role}
                         options={role}
                         onChange={(value) =>

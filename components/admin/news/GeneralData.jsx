@@ -1,11 +1,19 @@
 "use client";
 
+import Select from "@/components/admin/ui/Select"
+
 import { Image as ImageIcon, AlignLeft } from 'lucide-react';
 
 export const GeneralData = ({ newsData, onInputChange, authors = [], categories = [] }) => {
+
+  const statusOptions = [
+    { value: "draft", label: "Borrador" },
+    { value: "review", label: "En Revisión" },
+    { value: "published", label: "Publicado" },
+  ];
+
   return (
-    <section className="bg-gray-900 rounded-3xl border border-gray-700 p-8 shadow-2xl relative overflow-hidden">
-      <div className="absolute top-0 left-0 w-full h-1 bg-green-700 rounded-t-3xl"></div>
+    <section className="bg-gray-900 rounded-3xl border border-gray-700 p-8 shadow-2xl relative">
 
       <div className="flex items-center mb-8">
         <div className="bg-green-900/30 p-2.5 rounded-2xl mr-4 text-green-600">
@@ -21,7 +29,7 @@ export const GeneralData = ({ newsData, onInputChange, authors = [], categories 
           </label>
           <input type="text" name="title" value={newsData.title} onChange={onInputChange}
             placeholder="Escribe un título impactante..."
-            className="w-full bg-gray-800 border border-gray-700 rounded-2xl px-5 py-4 text-xl font-semibold focus:ring-2 focus:ring-green-600 focus:border-transparent outline-none transition placeholder:text-gray-600"/>
+            className="w-full bg-gray-950 border border-gray-700 rounded-2xl px-5 py-4 text-xl font-semibold focus:ring-2 focus:ring-green-800 focus:border-transparent outline-none transition placeholder:text-gray-600"/>
         </div>
 
         <div className="space-y-6">
@@ -39,7 +47,7 @@ export const GeneralData = ({ newsData, onInputChange, authors = [], categories 
             <div className="relative">
               <input type="text" name="cover_image" value={newsData.cover_image} onChange={onInputChange}
                 placeholder="https://ejemplo.com/imagen.jpg"
-                className="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-green-600 outline-none pr-10"/>
+                className="w-full bg-gray-950 border border-gray-700 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-green-800 outline-none pr-10"/>
               <ImageIcon className="absolute right-3 top-3 text-gray-600" size={18}/>
             </div>
           </div>
@@ -60,40 +68,43 @@ export const GeneralData = ({ newsData, onInputChange, authors = [], categories 
             <label className="block text-xs font-bold text-gray-500 uppercase mb-2 ml-1">
               Autor
             </label>
-            <select name="author_id" value={newsData.author_id} onChange={onInputChange}
-              className="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-green-600 transition">
-              <option value="">Seleccionar Autor</option>
-              {authors.map((author) => (
-                <option key={author.id} value={author.id}>
-                  {author.name}
-                </option>
-              ))}
-            </select>
+            <Select
+              name="author_id"
+              placeholder="Seleccionar Autor"
+              options={authors.map(author => ({
+                value: author.id,
+                label: author.name,
+              }))}
+              value={newsData.author_id}
+              onChange={onInputChange}
+            />
           </div>
           <div>
             <label className="block text-xs font-bold text-gray-500 uppercase mb-2 ml-1">
               Categoría
             </label>
-            <select name="category_id" value={newsData.category_id} onChange={onInputChange}
-              className="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-green-600 transition">
-              <option value="">Seleccionar Categoría</option>
-              {categories.map((category) => (
-                <option key={category.id} value={category.id}>
-                  {category.name}
-                </option>
-              ))}
-            </select>
+            <Select
+              name="category_id"
+              placeholder="Seleccionar Categoría"
+              options={categories.map(category => ({
+                value: category.id,
+                label: category.name,
+              }))}
+              value={newsData.category_id}
+              onChange={onInputChange}
+            />
           </div>
           <div>
             <label className="block text-xs font-bold text-gray-500 uppercase mb-2 ml-1">
               Estado
             </label>
-            <select name="status" value={newsData.status} onChange={onInputChange}
-              className={`w-full border border-gray-700 rounded-xl px-4 py-3 text-sm font-bold transition ${newsData.status === "published" ? "bg-green-900/20 text-green-500 border-green-800" : "bg-gray-800 text-gray-100"}`}>
-              <option value="draft">Borrador</option>
-              <option value="review">En Revisión</option>
-              <option value="published">Publicado</option>
-            </select>
+            <Select
+              name="status"
+              value={newsData.status}
+              options={statusOptions}
+              onChange={onInputChange}
+              placeholder="Seleccionar estado"
+            />
           </div>
         </div>
       </div>
