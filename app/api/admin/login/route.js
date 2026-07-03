@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { loginAdmin } from "../../../../server/controllers/admin/auth";
+import { handleError } from "../../../../server/utils/handleError";
 
 export async function POST(req) {
   try {
@@ -20,9 +21,6 @@ export async function POST(req) {
     return response;
 
   } catch (error) {
-    return NextResponse.json(
-      { error: error.message },
-      { status: 401 }
-    );
+    return handleError(error);
   }
 }

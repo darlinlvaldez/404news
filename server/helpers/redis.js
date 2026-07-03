@@ -5,23 +5,24 @@ import syncCountryViews from "../models/news/country.js";
 export default async function syncAllViews() {
   const redis = await getRedis();
 
-  for await (const keys of redis.scanIterator({
-    MATCH: "news:views:*",
-  })) {
-
+  for (const keys of redis.scanIterator({ MATCH: "news:views:*" })) {
     for (const key of keys) {
-      const slug = key.replace("news:views:", "");
-      await syncNewsViews(slug);
+      try {
+        const slug = key.replace("news:views:", "");
+        await syncNewsViews(slug);
+      } catch (error) {
+        console.error("Error en views:", key, error);
+      }
     }
   }
 
-  for await (const keys of redis.scanIterator({
-    MATCH: "news:country:*",
-  })) {
-
+  for (const keys of redis.scanIterator({ MATCH: "news:country:*" })) {
     for (const key of keys) {
-      await syncCountryViews(key);
+      try {
+        await syncCountryViews(key);
+      } catch (error) {
+        console.error("Error en country:", key, error);
+      }
     }
-
   }
 }

@@ -31,7 +31,7 @@ export const ContentBlocks = ({ blocks, onAddBlock, onRemoveBlock, onUpdateBlock
             
             <div className="absolute -left-14 top-0 bottom-0 flex flex-col items-center justify-center space-y-2 opacity-0 group-hover:opacity-100 transition-opacity">
               <button onClick={() => onMoveBlock(index, 'up')} disabled={index === 0}
-                className="p-2 bg-gray-700 rounded-xl hover:bg-green-600 disabled:opacity-20 transition shadow-lg">
+                className="p-2 bg-gray-700 rounded-xl hover:bg-green-800 disabled:opacity-20 transition shadow-lg">
                 <ChevronUp size={16}/>
               </button>
               <div className="bg-gray-800 border border-gray-700 w-8 h-8 flex items-center justify-center rounded-lg text-xs font-mono font-bold text-green-500">
@@ -39,7 +39,7 @@ export const ContentBlocks = ({ blocks, onAddBlock, onRemoveBlock, onUpdateBlock
               </div>
               <button onClick={() => onMoveBlock(index, 'down')}
                 disabled={index === blocks.length - 1}
-                className="p-2 bg-gray-700 rounded-xl hover:bg-green-600 disabled:opacity-20 transition shadow-lg">
+                className="p-2 bg-gray-700 rounded-xl hover:bg-green-800 disabled:opacity-20 transition shadow-lg">
                 <ChevronDown size={16}/>
               </button>
             </div>

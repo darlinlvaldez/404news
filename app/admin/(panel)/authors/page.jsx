@@ -303,7 +303,7 @@ const handleDelete = async (id) => {
                   <tr>
                     <Th>Usuario & Perfil</Th>
                     <Th>Biografía</Th>
-                    <Th>Rol</Th>
+                    <Th>Privilegios</Th>
                     <Th>Estado</Th>
                     <Th>Acciones</Th>
                   </tr>

@@ -51,26 +51,47 @@ authors.create = async (authorData, userData) => {
 
 authors.update = async (id, authorData, userData) => {
   const conn = await db.getConnection();
+
   try {
     await conn.beginTransaction();
 
-    if (userData) {
-      const userFields = Object.keys(userData).map(k => `${k} = ?`).join(", ");
-      const userValues = Object.values(userData);
-      userValues.push(userData.id);
-      await conn.query(`UPDATE users SET ${userFields} WHERE id = ?`, userValues);
+    await conn.query(
+      `UPDATE users
+       SET username = ?, email = ?, role = ?, active = ?
+       WHERE id = ?`,
+      [
+        userData.username,
+        userData.email,
+        userData.role,
+        userData.active,
+        userData.id
+      ]
+    );
+
+    if (userData.password) {
+      await conn.query(
+        "UPDATE users SET password = ? WHERE id = ?",
+        [userData.password, userData.id]
+      );
     }
 
-    if (authorData) {
-      const authorFields = Object.keys(authorData).map(k => `${k} = ?`).join(", ");
-      const authorValues = Object.values(authorData);
-      authorValues.push(id);
-      await conn.query(`UPDATE authors SET ${authorFields} WHERE id = ?`, authorValues);
-    }
+    await conn.query(
+      `UPDATE authors
+       SET name = ?, bio = ?, slug = ?, avatar = ?
+       WHERE id = ?`,
+      [
+        authorData.name,
+        authorData.bio,
+        authorData.slug,
+        authorData.avatar,
+        id
+      ]
+    );
 
     await conn.commit();
 
     return await authors.getById(id);
+
   } catch (err) {
     await conn.rollback();
     throw err;

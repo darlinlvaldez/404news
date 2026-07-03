@@ -1,8 +1,8 @@
 import db from "@/server/lib/db.js";
 
-const repository = {}; 
+const news = {}; 
 
-repository.getNewsTable = async function (
+news.getNewsTable = async function (
   limit = 50,
   offset = 0,
   search = "",
@@ -55,7 +55,7 @@ repository.getNewsTable = async function (
   return { rows, total };
 };
 
-repository.createNews = async (newsData, blocks) => {
+news.createNews = async (newsData, blocks) => {
   const connection = await db.getConnection();
 
   try {
@@ -107,7 +107,7 @@ repository.createNews = async (newsData, blocks) => {
   }
 };
 
-repository.updateNews = async (newsSlug, newsData, blocks) => {
+news.updateNews = async (newsSlug, newsData, blocks) => {
   const connection = await db.getConnection();
 
   try {
@@ -180,7 +180,7 @@ repository.updateNews = async (newsSlug, newsData, blocks) => {
   }
 };
 
-repository.getNewsBySlug = async (slug) => {
+news.getNewsBySlug = async (slug) => {
 
   const [news] = await db.query(
     `SELECT * FROM news WHERE Slug = ?`,
@@ -206,7 +206,7 @@ repository.getNewsBySlug = async (slug) => {
   };
 };
 
-repository.deleteNews = async (newsSlug) => {
+news.deleteNews = async (newsSlug) => {
   const connection = await db.getConnection();
 
   try {
@@ -245,7 +245,7 @@ repository.deleteNews = async (newsSlug) => {
   }
 };
 
-repository.getAuthors = async function () {
+news.getAuthors = async function () {
   const [rows] = await db.query(`
     SELECT
       a.id,
@@ -259,11 +259,11 @@ repository.getAuthors = async function () {
   return rows;
 };
 
-repository.getCategories = async function () {
+news.getCategories = async function () {
   const [rows] = await db.query(
     `SELECT id, name FROM categories WHERE active = 1 ORDER BY name ASC`
   );
   return rows;
 };
 
-export default repository;
+export default news;

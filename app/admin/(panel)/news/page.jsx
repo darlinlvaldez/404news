@@ -120,7 +120,7 @@ export default function NewsTable() {
                 setSearch(e.target.value);
                 setPage(1);
               }}
-              placeholder="Buscar por título, ID o autor..."
+              placeholder="Buscar por título o ID..."
               icon={Search}/>
           </div>
           
