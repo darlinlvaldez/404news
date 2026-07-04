@@ -1,8 +1,10 @@
 "use client";
 
-import clsx from "clsx";
-
 import { useState } from 'react';
+import clsx from "clsx";
+import {ErrorMessage} from '@/components/FormError';
+import {inputClass} from '@/utils/form';
+import {useFormErrors} from '@/server/hooks/useFormErrors';
 import { 
   ShieldCheck, 
   Lock, 
@@ -16,8 +18,7 @@ import {
 export default function AdminLogin() {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [errors, setErrors] = useState({});
+  const { error, errors, clearField, handleResponse} = useFormErrors();
   const [formData, setFormData] = useState({
     username: '',
     password: ''
@@ -25,8 +26,6 @@ export default function AdminLogin() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
-    setErrors({});
     setIsLoading(true);
 
     try {
@@ -41,16 +40,10 @@ export default function AdminLogin() {
       const data = await res.json();
 
       if (!res.ok) {
-
-        if (data.errors) {
-            setErrors(data.errors);
-        } else {
-            setError(data.error);
-        }
-
+        handleResponse(data);
         setIsLoading(false);
         return;
-    }
+      }
 
       window.location.href = "/admin/dashboard";
 
@@ -70,13 +63,8 @@ export default function AdminLogin() {
         [name]: value
     }));
 
-    setErrors(prev => ({
-        ...prev,
-        [name]: undefined
-    }));
-
-    setError("");
-}
+    clearField(name);
+  }
 
   return (
     <div className="min-h-screen bg-[#0b0f1a] flex items-center justify-center p-6 relative overflow-hidden font-sans">
@@ -120,22 +108,16 @@ export default function AdminLogin() {
                 <input 
                   type="text" 
                   placeholder="Ej. manuel"
-className={clsx(
-    "w-full bg-[#0b0f1a] rounded-2xl pl-12 pr-4 py-4 text-sm transition-all text-white",
-    errors.username
-        ? "border border-red-500 focus:ring-red-500/40"
-        : "border border-slate-800 focus:ring-emerald-600/50"
-)}                  name="username"
-    value={formData.username}
-    onChange={handleChange}
+                  name="username"
+                  value={formData.username}
+                  onChange={handleChange}
+                  className={inputClass(errors.username)}           
                 />
               </div>
-               
- {errors.username && (
-                  <p className="text-red-400 text-xs mt-2">
-                      {errors.username[0]}
-                  </p>
-                )}
+                <ErrorMessage
+                  errors={errors}
+                  name="username"
+                />
             </div>
 
             <div className="space-y-2">
@@ -145,27 +127,22 @@ className={clsx(
                   <Lock size={18} />
                 </div>
                 <input type={showPassword ? "text" : "password"} placeholder="••••••••••••"
-                
-className={clsx(
-    "w-full bg-[#0b0f1a] rounded-2xl pl-12 pr-4 py-4 text-sm transition-all text-white",
-    errors.password
-        ? "border border-red-500 focus:ring-red-500/40"
-        : "border border-slate-800 focus:ring-emerald-600/50"
-)}                 name="password"
-    value={formData.password}
-    onChange={handleChange}/>
-                 
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  className={inputClass(errors.password)}
+                />
                 <button 
                   type="button" onClick={() => setShowPassword(!showPassword)}
                   className="absolute inset-y-0 right-4 flex items-center text-slate-600 hover:text-slate-400 transition-colors" >
                   {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
               </div>
-               {errors.password && (
-    <p className="text-red-400 text-xs mt-2">
-        {errors.password[0]}
-    </p>
-)}
+                <ErrorMessage
+                  errors={errors}
+                  name="password"
+                />
+                <ErrorMessage error={error}/>
             </div>
 
             <div className="flex items-center px-1">
@@ -179,7 +156,7 @@ className={clsx(
             </div>
 
             <button type="submit" disabled={isLoading}
-              className="w-full bg-emerald-600 hover:bg-emerald-500 disabled:bg-slate-800 text-white py-4 rounded-2xl font-black text-xs uppercase tracking-[0.2em] transition-all shadow-xl shadow-emerald-900/20 flex items-center justify-center group active:scale-[0.98]">
+              className="w-full bg-emerald-600 hover:bg-emerald-500 cursor-pointer disabled:bg-slate-800 text-white py-4 rounded-2xl font-black text-xs uppercase tracking-[0.2em] transition-all shadow-xl shadow-emerald-900/20 flex items-center justify-center group active:scale-[0.98]">
               {isLoading ? (
                 <div className="w-5 h-5 border-2 border-white/20 border-t-white rounded-full animate-spin"></div>
               ) : (

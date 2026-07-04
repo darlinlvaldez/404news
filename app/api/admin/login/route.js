@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { loginAdmin } from "../../../../server/controllers/admin/auth";
-import { handleError } from "../../../../server/utils/handleError";
+import { handleError } from "../../../../server/errors/handleError";
 import { loginSchema } from "../../../../server/schemas/admin/auth"
 
 export async function POST(req) {
