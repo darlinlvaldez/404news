@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import usersController from "../../../../../server/controllers/admin/users";
 import { requireAuth } from "../../../../../server/utils/auth";
-import { handleError } from "../../../../../server/utils/handleError";
+import { handleError } from "../../../../../server/errors/handleError";
 
 export async function PUT(request, context) {
   try {
