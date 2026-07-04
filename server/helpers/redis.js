@@ -5,7 +5,7 @@ import syncCountryViews from "../models/news/country.js";
 export default async function syncAllViews() {
   const redis = await getRedis();
 
-  for (const keys of redis.scanIterator({ MATCH: "news:views:*" })) {
+  for await (const keys of redis.scanIterator({ MATCH: "news:views:*" })) {
     for (const key of keys) {
       try {
         const slug = key.replace("news:views:", "");
@@ -16,7 +16,7 @@ export default async function syncAllViews() {
     }
   }
 
-  for (const keys of redis.scanIterator({ MATCH: "news:country:*" })) {
+  for await (const keys of redis.scanIterator({ MATCH: "news:country:*" })) {
     for (const key of keys) {
       try {
         await syncCountryViews(key);
