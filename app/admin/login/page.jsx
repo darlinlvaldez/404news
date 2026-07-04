@@ -1,5 +1,7 @@
 "use client";
 
+import clsx from "clsx";
+
 import { useState } from 'react';
 import { 
   ShieldCheck, 
@@ -14,6 +16,8 @@ import {
 export default function AdminLogin() {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [errors, setErrors] = useState({});
   const [formData, setFormData] = useState({
     username: '',
     password: ''
@@ -21,6 +25,8 @@ export default function AdminLogin() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
+    setErrors({});
     setIsLoading(true);
 
     try {
@@ -35,10 +41,16 @@ export default function AdminLogin() {
       const data = await res.json();
 
       if (!res.ok) {
-        console.error("Error de login:", data.error);
+
+        if (data.errors) {
+            setErrors(data.errors);
+        } else {
+            setError(data.error);
+        }
+
         setIsLoading(false);
         return;
-      }
+    }
 
       window.location.href = "/admin/dashboard";
 
@@ -48,6 +60,23 @@ export default function AdminLogin() {
 
     setIsLoading(false);
   };
+
+  const handleChange = (e) => {
+
+    const { name, value } = e.target;
+
+    setFormData(prev => ({
+        ...prev,
+        [name]: value
+    }));
+
+    setErrors(prev => ({
+        ...prev,
+        [name]: undefined
+    }));
+
+    setError("");
+}
 
   return (
     <div className="min-h-screen bg-[#0b0f1a] flex items-center justify-center p-6 relative overflow-hidden font-sans">
@@ -83,38 +112,60 @@ export default function AdminLogin() {
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-2">
-              <label className="text-[10px] font-black text-slate-500 uppercase ml-1 tracking-widest">Nombre de usuario</label>
+              <label className="text-xs font-black text-slate-500 uppercase ml-1 tracking-widest">Nombre de usuario</label>
               <div className="relative group">
                 <div className="absolute inset-y-0 left-4 flex items-center text-slate-600 group-focus-within:text-emerald-500 transition-colors">
                   <User size={18} />
                 </div>
                 <input 
                   type="text" 
-                  required
-                  placeholder="admin_editor"
-                  className="w-full bg-[#0b0f1a] border border-slate-800 rounded-2xl pl-12 pr-4 py-4 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600/50 transition-all text-white placeholder:text-slate-800"
-                  onChange={(e) => setFormData({...formData, username: e.target.value})}
+                  placeholder="Ej. manuel"
+className={clsx(
+    "w-full bg-[#0b0f1a] rounded-2xl pl-12 pr-4 py-4 text-sm transition-all text-white",
+    errors.username
+        ? "border border-red-500 focus:ring-red-500/40"
+        : "border border-slate-800 focus:ring-emerald-600/50"
+)}                  name="username"
+    value={formData.username}
+    onChange={handleChange}
                 />
               </div>
+               
+ {errors.username && (
+                  <p className="text-red-400 text-xs mt-2">
+                      {errors.username[0]}
+                  </p>
+                )}
             </div>
 
             <div className="space-y-2">
-              <div className="flex justify-between items-center px-1">
-                <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Contraseña</label>
-              </div>
+                <label className="text-xs font-black text-slate-500 ml-1 uppercase tracking-widest">Contraseña</label>
               <div className="relative group">
                 <div className="absolute inset-y-0 left-4 flex items-center text-slate-600 group-focus-within:text-emerald-500 transition-colors">
                   <Lock size={18} />
                 </div>
-                <input type={showPassword ? "text" : "password"} required placeholder="••••••••••••"
-                  className="w-full bg-[#0b0f1a] border border-slate-800 rounded-2xl pl-12 pr-12 py-4 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600/50 transition-all text-white placeholder:text-slate-800"
-                  onChange={(e) => setFormData({...formData, password: e.target.value})}/>
+                <input type={showPassword ? "text" : "password"} placeholder="••••••••••••"
+                
+className={clsx(
+    "w-full bg-[#0b0f1a] rounded-2xl pl-12 pr-4 py-4 text-sm transition-all text-white",
+    errors.password
+        ? "border border-red-500 focus:ring-red-500/40"
+        : "border border-slate-800 focus:ring-emerald-600/50"
+)}                 name="password"
+    value={formData.password}
+    onChange={handleChange}/>
+                 
                 <button 
                   type="button" onClick={() => setShowPassword(!showPassword)}
                   className="absolute inset-y-0 right-4 flex items-center text-slate-600 hover:text-slate-400 transition-colors" >
                   {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
               </div>
+               {errors.password && (
+    <p className="text-red-400 text-xs mt-2">
+        {errors.password[0]}
+    </p>
+)}
             </div>
 
             <div className="flex items-center px-1">
