@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { fieldClass } from "@/utils/form";
 
-export default function Select({ options, value, onChange, name, className, placeholder, error = false }) {
+export default function Select({ options, value, onChange, onOpen, name, className, placeholder, error = false }) {
 
   const [isOpen, setIsOpen] = useState(false);
   const selectRef = useRef(null);
@@ -28,15 +28,21 @@ export default function Select({ options, value, onChange, name, className, plac
     <div ref={selectRef} className={`relative ${className}`}>
       <button
         type="button"
-        onClick={() => setIsOpen(prev => !prev)}
+        onClick={() => {
+          setIsOpen(prev => !prev);
+
+          if (!isOpen && onOpen && name) {
+            onOpen(name);
+          }
+        }}
         className={fieldClass(error,
-        `bg-gray-950 px-5 py-3.5 font-bold w-full text-left cursor-pointer focus:outline-none ${
-          isOpen
-            ? "rounded-t-2xl border-green-800"
-            : "rounded-2xl"
-        }`
-      )}
-      >
+          `bg-gray-950 px-5 py-3.5 font-bold w-full text-left cursor-pointer focus:outline-none ${
+            isOpen
+              ? "rounded-t-2xl border-green-800"
+              : "rounded-2xl"
+          }`
+        )}
+        >
         <span className={selected ? "text-white" : "text-slate-400"}>
           {selected?.label || placeholder}
         </span>

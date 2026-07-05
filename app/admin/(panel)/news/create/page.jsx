@@ -51,11 +51,13 @@ export default function CreateNews() {
     handleResponse(data);
   };
 
-  console.log(typeof newsData.author_id);
-
   const handleChange = (e) => {
     handleInputChange(e);
     clearField(e.target.name);
+    
+    if (e.target.name === "title") {
+        clearField("slug");
+    }
   };
 
   useEffect(() => {
@@ -93,6 +95,7 @@ export default function CreateNews() {
           authors={authors}
           categories={categories}
           errors={errors}
+          clearField={clearField}
         />
 
         <ContentBlocks 

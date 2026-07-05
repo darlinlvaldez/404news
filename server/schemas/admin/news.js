@@ -28,13 +28,13 @@ export const news = z
 
     author_id: z.number().int().positive().nullable().optional(),
 
-    category_id: z
+    category_id: z.coerce
       .number({
         required_error: "La categoría es obligatoria",
-        invalid_type_error: "La categoría es inválida",
+        invalid_type_error: "La categoría es obligatoria",
       })
-      .int()
-      .positive(),
+      .int("La categoría debe ser un número entero")
+      .positive("La categoría es obligatoria"),
 
     status: z.enum(["draft", "review", "published"], {
       errorMap: () => ({

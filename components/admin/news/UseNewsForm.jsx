@@ -4,13 +4,15 @@ import { useState, useEffect } from "react";
 
 export const useNewsForm = (initialNews = null, initialBlocks = null) => {
 
+  const [slugEdited, setSlugEdited] = useState(false);
+
   const [newsData, setNewsData] = useState({
     title: "",
     slug: "",
     excerpt: "",
     cover_image: "",
     author_id: null,
-    category_id: undefined,
+    category_id: "",
     status: "draft",
     active: true,
     views: 0,
@@ -40,25 +42,43 @@ export const useNewsForm = (initialNews = null, initialBlocks = null) => {
   };
 
   useEffect(() => {
-    if (!initialNews && newsData.title) {
-      const generatedSlug = newsData.title
-        .toLowerCase()
-        .trim()
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "")
-        .replace(/[^\w ]+/g, "")
-        .replace(/ +/g, "-");
+    if (initialNews || slugEdited) return;
 
-      setNewsData(prev => ({ ...prev, slug: generatedSlug }));
-    }
-  }, [newsData.title, initialNews]);
+    const generatedSlug = newsData.title
+      .toLowerCase()
+      .trim()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^\w ]+/g, "")
+      .replace(/ +/g, "-");
+
+    setNewsData((prev) => {
+      if (prev.slug === generatedSlug) {
+        return prev;
+      }
+
+      return {
+        ...prev,
+        slug: generatedSlug,
+      };
+    });
+  }, [newsData.title, initialNews, slugEdited]);
 
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setNewsData(prev => ({
+
+    if (name === "slug") {
+      setSlugEdited(true);
+    }
+
+    if (name === "slug") {
+      setSlugEdited(value !== "");
+    }
+
+    setNewsData((prev) => ({
       ...prev,
-      [name]: type === "checkbox" ? checked : value
+      [name]: type === "checkbox" ? checked : value,
     }));
   };
 

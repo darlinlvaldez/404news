@@ -5,7 +5,7 @@ import Select from "@/components/admin/ui/Select"
 import { ErrorMessage } from "@/components/ErrorMessage";
 import { fieldClass } from "@/utils/form";
 
-export const GeneralData = ({ newsData, onInputChange, authors = [], categories = [], errors = {} }) => {
+export const GeneralData = ({ newsData, onInputChange, authors = [], categories = [], errors = {}, clearField }) => {
 
   const statusOptions = [
     { value: "draft", label: "Borrador" },
@@ -42,8 +42,8 @@ export const GeneralData = ({ newsData, onInputChange, authors = [], categories 
             <label className="block text-xs font-bold text-gray-500 uppercase mb-2 ml-1">
               URL amigable (Slug)
             </label>
-            <input type="text" name="slug" value={newsData.slug} readOnly className={fieldClass(!!errors?.slug,
-              "w-full bg-gray-950 border border-gray-700 rounded-xl px-4 py-3 text-sm text-gray-500 cursor-not-allowed font-mono")}
+            <input type="text" name="slug" value={newsData.slug} onChange={onInputChange} className={fieldClass(!!errors?.slug,
+              "w-full bg-gray-950 border border-gray-700 rounded-xl px-4 py-3 text-sm text-white cursor-not-allowed font-mono")}
             />
             <ErrorMessage
               errors={errors}
@@ -111,6 +111,7 @@ export const GeneralData = ({ newsData, onInputChange, authors = [], categories 
               name="category_id"
               placeholder="Seleccionar Categoría"
               error={!!errors?.category_id} 
+              onOpen={clearField}
               options={categories.map(category => ({
                 value: category.id,
                 label: category.name,
