@@ -9,8 +9,8 @@ export const useNewsForm = (initialNews = null, initialBlocks = null) => {
     slug: "",
     excerpt: "",
     cover_image: "",
-    author_id: "",
-    category_id: "",
+    author_id: null,
+    category_id: undefined,
     status: "draft",
     active: true,
     views: 0,
@@ -30,9 +30,7 @@ export const useNewsForm = (initialNews = null, initialBlocks = null) => {
     if (news) {
       setNewsData(prev => ({
         ...prev,
-        ...news,
-        author_id: news.author_id?.toString() || "",
-        category_id: news.category_id?.toString() || ""
+        ...news
       }));
     }
 

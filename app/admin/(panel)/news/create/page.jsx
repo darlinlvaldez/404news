@@ -7,6 +7,7 @@ import { Header } from '@/components/admin/Header';
 import { GeneralData } from '@/components/admin/news/GeneralData';
 import { ContentBlocks } from '@/components/admin/news/ContentBlocks';
 import { ActionButtons } from '@/components/admin/news/ActionButtons';
+import { useFormErrors } from '@/server/hooks/useFormErrors';
 
 export default function CreateNews() {
   const router = useRouter();
@@ -14,6 +15,7 @@ export default function CreateNews() {
   const [authors, setAuthors] = useState([]);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { errors, clearField, handleResponse } = useFormErrors();
 
   const {
     newsData,
@@ -25,36 +27,42 @@ export default function CreateNews() {
     moveBlock,
   } = useNewsForm();
 
- const onSave = async () => {
-  const payload = {
-    news: newsData,
-    blocks
+  const onSave = async () => {
+    const payload = {
+      news: newsData,
+      blocks
+    };
+
+    const res = await fetch("/api/admin/news", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(payload)
+    });
+
+    const data = await res.json();
+
+    if (res.ok) {
+      router.push("/admin/news");
+      return;
+    }
+
+    handleResponse(data);
   };
 
-  const res = await fetch("/api/admin/news", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(payload)
-  });
+  console.log(typeof newsData.author_id);
 
-  const data = await res.json();
-
-  if (data.ok) {
-    alert("¡Noticia creada con éxito!");
-    router.push("/admin/news");
-  } else {
-    alert(data.message);
-  }
-};
+  const handleChange = (e) => {
+    handleInputChange(e);
+    clearField(e.target.name);
+  };
 
   useEffect(() => {
     const fetchFormData = async () => {
       const res = await fetch("/api/admin/news/form-data");
       const data = await res.json();
 
-      console.log(data);
 
       if (data.ok) {
         setAuthors(data.authors);
@@ -81,9 +89,10 @@ export default function CreateNews() {
       <div className="max-w-4xl mx-auto px-6 py-10 space-y-12">
         <GeneralData 
           newsData={newsData}
-          onInputChange={handleInputChange}
+          onInputChange={handleChange}
           authors={authors}
           categories={categories}
+          errors={errors}
         />
 
         <ContentBlocks 

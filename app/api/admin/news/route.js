@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import newsController from "../../../../server/controllers/admin/news";
 import { requireAuth } from "../../../../server/utils/auth";
 import { handleError } from "../../../../server/errors/handleError";
+import { news as newsSchema } from "../../../../server/schemas/admin/news"
 
 export async function GET(request) {
   try {
@@ -29,6 +30,8 @@ export async function POST(req) {
     const user = await requireAuth(req, ["superadmin", "admin", "editor"]);
 
     const body = await req.json();
+
+    body.news = newsSchema.parse(body.news);
 
     const result = await newsController.create({...body, authorId: user.id});
 

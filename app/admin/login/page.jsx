@@ -1,9 +1,8 @@
 "use client";
 
 import { useState } from 'react';
-import clsx from "clsx";
-import {ErrorMessage} from '@/components/FormError';
-import {inputClass} from '@/utils/form';
+import {ErrorMessage} from '@/components/ErrorMessage';
+import {fieldClass} from '@/utils/form';
 import {useFormErrors} from '@/server/hooks/useFormErrors';
 import { 
   ShieldCheck, 
@@ -111,7 +110,8 @@ export default function AdminLogin() {
                   name="username"
                   value={formData.username}
                   onChange={handleChange}
-                  className={inputClass(errors.username)}           
+                  className={fieldClass(errors.username, 
+                  "w-full bg-[#0b0f1a] rounded-2xl pl-12 pr-4 py-4 text-sm transition-all text-white")}           
                 />
               </div>
                 <ErrorMessage
@@ -130,7 +130,8 @@ export default function AdminLogin() {
                   name="password"
                   value={formData.password}
                   onChange={handleChange}
-                  className={inputClass(errors.password)}
+                  className={fieldClass(errors.password, 
+                  "w-full bg-[#0b0f1a] rounded-2xl pl-12 pr-4 py-4 text-sm transition-all text-white")}
                 />
                 <button 
                   type="button" onClick={() => setShowPassword(!showPassword)}

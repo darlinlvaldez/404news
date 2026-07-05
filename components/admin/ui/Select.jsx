@@ -1,8 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { fieldClass } from "@/utils/form";
 
-export default function Select({ options, value, onChange, name, className, placeholder }) {
+export default function Select({ options, value, onChange, name, className, placeholder, error = false }) {
 
   const [isOpen, setIsOpen] = useState(false);
   const selectRef = useRef(null);
@@ -28,9 +29,14 @@ export default function Select({ options, value, onChange, name, className, plac
       <button
         type="button"
         onClick={() => setIsOpen(prev => !prev)}
-        className={`bg-gray-950 border border-gray-700 px-5 py-3.5 font-bold
-        focus:outline-none focus:border-green-800 cursor-pointer w-full text-left
-        ${isOpen ? "rounded-t-2xl border-green-800" : "rounded-2xl"}`}>
+        className={fieldClass(error,
+        `bg-gray-950 px-5 py-3.5 font-bold w-full text-left cursor-pointer focus:outline-none ${
+          isOpen
+            ? "rounded-t-2xl border-green-800"
+            : "rounded-2xl"
+        }`
+      )}
+      >
         <span className={selected ? "text-white" : "text-slate-400"}>
           {selected?.label || placeholder}
         </span>
