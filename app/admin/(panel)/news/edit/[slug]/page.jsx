@@ -7,6 +7,7 @@ import { Header } from '@/components/admin/Header';
 import { GeneralData } from '@/components/admin/news/GeneralData';
 import { ContentBlocks } from '@/components/admin/news/ContentBlocks';
 import { ActionButtons } from '@/components/admin/news/ActionButtons';
+import { useFormErrors } from '@/server/hooks/useFormErrors';
 
 import { useParams } from "next/navigation";
 
@@ -19,45 +20,45 @@ export default function EditNews() {
 
   const [authors, setAuthors] = useState([]);
   const [categories, setCategories] = useState([]);
+  const { errors, clearField, handleResponse } = useFormErrors();
   
-const {
-  newsData,
-  blocks,
-  showDeleteConfirm,
-  setShowDeleteConfirm,
-  handleInputChange,
-  addBlock,
-  removeBlock,
-  updateBlock,
-  moveBlock,
-  handleSave,
-  handleDelete,
-  setFormData
-} = useNewsForm();
+  const {
+    newsData,
+    blocks,
+    showDeleteConfirm,
+    setShowDeleteConfirm,
+    handleInputChange,
+    addBlock,
+    removeBlock,
+    updateBlock,
+    moveBlock,
+    handleDelete,
+    setFormData
+  } = useNewsForm();
 
-useEffect(() => {
-  const fetchFormData = async () => {
-    try {
-      const response = await fetch("/api/admin/news/form-data");
-      const data = await response.json();
-      
-      if (data.ok) {
-        setAuthors(data.authors);
-        setCategories(data.categories);
+  useEffect(() => {
+    const fetchFormData = async () => {
+      try {
+        const response = await fetch("/api/admin/news/form-data");
+        const data = await response.json();
+        
+        if (data.ok) {
+          setAuthors(data.authors);
+          setCategories(data.categories);
+        }
+      } catch (error) {
+        console.error(error);
       }
-    } catch (error) {
-      console.error(error);
-    }
-  };
+    };
 
-  fetchFormData();
-}, []);
+    fetchFormData();
+  }, []);
 
-useEffect(() => {
-  if (!slug) return;
+  useEffect(() => {
+    if (!slug) return;
 
-  const fetchNews = async () => {
-    try {
+    const fetchNews = async () => {
+      try {
 
       const response = await fetch(`/api/admin/news/${slug}`);
       const data = await response.json();
@@ -77,16 +78,42 @@ useEffect(() => {
   fetchNews();
   }, [slug]);
 
-    const onSave = () => {
-    handleSave(slug, () => {
-      alert('¡Noticia actualizada con éxito!');
-      router.push('/admin/news');
+  
+  const handleChange = (e) => {
+    handleInputChange(e);
+    clearField(e.target.name);
+    
+    if (e.target.name === "title") {
+        clearField("slug");
+    }
+  };
+
+  const onSave = async () => {
+    const payload = {
+      news: newsData,
+      blocks,
+    };
+
+    const res = await fetch(`/api/admin/news/${slug}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
     });
+
+    const data = await res.json();
+
+    if (res.ok) {
+      router.push("/admin/news");
+      return;
+    }
+
+    handleResponse(data);
   };
 
   const onDelete = () => {
     handleDelete(slug, () => {
-      alert("Noticia eliminada del sistema");
       router.push("/admin/news");
     });
   };
@@ -117,9 +144,11 @@ useEffect(() => {
       <div className="max-w-4xl mx-auto px-6 py-10 space-y-12">
         <GeneralData 
           newsData={newsData}
-          onInputChange={handleInputChange}
+          onInputChange={handleChange}
           authors={authors}
           categories={categories}
+          errors={errors}
+          clearField={clearField}
         />
 
         <ContentBlocks 

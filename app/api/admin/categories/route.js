@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import categoryController from "../../../../server/controllers/admin/categories";
 import { requireAuth } from "../../../../server/utils/auth";
 import { handleError } from "../../../../server/errors/handleError";
+import { categories as categoriesSchema } from "../../../../server/schemas/admin/categories";
 
 export async function GET(request) {
   try {
@@ -20,6 +21,9 @@ export async function POST(request) {
     await requireAuth(request, ["superadmin", "admin"]);
 
     const body = await request.json();
+
+    categoriesSchema.parse(body);
+    
     const result = await categoryController.create(body);
 
     return NextResponse.json(result);

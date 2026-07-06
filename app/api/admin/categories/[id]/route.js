@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import categoryController from "../../../../../server/controllers/admin/categories";
 import { requireAuth } from "../../../../../server/utils/auth";
 import { handleError } from "../../../../../server/errors/handleError";
+import { categories as categoriesSchema } from "../../../../../server/schemas/admin/categories";
 
 export async function PUT(request, context) {
   try {
@@ -10,6 +11,9 @@ export async function PUT(request, context) {
     const { id } = await context.params;
 
     const body = await request.json();
+
+    categoriesSchema.parse(body);
+
     const result = await categoryController.update(id, body);
 
     return NextResponse.json(result);

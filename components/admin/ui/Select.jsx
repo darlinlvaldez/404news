@@ -2,9 +2,11 @@
 
 import { useEffect, useRef, useState } from "react";
 import { fieldClass } from "@/utils/form";
+import {ErrorMessage} from "@/components/ErrorMessage";
 
-export default function Select({ options, value, onChange, onOpen, name, className, placeholder, error = false }) {
+export default function Select({ options, value, onChange, onOpen, name, className, placeholder, errors }) {
 
+  const hasError = !!errors?.[name];
   const [isOpen, setIsOpen] = useState(false);
   const selectRef = useRef(null);
   
@@ -35,7 +37,7 @@ export default function Select({ options, value, onChange, onOpen, name, classNa
             onOpen(name);
           }
         }}
-        className={fieldClass(error,
+        className={fieldClass(hasError,
           `bg-gray-950 px-5 py-3.5 font-bold w-full text-left cursor-pointer focus:outline-none ${
             isOpen
               ? "rounded-t-2xl border-green-800"
@@ -47,6 +49,11 @@ export default function Select({ options, value, onChange, onOpen, name, classNa
           {selected?.label || placeholder}
         </span>
       </button>
+
+      <ErrorMessage
+        errors={errors}
+        name={name}
+      />
 
       {isOpen && (
         <ul className="absolute w-full bg-[#0b0f1a] border border-green-800 border-t-0 rounded-b-2xl overflow-hidden z-10">

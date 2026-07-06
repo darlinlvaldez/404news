@@ -65,7 +65,6 @@ export default function CreateNews() {
       const res = await fetch("/api/admin/news/form-data");
       const data = await res.json();
 
-
       if (data.ok) {
         setAuthors(data.authors);
         setCategories(data.categories);

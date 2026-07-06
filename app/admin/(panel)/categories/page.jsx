@@ -7,6 +7,8 @@ import {formatDateAbsolute} from "@/utils/formatDate"
 import Input from "@/components/admin/ui/Input"
 import Switch from "@/components/admin/ui/Switch";
 import { Container, Th } from "@/components/admin/ui/Table";
+import { useFormErrors } from '@/server/hooks/useFormErrors';
+
 import { 
   Trash2, 
   PlusCircle, 
@@ -19,6 +21,7 @@ import {
 
 export default function CategoriesPage () {
   const [categories, setCategories] = useState([]);
+  const { errors, clearField, handleResponse } = useFormErrors();
 
   const [formData, setFormData] = useState({
     id: null,
@@ -34,7 +37,7 @@ export default function CategoriesPage () {
   fetch("/api/admin/categories")
     .then(res => res.json())
     .then(data => setCategories(data));
-}, []);
+  }, []);
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -55,36 +58,60 @@ export default function CategoriesPage () {
   };
 
   const handleSave = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  if (isEditing) {
-    await fetch(`/api/admin/categories/${formData.id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formData),
+    const payload = {
+      name: formData.name,
+      slug: formData.slug,
+      active: formData.active,
+    };
+
+    let res;
+
+    if (isEditing) {
+      res = await fetch(`/api/admin/categories/${formData.id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+    } else {
+      res = await fetch("/api/admin/categories", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+    }
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      handleResponse(data);
+      return;
+    }
+
+    const listRes = await fetch("/api/admin/categories");
+    const list = await listRes.json();
+    
+    setCategories(list);
+    handleCancel();
+  };
+
+  const handleChange = (e) => {
+    handleInputChange(e);
+    clearField(e.target.name);
+    
+    if (e.target.name === "name") {
+        clearField("slug");
+    }
+  };
+
+  const handleDelete = async (id) => {
+    await fetch(`/api/admin/categories/${id}`, {
+      method: "DELETE",
     });
-  } else {
-    await fetch("/api/admin/categories", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formData),
-    });
-  }
 
-  const res = await fetch("/api/admin/categories");
-  const data = await res.json();
-  setCategories(data);
-
-  handleCancel();
-};
-
-const handleDelete = async (id) => {
-  await fetch(`/api/admin/categories/${id}`, {
-    method: "DELETE",
-  });
-
-  setCategories(prev => prev.filter(c => c.id !== id));
-};
+    setCategories(prev => prev.filter(c => c.id !== id));
+  };
 
   const filteredCategories = categories.filter(c => 
     c.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
@@ -120,20 +147,22 @@ const handleDelete = async (id) => {
             <form onSubmit={handleSave} className="grid grid-cols-1 md:grid-cols-3 gap-6 items-end">
               <div className="md:col-span-1">
                 <label className="block text-xs font-bold text-gray-400 uppercase mb-2 ml-1">Nombre de Categoría</label>
-                <Input
+                <Input name="name"
                   className="w-full"
                   value={formData.name}
-                  onChange={handleInputChange}
+                  onChange={handleChange}
                   placeholder="Ej. Computadoras, IA..."
+                  errors={errors}
                 />
               </div>
               <div className="md:col-span-1">
                 <label className="block text-xs font-bold text-gray-400 uppercase mb-2 ml-1">URL (Slug)</label>
-                <Input
+                <Input name="slug"
                   className="w-full"
                   placeholder="Ej. tecnologia-tecnology"
                   value={formData.slug}
-                  onChange={handleInputChange}
+                  onChange={handleChange}
+                  errors={errors}
                 />
               </div>
               <div className="flex items-center space-x-4">
@@ -164,10 +193,10 @@ const handleDelete = async (id) => {
               </h3>
               <div className="relative w-80">
                 <Input
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                placeholder="Buscar categorías..."
-                icon={Search}
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  placeholder="Buscar categorías..."
+                  icon={Search}
                 />
               </div>
             </div>
