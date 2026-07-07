@@ -99,10 +99,6 @@ export default function CategoriesPage () {
   const handleChange = (e) => {
     handleInputChange(e);
     clearField(e.target.name);
-    
-    if (e.target.name === "name") {
-        clearField("slug");
-    }
   };
 
   const handleDelete = async (id) => {
@@ -144,7 +140,7 @@ export default function CategoriesPage () {
               )}
             </div>
 
-            <form onSubmit={handleSave} className="grid grid-cols-1 md:grid-cols-3 gap-6 items-end">
+            <form onSubmit={handleSave} className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="md:col-span-1">
                 <label className="block text-xs font-bold text-gray-400 uppercase mb-2 ml-1">Nombre de Categoría</label>
                 <Input name="name"
@@ -165,8 +161,8 @@ export default function CategoriesPage () {
                   errors={errors}
                 />
               </div>
-              <div className="flex items-center space-x-4">
-                <div className="flex-1 bg-gray-900 p-3 rounded-xl border border-gray-700">
+              <div className="flex md:col-span-2 justify-end  items-center space-x-4 mt-5">
+                <div className="w-34 bg-gray-900 p-3 rounded-xl border border-gray-700">
                   <Switch
                     label="Estado"
                     name="active"
@@ -175,10 +171,10 @@ export default function CategoriesPage () {
                   />
                 </div>
                   <SaveButton
-                      type="submit"
-                      icon={Save}
-                      variant={isEditing ? "blue" : "green"}
-                    >
+                    type="submit"
+                    icon={Save}
+                    variant={isEditing ? "blue" : "green"}
+                  >
                     {isEditing ? "Actualizar" : "Guardar"}
                   </SaveButton>
               </div>
