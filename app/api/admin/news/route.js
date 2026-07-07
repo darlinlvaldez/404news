@@ -21,6 +21,7 @@ export async function GET(request) {
     return NextResponse.json(result);
 
   } catch (error) {
+    console.error(error);
     return handleError(error);
   }
 }
@@ -31,6 +32,8 @@ export async function POST(req) {
 
     const body = await req.json();
 
+    console.log(body.news);
+
     body.news = newsSchema.parse(body.news);
 
     const result = await newsController.create({...body, authorId: user.id});
@@ -38,6 +41,7 @@ export async function POST(req) {
     return NextResponse.json(result);
 
   } catch (error) {
+    console.error(error);
     return handleError(error);
   }
 }

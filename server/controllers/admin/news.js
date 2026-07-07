@@ -1,9 +1,9 @@
-import news from "../../models/admin/news";
+import newsModel from "../../models/admin/news";
 
 const newsController = {};
 
 newsController.newsTable = async function ({ limit, offset, search, status }) {
-  const { rows, total } = await news.getNewsTable(
+  const { rows, total } = await newsModel.getNewsTable(
     limit,
     offset,
     search,
@@ -21,7 +21,7 @@ newsController.create = async function ({ news, blocks }) {
     };
   }
 
-  const newsId = await news.createNews(news, blocks);
+  const newsId = await newsModel.createNews(news, blocks);
 
   return {
     ok: true,
@@ -45,7 +45,7 @@ newsController.update = async function ({ slug, news, blocks }) {
     };
   }
 
-  await news.updateNews(slug, news, blocks);
+  await newsModel.updateNews(slug, news, blocks);
 
   return {
     ok: true,
@@ -61,7 +61,7 @@ newsController.getBySlug = async function (slug) {
     };
   }
 
-  const data = await news.getNewsBySlug(slug);
+  const data = await newsModel.getNewsBySlug(slug);
 
   if (!data.news) {
     return {
@@ -85,7 +85,7 @@ newsController.delete = async function (slug) {
     };
   }
 
-  await news.deleteNews(slug);
+  await newsModel.deleteNews(slug);
 
   return {
     ok: true,
@@ -94,8 +94,8 @@ newsController.delete = async function (slug) {
 };
 
 newsController.getFormData = async function () {
-  const authors = await news.getAuthors();
-  const categories = await news.getCategories();
+  const authors = await newsModel.getAuthors();
+  const categories = await newsModel.getCategories();
 
   return {
     ok: true,

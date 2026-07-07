@@ -63,8 +63,8 @@ news.createNews = async (newsData, blocks) => {
 
     const [newsResult] = await connection.query(
       `INSERT INTO news 
-       (title, slug, excerpt, cover_image, author_id, category_id, status, views)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+       (title, slug, excerpt, cover_image, author_id, category_id, status)
+       VALUES (?, ?, ?, ?, ?, ?, ?)`,
       [
         newsData.title,
         newsData.slug,
@@ -72,8 +72,7 @@ news.createNews = async (newsData, blocks) => {
         newsData.cover_image,
         newsData.author_id,
         newsData.category_id,
-        newsData.status,
-        newsData.views
+        newsData.status
       ]
     );
 

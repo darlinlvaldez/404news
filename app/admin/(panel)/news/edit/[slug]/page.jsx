@@ -33,6 +33,7 @@ export default function EditNews() {
     updateBlock,
     moveBlock,
     handleDelete,
+    handleSave,
     setFormData
   } = useNewsForm();
 
@@ -88,28 +89,10 @@ export default function EditNews() {
     }
   };
 
-  const onSave = async () => {
-    const payload = {
-      news: newsData,
-      blocks,
-    };
-
-    const res = await fetch(`/api/admin/news/${slug}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(payload),
-    });
-
-    const data = await res.json();
-
-    if (res.ok) {
+  const onSave = () => {
+    handleSave(slug, () => {
       router.push("/admin/news");
-      return;
-    }
-
-    handleResponse(data);
+    });
   };
 
   const onDelete = () => {

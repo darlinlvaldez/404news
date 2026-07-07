@@ -15,6 +15,7 @@ export async function GET(req, context) {
     return NextResponse.json(result);
 
   } catch (error) {
+    console.error(error);
     return handleError(error);
   }
 }
@@ -25,6 +26,8 @@ export async function PUT(req, context) {
 
     const { slug } = await context.params;
     const body = await req.json();
+
+    console.log(body.news);
 
     body.news = newsSchema.parse(body.news);
 
@@ -37,6 +40,7 @@ export async function PUT(req, context) {
     return NextResponse.json(result);
 
   } catch (error) {
+    console.error(error);
     return handleError(error);
   }
 }
@@ -52,6 +56,7 @@ export async function DELETE(req, context) {
     return NextResponse.json(result);
 
   } catch (error) {
+    console.error(error);
     return handleError(error);
   }
 }

@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { fieldClass } from "@/utils/form";
-import {ErrorMessage} from "@/components/ErrorMessage";
+import { ErrorMessage } from "@/components/ErrorMessage";
 
 export default function Select({ options, value, onChange, onOpen, name, className, placeholder, errors }) {
 

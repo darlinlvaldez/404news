@@ -17,6 +17,7 @@ import {
   Edit3,
   CheckCircle,
   XCircle,
+  Folder
 } from 'lucide-react';
 
 export default function CategoriesPage () {
@@ -149,6 +150,7 @@ export default function CategoriesPage () {
                   onChange={handleChange}
                   placeholder="Ej. Computadoras, IA..."
                   errors={errors}
+                  icon={Folder}
                 />
               </div>
               <div className="md:col-span-1">

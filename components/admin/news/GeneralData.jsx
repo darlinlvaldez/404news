@@ -13,6 +13,9 @@ export const GeneralData = ({ newsData, onInputChange, authors = [], categories 
     { value: "published", label: "Publicado" },
   ];
 
+  const styleInput = `w-full bg-gray-950 border border-gray-700 rounded-xl font-semibold 
+  focus:ring-1 focus:ring-green-800 focus:border-transparent outline-none transition placeholder:text-gray-600`
+
   return (
     <section className="bg-gray-900 rounded-3xl border border-gray-700 p-8 shadow-2xl relative">
 
@@ -28,8 +31,8 @@ export const GeneralData = ({ newsData, onInputChange, authors = [], categories 
           <label className="block text-xs font-bold text-gray-500 uppercase mb-2 ml-1">
             Título Principal
           </label>
-          <input type="text" name="title" value={newsData.title} onChange={onInputChange} className={fieldClass(!!errors?.title,
-          "w-full bg-gray-950 border border-gray-700 rounded-2xl px-5 py-4 text-xl font-semibold focus:ring-2 focus:ring-green-800 focus:border-transparent outline-none transition placeholder:text-gray-600")}
+          <input type="text" name="title" value={newsData.title} onChange={onInputChange} 
+          className={fieldClass(!!errors?.title, `${styleInput} px-5 py-4 text-xl`)}
           placeholder="Escribe un título impactante..."/>   
           <ErrorMessage
             errors={errors}
@@ -42,8 +45,8 @@ export const GeneralData = ({ newsData, onInputChange, authors = [], categories 
             <label className="block text-xs font-bold text-gray-500 uppercase mb-2 ml-1">
               URL amigable (Slug)
             </label>
-            <input type="text" name="slug" value={newsData.slug} onChange={onInputChange} className={fieldClass(!!errors?.slug,
-              "w-full bg-gray-950 border border-gray-700 rounded-xl px-4 py-3 text-sm text-white cursor-not-allowed font-mono")}
+            <input type="text" name="slug" value={newsData.slug} onChange={onInputChange} 
+            className={fieldClass(!!errors?.slug, `${styleInput} px-4 py-2.5`)}
             />
             <ErrorMessage
               errors={errors}
@@ -54,12 +57,12 @@ export const GeneralData = ({ newsData, onInputChange, authors = [], categories 
             <label className="block text-xs font-bold text-gray-500 uppercase mb-2 ml-1">
               Imagen de Portada (URL)
             </label>
-            <div className="relative">
+            <div className="relative group">
               <input type="text" name="cover_image" value={newsData.cover_image} onChange={onInputChange}
-                placeholder="https://ejemplo.com/imagen.jpg"
-                className={fieldClass(!!errors?.cover_image, "w-full bg-gray-950 border border-gray-700 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-green-800 outline-none pr-10")}
+                placeholder="https://ejemplo.com/imagen.jpg" className={fieldClass(!!errors?.cover_image, 
+                `${styleInput}  px-4 py-2.5`)}
               />
-              <ImageIcon className="absolute right-3 top-3 text-gray-600" size={18}/>
+              <ImageIcon className="absolute right-3 top-3 text-gray-600 group-focus-within:text-green-800" size={18}/>
               <ErrorMessage
                 errors={errors}
                 name="cover_image"
@@ -73,7 +76,7 @@ export const GeneralData = ({ newsData, onInputChange, authors = [], categories 
             Resumen / Excerpt
           </label>
           <textarea name="excerpt" value={newsData.excerpt} onChange={onInputChange} rows="5"
-            className={fieldClass(!!errors?.excerpt, "w-full bg-gray-950 border border-gray-700 rounded-2xl px-5 py-4 text-sm focus:ring-2 focus:ring-green-600 outline-none resize-none transition")}
+            className={fieldClass(!!errors?.excerpt, `${styleInput} px-4 py-2`)}
             placeholder="Escribe un breve resumen para los listados de noticias...">
           </textarea>
           <ErrorMessage
@@ -90,7 +93,7 @@ export const GeneralData = ({ newsData, onInputChange, authors = [], categories 
             <Select
               name="author_id"
               placeholder="Seleccionar Autor"
-              error={!!errors?.author_id} 
+              errors={errors} 
               options={authors.map(author => ({
                 value: author.id,
                 label: author.name,
@@ -98,10 +101,6 @@ export const GeneralData = ({ newsData, onInputChange, authors = [], categories 
               value={newsData.author_id}
               onChange={onInputChange}
             />
-            <ErrorMessage
-              errors={errors}
-              name="author_id"
-            />   
           </div>
           <div>
             <label className="block text-xs font-bold text-gray-500 uppercase mb-2 ml-1">
@@ -110,7 +109,7 @@ export const GeneralData = ({ newsData, onInputChange, authors = [], categories 
             <Select
               name="category_id"
               placeholder="Seleccionar Categoría"
-              error={!!errors?.category_id} 
+              errors={errors} 
               onOpen={clearField}
               options={categories.map(category => ({
                 value: category.id,
@@ -119,10 +118,6 @@ export const GeneralData = ({ newsData, onInputChange, authors = [], categories 
               value={newsData.category_id}
               onChange={onInputChange}
             />
-            <ErrorMessage
-              errors={errors}
-              name="category_id"
-            />   
           </div>
           <div>
             <label className="block text-xs font-bold text-gray-500 uppercase mb-2 ml-1">
@@ -133,13 +128,9 @@ export const GeneralData = ({ newsData, onInputChange, authors = [], categories 
               value={newsData.status}
               options={statusOptions}
               onChange={onInputChange}
-              error={!!errors?.status} 
+              errors={errors} 
               placeholder="Seleccionar estado"
             />
-            <ErrorMessage
-              errors={errors}
-              name="status"
-            />   
           </div>
         </div>
       </div>

@@ -14,8 +14,6 @@ export const useNewsForm = (initialNews = null, initialBlocks = null) => {
     author_id: null,
     category_id: "",
     status: "draft",
-    active: true,
-    views: 0,
     ...initialNews
   });
 
@@ -27,19 +25,6 @@ export const useNewsForm = (initialNews = null, initialBlocks = null) => {
   );
 
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
-
-  const setFormData = (news, blocksFromApi) => {
-    if (news) {
-      setNewsData(prev => ({
-        ...prev,
-        ...news
-      }));
-    }
-
-    if (blocksFromApi) {
-      setBlocks(blocksFromApi);
-    }
-  };
 
   useEffect(() => {
     if (initialNews || slugEdited) return;
@@ -125,37 +110,65 @@ export const useNewsForm = (initialNews = null, initialBlocks = null) => {
     setBlocks(updatedPositions);
   };
 
-  const handleSave = async (id, onSuccess) => {
-  try {
-    const response = await fetch(`/api/admin/news/${id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        news: newsData,
-        blocks: blocks,
-      }),
-    });
-
-    const data = await response.json();
-
-    if (!data.ok) {
-      alert(data.message || "Error actualizando noticia");
-      return;
+  const setFormData = (news, blocksFromApi) => {
+    if (news) {
+      setNewsData({
+        title: news.title,
+        slug: news.slug,
+        excerpt: news.excerpt,
+        cover_image: news.cover_image,
+        author_id: news.author_id,
+        category_id: news.category_id,
+        status: news.status,
+      });
     }
 
-    if (onSuccess) onSuccess();
+    if (blocksFromApi) {
+      setBlocks(blocksFromApi);
+    }
+  };
 
-  } catch (error) {
-    console.error(error);
-    alert("Error guardando cambios");
-  }
-};
+  const handleSave = async (slug, onSuccess) => {
+    try {
+      const payload = {
+        news: {
+          title: newsData.title,
+          slug: newsData.slug,
+          excerpt: newsData.excerpt,
+          cover_image: newsData.cover_image,
+          author_id: newsData.author_id,
+          category_id: newsData.category_id,
+          status: newsData.status,
+        },
+        blocks,
+      };
 
-  const handleDelete = async (id, onDelete) => {
+      const response = await fetch(`/api/admin/news/${slug}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await response.json();
+
+      if (!data.ok) {
+        alert(data.message || "Error actualizando noticia");
+        return;
+      }
+
+      if (onSuccess) onSuccess();
+
+    } catch (error) {
+      console.error(error);
+      alert("Error guardando cambios");
+    }
+  };
+
+  const handleDelete = async (slug, onDelete) => {
   try {
-    const response = await fetch(`/api/admin/news/${id}`, {
+    const response = await fetch(`/api/admin/news/${slug}`, {
       method: "DELETE",
     });
 
@@ -188,6 +201,6 @@ export const useNewsForm = (initialNews = null, initialBlocks = null) => {
     moveBlock,
     handleSave,
     handleDelete,
-    setFormData
+    setFormData,
   };
 };
