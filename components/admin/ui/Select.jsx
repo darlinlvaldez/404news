@@ -45,7 +45,7 @@ export default function Select({ options, value, onChange, onOpen, name, classNa
           }`
         )}
         >
-        <span className={selected ? "text-white" : "text-slate-400"}>
+        <span className={selected ? "text-white" : "text-gray-600"}>
           {selected?.label || placeholder}
         </span>
       </button>

@@ -6,6 +6,8 @@ import Input from "@/components/admin/ui/Input"
 import {ActionButton} from "@/components/admin/ui/ActionButtons"
 import { Header } from '@/components/admin/Header';
 import { Container, Th } from "@/components/admin/ui/Table";
+import { useFormErrors } from '@/server/hooks/useFormErrors';
+import { useAutoSlug } from '@/utils/autoSlug';
 
 import { 
   Trash2, 
@@ -42,23 +44,24 @@ export default function AuthorsPage() {
   const [isEditing, setIsEditing] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const {errors, clearField, handleResponse} = useFormErrors();
 
   useEffect(() => {
-  const fetchAuthors = async () => {
-    setIsLoading(true);
-    try {
-      const res = await fetch("/api/admin/authors");
-      const data = await res.json();
-      setAuthors(data);
-    } catch (err) {
-      console.error("Error fetching authors:", err);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+    const fetchAuthors = async () => {
+      setIsLoading(true);
+      try {
+        const res = await fetch("/api/admin/authors");
+        const data = await res.json();
+        setAuthors(data);
+      } catch (err) {
+        console.error("Error fetching authors:", err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-  fetchAuthors();
-}, []);
+    fetchAuthors();
+  }, []);
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -66,6 +69,16 @@ export default function AuthorsPage() {
       ...prev,
       [name]: type === 'checkbox' ? (checked ? 1 : 0) : value
     }));
+  };
+
+  const handleChange = (e) => {
+    handleInputChange(e);
+
+    clearField(e.target.name);
+
+    if (e.target.name === "name") {
+      clearField("slug");
+    }
   };
 
   const handleEdit = (author) => {
@@ -80,53 +93,72 @@ export default function AuthorsPage() {
   };
 
   const handleSave = async (e) => {
-  e.preventDefault();
-  setIsLoading(true);
+    e.preventDefault();
+    setIsLoading(true);
 
-  try {
-    const method = isEditing ? "PUT" : "POST";
-    const url = isEditing 
-      ? `/api/admin/authors/${formData.id}` 
-      : `/api/admin/authors`;
+    const payload = {
+      email: formData.email,
+      password: formData.password,
+      active: formData.active,
+      name: formData.name,
+      slug: formData.slug,
+      avatar: formData.avatar,
+      bio: formData.bio,
+    };
 
-    const res = await fetch(url, {
-      method,
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formData),
-    });
+    console.log(payload);
 
-    const result = await res.json();
+    try {
+     const method = isEditing ? "PUT" : "POST";
+      const url = isEditing
+        ? `/api/admin/authors/${formData.id}`
+        : "/api/admin/authors";
 
-    if (isEditing) {
-      setAuthors(authors.map(a => a.id === result.id ? result : a));
-    } else {
-      setAuthors([result, ...authors]);
+      const res = await fetch(url, {
+        method,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+      
+      const data = await res.json();
+
+      if (!res.ok) {
+        console.log(data);
+        handleResponse(data);
+        return;
+      }
+      
+
+      const listRes = await fetch("/api/admin/authors");
+      const list = await listRes.json();
+
+      setAuthors(list);
+      handleCancel();
+    } catch (err) {
+      console.error("Error saving author:", err);
+    } finally {
+      setIsLoading(false);
     }
+  };
 
-    handleCancel();
-  } catch (err) {
-    console.error("Error saving author:", err);
-  } finally {
-    setIsLoading(false);
-  }
-};
+  const handleDelete = async (id) => {
+    if (!confirm("¿Seguro que quieres eliminar este autor?")) return;
 
-const handleDelete = async (id) => {
-  if (!confirm("¿Seguro que quieres eliminar este autor?")) return;
-
-  setIsLoading(true);
-  try {
-    const res = await fetch(`/api/admin/authors/${id}`, {
-      method: "DELETE",
-    });
-    const result = await res.json();
-    setAuthors(authors.filter(a => a.id !== result.deletedId));
-  } catch (err) {
-    console.error("Error deleting author:", err);
-  } finally {
-    setIsLoading(false);
-  }
-};
+    setIsLoading(true);
+    try {
+      const res = await fetch(`/api/admin/authors/${id}`, {
+        method: "DELETE",
+      });
+      const result = await res.json();
+      setAuthors(authors.filter(a => a.id !== result.deletedId));
+    } catch (err) {
+      console.error("Error deleting author:", err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const filteredAuthors = authors.filter(a => 
     a.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
@@ -179,8 +211,9 @@ const handleDelete = async (id) => {
                           name="email"
                           placeholder="ejemplo@gmail.com"
                           value={formData.email}
-                          onChange={handleInputChange}
+                          onChange={handleChange}
                           icon={Mail}
+                          errors={errors}
                           />
                       </div>
                     </div>
@@ -193,8 +226,9 @@ const handleDelete = async (id) => {
                           name="password"
                           required={!isEditing} placeholder={isEditing ? "••••••••" : "Mínimo 6 caracteres"}
                           value={formData.password}
-                          onChange={handleInputChange}
+                          onChange={handleChange}
                           icon={Lock}
+                          errors={errors}
                           />
                       </div>
                     </div>
@@ -215,8 +249,9 @@ const handleDelete = async (id) => {
                           name="name"
                           placeholder="Ej. Juan Pérez"
                           value={formData.name}
-                          onChange={handleInputChange}
+                          onChange={handleChange}
                           icon={User}
+                          errors={errors}
                         />
                     </div>
                     <div className="space-y-2">
@@ -227,7 +262,8 @@ const handleDelete = async (id) => {
                           name="slug"
                           placeholder="Ej. Manuel-luis-investigador"
                           value={formData.slug}
-                          onChange={handleInputChange}
+                          onChange={handleChange}
+                          errors={errors}
                         />
                     </div>
                     <div className="space-y-2">
@@ -235,11 +271,12 @@ const handleDelete = async (id) => {
                       <Input
                           className="w-full"
                           type="text"
-                          name="url"
+                          name="avatar"
                           placeholder="Archivo o URL"
                           value={formData.avatar}
-                          onChange={handleInputChange}
+                          onChange={handleChange}
                           icon={Camera}
+                          errors={errors}
                         />
                     </div>
                     <div className="flex items-end">
@@ -256,8 +293,8 @@ const handleDelete = async (id) => {
                   <div className="space-y-2">
                     <label className="text-sm font-black text-gray-500 uppercase ml-1">Biografía Corta</label>
                     <textarea name="bio" value={formData.bio} onChange={handleInputChange} rows="3"
-                      className="w-full bg-gray-950 border border-gray-700 rounded-xl px-4 py-3.5 text-sm 
-                      focus:ring-2 focus:ring-green-700 outline-none resize-none transition text-white"
+                      className="w-full bg-gray-950 border border-gray-700 rounded-xl px-4 py-3.5 text-sm placeholder:text-gray-500
+                      focus:ring-1 focus:ring-green-800 outline-none focus:border-transparent resize-none transition text-white"
                       placeholder="Describe la trayectoria del autor...">
                     </textarea>
                   </div>

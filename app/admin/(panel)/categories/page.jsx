@@ -22,23 +22,33 @@ import {
 } from 'lucide-react';
 
 export default function CategoriesPage () {
-  const [categories, setCategories] = useState([]);
-  const { errors, clearField, handleResponse } = useFormErrors();
-
-  const [formData, setFormData] = useState({
+  const initialFormData = {
     id: null,
-    name: '',
-    slug: '',
-    active: 1
-  });
+    name: "",
+    slug: "",
+    active: 1,
+  };
+
+  const [categories, setCategories] = useState([]);
+  const {errors, clearField, handleResponse} = useFormErrors();
+
+  const [formData, setFormData] = useState(initialFormData);
 
   const [isEditing, setIsEditing] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
-  fetch("/api/admin/categories")
-    .then(res => res.json())
-    .then(data => setCategories(data));
+    const fetchCategories = async () => {
+      try {
+        const res = await fetch("/api/admin/categories");
+        const data = await res.json();
+        setCategories(data);
+      } catch (err) {
+        console.error("Error fetching categories:", err);
+      }
+    };
+
+    fetchCategories();
   }, []);
 
   const handleEdit = (category) => {
@@ -48,7 +58,7 @@ export default function CategoriesPage () {
   };
 
   const handleCancel = () => {
-    setFormData({ id: null, name: '', slug: '', active: 1 });
+    setFormData(initialFormData);
     setIsEditing(false);
   };
 
@@ -61,34 +71,36 @@ export default function CategoriesPage () {
       active: formData.active,
     };
 
-    let res;
+    try {
+      const method = isEditing ? "PUT" : "POST";
+        const url = isEditing
+          ? `/api/admin/categories/${formData.id}`
+          : "/api/admin/categories";
 
-    if (isEditing) {
-      res = await fetch(`/api/admin/categories/${formData.id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-    } else {
-      res = await fetch("/api/admin/categories", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
+        const res = await fetch(url, {
+          method,
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        handleResponse(data);
+        return;
+      }
+
+      const listRes = await fetch("/api/admin/categories");
+      const list = await listRes.json();
+      
+      setCategories(list);
+      handleCancel();
+
+      } catch (err) {
+      console.error("Error saving category:", err);
     }
-
-    const data = await res.json();
-
-    if (!res.ok) {
-      handleResponse(data);
-      return;
-    }
-
-    const listRes = await fetch("/api/admin/categories");
-    const list = await listRes.json();
-    
-    setCategories(list);
-    handleCancel();
   };
 
   const { handleSlugChange } = useAutoSlug({

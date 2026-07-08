@@ -12,6 +12,7 @@ export async function GET(request) {
     return NextResponse.json(result);
 
   } catch (error) {
+    console.log(error)
     return handleError(error);
   }
 }
@@ -29,6 +30,7 @@ export async function POST(request) {
     return NextResponse.json(result);
 
   } catch (error) {
+    console.log(error)
     return handleError(error);
   }
 }

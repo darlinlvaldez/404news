@@ -19,6 +19,7 @@ export async function PUT(request, context) {
     return NextResponse.json(result);
 
   } catch (error) {
+    console.log(error)
     return handleError(error);
   }
 }
@@ -34,6 +35,7 @@ export async function DELETE(request, context) {
     return NextResponse.json(result);
 
   } catch (error) {
+    console.log(error)
     return handleError(error);
   }
 }

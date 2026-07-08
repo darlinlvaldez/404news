@@ -30,6 +30,8 @@ export const useAutoSlug = ({
   }, [source, slug, disabled, slugEdited, setSlug]);
 
   const handleSlugChange = (value) => {
+    value = value.replace(/\s/g, "");
+
     setSlugEdited(value !== "");
     setSlug(value);
   };
