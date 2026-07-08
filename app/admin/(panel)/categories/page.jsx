@@ -8,6 +8,7 @@ import Input from "@/components/admin/ui/Input"
 import Switch from "@/components/admin/ui/Switch";
 import { Container, Th } from "@/components/admin/ui/Table";
 import { useFormErrors } from '@/server/hooks/useFormErrors';
+import { useAutoSlug } from '@/utils/autoSlug';
 
 import { 
   Trash2, 
@@ -39,13 +40,6 @@ export default function CategoriesPage () {
     .then(res => res.json())
     .then(data => setCategories(data));
   }, []);
-
-  const handleInputChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setFormData(prev => ({...prev,
-      [name]: type === 'checkbox' ? (checked ? 1 : 0) : value
-    }));
-  };
 
   const handleEdit = (category) => {
     setFormData(category);
@@ -97,9 +91,39 @@ export default function CategoriesPage () {
     handleCancel();
   };
 
+  const { handleSlugChange } = useAutoSlug({
+    source: formData.name,
+    slug: formData.slug,
+    setSlug: (slug) =>
+      setFormData((prev) => ({
+        ...prev,
+        slug,
+      })),
+    disabled: isEditing,
+  });
+
+  const handleInputChange = (e) => {
+    const { name, value, type, checked } = e.target;
+
+    if (name === "slug") {
+      handleSlugChange(value);
+      return;
+    }
+
+    setFormData((prev) => ({
+      ...prev,
+      [name]: type === "checkbox" ? (checked ? 1 : 0) : value,
+    }));
+  };
+
   const handleChange = (e) => {
     handleInputChange(e);
+
     clearField(e.target.name);
+
+    if (e.target.name === "name") {
+      clearField("slug");
+    }
   };
 
   const handleDelete = async (id) => {

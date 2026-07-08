@@ -1,10 +1,9 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useAutoSlug } from '@/utils/autoSlug';
 
 export const useNewsForm = (initialNews = null, initialBlocks = null) => {
-
-  const [slugEdited, setSlugEdited] = useState(false);
 
   const [newsData, setNewsData] = useState({
     title: "",
@@ -26,46 +25,30 @@ export const useNewsForm = (initialNews = null, initialBlocks = null) => {
 
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
-  useEffect(() => {
-    if (initialNews || slugEdited) return;
-
-    const generatedSlug = newsData.title
-      .toLowerCase()
-      .trim()
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "")
-      .replace(/[^\w ]+/g, "")
-      .replace(/ +/g, "-");
-
-    setNewsData((prev) => {
-      if (prev.slug === generatedSlug) {
-        return prev;
-      }
-
-      return {
-        ...prev,
-        slug: generatedSlug,
-      };
-    });
-  }, [newsData.title, initialNews, slugEdited]);
-
-
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
 
     if (name === "slug") {
-      setSlugEdited(true);
-    }
-
-    if (name === "slug") {
-      setSlugEdited(value !== "");
+      handleSlugChange(value);
+      return;
     }
 
     setNewsData((prev) => ({
       ...prev,
-      [name]: type === "checkbox" ? checked : value,
+      [name]: type === "checkbox" ? (checked ? 1 : 0) : value,
     }));
   };
+
+  const { handleSlugChange } = useAutoSlug({
+    source: newsData.title,
+    slug: newsData.slug,
+    setSlug: (slug) =>
+      setNewsData((prev) => ({
+        ...prev,
+        slug,
+      })),
+    disabled: !!initialNews,
+  });
 
   const addBlock = (type) => {
     const newBlock = {

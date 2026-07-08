@@ -60,7 +60,7 @@ export const GeneralData = ({ newsData, onInputChange, authors = [], categories 
             <div className="relative group">
               <input type="text" name="cover_image" value={newsData.cover_image} onChange={onInputChange}
                 placeholder="https://ejemplo.com/imagen.jpg" className={fieldClass(!!errors?.cover_image, 
-                `${styleInput}  px-4 py-2.5`)}
+                `${styleInput} px-4 py-2.5`)}
               />
               <ImageIcon className="absolute right-3 top-3 text-gray-600 group-focus-within:text-green-800" size={18}/>
               <ErrorMessage
