@@ -8,6 +8,8 @@ import { Header } from '@/components/admin/Header';
 import { Container, Th } from "@/components/admin/ui/Table";
 import { useFormErrors } from '@/server/hooks/useFormErrors';
 import { useAutoSlug } from '@/utils/autoSlug';
+import { confirmPass } from "@/server/schemas/admin/confirmPass";
+import { confirmUpdateAuthor } from "@/server/schemas/admin/confirmUpdatePass";
 
 import { 
   Trash2, 
@@ -27,10 +29,9 @@ import {
 
 export default function AuthorsPage() {
   const initialFormState = {
-    username: '',
     email: '',
     password: '',
-    role: 'author',
+    confirmPassword: '',
     active: 1,
     name: '',
     bio: '',
@@ -44,7 +45,7 @@ export default function AuthorsPage() {
   const [isEditing, setIsEditing] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const {errors, clearField, clearErrors, handleResponse} = useFormErrors();
+  const {errors, clearField, clearErrors, handleResponse, handleZodError} = useFormErrors();
 
   useEffect(() => {
     const fetchAuthors = async () => {
@@ -98,10 +99,21 @@ export default function AuthorsPage() {
   };
 
   const handleEdit = (author) => {
-    setFormData({ ...author, password: '' }); 
+    setFormData({
+      id: author.id,
+      user_id: author.user_id,
+      email: author.email,
+      password: '',
+      confirmPassword: '',
+      active: author.active,
+      name: author.name,
+      bio: author.bio,
+      slug: author.slug,
+      avatar: author.avatar,
+    });
+
     setIsEditing(true);
     clearErrors();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleCancel = () => {
@@ -112,17 +124,43 @@ export default function AuthorsPage() {
 
   const handleSave = async (e) => {
     e.preventDefault();
-    setIsLoading(true);
 
-    const payload = {
-      user_id: formData.user_id,
+    const dataToValidate = {
       email: formData.email,
       password: formData.password,
+      confirmPassword: formData.confirmPassword,
       active: formData.active,
       name: formData.name,
       slug: formData.slug,
       avatar: formData.avatar,
       bio: formData.bio,
+      ...(isEditing && {
+        user_id: formData.user_id
+      })
+    };
+
+    const schema = isEditing ? confirmUpdateAuthor : confirmPass;
+
+    const result = schema.safeParse(dataToValidate);
+
+    if (!result.success) {
+      handleZodError(result.error);
+      return;
+    }
+    
+    setIsLoading(true);
+
+    const payload = {
+      user_id: formData.user_id,
+      email: formData.email,
+      active: formData.active,
+      name: formData.name,
+      slug: formData.slug,
+      avatar: formData.avatar,
+      bio: formData.bio,
+      ...(formData.password && {
+        password: formData.password
+      })
     };
 
     try {
@@ -250,6 +288,18 @@ export default function AuthorsPage() {
                           errors={errors}
                           />
                       </div>
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-black text-gray-500 uppercase ml-1">Confirmar contraseña </label>
+                      <Input
+                        type="password"
+                        name="confirmPassword"
+                        placeholder={isEditing ? "••••••••" : "Mínimo 6 caracteres"}
+                        value={formData.confirmPassword}
+                        onChange={handleChange}
+                        icon={Lock}
+                        errors={errors}
+                      />
                     </div>
                   </div>
                 </div>

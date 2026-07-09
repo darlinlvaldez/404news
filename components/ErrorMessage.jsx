@@ -1,7 +1,6 @@
 export function ErrorMessage({ errors, name, error }) {
-
     const message = name
-        ? errors?.[name]?.[0]
+        ? errors?.[name]
         : error;
 
     if (!message) return null;
@@ -11,5 +10,4 @@ export function ErrorMessage({ errors, name, error }) {
             {message}
         </p>
     );
-
 }

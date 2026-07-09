@@ -19,14 +19,37 @@ export function useFormErrors() {
         setError("");
     }
 
+    function normalizeErrors(errors) {
+        return Object.fromEntries(
+            Object.entries(errors).map(([key, value]) => [
+                key,
+                Array.isArray(value) ? value[0] : value
+            ])
+        );
+    }
+
     function handleResponse(data) {
 
         if (data.errors) {
-            setErrors(data.errors);
+            setErrors(normalizeErrors(data.errors));
         } else {
             setError(data.error);
         }
 
+    }
+
+    function handleZodError(error) {
+        console.log(error.issues);
+
+        const fieldErrors = {};
+
+        error.issues.forEach((issue) => {
+            const field = issue.path[0];
+
+            fieldErrors[field ?? "general"] = issue.message;
+        });
+
+        setErrors(fieldErrors);
     }
 
     return {
@@ -36,7 +59,7 @@ export function useFormErrors() {
         setErrors,
         clearField,
         clearErrors,
-        handleResponse
+        handleResponse,
+        handleZodError
     };
-
 }

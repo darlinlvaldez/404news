@@ -15,9 +15,3 @@ Noticias sin visitas.
 Noticias publicadas por mes.
 
 Rango personalizado.
-
-Hacer que cuando edite borre los errores en author.
-
-Arreglar el guardado de credenciales en author.
-
-Hacer que el editar se vea un titulo en el input de que es opcional el password.
