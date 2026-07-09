@@ -75,7 +75,7 @@ authors.update = async (id, authorData, userData) => {
       );
     }
 
-    await conn.query(
+    const [result] = await conn.query(
       `UPDATE authors
        SET name = ?, bio = ?, slug = ?, avatar = ?
        WHERE id = ?`,
@@ -87,6 +87,8 @@ authors.update = async (id, authorData, userData) => {
         id
       ]
     );
+
+    console.log(result);
 
     await conn.commit();
 

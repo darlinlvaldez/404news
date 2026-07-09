@@ -3,6 +3,15 @@ import authors from "@/server/models/admin/authors";
 
 const authorsController = {};
 
+const generateUsername = (name) => {
+  return name
+    .trim()
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/\s+/g, "");
+};
+
 authorsController.getAll = async () => {
   return await authors.getAll();
 };
@@ -15,8 +24,10 @@ authorsController.create = async (data) => {
   const saltRounds = 10;
   const hashedPassword = await bcrypt.hash(data.password, saltRounds);
 
+  const username = generateUsername(data.name);
+
   const userData = {
-    username: data.username,
+    username,
     email: data.email,
     password: hashedPassword,
     role: data.role || "author",
@@ -34,12 +45,14 @@ authorsController.create = async (data) => {
 };
 
 authorsController.update = async (id, data) => {
+  const username = generateUsername(data.name);
+
   const userData = {
-    username: data.username,
-    email: data.email,
-    role: data.role,
-    active: data.active,
     id: data.user_id,
+    username,
+    email: data.email,
+    role: "author",
+    active: data.active,
   };
 
   if (data.password) {

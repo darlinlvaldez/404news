@@ -14,6 +14,11 @@ export function useFormErrors() {
         setError("");
     }
 
+    function clearErrors() {
+        setErrors({});
+        setError("");
+    }
+
     function handleResponse(data) {
 
         if (data.errors) {
@@ -30,6 +35,7 @@ export function useFormErrors() {
         setError,
         setErrors,
         clearField,
+        clearErrors,
         handleResponse
     };
 

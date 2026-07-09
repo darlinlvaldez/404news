@@ -44,7 +44,7 @@ export default function AuthorsPage() {
   const [isEditing, setIsEditing] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const {errors, clearField, handleResponse} = useFormErrors();
+  const {errors, clearField, clearErrors, handleResponse} = useFormErrors();
 
   useEffect(() => {
     const fetchAuthors = async () => {
@@ -63,8 +63,24 @@ export default function AuthorsPage() {
     fetchAuthors();
   }, []);
 
+  const { handleSlugChange } = useAutoSlug({
+    source: formData.name,
+    slug: formData.slug,
+    setSlug: (slug) =>
+      setFormData((prev) => ({
+        ...prev,
+        slug,
+      }))
+  });
+
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
+
+    if (name === "slug") {
+      handleSlugChange(value);
+      return;
+    }
+    
     setFormData(prev => ({
       ...prev,
       [name]: type === 'checkbox' ? (checked ? 1 : 0) : value
@@ -84,12 +100,14 @@ export default function AuthorsPage() {
   const handleEdit = (author) => {
     setFormData({ ...author, password: '' }); 
     setIsEditing(true);
+    clearErrors();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleCancel = () => {
     setFormData(initialFormState);
     setIsEditing(false);
+    clearErrors();
   };
 
   const handleSave = async (e) => {
@@ -97,6 +115,7 @@ export default function AuthorsPage() {
     setIsLoading(true);
 
     const payload = {
+      user_id: formData.user_id,
       email: formData.email,
       password: formData.password,
       active: formData.active,
@@ -105,8 +124,6 @@ export default function AuthorsPage() {
       avatar: formData.avatar,
       bio: formData.bio,
     };
-
-    console.log(payload);
 
     try {
      const method = isEditing ? "PUT" : "POST";
@@ -130,7 +147,6 @@ export default function AuthorsPage() {
         return;
       }
       
-
       const listRes = await fetch("/api/admin/authors");
       const list = await listRes.json();
 
@@ -152,7 +168,9 @@ export default function AuthorsPage() {
         method: "DELETE",
       });
       const result = await res.json();
-      setAuthors(authors.filter(a => a.id !== result.deletedId));
+      setAuthors(prev =>
+        prev.filter(a => a.id !== Number(result.deletedId))
+      );
     } catch (err) {
       console.error("Error deleting author:", err);
     } finally {
@@ -207,7 +225,6 @@ export default function AuthorsPage() {
                       <div className="relative group">
                         <Input
                           className="w-full"
-                          type="email"
                           name="email"
                           placeholder="ejemplo@gmail.com"
                           value={formData.email}
@@ -218,13 +235,15 @@ export default function AuthorsPage() {
                       </div>
                     </div>
                     <div className="space-y-2">
-                      <label className="text-sm font-black text-gray-500 uppercase ml-1">Contraseña</label>
+                      <label className="text-sm font-black text-gray-500 uppercase ml-1">
+                        {isEditing ? "Contraseña (opcional)" : "Contraseña"}</label>
                       <div className="relative group">
                         <Input
                           className="w-full"
                           type="password"
                           name="password"
-                          required={!isEditing} placeholder={isEditing ? "••••••••" : "Mínimo 6 caracteres"}
+                          required={!isEditing} 
+                          placeholder={isEditing ? "••••••••" : "Mínimo 6 caracteres"}
                           value={formData.password}
                           onChange={handleChange}
                           icon={Lock}

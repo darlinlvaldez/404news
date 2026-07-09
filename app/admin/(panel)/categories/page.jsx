@@ -110,9 +110,8 @@ export default function CategoriesPage () {
       setFormData((prev) => ({
         ...prev,
         slug,
-      })),
-    disabled: isEditing,
-  });
+      }))  
+    });
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
