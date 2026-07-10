@@ -266,7 +266,7 @@ export default function CategoriesPage () {
                       <td className="px-8 py-5 text-sm font-bold text-gray-500">
                         {formatDateAbsolute(cat.created_at)}
                       </td>
-                      <td className="px-8 py-5 text-right">
+                      <td className="px-8 py-6 text-right">
                         <div className="flex justify-end space-x-2">
                           <ActionButton
                             icon={Edit3}

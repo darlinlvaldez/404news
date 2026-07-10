@@ -272,34 +272,36 @@ export default function AuthorsPage() {
                           />
                       </div>
                     </div>
-                    <div className="space-y-2">
-                      <label className="text-sm font-black text-gray-500 uppercase ml-1">
-                        {isEditing ? "Contraseña (opcional)" : "Contraseña"}</label>
-                      <div className="relative group">
+                    <div className="space-y-4">
+                      <div className="space-y-2">
+                        <label className="text-sm font-black text-gray-500 uppercase ml-1">
+                          {isEditing ? "Contraseña (opcional)" : "Contraseña"}</label>
+                        <div className="relative group">
+                          <Input
+                            className="w-full"
+                            type="password"
+                            name="password"
+                            required={!isEditing} 
+                            placeholder={isEditing ? "••••••••" : "Mínimo 6 caracteres"}
+                            value={formData.password}
+                            onChange={handleChange}
+                            icon={Lock}
+                            errors={errors}
+                            />
+                        </div>
+                      </div>
+                      <div className="space-y-2">
+                        <label className="text-sm font-black text-gray-500 uppercase ml-1">Confirmar contraseña</label>
                         <Input
-                          className="w-full"
                           type="password"
-                          name="password"
-                          required={!isEditing} 
+                          name="confirmPassword"
                           placeholder={isEditing ? "••••••••" : "Mínimo 6 caracteres"}
-                          value={formData.password}
+                          value={formData.confirmPassword}
                           onChange={handleChange}
                           icon={Lock}
                           errors={errors}
-                          />
+                        />
                       </div>
-                    </div>
-                    <div className="space-y-2">
-                      <label className="text-sm font-black text-gray-500 uppercase ml-1">Confirmar contraseña </label>
-                      <Input
-                        type="password"
-                        name="confirmPassword"
-                        placeholder={isEditing ? "••••••••" : "Mínimo 6 caracteres"}
-                        value={formData.confirmPassword}
-                        onChange={handleChange}
-                        icon={Lock}
-                        errors={errors}
-                      />
                     </div>
                   </div>
                 </div>
@@ -395,11 +397,12 @@ export default function AuthorsPage() {
                 Directorio de Equipo
               </h3>
               <div className="relative group">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-600 group-focus-within:text-green-700 transition-colors" size={20} />
-                <input type="text" placeholder="Buscar por nombre, email o slug..." value={searchTerm}
+                <Input type="text" 
+                placeholder="Buscar por nombre, email o slug..." 
+                value={searchTerm}
+                icon={Search}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="bg-gray-950 border border-gray-700 rounded-2xl pl-12 pr-4 py-3 text-sm w-full md:w-96 
-                  focus:ring-2 focus:ring-green-700 outline-none transition text-white"
+                  className="w-full md:w-96 py-3 text-sm"
                 />
               </div>
             </div>
