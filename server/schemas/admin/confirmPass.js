@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { createAuthor } from "./createAuthor";
+import { createAuthor } from "./createMerge";
 
 export const confirmPass = createAuthor
   .extend({

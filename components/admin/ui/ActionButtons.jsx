@@ -26,7 +26,7 @@ export function SaveButton({
 }) {
 
   const variants = {
-    green: "bg-green-600 hover:bg-green-500",
+    green: "bg-green-700 hover:bg-green-600",
     blue: "bg-blue-600 hover:bg-blue-500",
   };
 
@@ -41,4 +41,3 @@ export function SaveButton({
     </button>
   );
 }
-

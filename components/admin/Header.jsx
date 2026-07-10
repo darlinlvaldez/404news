@@ -36,7 +36,7 @@ export const Header = ({ children, views, onSave, addNews, href, onBack }) => {
       </div>
       {addNews && (
         <Link href={href} 
-          className="bg-green-800 hover:bg-green-700 text-white px-6 py-3 rounded-2xl font-black text-xs 
+          className="bg-green-700 hover:bg-green-600 text-white px-6 py-3 rounded-2xl font-black text-xs 
           uppercase tracking-widest transition flex items-center shadow-lg shadow-emerald-900/20">
           <Plus size={18} className="mr-2" />Nueva Noticia
         </Link>

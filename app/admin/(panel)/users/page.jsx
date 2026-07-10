@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import Switch from "@/components/admin/ui/Switch";
 import Input from "@/components/admin/ui/Input"
 import Select from "@/components/admin/ui/Select"
-import {ActionButton} from "@/components/admin/ui/ActionButtons"
+import { ActionButton, SaveButton } from "@/components/admin/ui/ActionButtons"
 import { Header } from '@/components/admin/Header';
 import { Container, Th } from "@/components/admin/ui/Table";
 
@@ -171,6 +171,7 @@ const handleDelete = async (id) => {
                         placeholder="Ej. Juan Perez"
                         value={formData.name}
                         onChange={handleInputChange}
+                        errors={errors}
                         icon={User}
                       />
                     </div>
@@ -185,6 +186,7 @@ const handleDelete = async (id) => {
                           placeholder="ejemplo@gmail.com"
                           value={formData.email}
                           onChange={handleInputChange}
+                          errors={errors}
                           icon={Mail}
                         />
                     </div>
@@ -197,6 +199,7 @@ const handleDelete = async (id) => {
                         placeholder="Selecciona un rol"
                         value={formData.role}
                         options={role}
+                        errors={errors} 
                         onChange={(value) =>
                           setFormData(prev => ({
                             ...prev, role: value,
@@ -216,6 +219,7 @@ const handleDelete = async (id) => {
                           placeholder="••••••••"
                           value={formData.password}
                           onChange={handleInputChange}
+                          errors={errors}
                           icon={Lock}
                         />
                     </div>
@@ -234,12 +238,14 @@ const handleDelete = async (id) => {
                   </div>
                 </div>
 
-                <div className="flex justify-end pt-4 border-t border-gray-800">
-                  <button type="submit" className={`px-10 py-4 rounded-2xl font-bold flex cursor-pointer items-center transition shadow-lg 
-                  ${isEditing ? 'bg-blue-600 hover:bg-blue-500 shadow-orange-900/20' : 'bg-green-700 hover:bg-green-600 shadow-green-900/20'}`}
+                <div className="flex justify-end pt-4">
+                  <SaveButton
+                    type="submit"
+                    icon={Save}
+                    variant={isEditing ? "blue" : "green"}
                   >
-                    <Save size={18} className="mr-2" /> {isEditing ? 'Confirmar Cambios' : 'Registrar Usuario'}
-                  </button>
+                    {isEditing ? "Actualizar" : "Guardar"}
+                  </SaveButton>
                 </div>
               </form>
             </section>
@@ -252,16 +258,13 @@ const handleDelete = async (id) => {
                 </h3>
 
                 <div className="relative group">
-                  <Search
-                    className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-600 group-focus-within:text-green-700 transition-colors"
-                    size={20}
-                  />
-                  <input
+                  <Input
                     type="text"
                     placeholder="Buscar por usuario o email..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="bg-gray-950 border border-gray-700 rounded-2xl pl-12 pr-4 py-3 text-sm w-full md:w-96 focus:ring-2 focus:ring-green-700 outline-none transition text-white"
+                    className=" w-full md:w-96"
+                    icon={Search}
                   />
                 </div>
               </div>

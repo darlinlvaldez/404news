@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import authorsController from "../../../../server/controllers/admin/authors";
 import { requireAuth } from "../../../../server/utils/auth";
 import { handleError } from "../../../../server/errors/handleError";
-import { createAuthor } from "../../../../server/schemas/admin/createAuthor";
+import { createAuthor } from "../../../../server/schemas/admin/createMerge";
 
 export async function GET(request) {
   try {

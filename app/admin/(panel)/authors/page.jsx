@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Switch from "@/components/admin/ui/Switch";
 import Input from "@/components/admin/ui/Input"
-import {ActionButton} from "@/components/admin/ui/ActionButtons"
+import { ActionButton, SaveButton } from "@/components/admin/ui/ActionButtons"
 import { Header } from '@/components/admin/Header';
 import { Container, Th } from "@/components/admin/ui/Table";
 import { useFormErrors } from '@/server/hooks/useFormErrors';
@@ -372,19 +372,13 @@ export default function AuthorsPage() {
                 </div>
 
                 <div className="flex justify-end pt-4">
-                  <button type="submit" disabled={isLoading}
-                    className={`px-10 py-4 rounded-2xl font-black text-xs uppercase tracking-[0.2em] flex items-center transition shadow-2xl active:scale-95 disabled:opacity-50 
-                      ${isEditing ? 'bg-blue-600 hover:bg-blue-500 shadow-blue-900/20 text-white' : 'bg-green-800 hover:bg-emerald-700 shadow-emerald-900/20 text-white'}`}
+                  <SaveButton
+                    type="submit"
+                    icon={Save}
+                    variant={isEditing ? "blue" : "green"}
                   >
-                    {isLoading ? (
-                      <div className="w-5 h-5 border-2 border-white/20 border-t-white rounded-full animate-spin"></div>
-                    ) : (
-                      <>
-                        <Save size={20} className="mr-3" /> 
-                        {isEditing ? 'Actualizar' : 'Guardar'}
-                      </>
-                    )}
-                  </button>
+                    {isEditing ? "Actualizar" : "Guardar"}
+                  </SaveButton>
                 </div>
               </form>
             </div>
