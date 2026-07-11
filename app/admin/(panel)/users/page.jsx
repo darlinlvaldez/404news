@@ -7,9 +7,9 @@ import Select from "@/components/admin/ui/Select"
 import { ActionButton, SaveButton } from "@/components/admin/ui/ActionButtons"
 import { Header } from '@/components/admin/Header';
 import { Container, Th } from "@/components/admin/ui/Table";
-import { useFormErrors } from '@/server/hooks/useFormErrors';
-import { confirmCreateUser } from "@/server/schemas/admin/confirmCreatePass";
-import { confirmUpdateUser } from "@/server/schemas/admin/confirmUpdatePass";
+import { useFormErrors } from '@/hooks/useFormErrors';
+import { confirmCreateUser } from "@/server/schemas/admin/password/confirmCreatePass";
+import { confirmUpdateUser } from "@/server/schemas/admin/password/confirmUpdatePass";
 
 import { 
   Trash2, 
@@ -33,6 +33,7 @@ export default function UsersAccount () {
     username: '',
     email: '',
     password: '',
+    confirmPassword: '',
     role: '',
     active: 1
   };
@@ -67,10 +68,11 @@ export default function UsersAccount () {
 
   const handleEdit = (user) => {
     setFormData({
-    id: null,
+    id: user.id,
     username: user.username,
     email: user.email,
     password: '',
+    confirmPassword: '',
     role: user.role,
     active: user.active
     });
@@ -89,11 +91,12 @@ export default function UsersAccount () {
     e.preventDefault();
 
     const dataToValidate = {
-      useraname: formData.username,
+      username: formData.username,
       email: formData.email,
       password: formData.password,
       confirmPassword: formData.confirmPassword,
       active: formData.active,
+      role: formData.role,
       ...(isEditing && {
         user_id: formData.user_id
       })
@@ -153,6 +156,8 @@ export default function UsersAccount () {
 
   const handleChange = (e) => {
     handleInputChange(e);
+
+    clearField(e.target.name);
   };
 
   const handleDelete = async (id) => {
@@ -240,7 +245,6 @@ export default function UsersAccount () {
                     <div className="relative">
                       <Input
                           className="w-full"
-                          type="email"
                           name="email"
                           placeholder="ejemplo@gmail.com"
                           value={formData.email}

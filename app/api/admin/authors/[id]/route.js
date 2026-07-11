@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import authorsController from "../../../../../server/controllers/admin/authors";
 import { requireAuth } from "../../../../../server/utils/auth";
 import { handleError } from "../../../../../server/errors/handleError";
-import { updateAuthor } from "../../../../../server/schemas/admin/updateMerge";
+import { updateAuthorSchema } from "../../../../../server/schemas/admin/password/updateMerge";
 
 export async function PUT(request, context) {
   try {
@@ -11,7 +11,7 @@ export async function PUT(request, context) {
 
     const body = await request.json();
 
-    updateAuthor.parse(body);
+    updateAuthorSchema.parse(body);
 
     const result = await authorsController.update(id, body);
 

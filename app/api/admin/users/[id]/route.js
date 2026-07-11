@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import usersController from "../../../../../server/controllers/admin/users";
 import { requireAuth } from "../../../../../server/utils/auth";
 import { handleError } from "../../../../../server/errors/handleError";
-import { updateUser } from "../../../../../server/schemas/admin/updateMerge";
+import { updateUserSchema } from "../../../../../server/schemas/admin/password/updateMerge";
 
 export async function PUT(request, context) {
   try {
@@ -12,7 +12,7 @@ export async function PUT(request, context) {
 
     const body = await request.json();
 
-    updateUser.parse(body);
+    updateUserSchema.parse(body);
 
     const result = await usersController.update(Number(id), body);
     return NextResponse.json(result);

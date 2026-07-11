@@ -7,7 +7,7 @@ import {formatDateAbsolute} from "@/utils/formatDate"
 import Input from "@/components/admin/ui/Input"
 import Switch from "@/components/admin/ui/Switch";
 import { Container, Th } from "@/components/admin/ui/Table";
-import { useFormErrors } from '@/server/hooks/useFormErrors';
+import { useFormErrors } from '@/hooks/useFormErrors';
 import { useAutoSlug } from '@/utils/autoSlug';
 
 import { 

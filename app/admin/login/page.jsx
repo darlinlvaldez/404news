@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import {ErrorMessage} from '@/components/ErrorMessage';
 import {fieldClass} from '@/utils/form';
-import {useFormErrors} from '@/server/hooks/useFormErrors';
+import {useFormErrors} from '@/hooks/useFormErrors';
 import { 
   ShieldCheck, 
   Lock, 
@@ -65,6 +65,11 @@ export default function AdminLogin() {
     clearField(name);
   }
 
+  const inputStyle = `w-full bg-[#0b0f1a] rounded-xl pl-12 pr-4 py-4 text-sm transition-all 
+  focus:ring-1 focus:ring-green-800 focus:border-transparent outline-none text-white`
+
+  const iconStyle = `absolute inset-y-0 left-4 flex items-center text-slate-600 group-focus-within:text-green-800 transition-colors`
+
   return (
     <div className="min-h-screen bg-[#0b0f1a] flex items-center justify-center p-6 relative overflow-hidden font-sans">
       
@@ -74,7 +79,7 @@ export default function AdminLogin() {
       <div className="w-full max-w-[450px] relative z-10">
         
         <div className="flex flex-col items-center mb-10 group">
-          <div className="bg-emerald-600 p-4 rounded-[2rem] shadow-2xl shadow-emerald-900/40 mb-6 transition-transform group-hover:scale-110 duration-500">
+          <div className="bg-green-700 p-4 rounded-[2rem] shadow-2xl shadow-emerald-900/40 mb-6 transition-transform group-hover:scale-110 duration-500">
             <ShieldCheck size={40} className="text-white" />
           </div>
           
@@ -90,7 +95,7 @@ export default function AdminLogin() {
         </div>
 
         <div className="bg-[#161b2a] rounded-[2.5rem] border border-slate-800 p-10 shadow-2xl relative overflow-hidden">
-          <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-emerald-600 to-blue-600"></div>
+          <div className="absolute top-0 left-0 w-full h-1.5 bg-linear-to-r from-green-700 to-blue-700"></div>
           
           <div className="mb-8">
             <h2 className="text-xl font-bold text-white mb-2">Bienvenido</h2>
@@ -101,7 +106,7 @@ export default function AdminLogin() {
             <div className="space-y-2">
               <label className="text-xs font-black text-slate-500 uppercase ml-1 tracking-widest">Nombre de usuario</label>
               <div className="relative group">
-                <div className="absolute inset-y-0 left-4 flex items-center text-slate-600 group-focus-within:text-emerald-500 transition-colors">
+                <div className={iconStyle}>
                   <User size={18} />
                 </div>
                 <input 
@@ -110,8 +115,7 @@ export default function AdminLogin() {
                   name="username"
                   value={formData.username}
                   onChange={handleChange}
-                  className={fieldClass(errors.username, 
-                  "w-full bg-[#0b0f1a] rounded-2xl pl-12 pr-4 py-4 text-sm transition-all text-white")}           
+                  className={fieldClass(errors.username, inputStyle)}           
                 />
               </div>
                 <ErrorMessage
@@ -123,19 +127,18 @@ export default function AdminLogin() {
             <div className="space-y-2">
                 <label className="text-xs font-black text-slate-500 ml-1 uppercase tracking-widest">Contraseña</label>
               <div className="relative group">
-                <div className="absolute inset-y-0 left-4 flex items-center text-slate-600 group-focus-within:text-emerald-500 transition-colors">
+                <div className={iconStyle}>
                   <Lock size={18} />
                 </div>
                 <input type={showPassword ? "text" : "password"} placeholder="••••••••••••"
                   name="password"
                   value={formData.password}
                   onChange={handleChange}
-                  className={fieldClass(errors.password, 
-                  "w-full bg-[#0b0f1a] rounded-2xl pl-12 pr-4 py-4 text-sm transition-all text-white")}
+                  className={fieldClass(errors.password, inputStyle)}
                 />
                 <button 
                   type="button" onClick={() => setShowPassword(!showPassword)}
-                  className="absolute inset-y-0 right-4 flex items-center text-slate-600 hover:text-slate-400 transition-colors" >
+                  className="absolute inset-y-0 right-4 flex items-center text-slate-600 hover:text-slate-400 transition-colors cursor-pointer" >
                   {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
               </div>
@@ -157,7 +160,7 @@ export default function AdminLogin() {
             </div>
 
             <button type="submit" disabled={isLoading}
-              className="w-full bg-emerald-600 hover:bg-emerald-500 cursor-pointer disabled:bg-slate-800 text-white py-4 rounded-2xl font-black text-xs uppercase tracking-[0.2em] transition-all shadow-xl shadow-emerald-900/20 flex items-center justify-center group active:scale-[0.98]">
+              className="w-full bg-green-800 hover:bg-green-700 cursor-pointer disabled:bg-slate-800 text-white py-4 rounded-2xl font-black text-xs uppercase tracking-[0.2em] transition-all shadow-xl shadow-emerald-900/20 flex items-center justify-center group active:scale-[0.98]">
               {isLoading ? (
                 <div className="w-5 h-5 border-2 border-white/20 border-t-white rounded-full animate-spin"></div>
               ) : (
@@ -171,12 +174,12 @@ export default function AdminLogin() {
         </div>
 
         <div className="mt-8 flex justify-center items-center space-x-6">
-          <button className="flex items-center text-xs font-bold text-slate-600 hover:text-emerald-500 transition group">
+          <button className="flex items-center text-xs font-bold text-slate-600 hover:text-green-700 transition group">
             <HelpCircle size={14} className="mr-2 group-hover:rotate-12 transition-transform" />
             Soporte Técnico
           </button>
           <div className="w-1 h-1 bg-slate-800 rounded-full"></div>
-          <button className="flex items-center text-xs font-bold text-slate-600 hover:text-emerald-500 transition">
+          <button className="flex items-center text-xs font-bold text-slate-600 hover:text-green-700 transition">
             Política de Privacidad
           </button>
         </div>

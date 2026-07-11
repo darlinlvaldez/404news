@@ -6,10 +6,10 @@ import Input from "@/components/admin/ui/Input"
 import { ActionButton, SaveButton } from "@/components/admin/ui/ActionButtons"
 import { Header } from '@/components/admin/Header';
 import { Container, Th } from "@/components/admin/ui/Table";
-import { useFormErrors } from '@/server/hooks/useFormErrors';
+import { useFormErrors } from '@/hooks/useFormErrors';
 import { useAutoSlug } from '@/utils/autoSlug';
-import { confirmCreateAuthor } from "@/server/schemas/admin/confirmCreatePass";
-import { confirmUpdateAuthor } from "@/server/schemas/admin/confirmUpdatePass";
+import { confirmCreateAuthor } from "@/server/schemas/admin/password/confirmCreatePass";
+import { confirmUpdateAuthor } from "@/server/schemas/admin/password/confirmUpdatePass";
 
 import { 
   Trash2, 

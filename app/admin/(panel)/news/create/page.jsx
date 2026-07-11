@@ -7,7 +7,7 @@ import { Header } from '@/components/admin/Header';
 import { GeneralData } from '@/components/admin/news/GeneralData';
 import { ContentBlocks } from '@/components/admin/news/ContentBlocks';
 import { ActionButtons } from '@/components/admin/news/ActionButtons';
-import { useFormErrors } from '@/server/hooks/useFormErrors';
+import { useFormErrors } from '@/hooks/useFormErrors';
 
 export default function CreateNews() {
   const router = useRouter();

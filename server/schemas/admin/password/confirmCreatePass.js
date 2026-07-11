@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { createAuthor, createUser } from "./createMerge";
+import { createAuthorSchema, createUserSchema } from "../password/createMerge";
 
 function confirmCreatePassword(schema) {
   return schema
@@ -17,6 +17,6 @@ function confirmCreatePassword(schema) {
     );
 }
 
-export const confirmCreateAuthor = confirmCreatePassword(createAuthor);
+export const confirmCreateAuthor = confirmCreatePassword(createAuthorSchema);
 
-export const confirmCreateUser = confirmCreatePassword(createUser);
+export const confirmCreateUser = confirmCreatePassword(createUserSchema);

@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { updateAuthor, updateUser } from "./updateMerge";
+import { updateAuthorSchema, updateUserSchema } from "../password/updateMerge";
 
 function confirmCreatePassword(schema) {
   return schema
@@ -24,6 +24,6 @@ function confirmCreatePassword(schema) {
     );
 }
 
-export const confirmUpdateAuthor = confirmCreatePassword(updateAuthor);
+export const confirmUpdateAuthor = confirmCreatePassword(updateAuthorSchema);
 
-export const confirmUpdateUser = confirmCreatePassword(updateUser);
+export const confirmUpdateUser = confirmCreatePassword(updateUserSchema);

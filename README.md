@@ -16,8 +16,8 @@ Noticias publicadas por mes.
 
 Rango personalizado.
 
-Estructurar mejor la carpetas.
-
 Terminar los roles en las apis.
 
-Terminar de zod en users.
+isLoading para admin.
+
+ToggleSwitch para password.

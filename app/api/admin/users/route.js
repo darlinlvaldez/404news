@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import usersController from "../../../../server/controllers/admin/users";
-import { createUser } from "../../../../server/schemas/admin/createMerge";
+import { createUserSchema } from "../../../../server/schemas/admin/password/createMerge";
 
 export async function GET() {
   try {
@@ -17,7 +17,7 @@ export async function POST(request) {
   try {
   const body = await request.json();
 
-  createUser.parse(body);
+  createUserSchema.parse(body);
   
   const result = await usersController.create(body);
 
