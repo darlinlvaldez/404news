@@ -8,7 +8,7 @@ import { Header } from '@/components/admin/Header';
 import { Container, Th } from "@/components/admin/ui/Table";
 import { useFormErrors } from '@/server/hooks/useFormErrors';
 import { useAutoSlug } from '@/utils/autoSlug';
-import { confirmPass } from "@/server/schemas/admin/confirmPass";
+import { confirmCreateAuthor } from "@/server/schemas/admin/confirmCreatePass";
 import { confirmUpdateAuthor } from "@/server/schemas/admin/confirmUpdatePass";
 
 import { 
@@ -55,7 +55,7 @@ export default function AuthorsPage() {
         const data = await res.json();
         setAuthors(data);
       } catch (err) {
-        console.error("Error fetching authors:", err);
+        console.error("Error loading authors:", err);
       } finally {
         setIsLoading(false);
       }
@@ -139,7 +139,7 @@ export default function AuthorsPage() {
       })
     };
 
-    const schema = isEditing ? confirmUpdateAuthor : confirmPass;
+    const schema = isEditing ? confirmUpdateAuthor : confirmCreateAuthor;
 
     const result = schema.safeParse(dataToValidate);
 

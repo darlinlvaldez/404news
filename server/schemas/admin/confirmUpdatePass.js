@@ -1,23 +1,29 @@
 import { z } from "zod";
-import { updateAuthor } from "./updateAuthor";
+import { updateAuthor, updateUser } from "./updateMerge";
 
-export const confirmUpdateAuthor = updateAuthor
-  .extend({
-    confirmPassword: z
-      .string()
-      .optional()
-      .or(z.literal(""))
-  })
-  .refine(
-    data => {
-      if (!data.password && !data.confirmPassword) {
-        return true;
+function confirmCreatePassword(schema) {
+  return schema
+    .extend({
+      confirmPassword: z
+        .string()
+        .optional()
+        .or(z.literal("")),
+    })
+    .refine(
+      (data) => {
+        if (!data.password && !data.confirmPassword) {
+          return true;
+        }
+
+        return data.password === data.confirmPassword;
+      },
+      {
+        message: "Las contraseñas no coinciden",
+        path: ["confirmPassword"],
       }
+    );
+}
 
-      return data.password === data.confirmPassword;
-    },
-    {
-      message: "Las contraseñas no coinciden",
-      path: ["confirmPassword"],
-    }
-  );
+export const confirmUpdateAuthor = confirmCreatePassword(updateAuthor);
+
+export const confirmUpdateUser = confirmCreatePassword(updateUser);

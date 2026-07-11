@@ -7,6 +7,9 @@ import Select from "@/components/admin/ui/Select"
 import { ActionButton, SaveButton } from "@/components/admin/ui/ActionButtons"
 import { Header } from '@/components/admin/Header';
 import { Container, Th } from "@/components/admin/ui/Table";
+import { useFormErrors } from '@/server/hooks/useFormErrors';
+import { confirmCreateUser } from "@/server/schemas/admin/confirmCreatePass";
+import { confirmUpdateUser } from "@/server/schemas/admin/confirmUpdatePass";
 
 import { 
   Trash2, 
@@ -24,33 +27,35 @@ import {
 } from 'lucide-react';
 
 export default function UsersAccount () {
-  const [users, setUsers] = useState([]);
 
-  const [formData, setFormData] = useState({
+  const initialFormState = {
     id: null,
     username: '',
     email: '',
     password: '',
     role: '',
     active: 1
-  });
+  };
 
-const fetchUsers = async () => {
-  try {
-    const res = await fetch("/api/admin/users");
-    const data = await res.json();
-    setUsers(data);
-  } catch (error) {
-    console.error("Error loading users:", error);
-  }
-};
-
-useEffect(() => {
-  fetchUsers();
-}, []);
-
+  const [users, setUsers] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
+  const {errors, clearField, clearErrors, handleResponse, handleZodError} = useFormErrors();
+  const [formData, setFormData] = useState(initialFormState);
+
+  useEffect(() => {
+  const fetchUsers = async () => {
+    try {
+      const res = await fetch("/api/admin/users");
+      const data = await res.json();
+      setUsers(data);
+    } catch (error) {
+      console.error("Error loading users:", error);
+    }
+  }
+  fetchUsers();
+  }, []);
+
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -61,54 +66,108 @@ useEffect(() => {
   };
 
   const handleEdit = (user) => {
-    setFormData({ ...user, password: '' });
+    setFormData({
+    id: null,
+    username: user.username,
+    email: user.email,
+    password: '',
+    role: user.role,
+    active: user.active
+    });
+
     setIsEditing(true);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    clearErrors();
   };
 
   const handleCancel = () => {
-    setFormData({ id: null, username: '', email: '', password: '', role: 'editor', active: 1 });
+    setFormData(initialFormState);
     setIsEditing(false);
+    clearErrors();
   };
 
-const handleSave = async (e) => {
-  e.preventDefault();
+  const handleSave = async (e) => {
+    e.preventDefault();
 
-  try {
-    if (isEditing) {
-      await fetch(`/api/admin/users/${formData.id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
-    } else {
-      await fetch("/api/admin/users", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
+    const dataToValidate = {
+      useraname: formData.username,
+      email: formData.email,
+      password: formData.password,
+      confirmPassword: formData.confirmPassword,
+      active: formData.active,
+      ...(isEditing && {
+        user_id: formData.user_id
+      })
+    };
+
+    const schema = isEditing ? confirmUpdateUser : confirmCreateUser;
+
+    const result = schema.safeParse(dataToValidate);
+
+    if (!result.success) {
+      handleZodError(result.error);
+      return;
     }
 
-    await fetchUsers(); 
-    handleCancel();
-  } catch (error) {
-    console.error("Error saving user:", error);
-  }
-};
+    const payload = {
+      user_id: formData.user_id,
+      username: formData.username,
+      email: formData.email,
+      active: formData.active,
+      role: formData.role,
+      ...(formData.password && {
+        password: formData.password
+      })
+    };
 
-const handleDelete = async (id) => {
-  if (!confirm("Are you sure you want to delete this user?")) return;
+    try {
+      const method = isEditing ? "PUT" : "POST";
+      const url = isEditing 
+        ? `/api/admin/users/${formData.id}` 
+        : "/api/admin/users"
 
-  try {
-    await fetch(`/api/admin/users/${id}`, {
-      method: "DELETE",
-    });
+      const res = await fetch(url, {
+        method,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
 
-    await fetchUsers();
-  } catch (error) {
-    console.error("Error deleting user:", error);
-  }
-};
+      const data = await res.json();
+
+      if (!res.ok) {
+        console.log(data);
+        handleResponse(data);
+        return;
+      }
+      
+      const listRes = await fetch("/api/admin/users");
+      const list = await listRes.json();
+
+      setUsers(list); 
+      handleCancel();
+    } catch (error) {
+      console.error("Error saving user:", error);
+    }
+  };
+
+  const handleChange = (e) => {
+    handleInputChange(e);
+  };
+
+  const handleDelete = async (id) => {
+    if (!confirm("Are you sure you want to delete this user?")) return;
+
+    try {
+      await fetch(`/api/admin/users/${id}`, {
+        method: "DELETE",
+      });
+
+      await fetchUsers();
+    } catch (error) {
+      console.error("Error deleting user:", error);
+    }
+  };
 
   const filteredUsers = users.filter(u => 
     u.username.toLowerCase().includes(searchTerm.toLowerCase()) || 
@@ -167,10 +226,10 @@ const handleDelete = async (id) => {
                       <Input
                         className="w-full"
                         type="text"
-                        name="text"
+                        name="username"
                         placeholder="Ej. Juan Perez"
-                        value={formData.name}
-                        onChange={handleInputChange}
+                        value={formData.username}
+                        onChange={handleChange}
                         errors={errors}
                         icon={User}
                       />
@@ -185,7 +244,7 @@ const handleDelete = async (id) => {
                           name="email"
                           placeholder="ejemplo@gmail.com"
                           value={formData.email}
-                          onChange={handleInputChange}
+                          onChange={handleChange}
                           errors={errors}
                           icon={Mail}
                         />
@@ -218,13 +277,28 @@ const handleDelete = async (id) => {
                           name="password"
                           placeholder="••••••••"
                           value={formData.password}
-                          onChange={handleInputChange}
+                          onChange={handleChange}
                           errors={errors}
                           icon={Lock}
                         />
                     </div>
                   </div>
-                  <div className="flex items-end md:col-span-2">
+                  <div>
+                    <label className="block text-sm font-bold text-gray-500 uppercase mb-2 ml-1">Confirmar Contraseña</label>
+                    <div className="relative">
+                      <Input
+                          className="w-full"
+                          type="password"
+                          name="confirmPassword"
+                          placeholder="••••••••"
+                          value={formData.confirmPassword}
+                          onChange={handleChange}
+                          errors={errors}
+                          icon={Lock}
+                        />
+                    </div>
+                  </div>
+                  <div className="flex items-end md:col-span-0">
                     <div className="w-full bg-gray-900 p-3 rounded-xl border border-gray-700 flex items-center justify-between">
                       <div className="flex flex-col ml-1">
                           <span className="text-xs font-bold text-gray-300 uppercase">Estado de la cuenta</span>
