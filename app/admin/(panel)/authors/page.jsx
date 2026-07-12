@@ -221,6 +221,8 @@ export default function AuthorsPage() {
     a.email.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const labelStyles = "block text-sm font-black text-gray-500 uppercase mb-1 ml-1"
+
   return (
     <div className="h-full flex flex-col overflow-y-auto bg-gray-800 text-gray-200 font-sans">
       <Header>
@@ -259,7 +261,7 @@ export default function AuthorsPage() {
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
-                      <label className="text-sm font-black text-gray-500 uppercase ml-1">Email Profesional</label>
+                      <label className={labelStyles}>Email Profesional</label>
                       <div className="relative group">
                         <Input
                           className="w-full"
@@ -274,7 +276,7 @@ export default function AuthorsPage() {
                     </div>
                     <div className="space-y-4">
                       <div className="space-y-2">
-                        <label className="text-sm font-black text-gray-500 uppercase ml-1">
+                        <label className={labelStyles}>
                           {isEditing ? "Contraseña (opcional)" : "Contraseña"}</label>
                         <div className="relative group">
                           <Input
@@ -287,11 +289,12 @@ export default function AuthorsPage() {
                             onChange={handleChange}
                             icon={Lock}
                             errors={errors}
+                            PasswordToggle
                             />
                         </div>
                       </div>
                       <div className="space-y-2">
-                        <label className="text-sm font-black text-gray-500 uppercase ml-1">Confirmar contraseña</label>
+                        <label className={labelStyles}>Confirmar contraseña</label>
                         <Input
                           type="password"
                           name="confirmPassword"
@@ -300,6 +303,7 @@ export default function AuthorsPage() {
                           onChange={handleChange}
                           icon={Lock}
                           errors={errors}
+                          PasswordToggle
                         />
                       </div>
                     </div>
@@ -313,7 +317,7 @@ export default function AuthorsPage() {
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
-                      <label className="text-sm font-black text-gray-500 uppercase ml-1">Nombre para Mostrar</label>
+                      <label className={labelStyles}>Nombre para Mostrar</label>
                       <Input
                           className="w-full"
                           type="text"
@@ -326,7 +330,7 @@ export default function AuthorsPage() {
                         />
                     </div>
                     <div className="space-y-2">
-                      <label className="text-sm font-black text-gray-500 uppercase ml-1">Slug del Perfil</label>
+                      <label className={labelStyles}>Slug del Perfil</label>
                       <Input
                           className="w-full"
                           type="text"
@@ -338,7 +342,7 @@ export default function AuthorsPage() {
                         />
                     </div>
                     <div className="space-y-2">
-                      <label className="text-sm font-black text-gray-500 uppercase ml-1">URL Avatar / Foto</label>
+                      <label className={labelStyles}>URL Avatar / Foto</label>
                       <Input
                           className="w-full"
                           type="text"
@@ -362,7 +366,7 @@ export default function AuthorsPage() {
                     </div>
                   </div>
                   <div className="space-y-2">
-                    <label className="text-sm font-black text-gray-500 uppercase ml-1">Biografía Corta</label>
+                    <label className={labelStyles}>Biografía Corta</label>
                     <textarea name="bio" value={formData.bio} onChange={handleInputChange} rows="3"
                       className="w-full bg-gray-950 border border-gray-700 rounded-xl px-4 py-3.5 text-sm placeholder:text-gray-500
                       focus:ring-1 focus:ring-green-800 outline-none focus:border-transparent resize-none transition text-white"

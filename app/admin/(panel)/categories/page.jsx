@@ -150,6 +150,8 @@ export default function CategoriesPage () {
     c.slug.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const labelStyles = "block text-sm font-black text-gray-500 uppercase mb-1 ml-1"
+
   return (
     <div className="h-full flex flex-col bg-gray-800 text-gray-100 font-sans">
       <Header>
@@ -178,7 +180,7 @@ export default function CategoriesPage () {
 
             <form onSubmit={handleSave} className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="md:col-span-1">
-                <label className="block text-xs font-bold text-gray-400 uppercase mb-2 ml-1">Nombre de Categoría</label>
+                <label className={labelStyles}>Nombre de Categoría</label>
                 <Input name="name"
                   className="w-full"
                   value={formData.name}
@@ -189,7 +191,7 @@ export default function CategoriesPage () {
                 />
               </div>
               <div className="md:col-span-1">
-                <label className="block text-xs font-bold text-gray-400 uppercase mb-2 ml-1">URL (Slug)</label>
+                <label className={labelStyles}>URL (Slug)</label>
                 <Input name="slug"
                   className="w-full"
                   placeholder="Ej. tecnologia-tecnology"

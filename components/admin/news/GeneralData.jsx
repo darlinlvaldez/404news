@@ -16,6 +16,8 @@ export const GeneralData = ({ newsData, onInputChange, authors = [], categories 
   const styleInput = `w-full bg-gray-950 border border-gray-700 rounded-xl font-semibold 
   focus:ring-1 focus:ring-green-800 focus:border-transparent outline-none transition placeholder:text-gray-600`
 
+  const labelStyles = "block text-sm font-black text-gray-500 uppercase mb-1 ml-1"
+
   return (
     <section className="bg-gray-900 rounded-3xl border border-gray-700 p-8 shadow-2xl relative">
 
@@ -28,7 +30,7 @@ export const GeneralData = ({ newsData, onInputChange, authors = [], categories 
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div className="md:col-span-2">
-          <label className="block text-xs font-bold text-gray-500 uppercase mb-2 ml-1">
+          <label className={labelStyles}>
             Título Principal
           </label>
           <input type="text" name="title" value={newsData.title} onChange={onInputChange} 
@@ -42,7 +44,7 @@ export const GeneralData = ({ newsData, onInputChange, authors = [], categories 
 
         <div className="space-y-6">
           <div>
-            <label className="block text-xs font-bold text-gray-500 uppercase mb-2 ml-1">
+            <label className={labelStyles}>
               URL amigable (Slug)
             </label>
             <input type="text" name="slug" value={newsData.slug} onChange={onInputChange} 
@@ -54,7 +56,7 @@ export const GeneralData = ({ newsData, onInputChange, authors = [], categories 
             />   
           </div>
           <div>
-            <label className="block text-xs font-bold text-gray-500 uppercase mb-2 ml-1">
+            <label className={labelStyles}>
               Imagen de Portada (URL)
             </label>
             <div className="relative group">
@@ -72,7 +74,7 @@ export const GeneralData = ({ newsData, onInputChange, authors = [], categories 
         </div>
 
         <div>
-          <label className="block text-xs font-bold text-gray-500 uppercase mb-2 ml-1">
+          <label className={labelStyles}>
             Resumen / Excerpt
           </label>
           <textarea name="excerpt" value={newsData.excerpt} onChange={onInputChange} rows="5"
@@ -87,7 +89,7 @@ export const GeneralData = ({ newsData, onInputChange, authors = [], categories 
 
         <div className="md:col-span-2 grid grid-cols-1 sm:grid-cols-3 gap-6 pt-4 border-t border-gray-800">
           <div>
-            <label className="block text-xs font-bold text-gray-500 uppercase mb-2 ml-1">
+            <label className={labelStyles}>
               Autor
             </label>
             <Select
@@ -103,7 +105,7 @@ export const GeneralData = ({ newsData, onInputChange, authors = [], categories 
             />
           </div>
           <div>
-            <label className="block text-xs font-bold text-gray-500 uppercase mb-2 ml-1">
+            <label className={labelStyles}>
               Categoría
             </label>
             <Select
@@ -120,7 +122,7 @@ export const GeneralData = ({ newsData, onInputChange, authors = [], categories 
             />
           </div>
           <div>
-            <label className="block text-xs font-bold text-gray-500 uppercase mb-2 ml-1">
+          <label className={labelStyles}>
               Estado
             </label>
             <Select

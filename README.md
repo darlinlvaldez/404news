@@ -18,6 +18,10 @@ Rango personalizado.
 
 Terminar los roles en las apis.
 
-isLoading para admin.
+isLoading en admin.
 
-ToggleSwitch para password.
+Arreglar actulizar usuarios admin en admin.
+
+Agregar mensajes de alertas e informativos.
+
+Arreglar en el frontend los estilos de las noticias.

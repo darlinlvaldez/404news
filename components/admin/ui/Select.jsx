@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { fieldClass } from "@/utils/form";
 import { ErrorMessage } from "@/components/ErrorMessage";
 
-export default function Select({ options, value, onChange, onOpen, name, className, placeholder, errors }) {
+export default function Select({ options, value, onChange, onOpen, name, className, placeholder, errors, icon: Icon }) {
 
   const hasError = !!errors?.[name];
   const [isOpen, setIsOpen] = useState(false);
@@ -26,8 +26,11 @@ export default function Select({ options, value, onChange, onOpen, name, classNa
     };
   }, []);
 
+  const iconStyles = `absolute right-4 top-3.5 pointer-events-none transition-colors
+  ${isOpen ? "text-green-800" : "text-gray-500"}`;
+
   return (
-    <div ref={selectRef} className={`relative ${className}`}>
+    <div ref={selectRef} className={`relative group ${className}`}>
       <button
         type="button"
         onClick={() => {
@@ -49,6 +52,13 @@ export default function Select({ options, value, onChange, onOpen, name, classNa
           {selected?.label || placeholder}
         </span>
       </button>
+
+      {Icon && (
+          <Icon
+            className={iconStyles}
+            size={20}
+          />
+        )}
 
       <ErrorMessage
         errors={errors}

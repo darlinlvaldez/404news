@@ -196,6 +196,8 @@ export default function UsersAccount () {
     { value: "editor", label: "Editor" },
   ]
 
+  const labelStyles = "block text-sm font-black text-gray-500 uppercase mb-1 ml-1"
+
   return (
     <div className="h-full flex flex-col overflow-y-auto bg-gray-800 font-sans">
 
@@ -226,7 +228,7 @@ export default function UsersAccount () {
               <form onSubmit={handleSave} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   <div>
-                    <label className="block text-sm font-bold text-gray-500 uppercase mb-2 ml-1">Nombre de Usuario</label>
+                    <label className={labelStyles}>Nombre de Usuario</label>
                     <div className="relative">
                       <Input
                         className="w-full"
@@ -241,7 +243,7 @@ export default function UsersAccount () {
                     </div>
                   </div>
                   <div>
-                    <label className="block text-sm font-bold text-gray-500 uppercase mb-2 ml-1">Correo Electrónico</label>
+                    <label className={labelStyles}>Correo Electrónico</label>
                     <div className="relative">
                       <Input
                           className="w-full"
@@ -255,25 +257,23 @@ export default function UsersAccount () {
                     </div>
                   </div>
                   <div>
-                    <label className="block text-sm font-bold text-gray-500 uppercase mb-2 ml-1">Rol de Usuario</label>
+                    <label className={labelStyles}>Rol de Usuario</label>
                     <div className="relative">
                       <Select
                         className="w-full"
+                        name="role"
                         placeholder="Selecciona un rol"
                         value={formData.role}
                         options={role}
                         errors={errors} 
-                        onChange={(value) =>
-                          setFormData(prev => ({
-                            ...prev, role: value,
-                          }))
-                        }
+                        onChange={handleChange}
+                        onOpen={clearField}
+                        icon={ShieldCheck}
                       />
-                      <ShieldCheck className="absolute right-4 top-3.5 text-gray-500 pointer-events-none" size={20} />
                     </div>
                   </div>
                   <div>
-                    <label className="block text-sm font-bold text-gray-500 uppercase mb-2 ml-1">Contraseña {isEditing && '(Opcional)'}</label>
+                    <label className={labelStyles}>Contraseña {isEditing && '(Opcional)'}</label>
                     <div className="relative">
                       <Input
                           className="w-full"
@@ -284,11 +284,12 @@ export default function UsersAccount () {
                           onChange={handleChange}
                           errors={errors}
                           icon={Lock}
+                          PasswordToggle
                         />
                     </div>
                   </div>
                   <div>
-                    <label className="block text-sm font-bold text-gray-500 uppercase mb-2 ml-1">Confirmar Contraseña</label>
+                    <label className={labelStyles}>Confirmar Contraseña</label>
                     <div className="relative">
                       <Input
                           className="w-full"
@@ -299,6 +300,7 @@ export default function UsersAccount () {
                           onChange={handleChange}
                           errors={errors}
                           icon={Lock}
+                          PasswordToggle
                         />
                     </div>
                   </div>

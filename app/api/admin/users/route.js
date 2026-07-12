@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import usersController from "../../../../server/controllers/admin/users";
 import { createUserSchema } from "../../../../server/schemas/admin/password/createMerge";
+import { handleError } from "../../../../server/errors/handleError";
 
 export async function GET() {
   try {

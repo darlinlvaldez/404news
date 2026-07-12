@@ -2,22 +2,21 @@
 
 import { useState } from 'react';
 import {ErrorMessage} from '@/components/ErrorMessage';
-import {fieldClass} from '@/utils/form';
 import {useFormErrors} from '@/hooks/useFormErrors';
+import Switch from "@/components/admin/ui/Switch";
+import Input from "@/components/admin/ui/Input"
+
 import { 
   ShieldCheck, 
   Lock, 
   User, 
-  Eye, 
-  EyeOff, 
   LogIn, 
   HelpCircle 
 } from 'lucide-react';
 
 export default function AdminLogin() {
-  const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const { error, errors, clearField, handleResponse} = useFormErrors();
+  const { error, errors, clearField, handleResponse } = useFormErrors();
   const [formData, setFormData] = useState({
     username: '',
     password: ''
@@ -65,9 +64,6 @@ export default function AdminLogin() {
     clearField(name);
   }
 
-  const inputStyle = `w-full bg-[#0b0f1a] rounded-xl pl-12 pr-4 py-4 text-sm transition-all 
-  focus:ring-1 focus:ring-green-800 focus:border-transparent outline-none text-white`
-
   const iconStyle = `absolute inset-y-0 left-4 flex items-center text-slate-600 group-focus-within:text-green-800 transition-colors`
 
   return (
@@ -109,19 +105,16 @@ export default function AdminLogin() {
                 <div className={iconStyle}>
                   <User size={18} />
                 </div>
-                <input 
+                <Input 
                   type="text" 
                   placeholder="Ej. manuel"
                   name="username"
                   value={formData.username}
                   onChange={handleChange}
-                  className={fieldClass(errors.username, inputStyle)}           
+                  errors={errors}
+                  icon={User}
                 />
               </div>
-                <ErrorMessage
-                  errors={errors}
-                  name="username"
-                />
             </div>
 
             <div className="space-y-2">
@@ -130,22 +123,16 @@ export default function AdminLogin() {
                 <div className={iconStyle}>
                   <Lock size={18} />
                 </div>
-                <input type={showPassword ? "text" : "password"} placeholder="••••••••••••"
+                <Input                   
                   name="password"
+                  placeholder="******"
                   value={formData.password}
                   onChange={handleChange}
-                  className={fieldClass(errors.password, inputStyle)}
-                />
-                <button 
-                  type="button" onClick={() => setShowPassword(!showPassword)}
-                  className="absolute inset-y-0 right-4 flex items-center text-slate-600 hover:text-slate-400 transition-colors cursor-pointer" >
-                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-                </button>
-              </div>
-                <ErrorMessage
                   errors={errors}
-                  name="password"
+                  icon={Lock}
+                  PasswordToggle
                 />
+              </div>
                 <ErrorMessage error={error}/>
             </div>
 
