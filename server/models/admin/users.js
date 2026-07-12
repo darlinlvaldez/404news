@@ -39,12 +39,12 @@ users.update = async (id, data) => {
     [username, email, role, active, id]
   );
 
-  return { message: "User updated successfully" };
+  return { success: true, message: "User updated successfully" };
 };
 
 users.remove = async (id) => {
   await db.query("DELETE FROM users WHERE id = ?", [id]);
-  return { message: "User deleted successfully" };
+  return {success: true, message: "User deleted successfully"};
 };
 
 export default users;

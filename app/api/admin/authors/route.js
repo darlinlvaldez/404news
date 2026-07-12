@@ -6,7 +6,7 @@ import { createAuthorSchema } from "../../../../server/schemas/admin/password/cr
 
 export async function GET(request) {
   try {
-    await requireAuth(request, ["superadmin", "admin", "editor"]);
+    await requireAuth(request, ["superadmin", "admin"]);
 
     const result = await authorsController.getAll();
 

@@ -48,7 +48,6 @@ authorsController.update = async (id, data) => {
   const username = generateUsername(data.name);
 
   const userData = {
-    id: data.user_id,
     username,
     email: data.email,
     role: "author",

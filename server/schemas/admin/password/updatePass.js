@@ -2,7 +2,6 @@ import { z } from "zod";
 
 export const updatePass = z
   .object({
-    user_id: z.coerce.number().int().positive(),
 
     password: z
       .string()

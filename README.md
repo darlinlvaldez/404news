@@ -20,8 +20,8 @@ Terminar los roles en las apis.
 
 isLoading en admin.
 
-Arreglar actulizar usuarios admin en admin.
-
 Agregar mensajes de alertas e informativos.
 
 Arreglar en el frontend los estilos de las noticias.
+
+Cambiar en news de admin el slug por id.

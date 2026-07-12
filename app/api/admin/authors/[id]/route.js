@@ -7,6 +7,7 @@ import { updateAuthorSchema } from "../../../../../server/schemas/admin/password
 export async function PUT(request, context) {
   try {
     await requireAuth(request, ["superadmin", "admin"]);
+
     const { id } = await context.params;
 
     const body = await request.json();
@@ -24,7 +25,7 @@ export async function PUT(request, context) {
 
 export async function DELETE(request, context) {
   try {
-    await requireAuth(request, ["superadmin"]);
+    await requireAuth(request, ["superadmin", "admin"]);
     
     const { id } = await context.params;
 

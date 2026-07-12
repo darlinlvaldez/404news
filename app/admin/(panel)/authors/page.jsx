@@ -29,6 +29,7 @@ import {
 
 export default function AuthorsPage() {
   const initialFormState = {
+    id: null,
     email: '',
     password: '',
     confirmPassword: '',
@@ -101,7 +102,6 @@ export default function AuthorsPage() {
   const handleEdit = (author) => {
     setFormData({
       id: author.id,
-      user_id: author.user_id,
       email: author.email,
       password: '',
       confirmPassword: '',
@@ -134,9 +134,6 @@ export default function AuthorsPage() {
       slug: formData.slug,
       avatar: formData.avatar,
       bio: formData.bio,
-      ...(isEditing && {
-        user_id: formData.user_id
-      })
     };
 
     const schema = isEditing ? confirmUpdateAuthor : confirmCreateAuthor;
@@ -151,7 +148,6 @@ export default function AuthorsPage() {
     setIsLoading(true);
 
     const payload = {
-      user_id: formData.user_id,
       email: formData.email,
       active: formData.active,
       name: formData.name,

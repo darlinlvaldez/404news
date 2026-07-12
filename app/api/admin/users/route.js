@@ -1,13 +1,16 @@
 import { NextResponse } from "next/server";
 import usersController from "../../../../server/controllers/admin/users";
+import { requireAuth } from "../../../../server/utils/auth";
 import { createUserSchema } from "../../../../server/schemas/admin/password/createMerge";
 import { handleError } from "../../../../server/errors/handleError";
 
-export async function GET() {
+export async function GET(request) {
   try {
-  const users = await usersController.getAll();
+    await requireAuth(request, ["superadmin"]);
+      
+    const users = await usersController.getAll();
 
-  return NextResponse.json(users);
+    return NextResponse.json(users);
   } catch (error) {
     console.log(error)
     return handleError(error);
@@ -16,13 +19,15 @@ export async function GET() {
 
 export async function POST(request) {
   try {
-  const body = await request.json();
-
-  createUserSchema.parse(body);
+    await requireAuth(request, ["superadmin"]);
   
-  const result = await usersController.create(body);
+    const body = await request.json();
 
-  return NextResponse.json(result);
+    createUserSchema.parse(body);
+    
+    const result = await usersController.create(body);
+
+    return NextResponse.json(result);
   } catch (error) {
     console.log(error)
     return handleError(error);

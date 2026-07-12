@@ -97,9 +97,6 @@ export default function UsersAccount () {
       confirmPassword: formData.confirmPassword,
       active: formData.active,
       role: formData.role,
-      ...(isEditing && {
-        user_id: formData.user_id
-      })
     };
 
     const schema = isEditing ? confirmUpdateUser : confirmCreateUser;
@@ -112,7 +109,6 @@ export default function UsersAccount () {
     }
 
     const payload = {
-      user_id: formData.user_id,
       username: formData.username,
       email: formData.email,
       active: formData.active,
@@ -164,11 +160,14 @@ export default function UsersAccount () {
     if (!confirm("Are you sure you want to delete this user?")) return;
 
     try {
-      await fetch(`/api/admin/users/${id}`, {
+      const res = await fetch(`/api/admin/users/${id}`, {
         method: "DELETE",
       });
 
-      await fetchUsers();
+      if (!res.ok) return;
+
+      setUsers(prev => prev.filter(user => user.id !== id));
+
     } catch (error) {
       console.error("Error deleting user:", error);
     }
@@ -202,8 +201,8 @@ export default function UsersAccount () {
     <div className="h-full flex flex-col overflow-y-auto bg-gray-800 font-sans">
 
       <Header>
-        <Header.Title>Autores</Header.Title>
-        <Header.Subtitle>Gestion de Autores</Header.Subtitle>
+        <Header.Title>Administradores</Header.Title>
+        <Header.Subtitle>Gestion de Administradores</Header.Subtitle>
       </Header>
 
         <div className="flex-1 overflow-y-auto">

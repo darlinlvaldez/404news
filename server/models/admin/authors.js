@@ -55,6 +55,25 @@ authors.update = async (id, authorData, userData) => {
   try {
     await conn.beginTransaction();
 
+    const [[author]] = await conn.query(
+      "SELECT user_id FROM authors WHERE id = ?",
+      [id]
+    );
+
+    if (!author) {
+      throw new Error("Author not found");
+    }
+
+    if (userData.password) {
+      await conn.query(
+        "UPDATE users SET password = ? WHERE id = ?",
+        [
+          userData.password,
+          author.user_id
+        ]
+      );
+    }
+
     await conn.query(
       `UPDATE users
        SET username = ?, email = ?, role = ?, active = ?
@@ -64,16 +83,9 @@ authors.update = async (id, authorData, userData) => {
         userData.email,
         userData.role,
         userData.active,
-        userData.id
+        author.user_id
       ]
     );
-
-    if (userData.password) {
-      await conn.query(
-        "UPDATE users SET password = ? WHERE id = ?",
-        [userData.password, userData.id]
-      );
-    }
 
     const [result] = await conn.query(
       `UPDATE authors
@@ -107,7 +119,7 @@ authors.remove = async (id) => {
   if (!author) throw new Error("Author not found");
 
   await db.query("DELETE FROM users WHERE id = ?", [author.user_id]); 
-  return { deletedId: id };
+  return {success: true, message: "User deleted successfully"};
 };
 
 export default authors;
