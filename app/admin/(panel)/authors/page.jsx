@@ -392,9 +392,9 @@ export default function AuthorsPage() {
               </h3>
               <div className="relative group">
                 <Input type="text" 
-                placeholder="Buscar por nombre, email o slug..." 
-                value={searchTerm}
-                icon={Search}
+                  placeholder="Buscar por nombre, email o slug..." 
+                  value={searchTerm}
+                  icon={Search}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="w-full md:w-96 py-3 text-sm"
                 />
@@ -402,11 +402,12 @@ export default function AuthorsPage() {
             </div>
 
             <Container>
-                <thead className="bg-gray-800/40 text-gray-500 border-b border-gray-800">
+                <thead className="bg-gray-800/40 text-gray-400 border-b border-gray-800">
                   <tr>
                     <Th>Usuario & Perfil</Th>
                     <Th>Biografía</Th>
                     <Th>Privilegios</Th>
+                    <Th>Publicaciones</Th>
                     <Th>Estado</Th>
                     <Th>Acciones</Th>
                   </tr>
@@ -433,8 +434,13 @@ export default function AuthorsPage() {
                         </span>
                       </td>
                       <td className="px-8 py-6">
+                        <span className="px-3 py-1.5 text-xs font-black text-gray-400 uppercase tracking-widest">
+                          {author.news_count} noticias
+                        </span>
+                      </td>
+                      <td className="px-8 py-6">
                         {author.active === 1 ? (
-                          <div className="flex items-center text-green-500 text-xs font-bold uppercase tracking-wider">
+                          <div className="flex items-center text-green-600 text-xs font-bold uppercase tracking-wider">
                             <CheckCircle size={12} className="mr-1.5" /> Activa
                           </div>
                         ) : (
@@ -466,8 +472,8 @@ export default function AuthorsPage() {
               <tr>
                 <td colSpan="5" className="bg-gray-800/40 p-5 border-t border-gray-800">
                   <div className="flex justify-between items-center">
-                    <span className="text-sm text-gray-500 font-black uppercase tracking-[0.2em]">
-                      Total: {filteredAuthors.length} colaboradores
+                    <span className="text-sm text-gray-400 font-black uppercase tracking-[0.1em]">
+                      Total: <span className="text-green-600">{filteredAuthors.length}</span> colaboradores
                     </span>
                   </div>
                 </td>

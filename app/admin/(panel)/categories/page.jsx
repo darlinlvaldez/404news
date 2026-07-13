@@ -160,7 +160,7 @@ export default function CategoriesPage () {
       </Header> 
 
       <div className="flex-1 overflow-y-auto">
-        <div className="max-w-5xl mx-auto px-6 py-10 space-y-10">
+        <div className="max-w-6xl mx-auto px-6 py-10 space-y-10">
           <section className="bg-gray-900 rounded-4xl border border-gray-700 p-8 shadow-2xl relative overflow-hidden">
             <div className={`absolute top-0 left-0 w-full h-1.5 transition-colors duration-500 ${isEditing ? 'bg-blue-500' : 'bg-green-800'}`}></div>
             
@@ -241,6 +241,7 @@ export default function CategoriesPage () {
                   <tr>
                     <Th>ID</Th>
                     <Th>Nombre / Slug</Th>
+                    <Th>Publicaciones</Th>
                     <Th>Estado</Th>
                     <Th>Fecha Creación</Th>
                     <Th>Acciones</Th>
@@ -250,9 +251,12 @@ export default function CategoriesPage () {
                   {filteredCategories.map((cat) => (
                     <tr key={cat.id} className="hover:bg-gray-800/40 transition group">
                       <td className="px-8 py-6 text-sm font-mono text-white">#{cat.id}</td>
-                      <td className="px-8 py-5">
+                      <td className="px-8 py-4">
                         <h3 className="text-sm font-bold text-white group-hover:text-green-700">{cat.name}</h3>
                         <span className="text-xs text-gray-500 font-mono italic">{cat.slug}</span>
+                      </td>
+                      <td className="px-8 py-5 font-bold text-white">
+                        {cat.news_count} Noticias
                       </td>
                       <td className="px-8 py-5">
                         {cat.active === 1 ? (
@@ -269,7 +273,7 @@ export default function CategoriesPage () {
                         {formatDateAbsolute(cat.created_at)}
                       </td>
                       <td className="px-8 py-6 text-right">
-                        <div className="flex justify-end space-x-2">
+                        <div className="flex space-x-2">
                           <ActionButton
                             icon={Edit3}
                             title="Editar"
@@ -296,10 +300,10 @@ export default function CategoriesPage () {
                 </tbody>
               <tfoot>
                 <tr>
-                  <td colSpan="5" className="bg-gray-800/40 p-4 border-t border-gray-800">
+                  <td colSpan="5" className="bg-gray-800/40 p-5 border-t border-gray-800">
                     <div className="flex justify-between items-center">
-                      <span className="text-xs text-gray-400 font-bold pl-4 uppercase">
-                        Total: {filteredCategories.length} categorías
+                      <span className="text-sm font-black text-gray-400 pl-4 uppercase tracking-[0.1em]">
+                        Total: <span className="text-green-600">{filteredCategories.length}</span> categorías
                       </span>
                     </div>
                   </td>

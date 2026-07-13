@@ -4,9 +4,11 @@ const authors = {};
 
 authors.getAll = async () => {
   const [rows] = await db.query(
-    `SELECT a.*, u.email, u.username, u.role, u.active
-     FROM authors a
-     JOIN users u ON a.user_id = u.id`
+    `SELECT a.*, u.email, u.username, u.role, u.active, COUNT(n.id) AS news_count
+    FROM authors a
+    JOIN users u ON a.user_id = u.id
+    LEFT JOIN news n ON a.id = n.author_id
+    GROUP BY a.id;`
   );
   return rows;
 };

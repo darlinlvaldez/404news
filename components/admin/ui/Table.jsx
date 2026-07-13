@@ -1,12 +1,12 @@
 export function Container({ children }) {
   return (
-    <div className="bg-gray-900 rounded-4xl border border-gray-700 overflow-hidden shadow-2xl">
-  <div className="overflow-x-auto">
-    <table className="min-w-[1000px] w-full text-left border-collapse">
-      {children}
-    </table>
+  <div className="bg-gray-900 rounded-4xl border border-gray-700 overflow-hidden shadow-2xl">
+    <div className="overflow-x-auto">
+      <table className="min-w-250 w-full text-left border-collapse">
+        {children}
+      </table>
+    </div>
   </div>
-</div>
   );
 }
 

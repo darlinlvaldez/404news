@@ -7,6 +7,7 @@ import Select from "@/components/admin/ui/Select"
 import { ActionButton, SaveButton } from "@/components/admin/ui/ActionButtons"
 import { Header } from '@/components/admin/Header';
 import { Container, Th } from "@/components/admin/ui/Table";
+import { formatDateAbsolute } from "@/utils/formatDate"
 import { useFormErrors } from '@/hooks/useFormErrors';
 import { confirmCreateUser } from "@/server/schemas/admin/password/confirmCreatePass";
 import { confirmUpdateUser } from "@/server/schemas/admin/password/confirmUpdatePass";
@@ -183,7 +184,7 @@ export default function UsersAccount () {
       superadmin: 'bg-purple-900/30 text-purple-400 border-purple-800',
       admin: 'bg-blue-900/30 text-blue-400 border-blue-800',
       support: 'bg-orange-900/30 text-orange-400 border-orange-800',
-      editor: 'bg-green-900/30 text-green-400 border-green-800'
+      editor: 'bg-green-900/30 text-green-500 border-green-800'
     };
     return styles[role] || styles.editor;
   };
@@ -349,7 +350,7 @@ export default function UsersAccount () {
               </div>
 
               <Container>
-                  <thead className="bg-gray-800/40 text-gray-500 border-b border-gray-800">
+                  <thead className="bg-gray-800/40 text-gray-400 border-b border-gray-800">
                     <tr>
                       <Th>Usuario / ID</Th>
                       <Th>Contacto</Th>
@@ -372,8 +373,8 @@ export default function UsersAccount () {
                               <div className="text-base font-bold text-white group-hover:text-green-700 transition-colors">
                                 {user.username}
                               </div>
-                              <div className="text-sm text-gray-500 font-mono mt-1">
-                                UID: {user.id}
+                              <div className="text-sm text-gray-500 mt-1">
+                                ID #{user.id}
                               </div>
                             </div>
                           </div>
@@ -384,8 +385,8 @@ export default function UsersAccount () {
                             <Mail size={14} className="mr-2 text-gray-600" />
                             {user.email}
                           </div>
-                          <div className="text-sm text-gray-500 font-mono mt-1">
-                            Creado: {user.created_at}
+                          <div className="text-sm text-gray-500 mt-1">
+                            Creado: {formatDateAbsolute(user.created_at)}
                           </div>
                         </td>
 
@@ -412,7 +413,7 @@ export default function UsersAccount () {
                         </td>
 
                         <td className="px-8 py-6 text-right">
-                          <div className="flex justify-end space-x-2">
+                          <div className="flex space-x-2">
                             <ActionButton
                               icon={Edit3}
                               title="Editar"
@@ -442,8 +443,8 @@ export default function UsersAccount () {
                     <tr>
                       <td colSpan="5" className="bg-gray-800/40 p-5 border-t border-gray-800">
                         <div className="flex justify-between items-center">
-                          <span className="text-sm text-gray-500 font-black uppercase tracking-[0.2em]">
-                            Registros activos: {users.filter((u) => u.active).length}
+                          <span className="text-sm font-black text-gray-400 pl-4 uppercase tracking-[0.1em]">
+                            Total:<span className="text-green-600"> {users.length}</span> Administradores 
                           </span>
                         </div>
                       </td>
