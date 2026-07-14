@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useAutoSlug } from '@/utils/autoSlug';
 
-export const useNewsState = (initialNews = null, initialBlocks = null) => {
+export const UseNewsState = (initialNews = null, initialBlocks = null) => {
 
   const [newsData, setNewsData] = useState({
     title: "",

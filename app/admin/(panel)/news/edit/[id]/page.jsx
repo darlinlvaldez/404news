@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { toast } from "@/utils/toast";
-import { useNewsState } from '@/components/admin/news/useNewsState';
+import { UseNewsState } from '@/components/admin/news/UseNewsState';
 import { Header } from '@/components/admin/Header';
 import { GeneralData } from '@/components/admin/news/GeneralData';
 import { ContentBlocks } from '@/components/admin/news/ContentBlocks';
@@ -34,7 +34,7 @@ export default function EditNews() {
     updateBlock,
     moveBlock,
     setFormData
-  } = useNewsState();
+  } = UseNewsState();
 
   useEffect(() => {
     const fetchFormData = async () => {
