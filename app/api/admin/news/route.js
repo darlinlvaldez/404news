@@ -32,8 +32,6 @@ export async function POST(req) {
 
     const body = await req.json();
 
-    console.log(body.news);
-
     body.news = newsSchema.parse(body.news);
 
     const result = await newsController.create({...body, authorId: user.id});

@@ -6,7 +6,7 @@ import { updateUserSchema } from "../../../../../server/schemas/admin/password/u
 
 export async function PUT(request, context) {
   try {
-    await requireAuth(request, ["superadmin"]);
+    const currentUser = await requireAuth(request, ["superadmin"]);
 
     const { id } = await context.params;
 
@@ -14,7 +14,7 @@ export async function PUT(request, context) {
 
     updateUserSchema.parse(body);
 
-    const result = await usersController.update(Number(id), body);
+    const result = await usersController.update(Number(id), body, currentUser.id);
 
     return NextResponse.json(result);
   } catch (error) {
@@ -25,11 +25,11 @@ export async function PUT(request, context) {
 
 export async function DELETE(request, context) {
   try {
-    await requireAuth(request, ["superadmin"]);
+    const currentUser = await requireAuth(request, ["superadmin"]);
 
     const { id } = await context.params;
 
-    const result = await usersController.remove(Number(id));
+    const result = await usersController.remove(Number(id), currentUser.id);
     
     return NextResponse.json(result);
   } catch (error) {

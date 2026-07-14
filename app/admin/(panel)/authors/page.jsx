@@ -467,18 +467,27 @@ export default function AuthorsPage() {
                       </td>
                     </tr>
                   ))}
-                </tbody>
-              <tfoot>
-              <tr>
-                <td colSpan="5" className="bg-gray-800/40 p-5 border-t border-gray-800">
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-gray-400 font-black uppercase tracking-[0.1em]">
-                      Total: <span className="text-green-600">{filteredAuthors.length}</span> colaboradores
-                    </span>
-                  </div>
-                </td>
-              </tr>
-            </tfoot>
+
+                  {filteredAuthors.length === 0 && (
+                    <tr>
+                      <td colSpan="5" className="px-8 py-20 text-center text-gray-600 italic">
+                        No se han encontrado registros de usuarios autores.
+                      </td>
+                    </tr>
+                  )}
+                  </tbody>
+
+                <tfoot>
+                <tr>
+                  <td colSpan="6" className="bg-gray-800/40 p-5 border-t border-gray-800">
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-gray-400 font-black uppercase tracking-widest">
+                        Total: <span className="text-green-600">{filteredAuthors.length}</span> colaboradores
+                      </span>
+                    </div>
+                  </td>
+                </tr>
+              </tfoot>
           </Container>
         </section>
       </div>

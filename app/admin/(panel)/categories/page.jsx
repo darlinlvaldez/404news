@@ -242,8 +242,8 @@ export default function CategoriesPage () {
                     <Th>ID</Th>
                     <Th>Nombre / Slug</Th>
                     <Th>Publicaciones</Th>
+                    <Th>Fecha de Creación</Th>
                     <Th>Estado</Th>
-                    <Th>Fecha Creación</Th>
                     <Th>Acciones</Th>
                   </tr>
                 </thead>
@@ -251,13 +251,20 @@ export default function CategoriesPage () {
                   {filteredCategories.map((cat) => (
                     <tr key={cat.id} className="hover:bg-gray-800/40 transition group">
                       <td className="px-8 py-6 text-sm font-mono text-white">#{cat.id}</td>
+                      
                       <td className="px-8 py-4">
                         <h3 className="text-sm font-bold text-white group-hover:text-green-700">{cat.name}</h3>
                         <span className="text-xs text-gray-500 font-mono italic">{cat.slug}</span>
                       </td>
-                      <td className="px-8 py-5 font-bold text-white">
+                      
+                      <td className="px-8 py-5 font-bold text-sm text-gray-500">
                         {cat.news_count} Noticias
                       </td>
+
+                      <td className="px-8 py-5 text-sm font-bold text-gray-500">
+                        {formatDateAbsolute(cat.created_at)}
+                      </td>
+
                       <td className="px-8 py-5">
                         {cat.active === 1 ? (
                           <div className="flex items-center text-green-700 text-xs font-bold uppercase tracking-wider">
@@ -269,9 +276,7 @@ export default function CategoriesPage () {
                           </div>
                         )}
                       </td>
-                      <td className="px-8 py-5 text-sm font-bold text-gray-500">
-                        {formatDateAbsolute(cat.created_at)}
-                      </td>
+
                       <td className="px-8 py-6 text-right">
                         <div className="flex space-x-2">
                           <ActionButton
@@ -300,9 +305,9 @@ export default function CategoriesPage () {
                 </tbody>
               <tfoot>
                 <tr>
-                  <td colSpan="5" className="bg-gray-800/40 p-5 border-t border-gray-800">
+                  <td colSpan="6" className="bg-gray-800/40 p-5 border-t border-gray-800">
                     <div className="flex justify-between items-center">
-                      <span className="text-sm font-black text-gray-400 pl-4 uppercase tracking-[0.1em]">
+                      <span className="text-sm font-black text-gray-400 pl-4 uppercase tracking-widest">
                         Total: <span className="text-green-600">{filteredCategories.length}</span> categorías
                       </span>
                     </div>

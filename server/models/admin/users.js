@@ -2,12 +2,13 @@ import db from "@/server/lib/db";
 
 const users = {};
 
-users.getAll = async () => {
+users.getAll = async (excludeUserId) => {
   const [rows] = await db.query(
     `SELECT id, username, email, role, active, created_at 
     FROM users 
-    WHERE role != 'author' 
-    ORDER BY created_at DESC`
+    WHERE role != 'author' AND  id != ?
+    ORDER BY created_at DESC`,
+    [excludeUserId]
   );
   return rows;
 };

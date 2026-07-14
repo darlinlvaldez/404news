@@ -30,11 +30,11 @@ newsController.create = async function ({ news, blocks }) {
   };
 };
 
-newsController.update = async function ({ slug, news, blocks }) {
-  if (!slug) {
+newsController.update = async function ({ id, news, blocks }) {
+  if (!id) {
     return {
       ok: false,
-      message: "Slug requerido",
+      message: "id requerido",
     };
   }
 
@@ -45,7 +45,7 @@ newsController.update = async function ({ slug, news, blocks }) {
     };
   }
 
-  await newsModel.updateNews(slug, news, blocks);
+  await newsModel.updateNews(id, news, blocks);
 
   return {
     ok: true,
@@ -53,15 +53,15 @@ newsController.update = async function ({ slug, news, blocks }) {
   };
 };
 
-newsController.getBySlug = async function (slug) {
-  if (!slug) {
+newsController.getById = async function (id) {
+  if (!id) {
     return {
       ok: false,
       message: "ID inválido",
     };
   }
 
-  const data = await newsModel.getNewsBySlug(slug);
+  const data = await newsModel.getNewsById(id);
 
   if (!data.news) {
     return {
@@ -77,15 +77,15 @@ newsController.getBySlug = async function (slug) {
   };
 };
 
-newsController.delete = async function (slug) {
-  if (!slug) {
+newsController.delete = async function (id) {
+  if (!id) {
     return {
       ok: false,
       message: "ID requerido",
     };
   }
 
-  await newsModel.deleteNews(slug);
+  await newsModel.deleteNews(id);
 
   return {
     ok: true,

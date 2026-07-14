@@ -13,7 +13,7 @@ import { useParams } from "next/navigation";
 
 export default function EditNews() {
   const params = useParams();
-  const slug = params.slug;
+  const id = params.id;
 
   const router = useRouter();
   const [loading, setLoading] = useState(true);
@@ -56,12 +56,12 @@ export default function EditNews() {
   }, []);
 
   useEffect(() => {
-    if (!slug) return;
+    if (!id) return;
 
     const fetchNews = async () => {
       try {
 
-      const response = await fetch(`/api/admin/news/${slug}`);
+      const response = await fetch(`/api/admin/news/${id}`);
       const data = await response.json();
 
       if (data.ok) {
@@ -77,7 +77,7 @@ export default function EditNews() {
   };
 
   fetchNews();
-  }, [slug]);
+  }, [id]);
 
   
   const handleChange = (e) => {
@@ -90,13 +90,13 @@ export default function EditNews() {
   };
 
   const onSave = () => {
-    handleSave(slug, () => {
+    handleSave(id, () => {
       router.push("/admin/news");
-    });
+    }, handleResponse);
   };
 
   const onDelete = () => {
-    handleDelete(slug, () => {
+    handleDelete(id, () => {
       router.push("/admin/news");
     });
   };

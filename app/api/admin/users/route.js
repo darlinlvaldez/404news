@@ -6,9 +6,9 @@ import { handleError } from "../../../../server/errors/handleError";
 
 export async function GET(request) {
   try {
-    await requireAuth(request, ["superadmin"]);
+    const user = await requireAuth(request, ["superadmin"]);
       
-    const users = await usersController.getAll();
+    const users = await usersController.getAll(user.id);
 
     return NextResponse.json(users);
   } catch (error) {

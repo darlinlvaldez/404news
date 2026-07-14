@@ -72,7 +72,7 @@ news.createNews = async (newsData, blocks) => {
         newsData.cover_image,
         newsData.author_id,
         newsData.category_id,
-        newsData.status
+        newsData.status,
       ]
     );
 
@@ -106,14 +106,14 @@ news.createNews = async (newsData, blocks) => {
   }
 };
 
-news.updateNews = async (newsSlug, newsData, blocks) => {
+news.updateNews = async (id, newsData, blocks) => {
   const connection = await db.getConnection();
 
   try {
 
     const [news] = await connection.query(
-        `SELECT id FROM news WHERE slug = ?`,
-        [newsSlug]
+        `SELECT id FROM news WHERE id = ?`,
+        [id]
     );
 
     if (!news.length) {
@@ -133,7 +133,7 @@ news.updateNews = async (newsSlug, newsData, blocks) => {
         author_id = ?,
         category_id = ?,
         status = ?
-       WHERE slug = ?`,
+       WHERE id = ?`,
       [
         newsData.title,
         newsData.slug,
@@ -142,7 +142,7 @@ news.updateNews = async (newsSlug, newsData, blocks) => {
         newsData.author_id,
         newsData.category_id,
         newsData.status,
-        newsSlug
+        id
       ]
     );
 
@@ -179,11 +179,11 @@ news.updateNews = async (newsSlug, newsData, blocks) => {
   }
 };
 
-news.getNewsBySlug = async (slug) => {
+news.getNewsById = async (id) => {
 
   const [news] = await db.query(
-    `SELECT * FROM news WHERE Slug = ?`,
-    [slug]
+    `SELECT * FROM news WHERE id = ?`,
+    [id]
   );
 
   if (!news.length) {
@@ -205,15 +205,15 @@ news.getNewsBySlug = async (slug) => {
   };
 };
 
-news.deleteNews = async (newsSlug) => {
+news.deleteNews = async (id) => {
   const connection = await db.getConnection();
 
   try {
     await connection.beginTransaction();
 
     const [existing] = await connection.query(
-      `SELECT id FROM news WHERE slug = ?`,
-      [newsSlug]
+      `SELECT id FROM news WHERE id = ?`,
+      [id]
     );
 
     const newsId = existing[0].id;
@@ -228,8 +228,8 @@ news.deleteNews = async (newsSlug) => {
     );
 
     await connection.query(
-      `DELETE FROM news WHERE slug = ?`,
-      [newsSlug]
+      `DELETE FROM news WHERE id = ?`,
+      [id]
     );
 
     await connection.commit();

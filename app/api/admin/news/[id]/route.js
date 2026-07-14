@@ -8,9 +8,9 @@ export async function GET(req, context) {
   try {
     await requireAuth(req, ["superadmin", "admin", "editor"]);
 
-    const { slug } = await context.params;
+    const { id } = await context.params;
 
-    const result = await newsController.getBySlug(slug);
+    const result = await newsController.getById(id);
 
     return NextResponse.json(result);
 
@@ -24,15 +24,14 @@ export async function PUT(req, context) {
   try {
     await requireAuth(req, ["superadmin", "admin", "editor"]);
 
-    const { slug } = await context.params;
+    const { id } = await context.params;
+    
     const body = await req.json();
-
-    console.log(body.news);
 
     body.news = newsSchema.parse(body.news);
 
     const result = await newsController.update({
-      slug,
+      id,
       news: body.news,
       blocks: body.blocks
     });
@@ -49,9 +48,9 @@ export async function DELETE(req, context) {
   try {
     await requireAuth(req, ["superadmin", "admin"]);
 
-    const { slug } = await context.params;
+    const { id } = await context.params;
 
-    const result = await newsController.delete(slug);
+    const result = await newsController.delete(id);
 
     return NextResponse.json(result);
 

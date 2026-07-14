@@ -66,20 +66,19 @@ export default function NewsTable() {
           setTotal(data.total);
         }
       });
-
-  }, [page, statusFilter, debouncedSearch]);
+    }, [page, statusFilter, debouncedSearch]);
 
     const getStatusStyle = (status) => {
-        switch (status) {
+      switch (status) {
         case 'published': return 'text-green-700 border-green-800';
         case 'review': return 'text-amber-500 border-amber-500/20';
         case 'draft': return 'text-slate-500 border-slate-600/20';
         default: return 'text-gray-500 border-gray-500/20';
-        }
+      }
     };
 
     const getStatusIcon = (status) => {
-        switch (status) {
+      switch (status) {
         case 'published': return <CheckCircle2 size={20} className="mr-1.5" />;
         case 'review': return <Clock size={12} className="mr-1.5" />;
         case 'draft': return <FileEdit size={12} className="mr-1.5" />;
@@ -95,11 +94,11 @@ export default function NewsTable() {
     ];
     
     const getVisiblePages = () => {
-    const maxVisible = 5;
-    const start = Math.max(1, page - 2);
-    const end = Math.min(totalPages, start + maxVisible - 1);
-    return Array.from({ length: end - start + 1 }, (_, i) => start + i);
-};
+      const maxVisible = 5;
+      const start = Math.max(1, page - 2);
+      const end = Math.min(totalPages, start + maxVisible - 1);
+      return Array.from({ length: end - start + 1 }, (_, i) => start + i);
+    };
 
   return (
     <div className="h-full flex-1 flex flex-col overflow-hidden bg-gray-800 text-gray-200 font-sans">
@@ -190,7 +189,7 @@ export default function NewsTable() {
                 </td>
                 <td className="px-8 py-6 text-right">
                   <div className="flex justify-end space-x-2">
-                    <Link href={`/admin/news/edit/${item.slug}`}
+                    <Link href={`/admin/news/edit/${item.id}`}
                         className="p-3 bg-gray-800 hover:bg-blue-600 text-slate-400 hover:text-white rounded-xl transition-all shadow-lg active:scale-95 flex items-center justify-center">
                         <Edit3 size={18}/>
                     </Link>
@@ -198,6 +197,14 @@ export default function NewsTable() {
                 </td>
               </tr>
             ))}
+
+            {news.length === 0 && (
+              <tr>
+                <td colSpan="5" className="px-8 py-20 text-center text-gray-600 italic">
+                  No se han encontrado registros de usuarios.
+                </td>
+              </tr>
+            )}
           </tbody>
 
           <tfoot>
@@ -205,31 +212,31 @@ export default function NewsTable() {
               <td colSpan="6" className="border-t border-gray-800">
                   <div className="p-6 bg-gray-800/40 border-t border-gray-800 flex flex-col sm:flex-row items-center justify-between gap-4">
                   <span className="text-ls font-black text-slate-500 uppercase tracking-widest"> Mostrando <span className="text-emerald-600">{showingTo - showingFrom + 1}</span>
-                      {" "}de{" "} <span className="text-gray-300">{total}</span> noticias
+                    {" "}de{" "} <span className="text-gray-300">{total}</span> noticias
                   </span>
                   <div className="flex items-center space-x-3">
                     <button disabled={page === 1} onClick={() => setPage(prev => prev - 1)}
-                    className="p-2.5 bg-gray-800 border border-gray-700 rounded-xl cursor-pointer text-gray-400 hover:bg-gray-700 transition disabled:opacity-20 disabled:cursor-not-allowed">
+                      className="p-2.5 bg-gray-800 border border-gray-700 rounded-xl cursor-pointer text-gray-400 hover:bg-gray-700 transition disabled:opacity-20 disabled:cursor-not-allowed">
                       <ChevronLeft size={18}/>
                     </button> 
                   <div className="flex space-x-1">
-                      {getVisiblePages().map((number) => {
-                          const isActive = page === number;
+                    {getVisiblePages().map((number) => {
+                      const isActive = page === number;
 
-                          return (
-                          <button key={number} onClick={() => setPage(number)}
-                              className={`w-9 h-9 flex items-center justify-center rounded-xl text-xs font-black transition cursor-pointer
-                              ${isActive ? "bg-green-800 text-white" :  "bg-gray-800 border border-gray-700 text-gray-400 hover:bg-gray-700"}`} >
-                              {number}
-                          </button>
-                          );
-                      })}
+                      return (
+                      <button key={number} onClick={() => setPage(number)}
+                          className={`w-9 h-9 flex items-center justify-center rounded-xl text-xs font-black transition cursor-pointer
+                          ${isActive ? "bg-green-800 text-white" :  "bg-gray-800 border border-gray-700 text-gray-400 hover:bg-gray-700"}`} >
+                          {number}
+                      </button>
+                      );
+                    })}
                   </div>
 
                   <button disabled={page === totalPages} onClick={() => setPage(prev => prev + 1)} 
-                      className="p-2.5 bg-gray-800 border border-gray-700 rounded-xl text-gray-400 hover:bg-gray-700 transition cursor-pointer">
-                      <ChevronRight size={18}/>
-                    </button>
+                    className="p-2.5 bg-gray-800 border border-gray-700 rounded-xl text-gray-400 hover:bg-gray-700 transition cursor-pointer">
+                    <ChevronRight size={18}/>
+                  </button>
                   </div>
                 </div>
               </td>

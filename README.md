@@ -22,6 +22,6 @@ Agregar mensajes de alertas e informativos.
 
 Arreglar en el frontend los estilos de las noticias.
 
-Cambiar en news de admin el slug por id.
+Agregar perfil de usuario en admin.
 
-Hacer que el admin que inicio sesion tenga el boton de eliminar bloqueado.
+Agregar sistema de tickets.

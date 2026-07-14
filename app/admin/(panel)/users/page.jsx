@@ -443,7 +443,7 @@ export default function UsersAccount () {
                     <tr>
                       <td colSpan="5" className="bg-gray-800/40 p-5 border-t border-gray-800">
                         <div className="flex justify-between items-center">
-                          <span className="text-sm font-black text-gray-400 pl-4 uppercase tracking-[0.1em]">
+                          <span className="text-sm font-black text-gray-400 pl-4 uppercase tracking-widest">
                             Total:<span className="text-green-600"> {users.length}</span> Administradores 
                           </span>
                         </div>
