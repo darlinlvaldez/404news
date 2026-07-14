@@ -1,9 +1,10 @@
 "use client";
 
 import { useState, useEffect } from 'react';
+import { toast } from "@/utils/toast";
 import { Header } from '@/components/admin/Header';
-import {ActionButton, SaveButton} from "@/components/admin/ui/ActionButtons"
-import {formatDateAbsolute} from "@/utils/formatDate"
+import { ActionButton, SaveButton } from "@/components/admin/ui/ActionButtons"
+import { formatDateAbsolute } from "@/utils/formatDate"
 import Input from "@/components/admin/ui/Input"
 import Switch from "@/components/admin/ui/Switch";
 import { Container, Th } from "@/components/admin/ui/Table";
@@ -98,8 +99,11 @@ export default function CategoriesPage () {
       setCategories(list);
       handleCancel();
 
+      isEditing ? toast.updated("CATEGORÍA ACTUALIZADA") : toast.created("CATEGORÍA CREADA");
+
       } catch (err) {
-      console.error("Error saving category:", err);
+      console.error(err);
+      toast.error("No fue posible guardar la categoría.");
     }
   };
 
@@ -138,11 +142,24 @@ export default function CategoriesPage () {
   };
 
   const handleDelete = async (id) => {
-    await fetch(`/api/admin/categories/${id}`, {
-      method: "DELETE",
-    });
+    try {
 
-    setCategories(prev => prev.filter(c => c.id !== id));
+      const res = await fetch(`/api/admin/categories/${id}`, {
+        method: "DELETE",
+      });
+
+      if (!res.ok) {
+        throw new Error();
+      }
+
+      setCategories(prev => prev.filter(c => c.id !== id));
+
+      toast.deleted("CATEGORÍA ELIMINADA");
+
+    } catch (err) {
+      console.error(err);
+      toast.error("No fue posible guardar la categoría");
+    }
   };
 
   const filteredCategories = categories.filter(c => 
@@ -222,8 +239,8 @@ export default function CategoriesPage () {
 
           <section className="space-y-6">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-              <h3 className="text-xl font-bold flex items-center">
-                <Search size={20} className="mr-3 text-gray-500" />
+              <h3 className="text-xl font-bold flex items-center text-gray-200">
+                <Folder size={20} className="mr-3 text-gray-500" />
                 Listado de Categorías
               </h3>
               <div className="relative w-80">
@@ -250,18 +267,18 @@ export default function CategoriesPage () {
                 <tbody className="divide-y divide-gray-800">
                   {filteredCategories.map((cat) => (
                     <tr key={cat.id} className="hover:bg-gray-800/40 transition group">
-                      <td className="px-8 py-6 text-sm font-mono text-white">#{cat.id}</td>
+                      <td className="px-8 py-6 text-sm font-mono text-gray-200">#{cat.id}</td>
                       
                       <td className="px-8 py-4">
-                        <h3 className="text-sm font-bold text-white group-hover:text-green-700">{cat.name}</h3>
-                        <span className="text-xs text-gray-500 font-mono italic">{cat.slug}</span>
+                        <h3 className="text-sm font-bold text-gray-200 group-hover:text-green-700">{cat.name}</h3>
+                        <span className="text-xs text-gray-200 font-mono italic">{cat.slug}</span>
                       </td>
                       
-                      <td className="px-8 py-5 font-bold text-sm text-gray-500">
+                      <td className="px-8 py-5 font-bold text-sm ">
                         {cat.news_count} Noticias
                       </td>
 
-                      <td className="px-8 py-5 text-sm font-bold text-gray-500">
+                      <td className="px-8 py-5 text-sm font-bold text-gray-200">
                         {formatDateAbsolute(cat.created_at)}
                       </td>
 

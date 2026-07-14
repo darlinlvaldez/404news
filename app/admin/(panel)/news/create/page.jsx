@@ -2,7 +2,8 @@
 
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from "react";
-import { useNewsForm } from '@/components/admin/news/UseNewsForm';
+import { toast } from "@/utils/toast";
+import { useNewsState } from '@/components/admin/news/useNewsState';
 import { Header } from '@/components/admin/Header';
 import { GeneralData } from '@/components/admin/news/GeneralData';
 import { ContentBlocks } from '@/components/admin/news/ContentBlocks';
@@ -25,30 +26,37 @@ export default function CreateNews() {
     removeBlock,
     updateBlock,
     moveBlock,
-  } = useNewsForm();
+  } = useNewsState();
 
-  const onSave = async () => {
-    const payload = {
-      news: newsData,
-      blocks
-    };
+  const handleSave = async () => {
+    try {
+      const payload = {
+        news: newsData,
+        blocks,
+      };
 
-    const res = await fetch("/api/admin/news", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(payload)
-    });
+      const res = await fetch("/api/admin/news", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
 
-    const data = await res.json();
+      const data = await res.json();
 
-    if (res.ok) {
+      if (!res.ok) {
+        handleResponse(data);
+        return;
+      }
+
+      toast.created("NOTICIA CREADA");
       router.push("/admin/news");
-      return;
-    }
 
-    handleResponse(data);
+    } catch (error) {
+      console.error(error);
+      toast.error("OCURRIÓ UN ERROR INESPERADO");
+    }
   };
 
   const handleChange = (e) => {
@@ -82,7 +90,7 @@ export default function CreateNews() {
 
   return (
     <div className="flex-1 overflow-y-auto bg-gray-800">
-      <Header onSave={onSave} onBack={onBack}>
+      <Header onSave={handleSave} onBack={onBack}>
         <Header.Title>Noticia</Header.Title>
         <Header.Subtitle>Crear Nueva Noticia </Header.Subtitle>
       </Header>
@@ -107,7 +115,7 @@ export default function CreateNews() {
 
         <section className="pt-12 border-t border-gray-700">
           <ActionButtons 
-            onSave={onSave}
+            onSave={handleSave}
             blocksCount={blocks.length}
           />
         </section>

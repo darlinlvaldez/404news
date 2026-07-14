@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useAutoSlug } from '@/utils/autoSlug';
 
-export const useNewsForm = (initialNews = null, initialBlocks = null) => {
+export const useNewsState = (initialNews = null, initialBlocks = null) => {
 
   const [newsData, setNewsData] = useState({
     title: "",
@@ -111,69 +111,6 @@ export const useNewsForm = (initialNews = null, initialBlocks = null) => {
     }
   };
 
-  const handleSave = async (id, onSuccess, handleResponse) => {
-  try {
-
-    const payload = {
-      news: {
-        title: newsData.title,
-        slug: newsData.slug,
-        excerpt: newsData.excerpt,
-        cover_image: newsData.cover_image,
-        author_id: newsData.author_id,
-        category_id: newsData.category_id,
-        status: newsData.status,
-      },
-      blocks,
-    };
-
-    const response = await fetch(`/api/admin/news/${id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(payload),
-    });
-
-    const data = await response.json();
-
-
-    if (!response.ok) {
-      handleResponse(data);
-      return;
-    }
-
-
-    if (onSuccess) onSuccess();
-
-  } catch (error) {
-    console.error(error);
-  }
-};
-
-  const handleDelete = async (id, onDelete) => {
-  try {
-    const response = await fetch(`/api/admin/news/${id}`, {
-      method: "DELETE",
-    });
-
-    const data = await response.json();
-
-    if (!data.ok) {
-      alert(data.message);
-      return;
-    }
-
-    if (onDelete) onDelete();
-
-  } catch (error) {
-    console.error(error);
-    alert("Error eliminando noticia");
-  }
-
-  setShowDeleteConfirm(false);
-};
-
   return {
     newsData,
     blocks,
@@ -184,8 +121,6 @@ export const useNewsForm = (initialNews = null, initialBlocks = null) => {
     removeBlock,
     updateBlock,
     moveBlock,
-    handleSave,
-    handleDelete,
     setFormData,
   };
 };

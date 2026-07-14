@@ -21,6 +21,7 @@
     "react-dom": "19.2.3",
     "recharts": "^3.9.1",
     "redis": "^5.10.0",
+    "sileo": "^0.1.5",
     "zod": "^4.4.3"
   },
   "devDependencies": {

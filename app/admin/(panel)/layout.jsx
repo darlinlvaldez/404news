@@ -1,5 +1,6 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { Toaster } from "sileo";
 import { verifyToken } from "@/server/utils/jwt";
 import SideBar from "@/components/admin/SideBar";
 
@@ -21,6 +22,21 @@ export default async function AdminLayout({ children }) {
 
   return (
     <div className="h-screen flex overflow-hidden bg-gray-900 text-gray-100">
+
+      <Toaster
+        position="top-right"
+        theme="dark"
+        options={{
+          fill: "#030712",
+          roundness: 12,
+          styles: {
+            title: "text-white!",
+            description: "text-gray-400!",
+            badge: "bg-white/10!",
+            button: "bg-white/10! hover:bg-white/20!",
+          },
+        }}
+      />
 
       <aside className="w-64 bg-green-800 hidden md:flex flex-col shadow-xl overflow-y-auto">
         <SideBar user={user} />

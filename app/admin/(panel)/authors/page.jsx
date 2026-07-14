@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from 'react';
+import { toast } from "@/utils/toast";
 import Switch from "@/components/admin/ui/Switch";
 import Input from "@/components/admin/ui/Input"
 import { ActionButton, SaveButton } from "@/components/admin/ui/ActionButtons"
@@ -186,16 +187,18 @@ export default function AuthorsPage() {
 
       setAuthors(list);
       handleCancel();
+    
+      isEditing ? toast.updated("AUTOR ACTUALIZADO") : toast.created("AUTOR CREADO");
+
     } catch (err) {
       console.error("Error saving author:", err);
+      toast.error("NO FUE POSIBLE GUARDAR EL AUTOR.");
     } finally {
       setIsLoading(false);
     }
   };
 
   const handleDelete = async (id) => {
-    if (!confirm("¿Seguro que quieres eliminar este autor?")) return;
-
     setIsLoading(true);
     try {
       const res = await fetch(`/api/admin/authors/${id}`, {
@@ -207,6 +210,7 @@ export default function AuthorsPage() {
       );
     } catch (err) {
       console.error("Error deleting author:", err);
+      toast.error("NO FUE POSIBLE GUARDAR EL AUTOR");
     } finally {
       setIsLoading(false);
     }

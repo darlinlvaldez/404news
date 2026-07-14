@@ -23,82 +23,90 @@ import {
 } from 'lucide-react';
 
 export default function NewsTable() {
-    const [news, setNews] = useState([]);
-    const [total, setTotal] = useState(0);
-    const [page, setPage] = useState(1);
-    const [search, setSearch] = useState("");
-    
-    const searchParams = useSearchParams();
+  const [news, setNews] = useState([]);
+  const [total, setTotal] = useState(0);
+  const [page, setPage] = useState(1);
+  const [search, setSearch] = useState("");
+  
+  const searchParams = useSearchParams();
 
-    const initialStatus = searchParams.get("status") ?? "";
+  const initialStatus = searchParams.get("status") ?? "";
 
-    const [statusFilter, setStatusFilter] = useState(initialStatus);
+  const [statusFilter, setStatusFilter] = useState(initialStatus);
 
-    const limit = 50;
-    const totalPages = Math.ceil(total / limit);
-    const showingFrom = (page - 1) * limit + 1;
-    const showingTo = Math.min(page * limit, total);
+  const limit = 50;
+  const totalPages = Math.ceil(total / limit);
+  const showingFrom = (page - 1) * limit + 1;
+  const showingTo = Math.min(page * limit, total);
 
-    const [debouncedSearch, setDebouncedSearch] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
 
-    useEffect(() => {
-      const delay = setTimeout(() => {
-        setDebouncedSearch(search);
-      }, 400);
+  useEffect(() => {
+    const delay = setTimeout(() => {
+      setDebouncedSearch(search);
+    }, 400);
 
-      return () => clearTimeout(delay);
-    }, [search]);
+    return () => clearTimeout(delay);
+  }, [search]);
 
-    useEffect(() => {
+  useEffect(() => {
 
-    const offset = (page - 1) * limit;
+  const offset = (page - 1) * limit;
 
-    const params = new URLSearchParams({ limit, offset });
+  const params = new URLSearchParams({ limit, offset });
 
-    if (statusFilter) {params.append("status", statusFilter)}
-    if (debouncedSearch) params.append("search", debouncedSearch);
+  if (statusFilter) {params.append("status", statusFilter)}
+  if (debouncedSearch) params.append("search", debouncedSearch);
 
-    fetch(`/api/admin/news?${params.toString()}`)
-      .then(res => res.json())
-      .then(data => {
-        if (data.ok) {
-          setNews(data.news);
-          setTotal(data.total);
-        }
-      });
-    }, [page, statusFilter, debouncedSearch]);
-
-    const getStatusStyle = (status) => {
-      switch (status) {
-        case 'published': return 'text-green-700 border-green-800';
-        case 'review': return 'text-amber-500 border-amber-500/20';
-        case 'draft': return 'text-slate-500 border-slate-600/20';
-        default: return 'text-gray-500 border-gray-500/20';
+  fetch(`/api/admin/news?${params.toString()}`)
+    .then(res => res.json())
+    .then(data => {
+      if (data.ok) {
+        setNews(data.news);
+        setTotal(data.total);
       }
-    };
+    });
+  }, [page, statusFilter, debouncedSearch]);
 
-    const getStatusIcon = (status) => {
-      switch (status) {
-        case 'published': return <CheckCircle2 size={20} className="mr-1.5" />;
-        case 'review': return <Clock size={12} className="mr-1.5" />;
-        case 'draft': return <FileEdit size={12} className="mr-1.5" />;
-        default: return null;
-        }
-    };
+  const getStatusStyle = (status) => {
+    switch (status) {
+      case 'published': return 'text-green-700 border-green-800';
+      case 'review': return 'text-amber-500 border-amber-500/20';
+      case 'draft': return 'text-slate-500 border-slate-600';
+      default: return 'text-gray-500 border-gray-500/20';
+    }
+  };
 
-    const statusOptions = [
-      { value: "", label: "Todos los estados" },
-      { value: "published", label: "Publicado" },
-      { value: "review", label: "En revisión" },
-      { value: "draft", label: "Borrador" },
-    ];
-    
-    const getVisiblePages = () => {
-      const maxVisible = 5;
-      const start = Math.max(1, page - 2);
-      const end = Math.min(totalPages, start + maxVisible - 1);
-      return Array.from({ length: end - start + 1 }, (_, i) => start + i);
-    };
+  const getStatusIcon = (status) => {
+    switch (status) {
+      case 'published': return <CheckCircle2 size={20} className="mr-1.5" />;
+      case 'review': return <Clock size={12} className="mr-1.5" />;
+      case 'draft': return <FileEdit size={12} className="mr-1.5" />;
+      default: return null;
+      }
+  };
+
+  const statusOptions = [
+    { value: "", label: "Todos los estados" },
+    { value: "published", label: "Publicado" },
+    { value: "review", label: "En revisión" },
+    { value: "draft", label: "Borrador" },
+  ];
+
+  const statusLabels = Object.fromEntries(
+  statusOptions
+    .filter(option => option.value)
+    .map(option => [option.value, option.label])
+  );
+
+  console.log(statusLabels)
+  
+  const getVisiblePages = () => {
+    const maxVisible = 5;
+    const start = Math.max(1, page - 2);
+    const end = Math.min(totalPages, start + maxVisible - 1);
+    return Array.from({ length: end - start + 1 }, (_, i) => start + i);
+  };
 
   return (
     <div className="h-full flex-1 flex flex-col overflow-hidden bg-gray-800 text-gray-200 font-sans">
@@ -177,7 +185,7 @@ export default function NewsTable() {
                 </td>
                 <td className="px-8 py-6">
                   <span className={`inline-flex items-center px-3 py-1.5 rounded-xl text-xs font-black uppercase tracking-widest border 
-                    ${getStatusStyle(item.status)}`}> {getStatusIcon(item.status)} {item.status}
+                    ${getStatusStyle(item.status)}`}> {getStatusIcon(item.status)} {statusLabels[item.status] ?? item.status}
                   </span>
                 </td>
                 <td className="px-8 py-6 text-sm">

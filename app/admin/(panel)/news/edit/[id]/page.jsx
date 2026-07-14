@@ -2,7 +2,8 @@
 
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
-import { useNewsForm } from '@/components/admin/news/UseNewsForm';
+import { toast } from "@/utils/toast";
+import { useNewsState } from '@/components/admin/news/useNewsState';
 import { Header } from '@/components/admin/Header';
 import { GeneralData } from '@/components/admin/news/GeneralData';
 import { ContentBlocks } from '@/components/admin/news/ContentBlocks';
@@ -32,10 +33,8 @@ export default function EditNews() {
     removeBlock,
     updateBlock,
     moveBlock,
-    handleDelete,
-    handleSave,
     setFormData
-  } = useNewsForm();
+  } = useNewsState();
 
   useEffect(() => {
     const fetchFormData = async () => {
@@ -89,16 +88,67 @@ export default function EditNews() {
     }
   };
 
-  const onSave = () => {
-    handleSave(id, () => {
+  const handleSave = async () => {
+    try {
+      const payload = {
+        news: {
+          title: newsData.title,
+          slug: newsData.slug,
+          excerpt: newsData.excerpt,
+          cover_image: newsData.cover_image,
+          author_id: newsData.author_id,
+          category_id: newsData.category_id,
+          status: newsData.status,
+        },
+        blocks,
+      };
+
+      const response = await fetch(`/api/admin/news/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        handleResponse(data);
+        return;
+      }
+
+      toast.updated("NOTICIA ACTUALIZADA");
       router.push("/admin/news");
-    }, handleResponse);
+
+    } catch (error) {
+      console.error(error);
+      toast.error("Ocurrió un error inesperado.");
+    }
   };
 
-  const onDelete = () => {
-    handleDelete(id, () => {
+  const handleDelete = async () => {
+    try {
+      const response = await fetch(`/api/admin/news/${id}`, {
+        method: "DELETE",
+      });
+
+      const data = await response.json();
+
+      if (!data.ok) {
+        alert(data.message);
+        return;
+      }
+
+      toast.created("NOTICIA ELIMINADA");
       router.push("/admin/news");
-    });
+
+    } catch (error) {
+      console.error(error);
+      toast.error("OCURRIÓ UN ERROR INESPERADO");
+    }
+
+    setShowDeleteConfirm(false);
   };
 
   const onBack = () => {
@@ -117,7 +167,7 @@ export default function EditNews() {
     <div className="flex-1 bg-gray-800 overflow-y-auto">
       <Header
         views={newsData.views}
-        onSave={onSave}
+        onSave={handleSave}
         onBack={onBack}
         >
         <Header.Title>Noticia</Header.Title>
@@ -146,8 +196,8 @@ export default function EditNews() {
           <ActionButtons 
             showDeleteConfirm={showDeleteConfirm}
             onSetShowDeleteConfirm={setShowDeleteConfirm}
-            onSave={onSave}
-            onDelete={onDelete}
+            onSave={handleSave}
+            onDelete={handleDelete}
             blocksCount={blocks.length}
           />
         </section>

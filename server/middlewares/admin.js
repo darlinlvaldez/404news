@@ -3,12 +3,23 @@ import { NextResponse } from "next/server";
 
 export async function admin(req) {
   const { pathname } = req.nextUrl;
+  const token = req.cookies.get("admin_token")?.value;
 
   if (pathname === "/admin/login") {
-    return NextResponse.next();
-  }
+    
+    if (!token) {
+      return NextResponse.next();
+    }
 
-  const token = req.cookies.get("admin_token")?.value;
+    try {
+      await verifyToken(token);
+
+      return NextResponse.redirect( new URL("/admin/dashboard", req.url));
+
+    } catch {
+      return NextResponse.next();
+    }
+  }
 
   if (!token) {
     return NextResponse.redirect(new URL("/admin/login", req.url));

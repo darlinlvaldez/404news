@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from 'react';
+import { toast } from "@/utils/toast";
 import Switch from "@/components/admin/ui/Switch";
 import Input from "@/components/admin/ui/Input"
 import Select from "@/components/admin/ui/Select"
@@ -146,8 +147,12 @@ export default function UsersAccount () {
 
       setUsers(list); 
       handleCancel();
+
+      isEditing ? toast.updated("USUARIO ACTUALIZADO") : toast.created("USUARIO CREADO");
+
     } catch (error) {
       console.error("Error saving user:", error);
+      toast.error("NO FUE POSIBLE GUARDAR EL USUARIO.");
     }
   };
 
@@ -158,8 +163,6 @@ export default function UsersAccount () {
   };
 
   const handleDelete = async (id) => {
-    if (!confirm("Are you sure you want to delete this user?")) return;
-
     try {
       const res = await fetch(`/api/admin/users/${id}`, {
         method: "DELETE",
@@ -169,8 +172,11 @@ export default function UsersAccount () {
 
       setUsers(prev => prev.filter(user => user.id !== id));
 
+      toast.deleted("USUARIO ELIMINADO");
+
     } catch (error) {
       console.error("Error deleting user:", error);
+      toast.error("NO FUE POSIBLE GUARDAR EL USUARIO");
     }
   };
 
@@ -400,7 +406,7 @@ export default function UsersAccount () {
 
                         <td className="px-8 py-6">
                           {user.active === 1 ? (
-                            <div className="flex items-center text-green-500 text-xs font-bold uppercase tracking-wider">
+                            <div className="flex items-center text-green-600 text-xs font-bold uppercase tracking-wider">
                               <CheckCircle size={12} className="mr-1.5" />
                               Activo
                             </div>
