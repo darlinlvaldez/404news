@@ -7,6 +7,7 @@ import { ActionButton, SaveButton } from "@/components/admin/ui/ActionButtons"
 import { formatDateAbsolute } from "@/utils/formatDate"
 import Input from "@/components/admin/ui/Input"
 import Switch from "@/components/admin/ui/Switch";
+import ConfirmModal from '@/components/admin/ui/ConfirmModal';
 import { Container, Th } from "@/components/admin/ui/Table";
 import { useFormErrors } from '@/hooks/useFormErrors';
 import { useAutoSlug } from '@/utils/autoSlug';
@@ -32,11 +33,10 @@ export default function CategoriesPage () {
 
   const [categories, setCategories] = useState([]);
   const {errors, clearField, handleResponse} = useFormErrors();
-
   const [formData, setFormData] = useState(initialFormData);
-
   const [isEditing, setIsEditing] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
+  const [categoryToDelete, setCategoryToDelete] = useState(null);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -306,7 +306,7 @@ export default function CategoriesPage () {
                             icon={Trash2}
                             title="Eliminar"
                             hoverColor="hover:bg-red-600"
-                            onClick={() => handleDelete(cat.id)}
+                            onClick={() => setCategoryToDelete(cat)}
                           />
                         </div>
                       </td>
@@ -335,6 +335,18 @@ export default function CategoriesPage () {
           </section>
         </div>
       </div>
+
+      <ConfirmModal
+          open={!!categoryToDelete}
+          title="¿Eliminar categoría?"
+          description={`¿Deseas eliminar la categoría"${categoryToDelete?.name}"?`}
+          confirmText="Eliminar"
+          onCancel={() => setCategoryToDelete(null)}
+          onConfirm={() => {
+            handleDelete(categoryToDelete.id);
+            setCategoryToDelete(null);
+          }}
+      />
     </div>
   );
 };

@@ -5,6 +5,7 @@ import { toast } from "@/utils/toast";
 import Switch from "@/components/admin/ui/Switch";
 import Input from "@/components/admin/ui/Input"
 import Select from "@/components/admin/ui/Select"
+import ConfirmModal from '@/components/admin/ui/ConfirmModal';
 import { ActionButton, SaveButton } from "@/components/admin/ui/ActionButtons"
 import { Header } from '@/components/admin/Header';
 import { Container, Th } from "@/components/admin/ui/Table";
@@ -45,6 +46,7 @@ export default function UsersAccount () {
   const [searchTerm, setSearchTerm] = useState('');
   const {errors, clearField, clearErrors, handleResponse, handleZodError} = useFormErrors();
   const [formData, setFormData] = useState(initialFormState);
+  const [userToDelete, setUserToDelete] = useState(null);
 
   useEffect(() => {
   const fetchUsers = async () => {
@@ -430,7 +432,7 @@ export default function UsersAccount () {
                               icon={Trash2}
                               title="Eliminar"
                               hoverColor="hover:bg-red-600"
-                              onClick={() => handleDelete(user.id)}
+                              onClick={() => setUserToDelete(user)}
                             />
                           </div>
                         </td>
@@ -460,6 +462,17 @@ export default function UsersAccount () {
             </section>
           </div>
       </div>
+      <ConfirmModal
+        open={!!userToDelete}
+        title="¿Eliminar Usuario?"
+        description={`¿Deseas eliminar el usuario" ${userToDelete?.username}"?`}
+        confirmText="Eliminar"
+        onCancel={() => setUserToDelete(null)}
+        onConfirm={() => {
+          handleDelete(userToDelete.id);
+          setUserToDelete(null);
+        }}
+      />
     </div>
   );
 };

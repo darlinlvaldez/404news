@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
+import { useParams } from "next/navigation";
 import { toast } from "@/utils/toast";
 import { UseNewsState } from '@/components/admin/news/UseNewsState';
 import { Header } from '@/components/admin/Header';
@@ -9,8 +10,7 @@ import { GeneralData } from '@/components/admin/news/GeneralData';
 import { ContentBlocks } from '@/components/admin/news/ContentBlocks';
 import { ActionButtons } from '@/components/admin/news/ActionButtons';
 import { useFormErrors } from '@/hooks/useFormErrors';
-
-import { useParams } from "next/navigation";
+import ConfirmModal from '@/components/admin/ui/ConfirmModal';
 
 export default function EditNews() {
   const params = useParams();
@@ -197,11 +197,19 @@ export default function EditNews() {
             showDeleteConfirm={showDeleteConfirm}
             onSetShowDeleteConfirm={setShowDeleteConfirm}
             onSave={handleSave}
-            onDelete={handleDelete}
+            onDelete={() => setShowDeleteConfirm(true)}
             blocksCount={blocks.length}
           />
         </section>
       </div>
+      <ConfirmModal
+        open={showDeleteConfirm}
+        title="¿Eliminar noticia?"
+        description={`Esta acción es irreversible. Se eliminará el registro principal y los bloques asociados.`}
+        confirmText="Eliminar"
+        onConfirm={handleDelete}
+        onCancel={() => setShowDeleteConfirm(false)}
+      />
     </div>
   );
 }

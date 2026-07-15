@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { toast } from "@/utils/toast";
 import Switch from "@/components/admin/ui/Switch";
 import Input from "@/components/admin/ui/Input"
+import ConfirmModal from '@/components/admin/ui/ConfirmModal';
 import { ActionButton, SaveButton } from "@/components/admin/ui/ActionButtons"
 import { Header } from '@/components/admin/Header';
 import { Container, Th } from "@/components/admin/ui/Table";
@@ -48,6 +49,7 @@ export default function AuthorsPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const {errors, clearField, clearErrors, handleResponse, handleZodError} = useFormErrors();
+  const [authorToDelete, setAuthorToDelete] = useState(null);
 
   useEffect(() => {
     const fetchAuthors = async () => {
@@ -205,9 +207,11 @@ export default function AuthorsPage() {
         method: "DELETE",
       });
       const result = await res.json();
-      setAuthors(prev =>
-        prev.filter(a => a.id !== Number(result.deletedId))
-      );
+
+      console.log(result);
+      
+      setAuthors(prev => prev.filter(a => a.id !== result.deletedId));
+
     } catch (err) {
       console.error("Error deleting author:", err);
       toast.error("NO FUE POSIBLE GUARDAR EL AUTOR");
@@ -465,7 +469,7 @@ export default function AuthorsPage() {
                             icon={Trash2}
                             title="Eliminar"
                             hoverColor="hover:bg-red-600"
-                            onClick={() => handleDelete(author.id)}
+                            onClick={() => setAuthorToDelete(author)}
                           />
                         </div>
                       </td>
@@ -496,6 +500,17 @@ export default function AuthorsPage() {
         </section>
       </div>
     </div>
+    <ConfirmModal
+      open={!!authorToDelete}
+      title="¿Eliminar autor?"
+      description={`¿Deseas eliminar el autor "${authorToDelete?.name}"?`}
+      confirmText="Eliminar"
+      onCancel={() => setAuthorToDelete(null)}
+      onConfirm={() => {
+        handleDelete(authorToDelete.id);
+        setAuthorToDelete(null);
+      }}
+    />
   </div>
   );
 }
