@@ -18,8 +18,6 @@ Rango personalizado.
 
 isLoading en admin.
 
-Agregar mensajes de alertas e informativos.
-
 Arreglar en el frontend los estilos de las noticias.
 
 Agregar perfil de usuario en admin.

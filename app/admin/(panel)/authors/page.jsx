@@ -208,10 +208,15 @@ export default function AuthorsPage() {
       });
       const result = await res.json();
 
-      console.log(result);
+      if (!res.ok) {
+        toast.error(result.message);
+        return;
+      }
       
-      setAuthors(prev => prev.filter(a => a.id !== result.deletedId));
+      setAuthors(prev => prev.filter(a => a.id !== id));
 
+      toast.deleted("AUTOR ELIMINADO");
+      
     } catch (err) {
       console.error("Error deleting author:", err);
       toast.error("NO FUE POSIBLE GUARDAR EL AUTOR");

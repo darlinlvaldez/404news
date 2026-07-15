@@ -337,15 +337,15 @@ export default function CategoriesPage () {
       </div>
 
       <ConfirmModal
-          open={!!categoryToDelete}
-          title="¿Eliminar categoría?"
-          description={`¿Deseas eliminar la categoría"${categoryToDelete?.name}"?`}
-          confirmText="Eliminar"
-          onCancel={() => setCategoryToDelete(null)}
-          onConfirm={() => {
-            handleDelete(categoryToDelete.id);
-            setCategoryToDelete(null);
-          }}
+        open={!!categoryToDelete}
+        title="¿Eliminar categoría?"
+        description={`¿Deseas eliminar la categoría"${categoryToDelete?.name}"?`}
+        confirmText="Eliminar"
+        onCancel={() => setCategoryToDelete(null)}
+        onConfirm={() => {
+          handleDelete(categoryToDelete.id);
+          setCategoryToDelete(null);
+        }}
       />
     </div>
   );

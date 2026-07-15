@@ -2,7 +2,7 @@ import db from "@/server/lib/db";
 
 export async function findByUsername(username) {
   const [rows] = await db.query(
-    "SELECT * FROM users WHERE username = ? AND role IN ('superadmin', 'admin', 'editor', 'support') LIMIT 1",
+    "SELECT * FROM users WHERE username = ? AND role IN ('superadmin', 'admin', 'editor', 'support', 'author') LIMIT 1",
     [username]
   );
 
