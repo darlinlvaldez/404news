@@ -22,8 +22,8 @@ import {
   FileEdit,
 } from 'lucide-react';
 
-export default function NewsTable() {
-  const [news, setNews] = useState([]);
+export default function TicketsPage() {
+  const [ticket, setTicket] = useState([]);
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
@@ -58,39 +58,41 @@ export default function NewsTable() {
   if (statusFilter) {params.append("status", statusFilter)}
   if (debouncedSearch) params.append("search", debouncedSearch);
 
-  fetch(`/api/admin/news?${params.toString()}`)
+  fetch(`/api/admin/tickets?${params.toString()}`)
     .then(res => res.json())
     .then(data => {
-      if (data.ok) {
-        setNews(data.news);
+
+        setTicket(data.rows);
         setTotal(data.total);
-      }
     });
   }, [page, statusFilter, debouncedSearch]);
 
   const getStatusStyle = (status) => {
     switch (status) {
-      case 'published': return 'text-green-700 border-green-800';
-      case 'review': return 'text-amber-500 border-amber-500/20';
-      case 'draft': return 'text-slate-500 border-slate-600';
+      case 'closed': return 'text-green-700 border-green-800';
+      case 'in_progress': return 'text-amber-500 border-amber-500/20';
+      case 'open': return 'text-slate-500 border-slate-600';
+      case 'waiting_response': return 'text-slate-500 border-slate-600';
       default: return 'text-gray-500 border-gray-500/20';
     }
   };
 
   const getStatusIcon = (status) => {
     switch (status) {
-      case 'published': return <CheckCircle2 size={20} className="mr-1.5" />;
-      case 'review': return <Clock size={12} className="mr-1.5" />;
-      case 'draft': return <FileEdit size={12} className="mr-1.5" />;
+      case 'closed': return <CheckCircle2 size={20} className="mr-1.5" />;
+      case 'in_progress': return <Clock size={12} className="mr-1.5" />;
+      case 'open': return <FileEdit size={12} className="mr-1.5" />;
+      case 'waiting_response': return <FileEdit size={12} className="mr-1.5" />;
       default: return null;
-      }
+    }
   };
 
   const statusOptions = [
     { value: "", label: "Todos los estados" },
-    { value: "published", label: "Publicado" },
-    { value: "review", label: "En revisión" },
-    { value: "draft", label: "Borrador" },
+    { value: "closed", label: "Cerrado" },
+    { value: "in_progress", label: "En progreso" },
+    { value: "open", label: "Abierto" },
+    { value: "waiting_response", label: "Esperando respuesta" },
   ];
 
   const statusLabels = Object.fromEntries(
@@ -98,8 +100,6 @@ export default function NewsTable() {
     .filter(option => option.value)
     .map(option => [option.value, option.label])
   );
-
-  console.log(statusLabels)
   
   const getVisiblePages = () => {
     const maxVisible = 5;
@@ -155,18 +155,28 @@ export default function NewsTable() {
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-800">
-            {news.map((item) => (
-              <tr
-                key={item.id}
+            {ticket.map((item) => (
+              <tr key={item.id}
                 className="hover:bg-slate-800/40 transition-all group"
               >
                 <td className="px-8 py-5">
                   <div className="max-w-xs md:max-w-sm">
                     <div className="flex items-center space-x-2 text-xs py-0.5 font-mono text-gray-500">
-                      <span>ID: #{item.id}</span>
+                      <span>#{item.id}</span>
                     </div>
+                  </div>
+                </td>
+                <td className="px-8 py-5">
+                  <div className="max-w-xs md:max-w-sm">
                     <p className="text-sm font-bold text-white group-hover:text-green-700 transition truncate mb-1">
                       {item.type}
+                    </p>
+                  </div>
+                </td>
+                <td className="px-8 py-5">
+                  <div className="max-w-xs md:max-w-sm">
+                    <p className="text-sm font-bold text-white group-hover:text-green-700 transition truncate mb-1">
+                      {item.subject}
                     </p>
                   </div>
                 </td>
@@ -209,20 +219,20 @@ export default function NewsTable() {
                 <td className="px-8 py-6 text-right">
                   <div className="flex justify-end space-x-2">
                     <Link
-                      href={`/admin/news/edit/${item.id}`}
-                      className="p-3 bg-gray-800 hover:bg-blue-600 text-slate-400 hover:text-white rounded-xl transition-all shadow-lg active:scale-95 flex items-center justify-center"
+                      href={`/admin/ticket/ticket-details/${item.id}`}
+                      className="p-3 bg-gray-800 hover:bg-green-600 text-slate-400 hover:text-white rounded-xl transition-all shadow-lg active:scale-95 flex items-center justify-center"
                     >
-                      <Edit3 size={18} />
+                      <Eye size={18} />Ver
                     </Link>
                   </div>
                 </td>
               </tr>
             ))}
 
-            {news.length === 0 && (
+            {ticket.length === 0 && (
               <tr>
                 <td
-                  colSpan="5"
+                  colSpan="8"
                   className="px-8 py-20 text-center text-gray-600 italic"
                 >
                   No se han encontrado registros de usuarios.
@@ -233,7 +243,7 @@ export default function NewsTable() {
 
           <tfoot>
             <tr>
-              <td colSpan="6" className="border-t border-gray-800">
+              <td colSpan="8" className="border-t border-gray-800">
                 <div className="p-6 bg-gray-800/40 border-t border-gray-800 flex flex-col sm:flex-row items-center justify-between gap-4">
                   <span className="text-ls font-black text-slate-500 uppercase tracking-widest">
                     {" "}

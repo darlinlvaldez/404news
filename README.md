@@ -23,3 +23,5 @@ Arreglar en el frontend los estilos de las noticias.
 Agregar perfil de usuario en admin.
 
 Agregar sistema de tickets.
+
+Validar campos en controller.
