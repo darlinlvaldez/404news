@@ -8,19 +8,15 @@ import Select from "@/components/admin/ui/Select"
 import Input from "@/components/admin/ui/Input"
 import { Header } from '@/components/admin/Header';
 import { Container, Th } from "@/components/admin/ui/Table";
+import { getStatusStyle, getStatusIcon, getPriorityStyle, getPriorityIcon} from "@/utils/ticketConfig";
 
-import { 
-  Search, 
-  Edit3, 
-  Eye, 
-  Calendar, 
-  Tag, 
-  ChevronLeft, 
-  ChevronRight, 
-  CheckCircle2,
-  Clock,
-  FileEdit,
-} from 'lucide-react';
+import {
+  Search,
+  Eye,
+  ChevronLeft,
+  ChevronRight,
+  Mail,
+} from "lucide-react";
 
 export default function TicketsPage() {
   const [ticket, setTicket] = useState([]);
@@ -33,6 +29,7 @@ export default function TicketsPage() {
   const initialStatus = searchParams.get("status") ?? "";
 
   const [statusFilter, setStatusFilter] = useState(initialStatus);
+  const [priorityFilter, setPriorityFilter] = useState("");
 
   const limit = 50;
   const totalPages = Math.ceil(total / limit);
@@ -56,6 +53,7 @@ export default function TicketsPage() {
   const params = new URLSearchParams({ limit, offset });
 
   if (statusFilter) {params.append("status", statusFilter)}
+  if (priorityFilter) {params.append("priority", priorityFilter)}
   if (debouncedSearch) params.append("search", debouncedSearch);
 
   fetch(`/api/admin/tickets?${params.toString()}`)
@@ -65,27 +63,7 @@ export default function TicketsPage() {
         setTicket(data.rows);
         setTotal(data.total);
     });
-  }, [page, statusFilter, debouncedSearch]);
-
-  const getStatusStyle = (status) => {
-    switch (status) {
-      case 'closed': return 'text-green-700 border-green-800';
-      case 'in_progress': return 'text-amber-500 border-amber-500/20';
-      case 'open': return 'text-slate-500 border-slate-600';
-      case 'waiting_response': return 'text-slate-500 border-slate-600';
-      default: return 'text-gray-500 border-gray-500/20';
-    }
-  };
-
-  const getStatusIcon = (status) => {
-    switch (status) {
-      case 'closed': return <CheckCircle2 size={20} className="mr-1.5" />;
-      case 'in_progress': return <Clock size={12} className="mr-1.5" />;
-      case 'open': return <FileEdit size={12} className="mr-1.5" />;
-      case 'waiting_response': return <FileEdit size={12} className="mr-1.5" />;
-      default: return null;
-    }
-  };
+  }, [page, statusFilter, priorityFilter, debouncedSearch]);
 
   const statusOptions = [
     { value: "", label: "Todos los estados" },
@@ -95,11 +73,22 @@ export default function TicketsPage() {
     { value: "waiting_response", label: "Esperando respuesta" },
   ];
 
-  const statusLabels = Object.fromEntries(
-  statusOptions
-    .filter(option => option.value)
-    .map(option => [option.value, option.label])
+  const priorityOptions = [
+    { value: "", label: "Todas las prioridades" },
+    { value: "high", label: "Alta" },
+    { value: "medium", label: "Media" },
+    { value: "low", label: "Baja" },
+  ];
+  
+  const createLabels = (options) =>
+  Object.fromEntries(
+    options
+      .filter(option => option.value)
+      .map(option => [option.value, option.label])
   );
+
+  const statusLabels = createLabels(statusOptions);
+  const priorityLabels = createLabels(priorityOptions);
   
   const getVisiblePages = () => {
     const maxVisible = 5;
@@ -110,13 +99,13 @@ export default function TicketsPage() {
 
   return (
     <div className="h-full flex-1 flex flex-col overflow-hidden bg-gray-800 text-gray-200 font-sans">
-      <Header addNews href="/admin/news/create">
-        <Header.Title>Noticias</Header.Title>
-        <Header.Subtitle>Gestión de Noticas</Header.Subtitle>
+      <Header>
+        <Header.Title>Tickets</Header.Title>
+        <Header.Subtitle>Administración y seguimiento de solicitudes</Header.Subtitle>
       </Header>
 
       <section className="flex-1 overflow-y-auto p-8 space-y-6">
-        <div className="bg-gray-900 p-5 rounded-4xl border border-gray-700 flex flex-wrap gap-4 items-center justify-between shadow-xl">
+        <div className="bg-gray-900 p-5 rounded-4xl border border-gray-700 flex flex-wrap items-center justify-between shadow-xl">
           <div className="relative w-full md:w-96">
             <Input
               className="w-full md:w-96"
@@ -125,20 +114,32 @@ export default function TicketsPage() {
                 setSearch(e.target.value);
                 setPage(1);
               }}
-              placeholder="Buscar por título o ID..."
+              placeholder="Buscar por ID, asunto, remitente o email..."
               icon={Search}
             />
           </div>
 
-          <Select
-            className="w-full md:w-56"
-            options={statusOptions}
-            value={statusFilter}
-            onChange={(value) => {
-              setStatusFilter(value);
-              setPage(1);
-            }}
-          />
+          <div className="flex flex-wrap gap-4 items-center justify-end mt-4 ">
+            <Select
+              className="w-full md:w-56"
+              options={statusOptions}
+              value={statusFilter}
+              onChange={(value) => {
+                setStatusFilter(value);
+                setPage(1);
+              }}
+            />
+
+            <Select
+              className="w-full md:w-56"
+              options={priorityOptions}
+              value={priorityFilter}
+              onChange={(value) => {
+                setPriorityFilter(value);
+                setPage(1);
+              }}
+            />
+          </div>
         </div>
 
         <Container>
@@ -174,14 +175,14 @@ export default function TicketsPage() {
                   </div>
                 </td>
                 <td className="px-8 py-5">
-                  <div className="max-w-xs md:max-w-sm">
-                    <p className="text-sm font-bold text-white group-hover:text-green-700 transition truncate mb-1">
+                  <div className="max-w-xs md:max-w-50">
+                    <p className="text-sm font-bold text-white transition truncate mb-1">
                       {item.subject}
                     </p>
                   </div>
                 </td>
-                <td className="px-8 py-6">
-                  <div className="flex items-center text-sm text-gray-300">
+                <td className="px-8 py-5">
+                  <div className="flex items-center text-base text-gray-300">
                     <div className="w-7 h-7 rounded-lg bg-gray-800 flex items-center justify-center mr-3 border border-gray-700 text-xs font-bold">
                       {item.name
                         .split(" ")
@@ -191,8 +192,11 @@ export default function TicketsPage() {
                     </div>
                     {item.name}
                   </div>
+                  <div className="flex items-center gap-1 text-xs text-gray-500 font-mono mt-1"> 
+                    <Mail size={18}/> <span>{item.email}</span>
+                  </div>
                 </td>
-                <td className="px-8 py-6">
+                <td className="px-8 py-5">
                   <span
                     className={`inline-flex items-center px-3 py-1.5 rounded-xl text-xs font-black uppercase tracking-widest border 
                     ${getStatusStyle(item.status)}`}
@@ -203,26 +207,24 @@ export default function TicketsPage() {
                   </span>
                 </td>
 
-                <td className="px-8 py-6">
+                <td className="px-8 py-5">
                   <span
-                    className={`inline-flex items-center px-3 py-1.5 rounded-xl text-xs font-black uppercase tracking-widest border 
-                    ${getStatusStyle(item.priority)}`}
+                    className={`inline-flex items-center px-3 py-1.5 rounded-xl text-xs font-black uppercase tracking-widest border
+                      ${getPriorityStyle(item.priority)}`}
                   >
-                    {" "}
-                    {getStatusIcon(item.priority)}{" "}
-                    {statusLabels[item.priority] ?? item.priority}
+                    {getPriorityIcon(item.priority)}
+                    {priorityLabels[item.priority] ?? item.priority}
                   </span>
                 </td>
                 <td className="px-8 py-5 text-sm font-bold text-gray-200">
                     {formatDateAbsolute(item.created_at)}
                 </td>
-                <td className="px-8 py-6 text-right">
-                  <div className="flex justify-end space-x-2">
+                <td className="px-8 py-5 text-right">
+                  <div className="flex space-x-2">
                     <Link
                       href={`/admin/ticket/ticket-details/${item.id}`}
                       className="p-3 bg-gray-800 hover:bg-green-600 text-slate-400 hover:text-white rounded-xl transition-all shadow-lg active:scale-95 flex items-center justify-center"
-                    >
-                      <Eye size={18} />Ver
+                    ><Eye size={18} />Ver
                     </Link>
                   </div>
                 </td>

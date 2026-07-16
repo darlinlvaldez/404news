@@ -7,6 +7,7 @@ ticketsController.ticketsTable = async ({
   offset = 0,
   search = "",
   status = "",
+  priority = "",
   type = "",
 }) => {
   return await tickets.getAll(
@@ -14,6 +15,7 @@ ticketsController.ticketsTable = async ({
     offset,
     search,
     status,
+    priority,
     type
   );
 };

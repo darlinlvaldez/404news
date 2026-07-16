@@ -13,6 +13,7 @@ export async function GET(request) {
     const offset = searchParams.get("offset") || 0;
     const search = searchParams.get("search") || "";
     const status = searchParams.get("status") || "";
+    const priority = searchParams.get("priority") || "";
     const type = searchParams.get("type") || "";
 
     const result = await ticketsController.ticketsTable({
@@ -20,6 +21,7 @@ export async function GET(request) {
       offset,
       search,
       status,
+      priority,
       type,
     });
 

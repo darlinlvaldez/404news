@@ -7,6 +7,7 @@ tickets.getAll = async function (
   offset = 0,
   search = "",
   status = "",
+  priority = "",
   type = ""
 ) {
   let baseQuery = `
@@ -38,6 +39,11 @@ tickets.getAll = async function (
   if (status) {
     baseQuery += ` AND t.status = ?`;
     params.push(status);
+  }
+
+  if (priority) {
+    baseQuery += ` AND t.priority = ?`;
+    params.push(priority);
   }
 
   if (type) {
