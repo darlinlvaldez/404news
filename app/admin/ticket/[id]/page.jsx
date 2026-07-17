@@ -2,8 +2,8 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-
 import { Header } from '@/components/admin/Header';
+import { getStatusStyle, getStatusIcon, getPriorityStyle, getPriorityIcon } from '@/utils/ticketConfig';
 
 import { 
   Send, 
