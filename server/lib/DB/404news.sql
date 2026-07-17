@@ -1,6 +1,6 @@
 /*
 SQLyog Community v13.3.1 (64 bit)
-MySQL - 8.0.44 : Database - 404news
+MySQL - 9.4.0 : Database - 404news
 *********************************************************************
 */
 
@@ -23,7 +23,7 @@ DROP TABLE IF EXISTS `authors`;
 CREATE TABLE `authors` (
   `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `bio` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `bio` varchar(500) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `slug` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `avatar` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `user_id` int NOT NULL,
@@ -83,7 +83,7 @@ CREATE TABLE `country_stats` (
   KEY `idx_country_stats_date` (`created_at`),
   KEY `idx_country_stats_news_country` (`news_id`,`country_code`),
   CONSTRAINT `country_stats_ibfk_1` FOREIGN KEY (`news_id`) REFERENCES `news` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=354 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=356 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `country_stats` */
 
@@ -352,7 +352,9 @@ insert  into `country_stats`(`id`,`news_id`,`country_code`,`country_name`,`views
 (350,19,'US','United States',1,'2026-07-12 22:31:29'),
 (351,50,'US','United States',1,'2026-07-13 01:36:41'),
 (352,75,'DO','Dominican Republic',1,'2026-07-15 05:20:59'),
-(353,75,'US','United States',7,'2026-07-15 05:21:05');
+(353,75,'US','United States',7,'2026-07-15 05:21:05'),
+(354,79,'US','United States',1,'2026-07-16 21:41:23'),
+(355,19,'US','United States',1,'2026-07-17 08:37:16');
 
 /*Table structure for table `news` */
 
@@ -401,7 +403,7 @@ insert  into `news`(`id`,`title`,`slug`,`excerpt`,`cover_image`,`author_id`,`cat
 (16,'Nothing Phone (3) con pantalla holográfica retroiluminada','nothing-phone-3-pantalla-holografica','Interfaz Glyph Interface evoluciona con efectos de luz 3D y notificaciones contextuales','https://i.blogs.es/2a45d5/nothing3/450_1000.jpeg',2,2,'published','2026-01-19 13:40:00','2026-07-07 05:05:09',4),
 (17,'Visual Studio Code integra Copilot Chat de forma nativa','vscode-copilot-chat-nativo','Microsoft fusiona su IDE con herramientas de IA para desarrollo asistido','https://blog.underc0de.org/wp-content/uploads/2026/01/Sin-titulo-5.png',3,3,'published','2026-01-18 10:25:00','2026-07-07 04:35:09',3),
 (18,'Kubernetes 1.30 simplifica la gestión de clusters con IA','kubernetes-1-30-gestion-ia','Nueva versión incluye operadores auto-curativos y optimización automática de recursos','https://www.muylinux.com/wp-content/uploads/2023/10/Kubernetes.png',3,3,'published','2026-01-17 15:10:00','2026-07-07 17:35:09',4),
-(19,'Linux 6.10 mejora soporte para hardware ARM y RISC-V','linux-6-10-soporte-arm-riscv','Kernel actualizado optimiza rendimiento en procesadores de arquitectura alternativa','https://blog.underc0de.org/wp-content/uploads/2024/07/R.jpg',3,3,'published','2026-01-16 12:05:00','2026-07-12 23:01:29',5),
+(19,'Linux 6.10 mejora soporte para hardware ARM y RISC-V','linux-6-10-soporte-arm-riscv','Kernel actualizado optimiza rendimiento en procesadores de arquitectura alternativa','https://blog.underc0de.org/wp-content/uploads/2024/07/R.jpg',3,3,'published','2026-01-16 12:05:00','2026-07-17 09:07:15',6),
 (20,'AMD Ryzen 9000: hasta 24 núcleos y frecuencia de 6GHz','amd-ryzen-9000-24-nucleos','Nueva arquitectura Zen 5 ofrece mejora del 35% en rendimiento single-thread','https://www.amd.com/content/dam/amd/en/images/products/processors/ryzen/2613900-ryzen-9-9950x.jpg',4,4,'published','2026-02-14 12:20:49','2026-07-08 17:23:35',11),
 (21,'Apple MacBook Pro M4 con Neural Engine de 50 TOPS','macbook-pro-m4-neural-engine','Chip M4 incluye acelerador de IA dedicado para aplicaciones de machine learning','https://www.digitaltrends.com/tachyon/2024/11/macbook-pro-m4-pro-01.jpg?resize=1200%2C720',4,4,'published','2026-01-14 08:20:00','2026-07-07 04:35:09',4),
 (22,'Framework Laptop 16: modularidad extrema con GPU intercambiable','framework-laptop-16-gpu-intercambiable','Portátil completamente modular permite actualizar CPU, GPU y puertos individualmente','https://i.blogs.es/f37bd3/nuevo-framework-laptop-16-1/840_560.jpeg',4,4,'published','2026-02-14 12:20:53','2026-07-01 08:33:34',12),
@@ -458,7 +460,7 @@ insert  into `news`(`id`,`title`,`slug`,`excerpt`,`cover_image`,`author_id`,`cat
 (76,'Apple corrige vulnerabilidad zero-day CVE-2026-20700 explotada en ataques sofisticados','apple-corrige-zero-day-cve-2026-20700','iOS 26.3, macOS Tahoe 26.3 y visionOS 26.3 incluyen parche para fallo en enlazador dinámico descubierto por Google TAG','https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSbWYfD6d-c2Nee6NO4OcwuHakHLwVe80HSmA&s',3,3,'published','2026-02-12 08:15:00','2026-07-07 20:26:30',5),
 (77,'Google cancela inesperadamente lanzamiento de Android 17 Beta 1 sin explicación oficial','google-cancela-android-17-beta-1','La compañía pospone la primera beta de su nuevo sistema operativo generando especulaciones sobre problemas internos','https://andro4all.com/hero/2025/10/android-17-permitira-usar-apps-en-pantalla-completa-dentro-del-modo-always-on-display.jpg?width=1200',3,3,'published','2026-02-12 10:30:00','2026-07-03 01:21:55',6),
 (78,'Descubren primer complemento malicioso de Outlook que roba más de 4.000 credenciales','outlook-complemento-malicioso-robo-credenciales','Ataque \"AgreeToSteal\" aprovecha vulnerabilidad en proceso de revisión de Microsoft Store para comprometer usuarios','https://web-assets.esetstatic.com/tn/-x700/wls/2025/02-25/spear-phishing-voicemail/spear-phishing-ataque-voicemail-hero.jpeg',3,3,'published','2026-02-12 11:45:00','2026-07-02 23:51:55',3),
-(79,'Botnet SSHStalker ataca sistemas Linux con exploits de kernel de 2009','botnet-sshstalker-linux-exploits-antiguos','Malware utiliza IRC como canal de comando y control para comprometer servidores no actualizados desde hace 15 años','https://i0.wp.com/unaaldia.hispasec.com/wp-content/uploads/2022/01/programming-code-abstract-technology-background-of-software-developer-and-computer-script.jpg?fit=6000%2C4000&ssl=1',4,3,'published','2026-02-12 12:20:00','2026-07-12 09:08:01',6),
+(79,'Botnet SSHStalker ataca sistemas Linux con exploits de kernel de 2009','botnet-sshstalker-linux-exploits-antiguos','Malware utiliza IRC como canal de comando y control para comprometer servidores no actualizados desde hace 15 años','https://i0.wp.com/unaaldia.hispasec.com/wp-content/uploads/2022/01/programming-code-abstract-technology-background-of-software-developer-and-computer-script.jpg?fit=6000%2C4000&ssl=1',4,3,'published','2026-02-12 12:20:00','2026-07-16 22:11:22',7),
 (81,'Kubernetes 1.30 mejora eficiencia en programación de recursos en 40%','kubernetes-1-30-eficiencia-programacion-recursos','Nueva versión optimiza cargas de trabajo en la nube y consolida GitOps como estándar con ArgoCD','https://www.sredevops.org/content/images/size/w900/format/webp/2024/03/1688281768383.png',3,3,'published','2026-02-03 12:45:00','2026-07-07 07:05:09',2),
 (82,'Meta prepara reconocimiento facial \"Name Tag\" para gafas Ray-Ban','meta-name-tag-reconocimiento-facial-ray-ban','Función permitiría identificar personas en la calle mediante IA, aprovechando clima político en EE.UU. para minimizar críticas','https://ecosistemastartup.com/wp-content/uploads/2026/02/meta-reconocimiento-facial-gafas-inteligentes-scaled.jpg',2,2,'published','2026-02-15 08:30:00','2026-07-06 20:52:22',3),
 (83,'Elon Musk anuncia plan para construir fábrica de satélites de IA en la Luna','elon-musk-fabrica-satelites-ia-luna-expansion','Proyecto de xAI busca utilizar base lunar para lanzar satélites y expandir capacidad computacional extraterrestre','https://www.argoslatino.com/images/Featured-Images/musk-en-la-luna.webp',1,5,'published','2026-02-12 14:50:00','2026-07-06 08:22:08',5),
@@ -480,7 +482,7 @@ CREATE TABLE `news_blocks` (
   `id` int NOT NULL AUTO_INCREMENT,
   `news_id` int NOT NULL,
   `block_type` enum('paragraph','image','heading') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
+  `content` text COLLATE utf8mb4_general_ci,
   `image_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `alt_text` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `position` int NOT NULL,
@@ -547,6 +549,47 @@ insert  into `news_blocks`(`id`,`news_id`,`block_type`,`content`,`image_url`,`al
 (90,98,'image','','https://www.gstatic.com/marketing-cms/5e/ec/5b5baeb34571b791b2020d4cacad/meta-image.png','seacrh',2,'2026-02-21 13:29:44'),
 (91,98,'paragraph','wow wow wow wow wow wow wow wow wow wow wow wow wow wow wow wow wow wow wow wow wow wow wow wow',NULL,NULL,3,'2026-02-21 13:29:44');
 
+/*Table structure for table `ticket_attachments` */
+
+DROP TABLE IF EXISTS `ticket_attachments`;
+
+CREATE TABLE `ticket_attachments` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `message_id` int NOT NULL,
+  `original_name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `file_name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `mime_type` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `file_size` int NOT NULL,
+  `file_path` varchar(500) COLLATE utf8mb4_general_ci NOT NULL,
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `fk_attachment_message` (`message_id`),
+  CONSTRAINT `fk_attachment_message` FOREIGN KEY (`message_id`) REFERENCES `ticket_messages` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+/*Data for the table `ticket_attachments` */
+
+/*Table structure for table `ticket_messages` */
+
+DROP TABLE IF EXISTS `ticket_messages`;
+
+CREATE TABLE `ticket_messages` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `ticket_id` int NOT NULL,
+  `sender_type` enum('user','admin','system') COLLATE utf8mb4_general_ci NOT NULL,
+  `sender_id` int DEFAULT NULL,
+  `message` text COLLATE utf8mb4_general_ci NOT NULL,
+  `is_internal` tinyint(1) NOT NULL DEFAULT '0',
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `fk_tm_ticket` (`ticket_id`),
+  KEY `fk_tm_sender` (`sender_id`),
+  CONSTRAINT `fk_tm_sender` FOREIGN KEY (`sender_id`) REFERENCES `users` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `fk_tm_ticket` FOREIGN KEY (`ticket_id`) REFERENCES `tickets` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+/*Data for the table `ticket_messages` */
+
 /*Table structure for table `tickets` */
 
 DROP TABLE IF EXISTS `tickets`;
@@ -556,16 +599,20 @@ CREATE TABLE `tickets` (
   `type` enum('contact','submission') COLLATE utf8mb4_general_ci NOT NULL,
   `status` enum('open','in_progress','waiting_response','closed') COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'open',
   `priority` enum('low','medium','high') COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'medium',
+  `subject` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `user_id` int DEFAULT NULL,
   `guest_name` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `guest_email` varchar(150) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `user_id` int DEFAULT NULL,
-  `subject` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `message` text COLLATE utf8mb4_general_ci NOT NULL,
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `assigned_to` int DEFAULT NULL,
+  `last_reply_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  `closed_at` datetime DEFAULT NULL,
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  KEY `fk_tickets_user` (`user_id`),
-  CONSTRAINT `fk_tickets_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL
+  KEY `fk_ticket_user` (`user_id`),
+  KEY `fk_ticket_assigned` (`assigned_to`),
+  CONSTRAINT `fk_ticket_assigned` FOREIGN KEY (`assigned_to`) REFERENCES `users` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `fk_ticket_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `tickets` */
@@ -584,7 +631,7 @@ CREATE TABLE `users` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `users` */
 
