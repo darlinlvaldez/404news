@@ -13,6 +13,7 @@ tickets.getAll = async function (
   let baseQuery = `
     FROM tickets t
     LEFT JOIN users u ON t.user_id = u.id
+    LEFT JOIN authors a ON a.user_id = u.id
     WHERE 1=1
   `;
 
@@ -23,7 +24,7 @@ tickets.getAll = async function (
       AND (
         t.subject LIKE ?
         OR t.id LIKE ?
-        OR COALESCE(u.username, t.guest_name) LIKE ?
+        OR COALESCE(a.name, u.username, t.guest_name) LIKE ?
         OR COALESCE(u.email, t.guest_email) LIKE ?
       )
     `;
@@ -66,7 +67,7 @@ tickets.getAll = async function (
       t.subject,
       t.status,
       t.priority,
-      COALESCE(u.username, t.guest_name) AS name,
+      COALESCE(a.name, u.username, t.guest_name) AS name,
       COALESCE(u.email, t.guest_email) AS email,
       t.created_at
     ${baseQuery}

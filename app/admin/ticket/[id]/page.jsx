@@ -1,30 +1,29 @@
 "use client"
 
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
+
+import { Header } from '@/components/admin/Header';
+
 import { 
   Send, 
-  User, 
   Mail, 
   Calendar, 
-  Tag, 
   AlertCircle, 
   CheckCircle, 
-  X, 
-  ChevronRight, 
   ArrowLeftRight, 
   MessageSquare,
-  Shield,
   CircleDot,
-  FileText,
-  Clock
 } from 'lucide-react';
 
-export default function App() {
+export default function TicketPage() {
+  const router = useRouter();
+
   const [ticket, setTicket] = useState({
     id: 102,
     asunto: "No puedo subir una noticia",
-    estado: "Abierto", // Abierto, En proceso, Cerrado
-    prioridad: "Alta", // Alta, Media, Baja
+    estado: "Abierto", 
+    prioridad: "Alta",
     remitente: "Darlin",
     correo: "xxxxx@gmail.com",
     fecha: "15/07/2026",
@@ -134,35 +133,43 @@ export default function App() {
     });
   };
 
+  const onBack = () => {
+    router.push('/admin/tickets');
+  };
+
   return (
     <div className="h-screen w-full flex flex-col bg-gray-950 text-gray-200 font-sans overflow-hidden">
       
-      {/* HEADER PRINCIPAL */}
-      <header className="bg-gray-900 border-b border-gray-800 px-8 py-5 shrink-0 flex items-center justify-between shadow-lg">
+      <Header onBack={onBack}>
         <div className="flex items-center gap-4">
-          <div className="p-3 bg-green-950/60 text-green-400 rounded-2xl border border-green-500/30">
+          <div className="p-3 bg-green-950/60 text-green-700 rounded-2xl border border-green-500/30">
             <MessageSquare className="w-6 h-6" />
           </div>
-          <div>
-            <h1 className="text-xl font-black text-white tracking-tight flex items-center gap-2">
-              Detalles del Ticket <span className="text-sm font-mono text-gray-500">#{ticket.id}</span>
-            </h1>
-            <p className="text-xs text-gray-400 font-medium uppercase tracking-wider">
+
+          <div className="flex flex-col">
+            <div className="flex items-center gap-2">
+              <Header.Title>Detalles del Ticket</Header.Title>
+              <span className="text-sm font-mono text-gray-500">
+                #{ticket.id}
+              </span>
+            </div>
+
+            <Header.Subtitle>
               Consola de Mensajería y Soporte Directo
-            </p>
+            </Header.Subtitle>
+          </div>
+          
+          <div className="flex items-center ml-auto gap-2 bg-gray-950/60 border border-gray-800 px-4 py-2 rounded-xl">
+            <span className="flex h-2 w-2 relative">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+            </span>
+            <span className="text-sm font-bold text-gray-400">
+              Canal Activo de Respuestas
+            </span>
           </div>
         </div>
-
-        <div className="flex items-center gap-2 bg-gray-950/60 border border-gray-800 px-4 py-2 rounded-xl">
-          <span className="flex h-2 w-2 relative">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-          </span>
-          <span className="text-xs font-mono font-bold text-gray-400">
-            Canal Activo de Respuestas
-          </span>
-        </div>
-      </header>
+      </Header>
 
       {/* ÁREA CENTRAL CON LAYOUT DE DOS COLUMNAS */}
       <div className="flex-1 flex flex-col lg:flex-row overflow-hidden bg-gray-900">

@@ -6,7 +6,7 @@ import { ArrowLeft, Eye, Save, Plus } from 'lucide-react';
 export const Header = ({ children, views, onSave, addNews, href, onBack }) => {
   return (
     <header className="bg-gray-900 backdrop-blur-md px-8 py-4 border-b border-gray-700 flex justify-between items-center">
-      <div className="flex items-center space-x-4">
+      <div className="flex flex-1 items-center space-x-4">
         {onBack && (
           <button onClick={onBack} 
             className="cursor-pointer text-gray-400 hover:text-white transition p-2 hover:bg-gray-800 rounded-full"
@@ -14,7 +14,7 @@ export const Header = ({ children, views, onSave, addNews, href, onBack }) => {
           <ArrowLeft size={20}/>
           </button>
         )}
-        <div>
+        <div className='flex-1 ml-4'>
           {children}
         </div>
       </div>

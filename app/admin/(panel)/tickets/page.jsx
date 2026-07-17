@@ -119,7 +119,7 @@ export default function TicketsPage() {
             />
           </div>
 
-          <div className="flex flex-wrap gap-4 items-center justify-end mt-4 ">
+          <div className="flex flex-wrap gap-4 items-center justify-end mt-4 sm:mt-6 md:mt-4 lg:mt-0">
             <Select
               className="w-full md:w-56"
               options={statusOptions}
@@ -176,7 +176,7 @@ export default function TicketsPage() {
                 </td>
                 <td className="px-8 py-5">
                   <div className="max-w-xs md:max-w-50">
-                    <p className="text-sm font-bold text-white transition truncate mb-1">
+                    <p className="text-sm font-bold text-white transition truncate mb-1" title={item.subject}>
                       {item.subject}
                     </p>
                   </div>
@@ -272,7 +272,7 @@ export default function TicketsPage() {
                             key={number}
                             onClick={() => setPage(number)}
                             className={`w-9 h-9 flex items-center justify-center rounded-xl text-xs font-black transition cursor-pointer
-                          ${isActive ? "bg-green-800 text-white" : "bg-gray-800 border border-gray-700 text-gray-400 hover:bg-gray-700"}`}
+                            ${isActive ? "bg-green-800 text-white" : "bg-gray-800 border border-gray-700 text-gray-400 hover:bg-gray-700"}`}
                           >
                             {number}
                           </button>
