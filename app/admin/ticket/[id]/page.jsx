@@ -1,8 +1,10 @@
 "use client"
 
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useParams } from "next/navigation";
 import { useRouter } from 'next/navigation';
 import { Header } from '@/components/admin/Header';
+import { formatDateRelative, formatDateAbsolute } from '@/utils/formatDate'
 import { getStatusStyle, getStatusIcon, getPriorityStyle, getPriorityIcon } from '@/utils/ticketConfig';
 
 import { 
@@ -16,37 +18,38 @@ import {
   CircleDot,
 } from 'lucide-react';
 
-export default function TicketPage() {
+export default function TicketChat() {
   const router = useRouter();
 
-  const [ticket, setTicket] = useState({
-    id: 102,
-    asunto: "No puedo subir una noticia",
-    estado: "Abierto", 
-    prioridad: "Alta",
-    remitente: "Darlin",
-    correo: "xxxxx@gmail.com",
-    fecha: "15/07/2026",
-    mensajeInicial: "Hola.\nEstoy intentando subir una noticia\npero al guardar aparece un error.",
-    respuestas: [
-      {
-        id: 1,
-        autor: "Admin",
-        rol: "admin",
-        avatar: "A",
-        mensaje: "¿Puedes enviarnos una captura?",
-        fecha: "15/07/2026 - 15:40"
-      },
-      {
-        id: 2,
-        autor: "Darlin",
-        rol: "usuario",
-        avatar: "D",
-        mensaje: "Sí, aquí está.",
-        fecha: "15/07/2026 - 15:42"
+  const [ticket, setTicket] = useState(null);
+  const [messages, setMessages] = useState(null);
+
+
+  const { id } = useParams();
+
+  useEffect(() => {
+    const loadTicket = async () => {
+      try {
+        const response = await fetch(`/api/admin/tickets/${id}`);
+
+        if (!response.ok) {
+          throw new Error("Error al cargar el ticket");
+        }
+
+        const data = await response.json();
+        console.log(data);
+
+
+        setTicket(data.ticket);
+        setMessages(data.messages);
+
+      } catch (error) {
+        console.error(error);
       }
-    ]
-  });
+    };
+
+    loadTicket();
+  }, [id]);
 
   // Estado para la nueva respuesta a escribir
   const [nuevaRespuesta, setNuevaRespuesta] = useState("");
@@ -137,6 +140,10 @@ export default function TicketPage() {
     router.push('/admin/tickets');
   };
 
+  if (!ticket) {
+    return <div>Cargando...</div>;
+  }
+
   return (
     <div className="h-screen w-full flex flex-col bg-gray-950 text-gray-200 font-sans overflow-hidden">
       
@@ -176,7 +183,7 @@ export default function TicketPage() {
         
         {/* COLUMNA IZQUIERDA: DETALLES DEL TICKET (METADATOS) */}
         {}
-        <aside className="w-full lg:w-[360px] bg-gray-950 border-r border-gray-800/80 p-6 flex flex-col justify-between overflow-y-auto shrink-0 space-y-6">
+        <aside className="w-full lg:w-90 bg-gray-950 border-r border-gray-800/80 p-6 flex flex-col justify-between overflow-y-auto shrink-0 space-y-6">
           <div className="space-y-6">
             
             <div className="pb-4 border-b border-gray-800/60">
@@ -184,7 +191,7 @@ export default function TicketPage() {
                 Asunto del Ticket
               </span>
               <h2 className="text-lg font-extrabold text-white leading-tight">
-                {ticket.asunto}
+                {ticket.subject}
               </h2>
             </div>
 
@@ -194,8 +201,9 @@ export default function TicketPage() {
                 <span className="text-[10px] text-gray-500 font-bold uppercase tracking-wider block mb-1.5">
                   Estado
                 </span>
-                <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-black uppercase tracking-wider border ${obtenerEstiloEstado(ticket.estado)}`}>
-                  {obtenerEmojiEstado(ticket.estado)} {ticket.estado}
+                <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-black uppercase tracking-wider border ${getStatusStyle(ticket.status)}`}>
+                   {getStatusIcon(ticket.status)}
+                    {ticket.status.replace("_", " ")}
                 </span>
               </div>
 
@@ -203,8 +211,8 @@ export default function TicketPage() {
                 <span className="text-[10px] text-gray-500 font-bold uppercase tracking-wider block mb-1.5">
                   Prioridad
                 </span>
-                <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-black uppercase tracking-wider border ${obtenerEstiloPrioridad(ticket.prioridad)}`}>
-                  {ticket.prioridad === 'Alta' ? '🔴' : ticket.prioridad === 'Media' ? '🟡' : '🟢'} {ticket.prioridad}
+                <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-black uppercase tracking-wider border ${getPriorityStyle(ticket.priority)}`}>
+                  {getPriorityIcon(ticket.priority)} {ticket.priority}
                 </span>
               </div>
             </div>
@@ -217,11 +225,11 @@ export default function TicketPage() {
 
               <div className="flex items-center space-x-3 bg-gray-900/40 p-3 rounded-xl border border-gray-800/60">
                 <div className="w-10 h-10 rounded-xl bg-green-950 text-green-400 border border-green-500/30 flex items-center justify-center font-black text-sm">
-                  {ticket.remitente.substring(0,2).toUpperCase()}
+                  {ticket.sender_name.substring(0,2).toUpperCase()}
                 </div>
                 <div>
                   <span className="text-[10px] text-gray-500 font-bold uppercase block">Nombre</span>
-                  <span className="text-sm font-bold text-white block">{ticket.remitente}</span>
+                  <span className="text-sm font-bold text-white block">{ticket.sender_name}</span>
                 </div>
               </div>
 
@@ -230,15 +238,15 @@ export default function TicketPage() {
                   <Mail className="w-4 h-4 text-gray-500 shrink-0" />
                   <div className="overflow-hidden">
                     <span className="text-gray-500 block text-[9px] uppercase font-bold">Correo Electrónico</span>
-                    <span className="text-gray-300 font-mono truncate block">{ticket.correo}</span>
+                    <span className="text-gray-300 font-mono truncate block">{ticket.email}</span>
                   </div>
                 </div>
 
                 <div className="flex items-center space-x-3 text-xs">
                   <Calendar className="w-4 h-4 text-gray-500 shrink-0" />
                   <div>
-                    <span className="text-gray-500 block text-[9px] uppercase font-bold">Fecha de Creación</span>
-                    <span className="text-gray-300 font-mono block">{ticket.fecha}</span>
+                    <span className="text-gray-500 block text-[9px] uppercase font-bold">Ultima Actividad</span>
+                    <span className="text-gray-300 font-mono block">{formatDateRelative(ticket.last_reply_at)}</span>
                   </div>
                 </div>
               </div>
@@ -273,19 +281,19 @@ export default function TicketPage() {
                 <div className="flex items-center justify-between border-b border-gray-900 pb-3 mb-3">
                   <div className="flex items-center space-x-2.5">
                     <div className="w-7 h-7 rounded-lg bg-green-950/60 text-green-400 border border-green-500/20 flex items-center justify-center font-bold text-xs">
-                      D
+                      {ticket.sender_name.substring(0,2).toUpperCase()}
                     </div>
                     <div>
-                      <span className="text-xs font-bold text-white">{ticket.remitente}</span>
+                      <span className="text-xs font-bold text-white">{ticket.sender_name}</span>
                       <span className="text-[9px] text-gray-500 block">Usuario Emisor</span>
                     </div>
                   </div>
                   <span className="text-[10px] text-gray-500 font-mono bg-gray-900 px-2.5 py-1 rounded-lg border border-gray-800">
-                    {ticket.fecha}
+                    {formatDateRelative(ticket.created_at)}
                   </span>
                 </div>
                 <p className="text-sm text-gray-300 leading-relaxed whitespace-pre-line font-medium pl-1">
-                  {ticket.mensajeInicial}
+                  {ticket.message}
                 </p>
               </div>
             </div>
@@ -297,59 +305,50 @@ export default function TicketPage() {
               </div>
               <div className="relative flex justify-center text-xs">
                 <span className="bg-gray-900 px-4 text-xs font-bold text-gray-500 uppercase tracking-widest flex items-center gap-1.5">
-                  <MessageSquare className="w-3.5 h-3.5 text-green-500" /> Respuestas ({ticket.respuestas.length})
+                  <MessageSquare className="w-3.5 h-3.5 text-green-500" /> Respuestas 
                 </span>
               </div>
             </div>
 
             {/* Respuestas del Hilo */}
             <div className="space-y-4">
-              {ticket.respuestas.map((res) => {
-                const isAdmin = res.rol === 'admin';
-                return (
                   <div 
-                    key={res.id}
-                    className={`flex flex-col ${isAdmin ? 'items-end' : 'items-start'}`}
+                    className={`flex flex-col  'items-end' : 'items-start'}`}
                   >
-                    <div className={`max-w-[85%] rounded-2xl p-4.5 border shadow-md transition-all duration-150 ${
-                      isAdmin 
-                        ? 'bg-green-950/20 border-green-500/20 text-gray-200' 
-                        : 'bg-gray-950 border-gray-800 text-gray-300'
+                    <div className={`max-w-[85%] rounded-2xl p-4.5 border shadow-md transition-all duration-150
+                      
+                         'bg-green-950/20 border-green-500/20 text-gray-200' 
+                        'bg-gray-950 border-gray-800 text-gray-300'
                     }`}>
                       
                       {/* Remitente de la Respuesta */}
                       <div className="flex items-center justify-between gap-8 mb-2.5 border-b border-gray-800/40 pb-2">
                         <div className="flex items-center space-x-2">
-                          <div className={`w-6 h-6 rounded-md flex items-center justify-center font-black text-xs ${
-                            isAdmin 
+                          <div className={`w-6 h-6 rounded-md flex items-center justify-center font-black text-xs 
+                            
                               ? 'bg-green-800 text-white' 
                               : 'bg-gray-800 text-gray-300'
                           }`}>
-                            {res.avatar}
+                            
                           </div>
                           <div>
                             <span className="text-xs font-bold text-white flex items-center gap-1">
-                              {res.autor}
-                              {isAdmin && (
+                              
+                              
                                 <span className="bg-green-950/80 text-green-400 border border-green-500/20 text-[8px] uppercase tracking-wider px-1 rounded font-black">
                                   Admin
                                 </span>
-                              )}
                             </span>
                           </div>
                         </div>
                         <span className="text-[9px] text-gray-500 font-mono">
-                          {res.fecha}
                         </span>
                       </div>
 
                       <p className="text-sm leading-relaxed whitespace-pre-line font-medium pl-1">
-                        {res.mensaje}
                       </p>
                     </div>
                   </div>
-                );
-              })}
             </div>
 
           </div>

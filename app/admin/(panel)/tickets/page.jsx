@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import {formatDateAbsolute} from "@/utils/formatDate"
+import {formatDateRelative} from "@/utils/formatDate"
 import Select from "@/components/admin/ui/Select"
 import Input from "@/components/admin/ui/Input"
 import { Header } from '@/components/admin/Header';
@@ -156,73 +156,73 @@ export default function TicketsPage() {
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-800">
-            {ticket.map((item) => (
-              <tr key={item.id}
+            {ticket.map((tickets) => (
+              <tr key={tickets.id}
                 className="hover:bg-slate-800/40 transition-all group"
               >
                 <td className="px-8 py-5">
                   <div className="max-w-xs md:max-w-sm">
                     <div className="flex items-center space-x-2 text-xs py-0.5 font-mono text-gray-500">
-                      <span>#{item.id}</span>
+                      <span>#{tickets.id}</span>
                     </div>
                   </div>
                 </td>
                 <td className="px-8 py-5">
                   <div className="max-w-xs md:max-w-sm">
                     <p className="text-sm font-bold text-white group-hover:text-green-700 transition truncate mb-1">
-                      {item.type}
+                      {tickets.type}
                     </p>
                   </div>
                 </td>
                 <td className="px-8 py-5">
                   <div className="max-w-xs md:max-w-50">
-                    <p className="text-sm font-bold text-white transition truncate mb-1" title={item.subject}>
-                      {item.subject}
+                    <p className="text-sm font-bold text-white transition truncate mb-1" title={tickets.subject}>
+                      {tickets.subject}
                     </p>
                   </div>
                 </td>
                 <td className="px-8 py-5">
                   <div className="flex items-center text-base text-gray-300">
                     <div className="w-7 h-7 rounded-lg bg-gray-800 flex items-center justify-center mr-3 border border-gray-700 text-xs font-bold">
-                      {item.name
+                      {tickets.name
                         .split(" ")
                         .slice(0, 2)
                         .map((n) => n[0])
                         .join("")}
                     </div>
-                    {item.name}
+                    {tickets.name}
                   </div>
                   <div className="flex items-center gap-1 text-xs text-gray-500 font-mono mt-1"> 
-                    <Mail size={18}/> <span>{item.email}</span>
+                    <Mail size={18}/> <span>{tickets.email}</span>
                   </div>
                 </td>
                 <td className="px-8 py-5">
                   <span
                     className={`inline-flex items-center px-3 py-1.5 rounded-xl text-xs font-black uppercase tracking-widest border 
-                    ${getStatusStyle(item.status)}`}
+                    ${getStatusStyle(tickets.status)}`}
                   >
                     {" "}
-                    {getStatusIcon(item.status)}{" "}
-                    {statusLabels[item.status] ?? item.status}
+                    {getStatusIcon(tickets.status)}{" "}
+                    {statusLabels[tickets.status] ?? tickets.status}
                   </span>
                 </td>
 
                 <td className="px-8 py-5">
                   <span
                     className={`inline-flex items-center px-3 py-1.5 rounded-xl text-xs font-black uppercase tracking-widest border
-                      ${getPriorityStyle(item.priority)}`}
+                      ${getPriorityStyle(tickets.priority)}`}
                   >
-                    {getPriorityIcon(item.priority)}
-                    {priorityLabels[item.priority] ?? item.priority}
+                    {getPriorityIcon(tickets.priority)}
+                    {priorityLabels[tickets.priority] ?? tickets.priority}
                   </span>
                 </td>
                 <td className="px-8 py-5 text-sm font-bold text-gray-200">
-                    {formatDateAbsolute(item.created_at)}
+                    {formatDateRelative(tickets.last_reply_at)}
                 </td>
                 <td className="px-8 py-5 text-right">
                   <div className="flex space-x-2">
                     <Link
-                      href={`/admin/ticket/ticket-details/${item.id}`}
+                      href={`/admin/ticket/${tickets.id}`}
                       className="p-3 bg-gray-800 hover:bg-green-600 text-slate-400 hover:text-white rounded-xl transition-all shadow-lg active:scale-95 flex items-center justify-center"
                     ><Eye size={18} />Ver
                     </Link>

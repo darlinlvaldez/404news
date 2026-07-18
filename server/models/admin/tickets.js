@@ -69,7 +69,7 @@ tickets.getAll = async function (
       t.priority,
       COALESCE(a.name, u.username, t.guest_name) AS name,
       COALESCE(u.email, t.guest_email) AS email,
-      t.created_at
+      t.last_reply_at
     ${baseQuery}
     ORDER BY t.created_at DESC
     LIMIT ? OFFSET ?
