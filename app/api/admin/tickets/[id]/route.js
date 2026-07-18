@@ -18,3 +18,24 @@ export async function GET(request, { params }) {
     return handleError(error);
   }
 }
+
+export async function PUT(request, { params }) {
+  try {
+    const { id } = await params;
+
+    await requireAuth(request, ["superadmin", "admin", "editor"]);
+
+    const body = await request.json();
+
+    await ticketChat.update({
+      id,
+      status: body.status,
+      priority: body.priority
+    });
+
+    return NextResponse.json({success: true});
+  } catch (error) {
+    console.error(error);
+    return handleError(error);
+  }
+}

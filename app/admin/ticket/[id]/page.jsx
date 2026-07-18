@@ -4,8 +4,11 @@ import { useState, useEffect } from 'react';
 import { useParams } from "next/navigation";
 import { useRouter } from 'next/navigation';
 import { Header } from '@/components/admin/Header';
-import { formatDateRelative, formatDateAbsolute } from '@/utils/formatDate'
+import { formatDateRelative } from '@/utils/formatDate'
 import { getStatusStyle, getStatusIcon, getPriorityStyle, getPriorityIcon } from '@/utils/ticketConfig';
+import TicketMessage from "@/components/admin/ticket/TicketMessage";
+import useDropdown from "@/hooks/useDropdown";
+import ActionDropdown from "@/components/admin/ui/ActionDropdown";
 
 import { 
   Send, 
@@ -51,47 +54,77 @@ export default function TicketChat() {
     loadTicket();
   }, [id]);
 
+  const handleTicketChange = async (e) => {
+    const { name, value } = e.target;
+
+    try {
+      const response = await fetch(`/api/admin/tickets/${ticket.id}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            [name]: value
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error();
+      }
+
+      setTicket(prev => ({
+        ...prev,
+        [name]: value
+      }));
+
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const statusDropdown = useDropdown();
+  const priorityDropdown = useDropdown();
+
+  const statusOptions = [
+  {
+    value: "open",
+    label: "Open",
+    icon: "🟢"
+  },
+  {
+    value: "pending",
+    label: "Pending",
+    icon: "🟡"
+  },
+  {
+    value: "closed",
+    label: "Closed",
+    icon: "⚫"
+  }
+];
+
+
+const priorityOptions = [
+  {
+    value: "high",
+    label: "High",
+    icon: "🔴"
+  },
+  {
+    value: "medium",
+    label: "Medium",
+    icon: "🟡"
+  },
+  {
+    value: "low",
+    label: "Low",
+    icon: "🟢"
+  }
+];
+
+
   // Estado para la nueva respuesta a escribir
   const [nuevaRespuesta, setNuevaRespuesta] = useState("");
-  
-  // Controles de estado para modales o dropdowns inline
-  const [mostrandoCambioEstado, setMostrandoCambioEstado] = useState(false);
-  const [mostrandoCambioPrioridad, setMostrandoCambioPrioridad] = useState(false);
-
-  const obtenerEstiloEstado = (estado) => {
-    switch (estado) {
-      case 'Abierto':
-        return 'bg-emerald-950/60 text-emerald-400 border-emerald-500/30';
-      case 'En proceso':
-        return 'bg-amber-950/60 text-amber-400 border-amber-500/30';
-      case 'Cerrado':
-        return 'bg-gray-800 text-gray-400 border-gray-700';
-      default:
-        return 'bg-gray-800 text-gray-400 border-gray-700';
-    }
-  };
-
-  const obtenerEmojiEstado = (estado) => {
-    switch (estado) {
-      case 'Abierto': return '🟢';
-      case 'En proceso': return '🟡';
-      case 'Cerrado': return '⚫';
-      default: return '⚪';
-    }
-  };
-
-  const obtenerEstiloPrioridad = (prioridad) => {
-    switch (prioridad) {
-      case 'Alta':
-        return 'bg-rose-950/60 text-rose-400 border-rose-500/30';
-      case 'Media':
-        return 'bg-amber-950/60 text-amber-400 border-amber-500/30';
-      case 'Baja':
-        return 'bg-emerald-950/40 text-emerald-500 border-emerald-500/20';
-      default:
-        return 'bg-gray-800 text-gray-400 border-gray-700';
-    }
-  };
 
   const handleEnviarRespuesta = (e) => {
     e.preventDefault();
@@ -99,7 +132,7 @@ export default function TicketChat() {
 
     const nuevaRes = {
       id: Date.now(),
-      autor: "Admin", // Simulamos responder como administrador
+      autor: "Admin",
       rol: "admin",
       avatar: "A",
       mensaje: nuevaRespuesta,
@@ -111,22 +144,6 @@ export default function TicketChat() {
       respuestas: [...ticket.respuestas, nuevaRes]
     });
     setNuevaRespuesta("");
-  };
-
-  const cambiarEstado = (nuevoEstado) => {
-    setTicket({
-      ...ticket,
-      estado: nuevoEstado
-    });
-    setMostrandoCambioEstado(false);
-  };
-
-  const cambiarPrioridad = (nuevaPrioridad) => {
-    setTicket({
-      ...ticket,
-      prioridad: nuevaPrioridad
-    });
-    setMostrandoCambioPrioridad(false);
   };
 
   const cerrarTicket = () => {
@@ -310,47 +327,17 @@ export default function TicketChat() {
               </div>
             </div>
 
-            {/* Respuestas del Hilo */}
             <div className="space-y-4">
-                  <div 
-                    className={`flex flex-col  'items-end' : 'items-start'}`}
-                  >
-                    <div className={`max-w-[85%] rounded-2xl p-4.5 border shadow-md transition-all duration-150
-                      
-                         'bg-green-950/20 border-green-500/20 text-gray-200' 
-                        'bg-gray-950 border-gray-800 text-gray-300'
-                    }`}>
-                      
-                      {/* Remitente de la Respuesta */}
-                      <div className="flex items-center justify-between gap-8 mb-2.5 border-b border-gray-800/40 pb-2">
-                        <div className="flex items-center space-x-2">
-                          <div className={`w-6 h-6 rounded-md flex items-center justify-center font-black text-xs 
-                            
-                              ? 'bg-green-800 text-white' 
-                              : 'bg-gray-800 text-gray-300'
-                          }`}>
-                            
-                          </div>
-                          <div>
-                            <span className="text-xs font-bold text-white flex items-center gap-1">
-                              
-                              
-                                <span className="bg-green-950/80 text-green-400 border border-green-500/20 text-[8px] uppercase tracking-wider px-1 rounded font-black">
-                                  Admin
-                                </span>
-                            </span>
-                          </div>
-                        </div>
-                        <span className="text-[9px] text-gray-500 font-mono">
-                        </span>
-                      </div>
-
-                      <p className="text-sm leading-relaxed whitespace-pre-line font-medium pl-1">
-                      </p>
-                    </div>
-                  </div>
+              <div className="space-y-4">
+                  {messages?.map((message) => (
+                    <TicketMessage
+                      key={message.id}
+                      message={message}
+                      isOwnMessage={message.sender_type === "admin"}
+                    />
+                  ))}
+              </div>
             </div>
-
           </div>
 
           {/* ÁREA INFERIOR DE ACCIONES Y FORMULARIO */}
@@ -360,82 +347,27 @@ export default function TicketChat() {
             {/* Opciones Rápidas Inline (Cambiar Estado, Cambiar Prioridad, Cerrar Ticket) */}
             <div className="flex flex-wrap items-center gap-3">
               
-              {/* ACCIÓN: Cambiar Estado */}
-              <div className="relative">
-                <button 
-                  onClick={() => {
-                    setMostrandoCambioEstado(!mostrandoCambioEstado);
-                    setMostrandoCambioPrioridad(false);
-                  }}
-                  className="px-4 py-2 bg-gray-900 hover:bg-gray-800 border border-gray-800 hover:border-gray-700 text-gray-300 font-bold text-xs rounded-xl transition duration-150 flex items-center gap-1.5 active:scale-95 cursor-pointer"
-                >
-                  <ArrowLeftRight className="w-3.5 h-3.5 text-green-500" />
-                  Cambiar estado
-                </button>
-                
-                {mostrandoCambioEstado && (
-                  <div className="absolute bottom-full mb-2 left-0 w-44 bg-gray-900 border border-gray-800 rounded-xl shadow-2xl z-30 overflow-hidden divide-y divide-gray-800">
-                    <button 
-                      onClick={() => cambiarEstado('Abierto')}
-                      className="w-full text-left px-4 py-2.5 hover:bg-gray-800 text-xs font-semibold text-gray-300 flex items-center gap-2"
-                    >
-                      🟢 Abierto
-                    </button>
-                    <button 
-                      onClick={() => cambiarEstado('En proceso')}
-                      className="w-full text-left px-4 py-2.5 hover:bg-gray-800 text-xs font-semibold text-gray-300 flex items-center gap-2"
-                    >
-                      🟡 En proceso
-                    </button>
-                    <button 
-                      onClick={() => cambiarEstado('Cerrado')}
-                      className="w-full text-left px-4 py-2.5 hover:bg-gray-800 text-xs font-semibold text-gray-300 flex items-center gap-2"
-                    >
-                      ⚫ Cerrado
-                    </button>
-                  </div>
-                )}
-              </div>
+              <ActionDropdown
+  label="Change status"
+  icon={ArrowLeftRight}
+  name="status"
+  options={statusOptions}
+  onChange={handleTicketChange}
+  closeOthers={priorityDropdown.close}
+/>
 
-              {/* ACCIÓN: Cambiar Prioridad */}
-              <div className="relative">
-                <button 
-                  onClick={() => {
-                    setMostrandoCambioPrioridad(!mostrandoCambioPrioridad);
-                    setMostrandoCambioEstado(false);
-                  }}
-                  className="px-4 py-2 bg-gray-900 hover:bg-gray-800 border border-gray-800 hover:border-gray-700 text-gray-300 font-bold text-xs rounded-xl transition duration-150 flex items-center gap-1.5 active:scale-95 cursor-pointer"
-                >
-                  <AlertCircle className="w-3.5 h-3.5 text-green-500" />
-                  Cambiar prioridad
-                </button>
 
-                {mostrandoCambioPrioridad && (
-                  <div className="absolute bottom-full mb-2 left-0 w-44 bg-gray-900 border border-gray-800 rounded-xl shadow-2xl z-30 overflow-hidden divide-y divide-gray-800">
-                    <button 
-                      onClick={() => cambiarPrioridad('Alta')}
-                      className="w-full text-left px-4 py-2.5 hover:bg-gray-800 text-xs font-semibold text-gray-300 flex items-center gap-2"
-                    >
-                      🔴 Alta
-                    </button>
-                    <button 
-                      onClick={() => cambiarPrioridad('Media')}
-                      className="w-full text-left px-4 py-2.5 hover:bg-gray-800 text-xs font-semibold text-gray-300 flex items-center gap-2"
-                    >
-                      🟡 Media
-                    </button>
-                    <button 
-                      onClick={() => cambiarPrioridad('Baja')}
-                      className="w-full text-left px-4 py-2.5 hover:bg-gray-800 text-xs font-semibold text-gray-300 flex items-center gap-2"
-                    >
-                      🟢 Baja
-                    </button>
-                  </div>
-                )}
-              </div>
+<ActionDropdown
+  label="Change priority"
+  icon={AlertCircle}
+  name="priority"
+  options={priorityOptions}
+  onChange={handleTicketChange}
+  closeOthers={statusDropdown.close}
+/>
 
               {/* ACCIÓN: Cerrar Ticket */}
-              {ticket.estado !== 'Cerrado' ? (
+              {ticket.status !== 'closed' ? (
                 <button 
                   onClick={cerrarTicket}
                   className="px-4 py-2 bg-red-950/40 hover:bg-red-900/40 border border-red-500/20 hover:border-red-500/40 text-red-400 font-bold text-xs rounded-xl transition duration-150 flex items-center gap-1.5 active:scale-95 cursor-pointer ml-auto"

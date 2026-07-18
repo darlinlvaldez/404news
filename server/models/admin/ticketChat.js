@@ -64,11 +64,40 @@ ticketModels.messages = async (id) => {
 
     WHERE tm.ticket_id = ?
 
-    ORDER BY tm.created_at ASC`,
+    ORDER BY tm.id ASC`,
     [id]
   );
 
   return rows;
+};
+
+ticketModels.update = async (id, data) => {
+
+  const fields = [];
+  const values = [];
+
+  if (data.status !== undefined) {
+    fields.push("status = ?");
+    values.push(data.status);
+  }
+
+  if (data.priority !== undefined) {
+    fields.push("priority = ?");
+    values.push(data.priority);
+  }
+
+  if (fields.length === 0) return;
+
+  values.push(id);
+
+  await db.execute(
+    `
+    UPDATE tickets
+    SET ${fields.join(", ")}
+    WHERE id = ?
+    `,
+    values
+  );
 };
 
 export default ticketModels;

@@ -7,6 +7,13 @@ ticketChat.ticket = async ({ id }) => {
   const messages = await ticketModels.messages(id);
 
   return {ticket, messages} 
+}; 
+
+ticketChat.update = async ({ id, status, priority }) => {
+  await ticketModels.update(id, {
+      status,
+      priority
+  });
 };
 
 export default ticketChat;

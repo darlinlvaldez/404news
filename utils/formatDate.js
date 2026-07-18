@@ -32,3 +32,11 @@ export function formatDateAbsolute(dateString) {
     year: 'numeric'
   })
 }
+
+export function formatDateNumeric(dateString) {
+  return new Date(dateString).toLocaleDateString('es-ES', {
+    day: 'numeric',
+    month: '2-digit',
+    year: 'numeric'
+  })
+}
