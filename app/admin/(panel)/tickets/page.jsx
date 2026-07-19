@@ -63,13 +63,19 @@ export default function TicketsPage() {
   if (priorityFilter) {params.append("priority", priorityFilter)}
   if (debouncedSearch) params.append("search", debouncedSearch);
 
-  fetch(`/api/admin/tickets?${params.toString()}`)
-    .then(res => res.json())
-    .then(data => {
-
+  const fetchTicket = async () => {
+    try {
+      const res = await fetch(`/api/admin/tickets?${params.toString()}`);
+      const data = await res.json();
+      
         setTicket(data.rows);
         setTotal(data.total);
-    });
+        
+    } catch (error) {
+      console.error("Error loading tickets:", error);
+    }
+  }
+  fetchTicket();
   }, [page, statusFilter, priorityFilter, debouncedSearch]);
   
   const createLabels = (options) =>

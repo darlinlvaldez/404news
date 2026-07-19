@@ -24,4 +24,6 @@ Agregar perfil de usuario en admin.
 
 Agregar sistema de tickets.
 
+Arreglar los estilos del chat de tickets en responsive.
+
 Validar campos en controller.

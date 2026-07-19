@@ -25,6 +25,7 @@ import {
   ArrowLeftRight, 
   MessageSquare,
   CircleDot,
+  CircleCheckBig
 } from 'lucide-react';
 
 export default function TicketChat() {
@@ -32,7 +33,6 @@ export default function TicketChat() {
 
   const [ticket, setTicket] = useState(null);
   const [messages, setMessages] = useState(null);
-
 
   const { id } = useParams();
 
@@ -46,8 +46,6 @@ export default function TicketChat() {
         }
 
         const data = await response.json();
-        console.log(data);
-
 
         setTicket(data.ticket);
         setMessages(data.messages);
@@ -60,9 +58,7 @@ export default function TicketChat() {
     loadTicket();
   }, [id]);
 
-  const handleTicketChange = async (e) => {
-    const { name, value } = e.target;
-
+  const handleTicketChange = async (name, value) => {
     try {
       const response = await fetch(`/api/admin/tickets/${ticket.id}`, {
         method: "PUT",
@@ -120,13 +116,6 @@ export default function TicketChat() {
     setNuevaRespuesta("");
   };
 
-  const cerrarTicket = () => {
-    setTicket({
-      ...ticket,
-      estado: "Cerrado"
-    });
-  };
-
   const onBack = () => {
     router.push('/admin/tickets');
   };
@@ -169,11 +158,8 @@ export default function TicketChat() {
         </div>
       </Header>
 
-      {/* ÁREA CENTRAL CON LAYOUT DE DOS COLUMNAS */}
       <div className="flex-1 flex flex-col lg:flex-row overflow-hidden bg-gray-900">
         
-        {/* COLUMNA IZQUIERDA: DETALLES DEL TICKET (METADATOS) */}
-        {}
         <aside className="w-full lg:w-90 bg-gray-950 border-r border-gray-800/80 p-6 flex flex-col justify-between overflow-y-auto shrink-0 space-y-6">
           <div className="space-y-6">
             
@@ -186,7 +172,6 @@ export default function TicketChat() {
               </h2>
             </div>
 
-            {/* Fichas de Estado y Prioridad */}
             <div className="grid grid-cols-2 gap-3">
               <div className="bg-gray-900/60 p-3 rounded-xl border border-gray-800">
                 <span className="text-[10px] text-gray-500 font-bold uppercase tracking-wider block mb-1.5">
@@ -209,7 +194,6 @@ export default function TicketChat() {
               </div>
             </div>
 
-            {/* Datos del Remitente */}
             <div className="space-y-4 pt-2">
               <span className="text-[10px] text-gray-500 font-bold uppercase tracking-widest block border-b border-gray-800/40 pb-1">
                 Información del Remitente
@@ -217,7 +201,7 @@ export default function TicketChat() {
 
               <div className="flex items-center space-x-3 bg-gray-900/40 p-3 rounded-xl border border-gray-800/60">
                 <div className="w-10 h-10 rounded-xl bg-green-950 text-green-400 border border-green-500/30 flex items-center justify-center font-black text-sm">
-                  {ticket.sender_name.substring(0,2).toUpperCase()}
+                  {ticket.sender_name.split(' ').slice(0,2).map(n => n[0]).join('')}
                 </div>
                 <div>
                   <span className="text-[10px] text-gray-500 font-bold uppercase block">Nombre</span>
@@ -246,7 +230,6 @@ export default function TicketChat() {
 
           </div>
 
-          {/* Información de ayuda o recordatorio */}
           <div className="bg-green-950/10 border border-green-900/30 p-4 rounded-xl">
             <div className="flex gap-2.5">
               <CircleDot className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
@@ -257,30 +240,17 @@ export default function TicketChat() {
           </div>
         </aside>
 
-        {/* COLUMNA DERECHA: HILO DE CONVERSACIÓN Y ACCIONES */}
-        {}
         <main className="flex-1 flex flex-col overflow-hidden bg-gray-900">
           
-          {/* Mensajes del Hilo */}
           <div className="flex-1 overflow-y-auto p-6 lg:p-8 space-y-6">
             
-            {/* Mensaje Inicial */}
             <div className="space-y-2">
-              <span className="text-[10px] text-gray-500 font-bold uppercase tracking-widest block">
+              <span className="text-[10px] text-gray-400 font-bold uppercase tracking-widest block">
                 Mensaje Inicial
               </span>
               <div className="bg-gray-950/80 border border-gray-800 rounded-2xl p-5 shadow-sm">
-                <div className="flex items-center justify-between border-b border-gray-900 pb-3 mb-3">
-                  <div className="flex items-center space-x-2.5">
-                    <div className="w-7 h-7 rounded-lg bg-green-950/60 text-green-400 border border-green-500/20 flex items-center justify-center font-bold text-xs">
-                      {ticket.sender_name.substring(0,2).toUpperCase()}
-                    </div>
-                    <div>
-                      <span className="text-xs font-bold text-white">{ticket.sender_name}</span>
-                      <span className="text-[9px] text-gray-500 block">Usuario Emisor</span>
-                    </div>
-                  </div>
-                  <span className="text-[10px] text-gray-500 font-mono bg-gray-900 px-2.5 py-1 rounded-lg border border-gray-800">
+                <div className="flex items-center justify-end border-b border-gray-900 pb-3 mb-3">
+                  <span className="text-xs  text-gray-500 font-mono">
                     {formatDateTimeNumeric(ticket.created_at)}
                   </span>
                 </div>
@@ -290,13 +260,12 @@ export default function TicketChat() {
               </div>
             </div>
 
-            {/* Separador de Respuestas */}
             <div className="relative py-2">
               <div className="absolute inset-0 flex items-center" aria-hidden="true">
                 <div className="w-full border-t border-gray-800"></div>
               </div>
               <div className="relative flex justify-center text-xs">
-                <span className="bg-gray-900 px-4 text-xs font-bold text-gray-500 uppercase tracking-widest flex items-center gap-1.5">
+                <span className="bg-gray-900 px-4 text-xs font-bold text-gray-400 uppercase tracking-widest flex items-center gap-1.5">
                   <MessageSquare className="w-3.5 h-3.5 text-green-500" /> Respuestas 
                 </span>
               </div>
@@ -315,33 +284,26 @@ export default function TicketChat() {
             </div>
           </div>
 
-          {/* ÁREA INFERIOR DE ACCIONES Y FORMULARIO */}
-          {}
           <div className="bg-gray-950 border-t border-gray-800 p-6 space-y-4 shrink-0">
-            
-            {/* Opciones Rápidas Inline (Cambiar Estado, Cambiar Prioridad, Cerrar Ticket) */}
             <div className="flex flex-wrap items-center gap-3">
-              
+
               <ActionDropdown
                 icon={ArrowLeftRight}
                 name="status"
                 options={statusOptions}
                 getIcon={getStatusIcon}
-                onChange={handleTicketChange}
+                onChange={(e) => handleTicketChange(e.target.name, e.target.value)}
               />
-
               <ActionDropdown
                 icon={AlertCircle}
                 name="priority"
                 options={priorityOptions}
                 getIcon={getPriorityIcon}
-                onChange={handleTicketChange}
+                onChange={(e) => handleTicketChange(e.target.name, e.target.value)}
               />
 
-              {/* ACCIÓN: Cerrar Ticket */}
               {ticket.status !== 'closed' ? (
-                <button 
-                  onClick={cerrarTicket}
+                <button onClick={() => handleTicketChange("status", "closed")}
                   className="px-4 py-2 bg-red-950/40 hover:bg-red-900/40 border border-red-500/20 hover:border-red-500/40 text-red-400 font-bold text-xs rounded-xl transition duration-150 flex items-center gap-1.5 active:scale-95 cursor-pointer ml-auto"
                 >
                   <CheckCircle className="w-3.5 h-3.5" />
@@ -349,12 +311,12 @@ export default function TicketChat() {
                 </button>
               ) : (
                 <span className="text-xs text-gray-500 font-bold italic ml-auto flex items-center gap-1.5 bg-gray-900 px-3 py-1.5 rounded-lg border border-gray-800">
-                  🚫 Ticket ya cerrado
+                  <CircleCheckBig className="w-3.5 h-3.5" />
+                  Ticket ya cerrado
                 </span>
               )}
             </div>
 
-            {/* FORMULARIO: Escribir Respuesta */}
             <form onSubmit={handleEnviarRespuesta} className="relative">
               <div className="flex flex-col space-y-2">
                 <span className="text-[10px] text-gray-500 font-bold uppercase tracking-widest block pl-1">

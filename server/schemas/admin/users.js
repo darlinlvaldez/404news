@@ -10,6 +10,12 @@ export const users = z
       .min(1, "El nombre es obligatorio")
       .max(100, "Máximo 100 caracteres"),
 
+    name: z
+      .string()
+      .trim()
+      .min(1, "El nombre es obligatorio")
+      .max(50, "Máximo 50 caracteres"),
+
     email: z
       .string()
       .trim()

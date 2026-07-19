@@ -21,7 +21,8 @@ ticketModels.ticket = async (id) => {
       t.created_at,
       t.updated_at,
 
-      a.name AS sender_name,
+      COALESCE(a.name, u.name, u.username, t.guest_name) AS sender_name,
+
       a.avatar AS sender_avatar,
 
       u.email
@@ -50,8 +51,9 @@ ticketModels.messages = async (id) => {
     tm.message,
     tm.is_internal,
     tm.created_at,
+    u.role AS sender_role,
 
-    COALESCE(a.name, u.username) AS sender_name,
+    COALESCE(a.name, u.name, u.username) AS sender_name,
 
     a.avatar AS sender_avatar,
 

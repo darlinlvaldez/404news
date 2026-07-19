@@ -4,7 +4,7 @@ const users = {};
 
 users.getAll = async (excludeUserId) => {
   const [rows] = await db.query(
-    `SELECT id, username, email, role, active, created_at 
+    `SELECT id, username, name, email, role, active, created_at 
     FROM users 
     WHERE role != 'author' AND  id != ?
     ORDER BY created_at DESC`,
@@ -15,29 +15,29 @@ users.getAll = async (excludeUserId) => {
 
 users.getById = async (id) => {
   const [rows] = await db.query(
-    "SELECT id, username, email, role, active FROM users WHERE id = ? AND role != 'author'",
+    "SELECT id, username, name, email, role, active FROM users WHERE id = ? AND role != 'author'",
     [id]
   );
   return rows[0];
 };
 
 users.create = async (data) => {
-  const { username, email, password, role } = data;
+  const { username, name, email, password, role } = data;
 
   const [result] = await db.query(
-    "INSERT INTO users (username, email, password, role) VALUES (?, ?, ?, ?)",
-    [username, email, password, role]
+    "INSERT INTO users (username, name, email, password, role) VALUES (?, ?, ?, ?, ?)",
+    [username, name, email, password, role]
   );
 
   return { id: result.insertId };
 };
 
 users.update = async (id, data) => {
-  const { username, email, role, active } = data;
+  const { username, name, email, role, active } = data;
 
   await db.query(
-    "UPDATE users SET username=?, email=?, role=?, active=? WHERE id=?",
-    [username, email, role, active, id]
+    "UPDATE users SET username=?, name=?, email=?, role=?, active=? WHERE id=?",
+    [username, name, email, role, active, id]
   );
 
   return { success: true, message: "User updated successfully" };

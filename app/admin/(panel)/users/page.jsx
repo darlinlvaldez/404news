@@ -34,6 +34,7 @@ export default function UsersAccount () {
   const initialFormState = {
     id: null,
     username: '',
+    name: '',
     email: '',
     password: '',
     confirmPassword: '',
@@ -49,15 +50,15 @@ export default function UsersAccount () {
   const [userToDelete, setUserToDelete] = useState(null);
 
   useEffect(() => {
-  const fetchUsers = async () => {
-    try {
-      const res = await fetch("/api/admin/users");
-      const data = await res.json();
-      setUsers(data);
-    } catch (error) {
-      console.error("Error loading users:", error);
+    const fetchUsers = async () => {
+      try {
+        const res = await fetch("/api/admin/users");
+        const data = await res.json();
+        setUsers(data);
+      } catch (error) {
+        console.error("Error loading users:", error);
+      }
     }
-  }
   fetchUsers();
   }, []);
 
@@ -74,6 +75,7 @@ export default function UsersAccount () {
     setFormData({
     id: user.id,
     username: user.username,
+    name: user.name,
     email: user.email,
     password: '',
     confirmPassword: '',
@@ -96,6 +98,7 @@ export default function UsersAccount () {
 
     const dataToValidate = {
       username: formData.username,
+      name: formData.name,
       email: formData.email,
       password: formData.password,
       confirmPassword: formData.confirmPassword,
@@ -114,6 +117,7 @@ export default function UsersAccount () {
 
     const payload = {
       username: formData.username,
+      name: formData.name,
       email: formData.email,
       active: formData.active,
       role: formData.role,
@@ -242,8 +246,23 @@ export default function UsersAccount () {
                         className="w-full"
                         type="text"
                         name="username"
-                        placeholder="Ej. Juan Perez"
+                        placeholder="Ej. juanperez"
                         value={formData.username}
+                        onChange={handleChange}
+                        errors={errors}
+                        icon={User}
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <label className={labelStyles}>Nombre</label>
+                    <div className="relative">
+                      <Input
+                        className="w-full"
+                        type="text"
+                        name="name"
+                        placeholder="Ej. Juan Perez"
+                        value={formData.name}
                         onChange={handleChange}
                         errors={errors}
                         icon={User}
@@ -360,7 +379,8 @@ export default function UsersAccount () {
               <Container>
                   <thead className="bg-gray-800/40 text-gray-400 border-b border-gray-800">
                     <tr>
-                      <Th>Usuario / ID</Th>
+                      <Th>ID</Th>
+                      <Th>Usuario</Th>
                       <Th>Contacto</Th>
                       <Th>Privilegios</Th>
                       <Th>Estado</Th>
@@ -371,18 +391,26 @@ export default function UsersAccount () {
                   <tbody className="divide-y divide-gray-800">
                     {filteredUsers.map((user) => (
                       <tr key={user.id} className="hover:bg-gray-800/40 transition group">
+
+                      <td className="px-8 py-6">
+                        <div className="text-sm text-gray-500 mt-1">
+                          ID #{user.id}
+                        </div>
+                       </td>
+
                         <td className="px-8 py-6">
                           <div className="flex items-center space-x-4">
+
                             <div className="w-14 h-14 rounded-2xl bg-gray-900 border border-gray-800 shadow-lg flex items-center justify-center">
                               <User size={24} className="text-gray-400"/>
                             </div>
 
                             <div>
                               <div className="text-base font-bold text-white group-hover:text-green-700 transition-colors">
-                                {user.username}
+                                {user.name}
                               </div>
                               <div className="text-sm text-gray-500 mt-1">
-                                ID #{user.id}
+                                {user.username}
                               </div>
                             </div>
                           </div>
@@ -441,7 +469,7 @@ export default function UsersAccount () {
 
                     {filteredUsers.length === 0 && (
                       <tr>
-                        <td colSpan="5" className="px-8 py-20 text-center text-gray-600 italic">
+                        <td colSpan="6" className="px-8 py-20 text-center text-gray-600 italic">
                           No se han encontrado registros de usuarios.
                         </td>
                       </tr>
@@ -449,7 +477,7 @@ export default function UsersAccount () {
                   </tbody>
                   <tfoot>
                     <tr>
-                      <td colSpan="5" className="bg-gray-800/40 p-5 border-t border-gray-800">
+                      <td colSpan="6" className="bg-gray-800/40 p-5 border-t border-gray-800">
                         <div className="flex justify-between items-center">
                           <span className="text-sm font-black text-gray-400 pl-4 uppercase tracking-widest">
                             Total:<span className="text-green-600"> {users.length}</span> Administradores 
