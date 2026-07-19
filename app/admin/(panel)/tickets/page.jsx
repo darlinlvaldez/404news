@@ -8,7 +8,14 @@ import Select from "@/components/admin/ui/Select"
 import Input from "@/components/admin/ui/Input"
 import { Header } from '@/components/admin/Header';
 import { Container, Th } from "@/components/admin/ui/Table";
-import { getStatusStyle, getStatusIcon, getPriorityStyle, getPriorityIcon} from "@/utils/ticketConfig";
+import { 
+  getStatusStyle, 
+  getStatusIcon, 
+  getPriorityStyle, 
+  getPriorityIcon, 
+  statusOptions, 
+  priorityOptions } 
+  from "@/utils/ticketConfig";
 
 import {
   Search,
@@ -64,21 +71,6 @@ export default function TicketsPage() {
         setTotal(data.total);
     });
   }, [page, statusFilter, priorityFilter, debouncedSearch]);
-
-  const statusOptions = [
-    { value: "", label: "Todos los estados" },
-    { value: "closed", label: "Cerrado" },
-    { value: "in_progress", label: "En progreso" },
-    { value: "open", label: "Abierto" },
-    { value: "waiting_response", label: "Esperando respuesta" },
-  ];
-
-  const priorityOptions = [
-    { value: "", label: "Todas las prioridades" },
-    { value: "high", label: "Alta" },
-    { value: "medium", label: "Media" },
-    { value: "low", label: "Baja" },
-  ];
   
   const createLabels = (options) =>
   Object.fromEntries(

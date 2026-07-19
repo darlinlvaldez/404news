@@ -4,11 +4,17 @@ import { useState, useEffect } from 'react';
 import { useParams } from "next/navigation";
 import { useRouter } from 'next/navigation';
 import { Header } from '@/components/admin/Header';
-import { formatDateRelative } from '@/utils/formatDate'
-import { getStatusStyle, getStatusIcon, getPriorityStyle, getPriorityIcon } from '@/utils/ticketConfig';
+import { formatDateRelative, formatDateTimeNumeric } from '@/utils/formatDate'
 import TicketMessage from "@/components/admin/ticket/TicketMessage";
-import useDropdown from "@/hooks/useDropdown";
 import ActionDropdown from "@/components/admin/ui/ActionDropdown";
+import { 
+  getStatusStyle, 
+  getStatusIcon, 
+  getPriorityStyle, 
+  getPriorityIcon, 
+  statusOptions, 
+  priorityOptions } 
+  from '@/utils/ticketConfig';
 
 import { 
   Send, 
@@ -82,48 +88,16 @@ export default function TicketChat() {
     }
   };
 
-  const statusDropdown = useDropdown();
-  const priorityDropdown = useDropdown();
+  const createLabels = (options) =>
+  Object.fromEntries(
+    options
+      .filter(option => option.value)
+      .map(option => [option.value, option.label])
+  );
 
-  const statusOptions = [
-  {
-    value: "open",
-    label: "Open",
-    icon: "🟢"
-  },
-  {
-    value: "pending",
-    label: "Pending",
-    icon: "🟡"
-  },
-  {
-    value: "closed",
-    label: "Closed",
-    icon: "⚫"
-  }
-];
+  const statusLabels = createLabels(statusOptions);
+  const priorityLabels = createLabels(priorityOptions);
 
-
-const priorityOptions = [
-  {
-    value: "high",
-    label: "High",
-    icon: "🔴"
-  },
-  {
-    value: "medium",
-    label: "Medium",
-    icon: "🟡"
-  },
-  {
-    value: "low",
-    label: "Low",
-    icon: "🟢"
-  }
-];
-
-
-  // Estado para la nueva respuesta a escribir
   const [nuevaRespuesta, setNuevaRespuesta] = useState("");
 
   const handleEnviarRespuesta = (e) => {
@@ -219,8 +193,8 @@ const priorityOptions = [
                   Estado
                 </span>
                 <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-black uppercase tracking-wider border ${getStatusStyle(ticket.status)}`}>
-                   {getStatusIcon(ticket.status)}
-                    {ticket.status.replace("_", " ")}
+                  {getStatusIcon(ticket.status)}
+                  {statusLabels[ticket.status] ?? ticket.status}
                 </span>
               </div>
 
@@ -229,7 +203,8 @@ const priorityOptions = [
                   Prioridad
                 </span>
                 <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-black uppercase tracking-wider border ${getPriorityStyle(ticket.priority)}`}>
-                  {getPriorityIcon(ticket.priority)} {ticket.priority}
+                  {getPriorityIcon(ticket.priority)}  
+                  {priorityLabels[ticket.priority] ?? ticket.priority}
                 </span>
               </div>
             </div>
@@ -306,7 +281,7 @@ const priorityOptions = [
                     </div>
                   </div>
                   <span className="text-[10px] text-gray-500 font-mono bg-gray-900 px-2.5 py-1 rounded-lg border border-gray-800">
-                    {formatDateRelative(ticket.created_at)}
+                    {formatDateTimeNumeric(ticket.created_at)}
                   </span>
                 </div>
                 <p className="text-sm text-gray-300 leading-relaxed whitespace-pre-line font-medium pl-1">
@@ -348,23 +323,20 @@ const priorityOptions = [
             <div className="flex flex-wrap items-center gap-3">
               
               <ActionDropdown
-  label="Change status"
-  icon={ArrowLeftRight}
-  name="status"
-  options={statusOptions}
-  onChange={handleTicketChange}
-  closeOthers={priorityDropdown.close}
-/>
+                icon={ArrowLeftRight}
+                name="status"
+                options={statusOptions}
+                getIcon={getStatusIcon}
+                onChange={handleTicketChange}
+              />
 
-
-<ActionDropdown
-  label="Change priority"
-  icon={AlertCircle}
-  name="priority"
-  options={priorityOptions}
-  onChange={handleTicketChange}
-  closeOthers={statusDropdown.close}
-/>
+              <ActionDropdown
+                icon={AlertCircle}
+                name="priority"
+                options={priorityOptions}
+                getIcon={getPriorityIcon}
+                onChange={handleTicketChange}
+              />
 
               {/* ACCIÓN: Cerrar Ticket */}
               {ticket.status !== 'closed' ? (

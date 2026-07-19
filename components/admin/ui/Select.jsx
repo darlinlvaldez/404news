@@ -65,8 +65,7 @@ export default function Select({
         <ul className="absolute w-full bg-[#0b0f1a] border border-green-800 border-t-0 rounded-b-2xl overflow-hidden z-10">
 
           {options.map((option) => (
-            <li
-              key={option.value}
+            <li key={option.value}
               onMouseDown={() => {
 
                 if (name) {

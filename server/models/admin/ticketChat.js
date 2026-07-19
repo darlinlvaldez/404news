@@ -51,7 +51,8 @@ ticketModels.messages = async (id) => {
     tm.is_internal,
     tm.created_at,
 
-    a.name AS sender_name,
+    COALESCE(a.name, u.username) AS sender_name,
+
     a.avatar AS sender_avatar,
 
     u.role AS sender_role
@@ -60,13 +61,15 @@ ticketModels.messages = async (id) => {
 
     LEFT JOIN users u ON u.id = tm.sender_id
 
-    LEFT JOIN authors a ON a.user_id = u.id
+    LEFT JOIN authors a ON u.id = a.user_id
 
     WHERE tm.ticket_id = ?
 
     ORDER BY tm.id ASC`,
     [id]
   );
+
+  console.log(rows)
 
   return rows;
 };

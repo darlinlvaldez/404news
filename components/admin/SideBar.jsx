@@ -37,7 +37,7 @@ export default function SideBar({user}) {
             <div className="p-6 border-b border-green-700">
                 <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-full overflow-hidden bg-gray-700">
-                        <img src="/public/images/notfoundimage.jpg" alt="Usuario" className="w-full h-full object-cover"/>
+                        <img src="/images/notfoundimage.jpg" alt="Usuario" className="w-full h-full object-cover"/>
                     </div>
                     <div className="flex flex-col">
                         <span className="text-sm font-semibold text-white">

@@ -1,4 +1,4 @@
-import { formatDateNumeric } from '@/utils/formatDate'
+import { formatDateTimeNumeric } from '@/utils/formatDate'
 
 export default function TicketMessage({
   message,
@@ -8,27 +8,14 @@ export default function TicketMessage({
     ? "bg-green-950/20 border-green-500/20 text-gray-200"
     : "bg-gray-950 border-gray-800 text-gray-300";
 
-  const avatarClass = isOwnMessage
-    ? "bg-green-800 text-white"
-    : "bg-gray-800 text-gray-300";
-
   return (
-    <div
-      className={`flex flex-col ${
-        isOwnMessage ? "items-end" : "items-start"
-      }`}
-    >
-      <div
-        className={`max-w-[85%] rounded-2xl p-4.5 border shadow-md transition-all duration-150 ${bubbleClass}`}
-      >
-        {/* Cabecera */}
+    <div className={`flex flex-col ${isOwnMessage ? "items-end" : "items-start"}`}>
+      <div className={`max-w-[85%] rounded-2xl p-4.5 border shadow-md transition-all duration-150 ${bubbleClass}`}>
         <div className="flex items-center justify-between gap-8 mb-2.5 border-b border-gray-800/40 pb-2">
           <div className="flex items-center space-x-2">
 
-            <div
-              className={`w-6 h-6 rounded-md flex items-center justify-center font-black text-xs ${avatarClass}`}
-            >
-              {message.avatar}
+            <div className="w-7 h-7 rounded-lg bg-green-950/60 text-green-400 border border-green-500/20 flex items-center justify-center font-bold text-xs">
+              {message.sender_name.substring(0,2).toUpperCase()}
             </div>
 
             <div>
@@ -46,11 +33,10 @@ export default function TicketMessage({
           </div>
 
           <span className="text-[9px] text-gray-500 font-mono">
-            {formatDateNumeric(message.created_at)}
+            {formatDateTimeNumeric(message.created_at)}
           </span>
         </div>
 
-        {/* Mensaje */}
 
         <p className="text-sm leading-relaxed whitespace-pre-line font-medium pl-1">
           {message.message}

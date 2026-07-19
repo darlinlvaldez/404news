@@ -9,6 +9,21 @@ import {
   Circle,
 } from "lucide-react";
 
+export const statusOptions = [
+  { value: "", label: "Todos los estados" },
+  { value: "closed", label: "Cerrado" },
+  { value: "in_progress", label: "En progreso" },
+  { value: "open", label: "Abierto" },
+  { value: "waiting_response", label: "Esperando respuesta" },
+];
+
+export const priorityOptions = [
+  { value: "", label: "Todas las prioridades" },
+  { value: "high", label: "Alta" },
+  { value: "medium", label: "Media" },
+  { value: "low", label: "Baja" },
+];
+
 export const getStatusStyle = (status) => {
   switch (status) {
     case "closed":
@@ -56,7 +71,7 @@ export const getPriorityStyle = (priority) => {
       return "text-amber-400 border-amber-500/20 bg-amber-950/30";
 
     case "low":
-      return "text-emerald-400 border-emerald-500/20 bg-emerald-950/30";
+      return "text-emerald-400 border-green-700 bg-green-950/30";
 
     default:
       return "text-gray-500 border-gray-500/20";

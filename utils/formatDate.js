@@ -33,10 +33,20 @@ export function formatDateAbsolute(dateString) {
   })
 }
 
-export function formatDateNumeric(dateString) {
-  return new Date(dateString).toLocaleDateString('es-ES', {
+export function formatDateTimeNumeric(dateString) {
+  const date = new Date(dateString);
+  
+  const fecha = date.toLocaleDateString('es-ES', {
     day: 'numeric',
     month: '2-digit',
     year: 'numeric'
-  })
+  });
+
+  const hora = date.toLocaleTimeString('es-ES', {
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: true
+  });
+
+  return `${fecha} ${hora}`;
 }
