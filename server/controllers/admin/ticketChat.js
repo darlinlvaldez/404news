@@ -16,4 +16,20 @@ ticketChat.update = async ({ id, status, priority }) => {
   });
 };
 
+ticketChat.create = async ({
+  id,
+  senderId,
+  senderType,
+  message,
+  isInternal
+}) => {
+  return await ticketModels.create({
+    ticketId: id,
+    senderId,
+    message,
+    senderType,
+    isInternal
+  });
+};
+
 export default ticketChat;

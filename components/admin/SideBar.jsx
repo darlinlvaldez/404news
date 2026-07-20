@@ -16,11 +16,12 @@ export default function SideBar({user}) {
 
     const links = [
         { name: "Dashboard", href: "/admin/dashboard", roles: ["superadmin", "admin", "editor", "support", "author"] },
-        { name: "Noticias", href: "/admin/news", roles: ["superadmin", "admin", "editor", "author"] },
+        { name: "Noticias", href: "/admin/news", roles: ["superadmin", "admin", "editor"] },
         { name: "Categorías", href: "/admin/categories", roles: ["superadmin", "admin"] },
         { name: "Autores", href: "/admin/authors", roles: ["superadmin", "admin", "editor"] },
         { name: "Administradores", href: "/admin/users", roles: ["superadmin", "admin"] },
-        { name: "Tickets", href: "/admin/tickets", roles: ["superadmin", "admin", "support", "author"] },
+        { name: "Tickets", href: user.role === "author" ? "/admin/authors/tickets" : "/admin/tickets",
+        roles: ["superadmin", "admin", "support", "author"]},
     ];
 
     const getLinkClasses = (path) => 

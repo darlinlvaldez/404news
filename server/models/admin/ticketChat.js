@@ -115,4 +115,45 @@ ticketModels.update = async (id, data) => {
   );
 };
 
+ticketModels.create = async ({
+    ticketId,
+    senderId,
+    senderType,
+    message,
+    isInternal = false
+}) => {
+
+    await db.execute(`
+        INSERT INTO ticket_messages
+        (
+            ticket_id,
+            sender_type,
+            sender_id,
+            message,
+            is_internal
+        )
+        VALUES (?, ?, ?, ?, ?)
+    `, [
+        ticketId,
+        senderType,
+        senderId,
+        message,
+        isInternal ? 1 : 0
+    ]
+  );
+
+  await db.execute(
+    `
+    UPDATE tickets
+    SET
+      last_reply_at = NOW(),
+      updated_at = NOW()
+    WHERE id = ?
+    `,
+    [ticketId]
+  );
+
+  return await ticketModels.messages(ticketId);
+};
+
 export default ticketModels;

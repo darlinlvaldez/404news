@@ -33,6 +33,7 @@ export default function TicketChat() {
 
   const [ticket, setTicket] = useState(null);
   const [messages, setMessages] = useState(null);
+  const [newResponse, setNewResponse] = useState("");
 
   const { id } = useParams();
 
@@ -94,26 +95,36 @@ export default function TicketChat() {
   const statusLabels = createLabels(statusOptions);
   const priorityLabels = createLabels(priorityOptions);
 
-  const [nuevaRespuesta, setNuevaRespuesta] = useState("");
-
-  const handleEnviarRespuesta = (e) => {
+  const handleSendResponse = async (e) => {
     e.preventDefault();
-    if (!nuevaRespuesta.trim()) return;
 
-    const nuevaRes = {
-      id: Date.now(),
-      autor: "Admin",
-      rol: "admin",
-      avatar: "A",
-      mensaje: nuevaRespuesta,
-      fecha: "Hoy mismo - Hace unos instantes"
-    };
+    if (!newResponse.trim()) return;
 
-    setTicket({
-      ...ticket,
-      respuestas: [...ticket.respuestas, nuevaRes]
-    });
-    setNuevaRespuesta("");
+    try {
+
+      const response = await fetch(`/api/admin/tickets/${id}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          message: newResponse
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error();
+      }
+
+      const data = await response.json();
+
+      setMessages(data.messages);
+
+      setNewResponse("");
+
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const onBack = () => {
@@ -336,7 +347,7 @@ export default function TicketChat() {
               )}
             </div>
 
-            <form onSubmit={handleEnviarRespuesta} className="relative">
+            <form onSubmit={handleSendResponse} className="relative">
               <div className="flex flex-col space-y-2">
                 <span className="text-[10px] text-gray-500 font-bold uppercase tracking-widest block pl-1">
                   Escribir respuesta
@@ -345,15 +356,15 @@ export default function TicketChat() {
                 <div className="relative">
                   <textarea
                     rows="3"
-                    value={nuevaRespuesta}
-                    onChange={(e) => setNuevaRespuesta(e.target.value)}
+                    value={newResponse}
+                    onChange={(e) => setNewResponse(e.target.value)}
                     placeholder="Escribe aquí tu respuesta para resolver la incidencia de Darlin..."
                     className="w-full px-4 py-3 bg-gray-900 border border-gray-800 focus:border-green-600 focus:ring-1 focus:ring-green-600 focus:outline-none rounded-2xl text-sm font-medium text-gray-200 placeholder-gray-600 resize-none pr-14 shadow-inner"
                   ></textarea>
 
                   <button
                     type="submit"
-                    disabled={!nuevaRespuesta.trim()}
+                    disabled={!newResponse.trim()}
                     className="absolute right-3.5 bottom-4 p-2.5 bg-green-700 hover:bg-green-600 disabled:opacity-20 disabled:hover:bg-green-700 text-white rounded-xl transition-all duration-200 shadow-md flex items-center justify-center active:scale-95 cursor-pointer"
                   >
                     <Send className="w-4 h-4" />

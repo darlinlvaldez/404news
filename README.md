@@ -22,7 +22,11 @@ Arreglar en el frontend los estilos de las noticias.
 
 Agregar perfil de usuario en admin.
 
-Agregar sistema de tickets.
+Agregar zod en tickets.
+ 
+Agregar que el author pueda enviar tickets.
+
+Agregar que el cliente pueda enviar tickets.
 
 Arreglar los estilos del chat de tickets en responsive.
 

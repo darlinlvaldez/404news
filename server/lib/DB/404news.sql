@@ -1,6 +1,6 @@
 /*
 SQLyog Community v13.3.1 (64 bit)
-MySQL - 8.0.44 : Database - 404news
+MySQL - 9.4.0 : Database - 404news
 *********************************************************************
 */
 
@@ -23,7 +23,7 @@ DROP TABLE IF EXISTS `authors`;
 CREATE TABLE `authors` (
   `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `bio` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `bio` varchar(500) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `slug` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `avatar` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `user_id` int NOT NULL,
@@ -36,15 +36,11 @@ CREATE TABLE `authors` (
 
 /*Data for the table `authors` */
 
-LOCK TABLES `authors` WRITE;
-
 insert  into `authors`(`id`,`name`,`bio`,`slug`,`avatar`,`user_id`) values 
 (1,'Ana Torres','Periodista especializada en inteligencia artificial con más de 10 años de experiencia','ana-torres','',2),
 (2,'Carlos Mendoza','Analista de hardware y dispositivos móviles, colaborador habitual en revistas especializadas','carlos-mendoza','',3),
 (3,'Laura Vega','Desarrolladora de software y experta en nuevas tecnologías','laura-vega','',4),
 (4,'Miguel Ruiz','Ingeniero en sistemas y especialista en hardware de PCs','miguel-ruiz','',5);
-
-UNLOCK TABLES;
 
 /*Table structure for table `categories` */
 
@@ -64,16 +60,12 @@ CREATE TABLE `categories` (
 
 /*Data for the table `categories` */
 
-LOCK TABLES `categories` WRITE;
-
 insert  into `categories`(`id`,`name`,`slug`,`created_at`,`active`) values 
 (1,'Inteligencia Artificial','ia-inteligencia-artificial','2026-02-03 12:01:14',1),
 (2,'Dispositivos Móviles','dispositivos-moviles','2026-02-03 12:01:14',1),
 (3,'Software','desarrollo-software-app','2026-02-03 12:01:14',1),
 (4,'Computadoras (PC)','computadoras-pc','2026-02-03 12:01:14',1),
 (5,'Tecnología General','tecnologia-general','2026-02-03 20:19:34',1);
-
-UNLOCK TABLES;
 
 /*Table structure for table `country_stats` */
 
@@ -91,11 +83,9 @@ CREATE TABLE `country_stats` (
   KEY `idx_country_stats_date` (`created_at`),
   KEY `idx_country_stats_news_country` (`news_id`,`country_code`),
   CONSTRAINT `country_stats_ibfk_1` FOREIGN KEY (`news_id`) REFERENCES `news` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=356 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=358 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `country_stats` */
-
-LOCK TABLES `country_stats` WRITE;
 
 insert  into `country_stats`(`id`,`news_id`,`country_code`,`country_name`,`views`,`created_at`) values 
 (1,13,'US','United States',2,'2026-06-29 17:58:32'),
@@ -364,9 +354,9 @@ insert  into `country_stats`(`id`,`news_id`,`country_code`,`country_name`,`views
 (352,75,'DO','Dominican Republic',1,'2026-07-15 05:20:59'),
 (353,75,'US','United States',7,'2026-07-15 05:21:05'),
 (354,79,'US','United States',1,'2026-07-16 21:41:23'),
-(355,19,'US','United States',1,'2026-07-17 08:37:16');
-
-UNLOCK TABLES;
+(355,19,'US','United States',1,'2026-07-17 08:37:16'),
+(356,34,'US','United States',1,'2026-07-19 22:01:12'),
+(357,10,'US','United States',1,'2026-07-20 12:30:51');
 
 /*Table structure for table `news` */
 
@@ -396,8 +386,6 @@ CREATE TABLE `news` (
 
 /*Data for the table `news` */
 
-LOCK TABLES `news` WRITE;
-
 insert  into `news`(`id`,`title`,`slug`,`excerpt`,`cover_image`,`author_id`,`category_id`,`status`,`created_at`,`updated_at`,`views`) values 
 (1,'GPT-5 supera los límites de la generación de texto multimodal','gpt-5-supera-limites-texto-multimodal','OpenAI presenta su modelo más avanzado capaz de entender y generar contenido en múltiples formatos','https://www.iweaver.ai/wp-content/uploads/2025/08/ChatGPT-5.webp',1,1,'draft','2026-02-12 14:31:54','2026-02-19 15:18:42',7),
 (2,'Nuevo modelo de IA detecta enfermedades con 98% de precisión','ia-detecta-enfermedades-precision','Sistema de inteligencia artificial revoluciona el diagnóstico médico temprano','https://images.ecestaticos.com/MfuZbXrtEZBJSHTQghygcWF5u-g=/0x0:2272x1515/1200x1200/filters:fill(white):format(jpg)/f.elconfidencial.com%2Foriginal%2F194%2F3b6%2F83b%2F1943b683bccc82165c4ab61e16e7c727.jpg',1,1,'published','2026-02-02 14:30:00','2026-07-07 05:35:09',6),
@@ -408,7 +396,7 @@ insert  into `news`(`id`,`title`,`slug`,`excerpt`,`cover_image`,`author_id`,`cat
 (7,'Procesadores cuánticos disponibles para computadoras personales','procesadores-cuanticos-pc-personales','IBM lanza el primer procesador cuántico accesible para el mercado de consumo','https://i.blogs.es/491562/intelcuanticaap/1366_2000.jpg',4,4,'published','2026-01-28 15:40:00','2026-07-08 06:53:35',3),
 (8,'NVIDIA RTX 5090: 4 veces más rápida que su predecesora','nvidia-rtx-5090-rendimiento','La nueva generación de tarjetas gráficas establece récords de rendimiento','https://www.storagereview.com/wp-content/uploads/2025/01/StorageReview-NVIDIA-RTX5090-Lab-01-1024x615.jpg',4,4,'published','2026-01-27 09:25:00','2026-07-08 01:53:35',3),
 (9,'Internet satelital alcanza velocidades de 1 Gbps globalmente','internet-satelital-1gbps-global','Proyectos de constelación satelital democratizan el acceso a internet de alta velocidad','https://www.adslzone.net/app/uploads-adslzone.net/2024/01/nave-espacial-que-orbita-planeta-tierra-comunicaciones-globales-generadas-ia.jpg',3,5,'published','2026-01-26 12:15:00','2026-07-10 19:22:32',5),
-(10,'Robots humanoides realizan tareas domésticas complejas','robots-humanoides-tareas-domesticas','Nueva generación de robots asistentes aprenden y se adaptan a entornos domésticos','https://www.infobae.com/new-resizer/tIpR57VRa38zapjgpaE9nl0rObM=/arc-anglerfish-arc2-prod-infobae/public/WPTXEEPKV5CYBHADF3XIWNT3P4.png',1,5,'published','2026-01-25 17:30:00','2026-07-03 02:51:55',4),
+(10,'Robots humanoides realizan tareas domésticas complejas','robots-humanoides-tareas-domesticas','Nueva generación de robots asistentes aprenden y se adaptan a entornos domésticos','https://www.infobae.com/new-resizer/tIpR57VRa38zapjgpaE9nl0rObM=/arc-anglerfish-arc2-prod-infobae/public/WPTXEEPKV5CYBHADF3XIWNT3P4.png',1,5,'published','2026-01-25 17:30:00','2026-07-20 13:00:51',5),
 (11,'Meta lanza Llama 3.2 con capacidades de razonamiento matemático avanzado','meta-llama-3-2-razonamiento-matematico','Nuevo modelo open-source supera a GPT-4 en tareas de matemáticas y razonamiento lógico','https://i.ytimg.com/vi/94gWFywzNzA/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLBRkI0sqKa53yrEN5DHbsVIOK32ng',1,1,'published','2026-01-24 08:45:00','2026-07-07 03:35:09',3),
 (12,'DeepMind resuelve problema biológico de plegamiento de proteínas con AlphaFold 3','deepmind-alphafold-3-proteínas','IA de Google logra predicción precisa de estructuras de proteínas con aplicaciones médicas revolucionarias','https://s3.abcstatics.com/media/ciencia/2020/12/01/30SCI-DEEPMIND1-superJumbo-kUoF--1248x698@abc.jpg',1,1,'published','2026-02-14 12:22:20','2026-02-14 12:22:24',6),
 (13,'ChatGPT obtiene capacidad de memoria a largo plazo','chatgpt-memoria-largo-plazo','OpenAI actualiza su modelo para recordar conversaciones anteriores y preferencias del usuario','https://cloudfront-us-east-1.images.arcpublishing.com/infobae/C2RUS3WYTJBVLEWKMLRNPB2DYQ.png',1,1,'published','2026-01-22 11:30:00','2026-07-08 20:41:21',5),
@@ -432,7 +420,7 @@ insert  into `news`(`id`,`title`,`slug`,`excerpt`,`cover_image`,`author_id`,`cat
 (31,'CES 2026: Innovaciones prácticas con IA en dispositivos y robots','ces-2026-innovaciones-practicas-ia','Más de 4 000 expositores en CES 2026 mostraron aplicaciones útiles de IA para robots, teléfonos y pantallas.','https://www.elheraldo.hn/binrepository/1260x945/0c0/0d0/none/45933/QPCK/el-heraldo-18_13182832_20260109141538.jpg',4,5,'published','2026-01-09 11:00:00','2026-07-06 19:22:22',4),
 (32,'Proyección: IA alcanzará 5 000 millones de usuarios para 2030','ia-5-mil-millones-usuarios-2030','Expertos proyectan que la IA podría llegar a 5 000 millones de usuarios para 2030 tras CES 2026.','https://www.hostinger.com/es/tutoriales/wp-content/uploads/sites/32/2023/12/Crecimiento-de-la-industria-de-la-IA-al-2030-scaled.png',1,1,'published','2026-01-07 18:30:00','2026-07-08 22:41:21',5),
 (33,'OpenAI lanza \"Omni Model\": un solo IA para texto, voz, visión y robótica','openai-omni-model-unificado','Arquitectura única elimina la necesidad de modelos especializados, reduciendo costos 90%','https://imagenes.computerhoy.20minutos.es/files/image_640_360/uploads/imagenes/2025/06/16/68e7f8b26a6e1.jpeg',1,1,'published','2026-02-16 10:06:55','2026-07-02 09:51:54',5),
-(34,'iPhone 17 Ultra: batería que se carga con luz ambiental','iphone-17-ultra-bateria-que-se-carga-con-luz-ambiental','Apple integra células fotovoltaicas transparentes en pantalla que generan 30% de energía diaria','https://i.blogs.es/7442e4/analisis-iphone-17-pro-max-28/375_375.jpeg',2,2,'published','2026-02-28 16:10:00','2026-07-14 18:33:13',63),
+(34,'iPhone 17 Ultra: batería que se carga con luz ambiental','iphone-17-ultra-bateria-que-se-carga-con-luz-ambiental','Apple integra células fotovoltaicas transparentes en pantalla que generan 30% de energía diaria','https://i.blogs.es/7442e4/analisis-iphone-17-pro-max-28/375_375.jpeg',2,2,'published','2026-02-28 16:10:00','2026-07-19 22:31:11',64),
 (35,'Samsung Galaxy Fold 6: pantalla que se auto-repara de rasguños','samsung-fold-6-autoreparacion','Tecnología \"Self-Healing Display\" utiliza polímeros que regeneran micro-rayones en 24 horas','https://www.repuestostic.com/63892-superlarge_default/cambio-pantalla-interna-samsung-galaxy-z-fold-6-f956-original-service-pack.jpg',2,2,'published','2026-02-25 10:15:00','2026-07-01 08:33:40',15),
 (36,'Google Project Ara revive: smartphone modular con actualizaciones mensuales','google-project-ara-modular-2026','Nueva versión permite cambiar procesador, cámara y batería como piezas de LEGO','https://www.zdnet.com/a/img/resize/e7aff3398e12f0fa70fd66238d743054c4c8b95e/2018/04/19/092cbf81-acac-4f3a-91a1-5a26abc1721f/postgresql-logo.png?auto=webp&fit=crop&height=900&width=1200',2,2,'published','2026-02-20 13:40:00','2026-07-03 17:21:55',4),
 (37,'Windows 12: Sistema operativo que aprende y se adapta a cada usuario','windows-12-os-adaptativo','IA integrada reconfigura interfaz, optimiza recursos y anticipa necesidades en tiempo real','https://i.blogs.es/03dfc6/captura-de-pantalla-2023-03-29-a-las-9.22.11/840_560.jpeg',3,3,'published','2026-02-18 09:25:00','2026-07-01 08:33:41',4),
@@ -488,8 +476,6 @@ insert  into `news`(`id`,`title`,`slug`,`excerpt`,`cover_image`,`author_id`,`cat
 (96,'IA conquista el espacio: primer modelo entrenado en órbita por Nvidia y StarCloud','ia-espacio-modelo-entrenado-orbita','Las condiciones térmicas y energéticas del espacio ofrecen ventajas para centros de datos','https://www.hd-tecnologia.com/imagenes/articulos/2025/10/NVIDIA-llevara-la-inteligencia-artificial-al-espacio-exterior-con-el-primer-centro-de-datos-orbital-del-mundo-2.jpg',3,5,'published','2026-01-14 18:00:00','2026-07-06 19:52:22',3),
 (98,'claro claro claro ','claro-claro-claro','claro claro claro claro claro','https://localo.com/es/assets/img/definitions/what-is-google-translate.webp',3,3,'published','2026-02-21 13:01:39','2026-07-01 08:33:33',8);
 
-UNLOCK TABLES;
-
 /*Table structure for table `news_blocks` */
 
 DROP TABLE IF EXISTS `news_blocks`;
@@ -498,7 +484,7 @@ CREATE TABLE `news_blocks` (
   `id` int NOT NULL AUTO_INCREMENT,
   `news_id` int NOT NULL,
   `block_type` enum('paragraph','image','heading') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
+  `content` text COLLATE utf8mb4_general_ci,
   `image_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `alt_text` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `position` int NOT NULL,
@@ -509,8 +495,6 @@ CREATE TABLE `news_blocks` (
 ) ENGINE=InnoDB AUTO_INCREMENT=92 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `news_blocks` */
-
-LOCK TABLES `news_blocks` WRITE;
 
 insert  into `news_blocks`(`id`,`news_id`,`block_type`,`content`,`image_url`,`alt_text`,`position`,`created_at`) values 
 (1,1,'heading','La revolución multimodal de la IA','https://blog.donweb.com/wp-content/uploads/2025/08/Lo-nuevo-de-GPT-5.jpeg',NULL,1,'2026-02-05 12:46:12'),
@@ -567,8 +551,6 @@ insert  into `news_blocks`(`id`,`news_id`,`block_type`,`content`,`image_url`,`al
 (90,98,'image','','https://www.gstatic.com/marketing-cms/5e/ec/5b5baeb34571b791b2020d4cacad/meta-image.png','seacrh',2,'2026-02-21 13:29:44'),
 (91,98,'paragraph','wow wow wow wow wow wow wow wow wow wow wow wow wow wow wow wow wow wow wow wow wow wow wow wow',NULL,NULL,3,'2026-02-21 13:29:44');
 
-UNLOCK TABLES;
-
 /*Table structure for table `ticket_attachments` */
 
 DROP TABLE IF EXISTS `ticket_attachments`;
@@ -576,11 +558,11 @@ DROP TABLE IF EXISTS `ticket_attachments`;
 CREATE TABLE `ticket_attachments` (
   `id` int NOT NULL AUTO_INCREMENT,
   `message_id` int NOT NULL,
-  `original_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `file_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `mime_type` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `original_name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `file_name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `mime_type` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
   `file_size` int NOT NULL,
-  `file_path` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `file_path` varchar(500) COLLATE utf8mb4_general_ci NOT NULL,
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `fk_attachment_message` (`message_id`),
@@ -589,10 +571,6 @@ CREATE TABLE `ticket_attachments` (
 
 /*Data for the table `ticket_attachments` */
 
-LOCK TABLES `ticket_attachments` WRITE;
-
-UNLOCK TABLES;
-
 /*Table structure for table `ticket_messages` */
 
 DROP TABLE IF EXISTS `ticket_messages`;
@@ -600,9 +578,9 @@ DROP TABLE IF EXISTS `ticket_messages`;
 CREATE TABLE `ticket_messages` (
   `id` int NOT NULL AUTO_INCREMENT,
   `ticket_id` int NOT NULL,
-  `sender_type` enum('user','admin','system') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `sender_type` enum('user','admin','system') COLLATE utf8mb4_general_ci NOT NULL,
   `sender_id` int DEFAULT NULL,
-  `message` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `message` text COLLATE utf8mb4_general_ci NOT NULL,
   `is_internal` tinyint(1) NOT NULL DEFAULT '0',
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
@@ -610,16 +588,9 @@ CREATE TABLE `ticket_messages` (
   KEY `fk_tm_sender` (`sender_id`),
   CONSTRAINT `fk_tm_sender` FOREIGN KEY (`sender_id`) REFERENCES `users` (`id`) ON DELETE SET NULL,
   CONSTRAINT `fk_tm_ticket` FOREIGN KEY (`ticket_id`) REFERENCES `tickets` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `ticket_messages` */
-
-LOCK TABLES `ticket_messages` WRITE;
-
-insert  into `ticket_messages`(`id`,`ticket_id`,`sender_type`,`sender_id`,`message`,`is_internal`,`created_at`) values 
-(1,1,'user',2,'ya tu sabe',1,'2026-07-17 21:13:05');
-
-UNLOCK TABLES;
 
 /*Table structure for table `tickets` */
 
@@ -627,14 +598,13 @@ DROP TABLE IF EXISTS `tickets`;
 
 CREATE TABLE `tickets` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `type` enum('contact','submission') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `status` enum('open','in_progress','waiting_response','closed') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'open',
-  `priority` enum('low','medium','high') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'medium',
-  `subject` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `message` text COLLATE utf8mb4_general_ci NOT NULL,
+  `type` enum('contact','submission') COLLATE utf8mb4_general_ci NOT NULL,
+  `status` enum('open','in_progress','waiting_response','closed') COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'open',
+  `priority` enum('low','medium','high') COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'medium',
+  `subject` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `user_id` int DEFAULT NULL,
-  `guest_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `guest_email` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `guest_name` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `guest_email` varchar(150) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `assigned_to` int DEFAULT NULL,
   `last_reply_at` datetime DEFAULT CURRENT_TIMESTAMP,
   `closed_at` datetime DEFAULT NULL,
@@ -645,16 +615,9 @@ CREATE TABLE `tickets` (
   KEY `fk_ticket_assigned` (`assigned_to`),
   CONSTRAINT `fk_ticket_assigned` FOREIGN KEY (`assigned_to`) REFERENCES `users` (`id`) ON DELETE SET NULL,
   CONSTRAINT `fk_ticket_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `tickets` */
-
-LOCK TABLES `tickets` WRITE;
-
-insert  into `tickets`(`id`,`type`,`status`,`priority`,`subject`,`message`,`user_id`,`guest_name`,`guest_email`,`assigned_to`,`last_reply_at`,`closed_at`,`created_at`,`updated_at`) values 
-(1,'submission','in_progress','medium','claro','clarooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo',2,NULL,NULL,1,'2026-07-17 20:09:19','2026-07-17 20:09:25','2026-07-17 20:09:29','2026-07-17 21:53:23');
-
-UNLOCK TABLES;
 
 /*Table structure for table `users` */
 
@@ -662,28 +625,25 @@ DROP TABLE IF EXISTS `users`;
 
 CREATE TABLE `users` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `username` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
-  `email` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `password` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `role` enum('superadmin','admin','support','editor','author') COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'editor',
+  `username` varchar(100) NOT NULL,
+  `NAME` varchar(100) DEFAULT NULL,
+  `email` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `role` enum('superadmin','admin','support','editor','author') NOT NULL DEFAULT 'editor',
   `active` tinyint(1) DEFAULT '1',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 /*Data for the table `users` */
 
-LOCK TABLES `users` WRITE;
-
-insert  into `users`(`id`,`username`,`email`,`password`,`role`,`active`,`created_at`) values 
-(1,'darlin','darlinlvaldez@gmail.com','$2b$10$2LKClehgb5ifsKKVHQDh/u8E3VmxyjYjVW3Pd0Cuty9vBrkvSraZy','superadmin',1,'2026-02-24 19:52:21'),
-(2,'anatorres','anatorres@gmail.com','$2b$10$u1rbukGt2wC9qla7UxwUJ..lJtNTH9chXxArqMwBmBGe24FQoQ/IG','author',1,'2026-02-25 19:36:00'),
-(3,'carlosmendoza','carlosmendoza@gmail.com','$2b$10$LsGLMl3rGkp8hWf1KrMBMuTScmSf5yeP8QUKIgQnhi.br/1haltxK','author',1,'2026-02-25 19:37:15'),
-(4,'lauravega','lauravega@gmail.com','$2b$10$hTBJsFQ2H3Eu9sJTnfIYCuxq2y37VBHW84xscLDwubL8oKfCkhGKO','author',1,'2026-02-25 19:37:50'),
-(5,'miguelruiz','miguelruiz@gmail.com','$2b$10$oS13OGYebsgM9c31EFOfMOfziqnGX6TFoxeKuG94S/cwIY2q1FCsS','author',1,'2026-02-25 19:38:15');
-
-UNLOCK TABLES;
+insert  into `users`(`id`,`username`,`NAME`,`email`,`password`,`role`,`active`,`created_at`) values 
+(1,'darlin','Darlin L. Valdez','darlinlvaldez@gmail.com','$2b$10$2LKClehgb5ifsKKVHQDh/u8E3VmxyjYjVW3Pd0Cuty9vBrkvSraZy','superadmin',1,'2026-02-24 19:52:21'),
+(2,'anatorres','Ana Torres','anatorres@gmail.com','$2b$10$u1rbukGt2wC9qla7UxwUJ..lJtNTH9chXxArqMwBmBGe24FQoQ/IG','author',1,'2026-02-25 19:36:00'),
+(3,'carlosmendoza','Carlos Mendoza','carlosmendoza@gmail.com','$2b$10$LsGLMl3rGkp8hWf1KrMBMuTScmSf5yeP8QUKIgQnhi.br/1haltxK','author',1,'2026-02-25 19:37:15'),
+(4,'lauravega','Laura Vega','lauravega@gmail.com','$2b$10$hTBJsFQ2H3Eu9sJTnfIYCuxq2y37VBHW84xscLDwubL8oKfCkhGKO','author',1,'2026-02-25 19:37:50'),
+(5,'miguelruiz','Miguel Ruiz','miguelruiz@gmail.com','$2b$10$oS13OGYebsgM9c31EFOfMOfziqnGX6TFoxeKuG94S/cwIY2q1FCsS','author',1,'2026-02-25 19:38:15');
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
