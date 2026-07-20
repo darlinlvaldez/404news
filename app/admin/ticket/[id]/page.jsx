@@ -228,6 +228,25 @@ export default function TicketChat() {
               </div>
             </div>
 
+            <div className="pt-2">
+              <span className="text-[10px] text-gray-500 font-bold uppercase tracking-widest block border-b border-gray-800/40 pb-1">
+                Administrador responsable
+              </span>
+              <span className="text-gray-300 text-xs font-mono block">
+                {ticket.assigned_name ?? "Sin asignar"}
+              </span>            
+            </div>
+
+            {ticket.closed_at && (
+              <div className="pt-2">
+                <span className="text-[10px] text-gray-500 font-bold uppercase tracking-widest block border-b border-gray-800/40 pb-1">
+                  Cierre del ticket
+                </span>
+                <span className="text-gray-300 text-xs font-mono block">
+                  {formatDateTimeNumeric(ticket.closed_at)}
+                </span>            
+              </div>
+            )}
           </div>
 
           <div className="bg-green-950/10 border border-green-900/30 p-4 rounded-xl">

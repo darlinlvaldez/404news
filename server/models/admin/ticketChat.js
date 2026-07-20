@@ -22,6 +22,7 @@ ticketModels.ticket = async (id) => {
       t.updated_at,
 
       COALESCE(a.name, u.name, u.username, t.guest_name) AS sender_name,
+      COALESCE(assigned.name, assigned.username) AS assigned_name,
 
       a.avatar AS sender_avatar,
 
@@ -31,6 +32,7 @@ ticketModels.ticket = async (id) => {
 
     LEFT JOIN authors a ON a.user_id = t.user_id
     LEFT JOIN users u ON t.user_id = u.id
+    LEFT JOIN users assigned ON assigned.id = t.assigned_to
 
     WHERE t.id = ?
     LIMIT 1
@@ -71,8 +73,6 @@ ticketModels.messages = async (id) => {
     [id]
   );
 
-  console.log(rows)
-
   return rows;
 };
 
@@ -81,9 +81,19 @@ ticketModels.update = async (id, data) => {
   const fields = [];
   const values = [];
 
+  const ticket = await ticketModels.ticket(id);
+
   if (data.status !== undefined) {
-    fields.push("status = ?");
-    values.push(data.status);
+    if (data.status !== ticket.status) {
+      fields.push("status = ?");
+      values.push(data.status);
+
+      if (data.status === "closed") {
+        fields.push("closed_at = NOW()");
+      } else if (ticket.status === "closed") {
+        fields.push("closed_at = NULL");
+      }
+    }
   }
 
   if (data.priority !== undefined) {
