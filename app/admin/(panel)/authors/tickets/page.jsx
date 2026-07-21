@@ -105,7 +105,7 @@ export default function TicketsPage() {
                 setSearch(e.target.value);
                 setPage(1);
               }}
-              placeholder="Buscar por ID, asunto, remitente o email..."
+              placeholder="Buscar por ID, asunto..."
               icon={Search}
             />
           </div>
@@ -127,7 +127,6 @@ export default function TicketsPage() {
         <Container>
           <thead>
             <tr className="bg-gray-800/40 text-gray-400 tracking-tight border-b border-slate-800">
-              <Th>ID</Th>
               <Th>Asunto</Th>
               <Th>Estado</Th>
               <Th>Ultima Actividad</Th>
@@ -162,7 +161,7 @@ export default function TicketsPage() {
                 </td>
                 <td className="px-8 py-5 text-right">
                   <div className="flex space-x-2">
-                    <Link href={`/admin/authors/ticket/${tickets.id}`}
+                    <Link href={`/admin/authors/tickets/${tickets.id}`}
                       className="p-3 bg-gray-800 hover:bg-green-600 text-slate-400 hover:text-white rounded-xl transition-all shadow-lg active:scale-95 flex items-center justify-center"
                     ><Eye size={18} />Ver
                     </Link>

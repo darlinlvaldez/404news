@@ -51,7 +51,7 @@ export async function POST(request, { params }) {
       "editor"
     ]);
 
-    const senderType = session.role === "author" ? "user" : "admin";
+    const senderType = "admin";
 
     const body = await request.json();
 
@@ -60,9 +60,7 @@ export async function POST(request, { params }) {
       senderId: session.id,
       senderType,
       message: body.message,
-      isInternal: senderType === "admin"
-        ? body.isInternal ?? false
-        : false
+      isInternal: body.isInternal
     });
 
     return NextResponse.json({

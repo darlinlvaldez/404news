@@ -11,8 +11,8 @@ ticketChat.ticket = async ({ id }) => {
 
 ticketChat.update = async ({ id, status, priority }) => {
   await ticketModels.update(id, {
-      status,
-      priority
+    status,
+    priority
   });
 };
 
@@ -23,6 +23,11 @@ ticketChat.create = async ({
   message,
   isInternal
 }) => {
+
+  if (senderType !== "admin") {
+    isInternal = false;
+  }
+
   return await ticketModels.create({
     ticketId: id,
     senderId,

@@ -14,7 +14,7 @@ export async function GET(request) {
     const search = searchParams.get("search") || "";
     const status = searchParams.get("status") || "";
 
-    const result = await ticketsController.ticketsTable({
+    const result = await ticketsController.ticketsTableMinimum({
       limit,
       offset,
       search,

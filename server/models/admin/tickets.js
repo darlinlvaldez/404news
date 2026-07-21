@@ -80,4 +80,65 @@ tickets.getAll = async function (
   return { rows, total };
 };
 
+tickets.getMinimum = async function (
+  limit = 50,
+  offset = 0,
+  search = "",
+  status = "",
+  userId
+) {
+  let baseQuery = `
+    FROM tickets t
+    LEFT JOIN users u ON t.user_id = u.id
+    LEFT JOIN authors a ON a.user_id = u.id
+    WHERE t.user_id = ?
+  `;
+
+  const params = [userId];
+
+  if (search) {
+    baseQuery += `
+      AND (
+        t.subject LIKE ?
+        OR t.id LIKE ?
+      )
+    `;
+
+    params.push(
+      `%${search}%`,
+      `%${search}%`
+    );
+  }
+
+  if (status) {
+    baseQuery += ` AND t.status = ?`;
+    params.push(status);
+  }
+
+  const [countResult] = await db.query(
+    `SELECT COUNT(*) AS total ${baseQuery}`,
+    params
+  );
+
+  const total = countResult[0].total;
+
+  const [rows] = await db.query(
+    `
+    SELECT
+      t.id,
+      t.subject,
+      t.status,
+      COALESCE(a.name, u.name, u.username) AS name,
+      COALESCE(u.email, t.guest_email) AS email,
+      t.last_reply_at
+    ${baseQuery}
+    ORDER BY t.created_at DESC
+    LIMIT ? OFFSET ?
+    `,
+    [...params, Number(limit), Number(offset)]
+  );
+
+  return { rows, total };
+};
+
 export default tickets;

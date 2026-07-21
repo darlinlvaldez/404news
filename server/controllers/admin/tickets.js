@@ -20,4 +20,20 @@ ticketsController.ticketsTable = async ({
   );
 };
 
+ticketsController.ticketsTableMinimum = async ({
+  limit = 10,
+  offset = 0,
+  search = "",
+  status = "",
+  userId,
+}) => {
+  return await tickets.getMinimum(
+    limit,
+    offset,
+    search,
+    status,
+    userId
+  );
+};
+
 export default ticketsController;
