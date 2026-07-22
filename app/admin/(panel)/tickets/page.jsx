@@ -140,157 +140,138 @@ export default function TicketsPage() {
           </div>
         </div>
 
-        <Container>
-          <thead>
-            <tr className="bg-gray-800/40 text-gray-400 tracking-tight border-b border-slate-800">
-              <Th>ID</Th>
-              <Th>Tipo</Th>
-              <Th>Asunto</Th>
-              <Th>Remitente</Th>
-              <Th>Estado</Th>
-              <Th>Prioridad</Th>
-              <Th>Ultima Actividad</Th>
-              <Th>Acciones</Th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-800">
-            {ticket.map((tickets) => (
-              <tr key={tickets.id}
-                className="hover:bg-slate-800/40 transition-all group"
-              >
-                <td className="px-8 py-5">
-                  <div className="max-w-xs md:max-w-sm">
-                    <div className="flex items-center space-x-2 text-xs py-0.5 font-mono text-gray-500">
-                      <span>#{tickets.id}</span>
-                    </div>
-                  </div>
-                </td>
-                <td className="px-8 py-5">
-                  <div className="max-w-xs md:max-w-sm">
-                    <p className="text-sm font-bold text-white group-hover:text-green-700 transition truncate mb-1">
-                      {tickets.type}
-                    </p>
-                  </div>
-                </td>
-                <td className="px-8 py-5">
-                  <div className="max-w-xs md:max-w-50">
-                    <p className="text-sm font-bold text-white transition truncate mb-1" title={tickets.subject}>
-                      {tickets.subject}
-                    </p>
-                  </div>
-                </td>
-                <td className="px-8 py-5">
-                  <div className="flex items-center text-base text-gray-300">
-                    <div className="w-7 h-7 rounded-lg bg-gray-800 flex items-center justify-center mr-3 border border-gray-700 text-xs font-bold">
-                      {tickets.name
-                        .split(" ")
-                        .slice(0, 2)
-                        .map((n) => n[0])
-                        .join("")}
-                    </div>
-                    {tickets.name}
-                  </div>
-                  <div className="flex items-center gap-1 text-xs text-gray-500 font-mono mt-1"> 
-                    <Mail size={18}/> <span>{tickets.email}</span>
-                  </div>
-                </td>
-                <td className="px-8 py-5">
-                  <span
-                    className={`inline-flex items-center px-3 py-1.5 rounded-xl text-xs font-black uppercase tracking-widest border 
-                    ${getStatusStyle(tickets.status)}`}
-                  >
-                    {" "}
-                    {getStatusIcon(tickets.status)}{" "}
-                    {statusLabels[tickets.status] ?? tickets.status}
+        <div className="grid grid-cols-1 xl:grid-cols-2 gap-5">
+          {ticket.map((tickets) => (
+            <div key={tickets.id}
+              className="bg-gray-900 border border-gray-700 rounded-3xl p-6 shadow-xl hover:border-gray-600 transition"
+            >
+              <div className="flex items-start justify-between gap-4">
+                 <div className="min-w-0 flex-1">
+                  <span className="text-xs font-mono text-gray-500">
+                    #{tickets.id}
                   </span>
-                </td>
 
-                <td className="px-8 py-5">
-                  <span
-                    className={`inline-flex items-center px-3 py-1.5 rounded-xl text-xs font-black uppercase tracking-widest border
-                      ${getPriorityStyle(tickets.priority)}`}
+                  <h3 className="text-lg font-bold text-white mt-1 truncate"
+                    title={tickets.subject}
                   >
-                    {getPriorityIcon(tickets.priority)}
-                    {priorityLabels[tickets.priority] ?? tickets.priority}
-                  </span>
-                </td>
-                <td className="px-8 py-5 text-sm font-bold text-gray-200">
-                    {formatDateRelative(tickets.last_reply_at)}
-                </td>
-                <td className="px-8 py-5 text-right">
-                  <div className="flex space-x-2">
-                    <Link
-                      href={`/admin/ticket/${tickets.id}`}
-                      className="p-3 bg-gray-800 hover:bg-green-600 text-slate-400 hover:text-white rounded-xl transition-all shadow-lg active:scale-95 flex items-center justify-center"
-                    ><Eye size={18} />Ver
-                    </Link>
-                  </div>
-                </td>
-              </tr>
-            ))}
+                    {tickets.subject}
+                  </h3>
 
-            {ticket.length === 0 && (
-              <tr>
-                <td
-                  colSpan="8"
-                  className="px-8 py-20 text-center text-gray-600 italic"
+                  <p className="text-sm text-gray-400 mt-1">
+                    {tickets.type}
+                  </p>
+                </div>
+
+                <Link href={`/admin/ticket/${tickets.id}`}
+                  className="p-3 bg-gray-800 hover:bg-green-600 text-slate-400 hover:text-white rounded-xl transition-all shadow-lg active:scale-95 flex items-center gap-2"
                 >
-                  No se han encontrado registros de usuarios.
-                </td>
-              </tr>
-            )}
-          </tbody>
+                  <Eye size={18} />
+                  Ver
+                </Link>
+              </div>
 
-          <tfoot>
-            <tr>
-              <td colSpan="8" className="border-t border-gray-800">
-                <div className="p-6 bg-gray-800/40 border-t border-gray-800 flex flex-col sm:flex-row items-center justify-between gap-4">
-                  <span className="text-ls font-black text-slate-500 uppercase tracking-widest">
-                    {" "}
-                    Mostrando{" "}
-                    <span className="text-emerald-600">
-                      {showingTo - showingFrom + 1}
-                    </span>{" "}
-                    de <span className="text-gray-300">{total}</span> noticias
-                  </span>
-                  <div className="flex items-center space-x-3">
-                    <button
-                      disabled={page === 1}
-                      onClick={() => setPage((prev) => prev - 1)}
-                      className="p-2.5 bg-gray-800 border border-gray-700 rounded-xl cursor-pointer text-gray-400 hover:bg-gray-700 transition disabled:opacity-20 disabled:cursor-not-allowed"
-                    >
-                      <ChevronLeft size={18} />
-                    </button>
-                    <div className="flex space-x-1">
-                      {getVisiblePages().map((number) => {
-                        const isActive = page === number;
+              <div className="flex items-center mt-6">
+                <div className="w-10 h-10 rounded-lg bg-gray-800 border border-gray-700 flex items-center justify-center text-sm font-bold mr-4">
+                  {tickets.name
+                    .split(" ")
+                    .slice(0, 2)
+                    .map((n) => n[0])
+                    .join("")}
+                </div>
 
-                        return (
-                          <button
-                            key={number}
-                            onClick={() => setPage(number)}
-                            className={`w-9 h-9 flex items-center justify-center rounded-xl text-xs font-black transition cursor-pointer
-                            ${isActive ? "bg-green-800 text-white" : "bg-gray-800 border border-gray-700 text-gray-400 hover:bg-gray-700"}`}
-                          >
-                            {number}
-                          </button>
-                        );
-                      })}
-                    </div>
+                <div>
+                  <p className="font-medium text-gray-200">
+                    {tickets.name}
+                  </p>
 
-                    <button
-                      disabled={page === totalPages}
-                      onClick={() => setPage((prev) => prev + 1)}
-                      className="p-2.5 bg-gray-800 border border-gray-700 rounded-xl text-gray-400 hover:bg-gray-700 transition cursor-pointer"
-                    >
-                      <ChevronRight size={18} />
-                    </button>
+                  <div className="flex items-center gap-2 text-xs text-gray-500 mt-1">
+                    <Mail size={15} />
+                    {tickets.email}
                   </div>
                 </div>
-              </td>
-            </tr>
-          </tfoot>
-        </Container>
+              </div>
+
+              <div className="flex flex-wrap gap-3 mt-6">
+                <span className={`inline-flex items-center px-3 py-1.5 rounded-xl text-xs font-black uppercase tracking-widest border 
+                ${getStatusStyle(
+                    tickets.status
+                  )}`}
+                >
+                  {getStatusIcon(tickets.status)}
+                  {statusLabels[tickets.status] ?? tickets.status}
+                </span>
+
+                <span className={`inline-flex items-center px-3 py-1.5 rounded-xl text-xs font-black uppercase tracking-widest border 
+                ${getPriorityStyle(
+                    tickets.priority
+                  )}`}
+                >
+                  {getPriorityIcon(tickets.priority)}
+                  {priorityLabels[tickets.priority] ?? tickets.priority}
+                </span>
+              </div>
+
+              {/* Footer */}
+              <div className="mt-6 pt-4 border-t border-gray-800 flex justify-between items-center">
+                <span className="text-sm text-gray-400">
+                  Última actividad
+                </span>
+
+                <span className="text-sm font-bold text-gray-200">
+                  {formatDateRelative(tickets.last_reply_at)}
+                </span>
+              </div>
+            </div>
+          ))}
+
+          {ticket.length === 0 && (
+            <div className="col-span-full bg-gray-900 border border-gray-700 rounded-3xl py-20 text-center text-gray-600 italic">
+              No se han encontrado registros de usuarios.
+            </div>
+          )}
+        </div>
+
+          <div className="mt-6 bg-gray-800/40 border border-gray-800 rounded-3xl p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <span className="text-ls font-black text-slate-500 uppercase tracking-widest">
+              {" "}
+              Mostrando{" "}
+              <span className="text-emerald-600">
+                 {showingFrom}-{showingTo}
+              </span>{" "}
+              de <span className="text-gray-300">{total}</span> tickets
+            </span>
+            <div className="flex items-center space-x-3">
+              <button disabled={page === 1}
+                onClick={() => setPage((prev) => prev - 1)}
+                className="p-2.5 bg-gray-800 border border-gray-700 rounded-xl cursor-pointer text-gray-400 hover:bg-gray-700 transition disabled:opacity-20 disabled:cursor-not-allowed"
+              >
+                <ChevronLeft size={18} />
+              </button>
+              <div className="flex space-x-1">
+                {getVisiblePages().map((number) => {
+                  const isActive = page === number;
+
+                  return (
+                    <button
+                      key={number}
+                      onClick={() => setPage(number)}
+                      className={`w-9 h-9 flex items-center justify-center rounded-xl text-xs font-black transition cursor-pointer
+                      ${isActive ? "bg-green-800 text-white" : "bg-gray-800 border border-gray-700 text-gray-400 hover:bg-gray-700"}`}
+                    >
+                      {number}
+                    </button>
+                  );
+                })}
+              </div>
+
+              <button disabled={page === totalPages}
+                onClick={() => setPage((prev) => prev + 1)}
+                className="p-2.5 bg-gray-800 border border-gray-700 rounded-xl text-gray-400 hover:bg-gray-700 transition cursor-pointer"
+              >
+                <ChevronRight size={18} />
+              </button>
+            </div>
+          </div>
       </section>
     </div>
   );

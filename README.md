@@ -18,6 +18,8 @@ Rango personalizado.
 
 isLoading en admin.
 
+Poder agregar archivos en los campos, como imagenes.
+
 Arreglar en el frontend los estilos de las noticias.
 
 Agregar perfil de usuario en admin.

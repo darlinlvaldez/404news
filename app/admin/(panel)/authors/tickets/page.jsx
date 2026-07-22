@@ -124,113 +124,104 @@ export default function TicketsPage() {
           </div>
         </div>
 
-        <Container>
-          <thead>
-            <tr className="bg-gray-800/40 text-gray-400 tracking-tight border-b border-slate-800">
-              <Th>Asunto</Th>
-              <Th>Estado</Th>
-              <Th>Ultima Actividad</Th>
-              <Th>Acciones</Th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-800">
-            {ticket.map((tickets) => (
-              <tr key={tickets.id} className="hover:bg-slate-800/40 transition-all group">
+        <div className="grid grid-cols-1 xl:grid-cols-2 gap-5">
+          {ticket.map((tickets) => (
+            <div key={tickets.id}
+              className="bg-gray-900 border border-gray-700 rounded-3xl p-6 shadow-xl hover:border-gray-600 transition"
+            >
+              <div className="flex items-start justify-between gap-4">
+                 <div className="min-w-0 flex-1">
+                  <span className="text-xs font-mono text-gray-500">
+                    #{tickets.id}
+                  </span>
 
-                <td className="px-8 py-5">
-                  <div className="max-w-xs md:max-w-50">
-                    <p className="text-sm font-bold text-white transition truncate mb-1" title={tickets.subject}>
-                      {tickets.subject}
-                    </p>
-                  </div>
-                </td>
-
-                <td className="px-8 py-5">
-                  <span
-                    className={`inline-flex items-center px-3 py-1.5 rounded-xl text-xs font-black uppercase tracking-widest border 
-                    ${getStatusStyle(tickets.status)}`}
+                  <h3 className="text-lg font-bold text-white mt-1 truncate"
+                    title={tickets.subject}
                   >
-                    {" "}
-                    {getStatusIcon(tickets.status)}{" "}
-                    {statusLabels[tickets.status] ?? tickets.status}
-                  </span>
-                </td>
+                    {tickets.subject}
+                  </h3>
 
-                <td className="px-8 py-5 text-sm font-bold text-gray-200">
-                    {formatDateRelative(tickets.last_reply_at)}
-                </td>
-                <td className="px-8 py-5 text-right">
-                  <div className="flex space-x-2">
-                    <Link href={`/admin/authors/tickets/${tickets.id}`}
-                      className="p-3 bg-gray-800 hover:bg-green-600 text-slate-400 hover:text-white rounded-xl transition-all shadow-lg active:scale-95 flex items-center justify-center"
-                    ><Eye size={18} />Ver
-                    </Link>
-                  </div>
-                </td>
-              </tr>
-            ))}
-
-            {ticket.length === 0 && (
-              <tr>
-                <td colSpan="5"
-                  className="px-8 py-20 text-center text-gray-600 italic"
-                >
-                  No se han encontrado registros de usuarios.
-                </td>
-              </tr>
-            )}
-          </tbody>
-
-          <tfoot>
-            <tr>
-              <td colSpan="5" className="border-t border-gray-800">
-                <div className="p-6 bg-gray-800/40 border-t border-gray-800 flex flex-col sm:flex-row items-center justify-between gap-4">
-                  <span className="text-ls font-black text-slate-500 uppercase tracking-widest">
-                    {" "}
-                    Mostrando{" "}
-                    <span className="text-emerald-600">
-                      {showingTo - showingFrom + 1}
-                    </span>{" "}
-                    de <span className="text-gray-300">{total}</span> noticias
-                  </span>
-                  <div className="flex items-center space-x-3">
-                    <button
-                      disabled={page === 1}
-                      onClick={() => setPage((prev) => prev - 1)}
-                      className="p-2.5 bg-gray-800 border border-gray-700 rounded-xl cursor-pointer text-gray-400 hover:bg-gray-700 transition disabled:opacity-20 disabled:cursor-not-allowed"
-                    >
-                      <ChevronLeft size={18} />
-                    </button>
-                    <div className="flex space-x-1">
-                      {getVisiblePages().map((number) => {
-                        const isActive = page === number;
-
-                        return (
-                          <button
-                            key={number}
-                            onClick={() => setPage(number)}
-                            className={`w-9 h-9 flex items-center justify-center rounded-xl text-xs font-black transition cursor-pointer
-                            ${isActive ? "bg-green-800 text-white" : "bg-gray-800 border border-gray-700 text-gray-400 hover:bg-gray-700"}`}
-                          >
-                            {number}
-                          </button>
-                        );
-                      })}
-                    </div>
-
-                    <button
-                      disabled={page === totalPages}
-                      onClick={() => setPage((prev) => prev + 1)}
-                      className="p-2.5 bg-gray-800 border border-gray-700 rounded-xl text-gray-400 hover:bg-gray-700 transition cursor-pointer"
-                    >
-                      <ChevronRight size={18} />
-                    </button>
-                  </div>
                 </div>
-              </td>
-            </tr>
-          </tfoot>
-        </Container>
+
+                <Link href={`/admin/ticket/${tickets.id}`}
+                  className="p-3 bg-gray-800 hover:bg-green-600 text-slate-400 hover:text-white rounded-xl transition-all shadow-lg active:scale-95 flex items-center gap-2"
+                >
+                  <Eye size={18} />
+                  Ver
+                </Link>
+              </div>
+
+              <div className="flex flex-wrap gap-3 mt-6">
+                <span className={`inline-flex items-center px-3 py-1.5 rounded-xl text-xs font-black uppercase tracking-widest border 
+                ${getStatusStyle(
+                    tickets.status
+                  )}`}
+                >
+                  {getStatusIcon(tickets.status)}
+                  {statusLabels[tickets.status] ?? tickets.status}
+                </span>
+              </div>
+
+              <div className="mt-6 pt-4 border-t border-gray-800 flex justify-between items-center">
+                <span className="text-sm text-gray-400">
+                  Última actividad
+                </span>
+
+                <span className="text-sm font-bold text-gray-200">
+                  {formatDateRelative(tickets.last_reply_at)}
+                </span>
+              </div>
+            </div>
+          ))}
+
+          {ticket.length === 0 && (
+            <div className="col-span-full bg-gray-900 border border-gray-700 rounded-3xl py-20 text-center text-gray-600 italic">
+              No se han encontrado registros de usuarios.
+            </div>
+          )}
+        </div>
+
+          <div className="mt-6 bg-gray-800/40 border border-gray-800 rounded-3xl p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <span className="text-ls font-black text-slate-500 uppercase tracking-widest">
+              {" "}
+              Mostrando{" "}
+              <span className="text-emerald-600">
+                 {showingFrom}-{showingTo}
+              </span>{" "}
+              de <span className="text-gray-300">{total}</span> tickets
+            </span>
+            <div className="flex items-center space-x-3">
+              <button disabled={page === 1}
+                onClick={() => setPage((prev) => prev - 1)}
+                className="p-2.5 bg-gray-800 border border-gray-700 rounded-xl cursor-pointer text-gray-400 hover:bg-gray-700 transition disabled:opacity-20 disabled:cursor-not-allowed"
+              >
+                <ChevronLeft size={18} />
+              </button>
+              <div className="flex space-x-1">
+                {getVisiblePages().map((number) => {
+                  const isActive = page === number;
+
+                  return (
+                    <button
+                      key={number}
+                      onClick={() => setPage(number)}
+                      className={`w-9 h-9 flex items-center justify-center rounded-xl text-xs font-black transition cursor-pointer
+                      ${isActive ? "bg-green-800 text-white" : "bg-gray-800 border border-gray-700 text-gray-400 hover:bg-gray-700"}`}
+                    >
+                      {number}
+                    </button>
+                  );
+                })}
+              </div>
+
+              <button disabled={page === totalPages}
+                onClick={() => setPage((prev) => prev + 1)}
+                className="p-2.5 bg-gray-800 border border-gray-700 rounded-xl text-gray-400 hover:bg-gray-700 transition cursor-pointer"
+              >
+                <ChevronRight size={18} />
+              </button>
+            </div>
+          </div>
       </section>
     </div>
   );
