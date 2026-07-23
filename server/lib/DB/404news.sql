@@ -630,6 +630,7 @@ CREATE TABLE `tickets` (
   `status` enum('open','in_progress','waiting_response','closed') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'open',
   `priority` enum('low','medium','high') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'medium',
   `subject` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `message` text COLLATE utf8mb4_general_ci,
   `user_id` int DEFAULT NULL,
   `guest_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `guest_email` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
@@ -649,9 +650,9 @@ CREATE TABLE `tickets` (
 
 LOCK TABLES `tickets` WRITE;
 
-insert  into `tickets`(`id`,`type`,`status`,`priority`,`subject`,`user_id`,`guest_name`,`guest_email`,`assigned_to`,`last_reply_at`,`closed_at`,`created_at`,`updated_at`) values 
-(1,'submission','in_progress','low','una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien ',2,NULL,NULL,1,'2026-07-21 20:04:35','2026-07-21 20:05:29','2026-07-21 20:05:00','2026-07-21 20:08:41'),
-(2,'contact','open','medium','tu supite veida?',1,NULL,NULL,3,'2026-07-21 20:06:34',NULL,'2026-07-21 20:06:18','2026-07-21 20:06:34');
+insert  into `tickets`(`id`,`type`,`status`,`priority`,`subject`,`message`,`user_id`,`guest_name`,`guest_email`,`assigned_to`,`last_reply_at`,`closed_at`,`created_at`,`updated_at`) values 
+(1,'submission','in_progress','low','una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien ',NULL,2,NULL,NULL,1,'2026-07-21 20:04:35','2026-07-21 20:05:29','2026-07-21 20:05:00','2026-07-21 20:08:41'),
+(2,'contact','open','medium','tu supite veida?',NULL,1,NULL,NULL,3,'2026-07-21 20:06:34',NULL,'2026-07-21 20:06:18','2026-07-21 20:06:34');
 
 UNLOCK TABLES;
 

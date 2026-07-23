@@ -1,4 +1,4 @@
-import ticketAuthorModels from "@/server/models/admin/ticketChat";
+import ticketAuthorModels from "@/server/models/admin/ticketChatAuthor";
 
 const ticketChatAuthor = {};
 

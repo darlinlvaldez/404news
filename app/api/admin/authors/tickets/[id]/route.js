@@ -11,7 +11,14 @@ export async function GET(request, { params }) {
 
     const result = await ticketChatAuthor.ticket({ id, userId: session.id });
 
-    return NextResponse.json(result);
+    return NextResponse.json({
+      ticket: result.ticket,
+      messages: result.messages,
+      session: {
+        id: session.id
+      }
+    });
+    
   } catch (error) {
     console.error(error);
     return handleError(error);

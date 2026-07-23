@@ -67,7 +67,7 @@ ticketAuthorModels.messages = async (id, userId) => {
     WHERE tm.ticket_id = ?
 
     ORDER BY tm.id ASC`,
-    [id, userId],
+    [userId, id],
   );
 
   return rows;
@@ -100,7 +100,7 @@ ticketAuthorModels.create = async ({
         ticket_id,
         sender_type,
         sender_id,
-        message,
+        message
       )
       VALUES (?, ?, ?, ?)
   `,
@@ -118,7 +118,7 @@ ticketAuthorModels.create = async ({
     [ticketId],
   );
 
-  return await ticketAuthorModels.messages(ticketId);
+  return await ticketAuthorModels.messages(ticketId, senderId);
 };
 
 export default ticketAuthorModels;

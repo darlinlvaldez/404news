@@ -143,7 +143,7 @@ export default function TicketsPage() {
 
                 </div>
 
-                <Link href={`/admin/ticket/${tickets.id}`}
+                <Link href={`/admin/authors/ticket/${tickets.id}`}
                   className="p-3 bg-gray-800 hover:bg-green-600 text-slate-400 hover:text-white rounded-xl transition-all shadow-lg active:scale-95 flex items-center gap-2"
                 >
                   <Eye size={18} />

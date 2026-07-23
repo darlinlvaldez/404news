@@ -8,9 +8,11 @@ export default function TicketMessage({
     ? "bg-green-950/20 border-green-500/20 text-gray-200"
     : "bg-gray-950 border-gray-800 text-gray-300";
 
+    console.log(JSON.stringify(message.message));
+
   return (
     <div className={`flex flex-col ${isOwnMessage ? "items-end" : "items-start"}`}>
-      <div className={`max-w-[85%] rounded-2xl p-4.5 border shadow-md transition-all duration-150 ${bubbleClass}`}>
+      <div className={`max-w-[50%] rounded-2xl p-4.5 border shadow-md transition-all duration-150 ${bubbleClass}`}>
         <div className="flex items-center justify-between gap-8 mb-2.5 border-b border-gray-800/40 pb-2">
           <div className="flex items-center space-x-2">
 
@@ -18,10 +20,8 @@ export default function TicketMessage({
               <span className="text-xs font-bold text-white flex items-center gap-1">
                 {message.author}
 
-                {message.sender_type === "admin" && (
-                  <span className="bg-green-950/80 text-green-400 border border-green-500/20 text-[12px] uppercase tracking-wider px-1 rounded font-black">
-                    {message.sender_role}
-                  </span>
+                {!isOwnMessage && message.sender_type === "admin" && (
+                  <span>Equipo</span>
                 )}
               </span>
             </div>
@@ -33,8 +33,7 @@ export default function TicketMessage({
           </span>
         </div>
 
-
-        <p className="text-sm leading-relaxed whitespace-pre-line font-medium pl-1">
+        <p className="text-sm leading-relaxed whitespace-pre-line wrap-break-word  font-medium pl-1">
           {message.message}
         </p>
       </div>

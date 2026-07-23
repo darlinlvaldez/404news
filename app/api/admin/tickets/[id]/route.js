@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { requireAuth } from "../../../../../server/utils/auth";
 import { handleError } from "../../../../../server/errors/handleError";
-import ticketChat from "../../../../../server/controllers/admin/ticketChat";
+import ticketChat from "../../../../../server/controllers/admin/ticketChatAdmin";
 
 export async function GET(request, { params }) {
   try {

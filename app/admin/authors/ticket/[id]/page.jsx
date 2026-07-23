@@ -27,6 +27,8 @@ export default function TicketChat() {
   const [messages, setMessages] = useState(null);
   const [newResponse, setNewResponse] = useState("");
 
+  const [currentUserId, setCurrentUserId] = useState(null);
+
   const { id } = useParams();
 
   useEffect(() => {
@@ -42,6 +44,7 @@ export default function TicketChat() {
 
         setTicket(data.ticket);
         setMessages(data.messages);
+        setCurrentUserId(data.session.id);
 
       } catch (error) {
         console.error(error);
@@ -257,15 +260,14 @@ export default function TicketChat() {
             </div>
 
             <div className="space-y-4">
-              <div className="space-y-4">
-                  {messages?.map((message) => (
-                    <TicketMessage
-                      key={message.id}
-                      message={message}
-                      isOwnMessage={message.sender_type === "admin"}
-                    />
-                  ))}
-              </div>
+              {messages?.map((message) => (
+                <TicketMessage
+                  key={message.id}
+                  message={message}
+                  isOwnMessage={message.sender_id === currentUserId}
+                  
+                />
+              ))}
             </div>
           </div>
 
