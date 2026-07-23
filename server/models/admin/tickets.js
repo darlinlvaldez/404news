@@ -128,9 +128,21 @@ tickets.getMinimum = async function (
       t.id,
       t.subject,
       t.status,
+      t.message,
       COALESCE(a.name, u.name, u.username) AS name,
       COALESCE(u.email, t.guest_email) AS email,
-      t.last_reply_at
+      t.last_reply_at,
+      t.unread_user_count,
+      t.unread_admin_count,
+
+      (
+        SELECT tm.message
+        FROM ticket_messages tm
+        WHERE tm.ticket_id = t.id
+        ORDER BY tm.created_at DESC, tm.id DESC
+        LIMIT 1
+      ) AS last_message
+
     ${baseQuery}
     ORDER BY t.created_at DESC
     LIMIT ? OFFSET ?

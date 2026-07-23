@@ -9,6 +9,11 @@ export async function GET(request, { params }) {
 
     const session = await requireAuth(request, ["author"]);
 
+    await ticketChatAuthor.markReadAuthor({
+      ticketId: id,
+      userId: session.id
+    });
+
     const result = await ticketChatAuthor.ticket({ id, userId: session.id });
 
     return NextResponse.json({

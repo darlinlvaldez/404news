@@ -141,6 +141,12 @@ export default function TicketsPage() {
                     {tickets.subject}
                   </h3>
 
+                  <p className="text-sm text-gray-400 mt-2 line-clamp-2"
+                    title={tickets.last_message}
+                  >
+                    {tickets.last_message || ""}
+                  </p>
+
                 </div>
 
                 <Link href={`/admin/authors/ticket/${tickets.id}`}
@@ -160,6 +166,13 @@ export default function TicketsPage() {
                   {getStatusIcon(tickets.status)}
                   {statusLabels[tickets.status] ?? tickets.status}
                 </span>
+
+                {tickets.unread_count > 0 && (
+                  <span className="inline-flex items-center px-3 py-1.5 rounded-xl text-xs font-black bg-green-700 text-white">
+                    {tickets.unread_count} nuevo
+                    {tickets.unread_count > 1 && "s"}
+                  </span>
+                )}
               </div>
 
               <div className="mt-6 pt-4 border-t border-gray-800 flex justify-between items-center">

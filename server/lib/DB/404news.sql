@@ -36,15 +36,11 @@ CREATE TABLE `authors` (
 
 /*Data for the table `authors` */
 
-LOCK TABLES `authors` WRITE;
-
 insert  into `authors`(`id`,`name`,`bio`,`slug`,`avatar`,`user_id`) values 
 (1,'Ana Torres','Periodista especializada en inteligencia artificial con más de 10 años de experiencia','ana-torres','',2),
 (2,'Carlos Mendoza','Analista de hardware y dispositivos móviles, colaborador habitual en revistas especializadas','carlos-mendoza','',3),
 (3,'Laura Vega','Desarrolladora de software y experta en nuevas tecnologías','laura-vega','',4),
 (4,'Miguel Ruiz','Ingeniero en sistemas y especialista en hardware de PCs','miguel-ruiz','',5);
-
-UNLOCK TABLES;
 
 /*Table structure for table `categories` */
 
@@ -64,16 +60,12 @@ CREATE TABLE `categories` (
 
 /*Data for the table `categories` */
 
-LOCK TABLES `categories` WRITE;
-
 insert  into `categories`(`id`,`name`,`slug`,`created_at`,`active`) values 
 (1,'Inteligencia Artificial','ia-inteligencia-artificial','2026-02-03 12:01:14',1),
 (2,'Dispositivos Móviles','dispositivos-moviles','2026-02-03 12:01:14',1),
 (3,'Software','desarrollo-software-app','2026-02-03 12:01:14',1),
 (4,'Computadoras (PC)','computadoras-pc','2026-02-03 12:01:14',1),
 (5,'Tecnología General','tecnologia-general','2026-02-03 20:19:34',1);
-
-UNLOCK TABLES;
 
 /*Table structure for table `country_stats` */
 
@@ -94,8 +86,6 @@ CREATE TABLE `country_stats` (
 ) ENGINE=InnoDB AUTO_INCREMENT=358 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `country_stats` */
-
-LOCK TABLES `country_stats` WRITE;
 
 insert  into `country_stats`(`id`,`news_id`,`country_code`,`country_name`,`views`,`created_at`) values 
 (1,13,'US','United States',2,'2026-06-29 17:58:32'),
@@ -368,8 +358,6 @@ insert  into `country_stats`(`id`,`news_id`,`country_code`,`country_name`,`views
 (356,34,'US','United States',1,'2026-07-19 22:01:12'),
 (357,10,'US','United States',1,'2026-07-20 12:30:51');
 
-UNLOCK TABLES;
-
 /*Table structure for table `news` */
 
 DROP TABLE IF EXISTS `news`;
@@ -397,8 +385,6 @@ CREATE TABLE `news` (
 ) ENGINE=InnoDB AUTO_INCREMENT=99 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `news` */
-
-LOCK TABLES `news` WRITE;
 
 insert  into `news`(`id`,`title`,`slug`,`excerpt`,`cover_image`,`author_id`,`category_id`,`status`,`created_at`,`updated_at`,`views`) values 
 (1,'GPT-5 supera los límites de la generación de texto multimodal','gpt-5-supera-limites-texto-multimodal','OpenAI presenta su modelo más avanzado capaz de entender y generar contenido en múltiples formatos','https://www.iweaver.ai/wp-content/uploads/2025/08/ChatGPT-5.webp',1,1,'draft','2026-02-12 14:31:54','2026-02-19 15:18:42',7),
@@ -490,8 +476,6 @@ insert  into `news`(`id`,`title`,`slug`,`excerpt`,`cover_image`,`author_id`,`cat
 (96,'IA conquista el espacio: primer modelo entrenado en órbita por Nvidia y StarCloud','ia-espacio-modelo-entrenado-orbita','Las condiciones térmicas y energéticas del espacio ofrecen ventajas para centros de datos','https://www.hd-tecnologia.com/imagenes/articulos/2025/10/NVIDIA-llevara-la-inteligencia-artificial-al-espacio-exterior-con-el-primer-centro-de-datos-orbital-del-mundo-2.jpg',3,5,'published','2026-01-14 18:00:00','2026-07-06 19:52:22',3),
 (98,'claro claro claro ','claro-claro-claro','claro claro claro claro claro','https://localo.com/es/assets/img/definitions/what-is-google-translate.webp',3,3,'published','2026-02-21 13:01:39','2026-07-01 08:33:33',8);
 
-UNLOCK TABLES;
-
 /*Table structure for table `news_blocks` */
 
 DROP TABLE IF EXISTS `news_blocks`;
@@ -511,8 +495,6 @@ CREATE TABLE `news_blocks` (
 ) ENGINE=InnoDB AUTO_INCREMENT=92 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `news_blocks` */
-
-LOCK TABLES `news_blocks` WRITE;
 
 insert  into `news_blocks`(`id`,`news_id`,`block_type`,`content`,`image_url`,`alt_text`,`position`,`created_at`) values 
 (1,1,'heading','La revolución multimodal de la IA','https://blog.donweb.com/wp-content/uploads/2025/08/Lo-nuevo-de-GPT-5.jpeg',NULL,1,'2026-02-05 12:46:12'),
@@ -569,8 +551,6 @@ insert  into `news_blocks`(`id`,`news_id`,`block_type`,`content`,`image_url`,`al
 (90,98,'image','','https://www.gstatic.com/marketing-cms/5e/ec/5b5baeb34571b791b2020d4cacad/meta-image.png','seacrh',2,'2026-02-21 13:29:44'),
 (91,98,'paragraph','wow wow wow wow wow wow wow wow wow wow wow wow wow wow wow wow wow wow wow wow wow wow wow wow',NULL,NULL,3,'2026-02-21 13:29:44');
 
-UNLOCK TABLES;
-
 /*Table structure for table `ticket_attachments` */
 
 DROP TABLE IF EXISTS `ticket_attachments`;
@@ -591,10 +571,6 @@ CREATE TABLE `ticket_attachments` (
 
 /*Data for the table `ticket_attachments` */
 
-LOCK TABLES `ticket_attachments` WRITE;
-
-UNLOCK TABLES;
-
 /*Table structure for table `ticket_messages` */
 
 DROP TABLE IF EXISTS `ticket_messages`;
@@ -605,6 +581,8 @@ CREATE TABLE `ticket_messages` (
   `sender_type` enum('author','admin','system') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `sender_id` int DEFAULT NULL,
   `message` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `author_read` tinyint(1) DEFAULT '0',
+  `admin_read` tinyint(1) DEFAULT '0',
   `is_internal` tinyint(1) NOT NULL DEFAULT '0',
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
@@ -612,13 +590,19 @@ CREATE TABLE `ticket_messages` (
   KEY `fk_tm_sender` (`sender_id`),
   CONSTRAINT `fk_tm_sender` FOREIGN KEY (`sender_id`) REFERENCES `users` (`id`) ON DELETE SET NULL,
   CONSTRAINT `fk_tm_ticket` FOREIGN KEY (`ticket_id`) REFERENCES `tickets` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `ticket_messages` */
 
-LOCK TABLES `ticket_messages` WRITE;
-
-UNLOCK TABLES;
+insert  into `ticket_messages`(`id`,`ticket_id`,`sender_type`,`sender_id`,`message`,`author_read`,`admin_read`,`is_internal`,`created_at`) values 
+(1,2,'admin',1,'Se arregló esa monda',0,0,0,'2026-07-23 12:44:24'),
+(2,2,'author',2,'como fue quien me habla?',0,0,0,'2026-07-23 12:48:55'),
+(3,1,'author',2,'hay si',0,0,0,'2026-07-23 12:55:26'),
+(4,3,'author',2,'polque?',0,0,0,'2026-07-23 12:55:36'),
+(5,3,'admin',1,'polque si?\n',1,0,0,'2026-07-23 12:57:10'),
+(6,3,'admin',1,'sii\n',1,0,0,'2026-07-23 13:55:03'),
+(7,3,'admin',1,'tu supiste',1,0,0,'2026-07-23 13:55:08'),
+(8,3,'admin',1,'locoooo',1,0,0,'2026-07-23 13:55:14');
 
 /*Table structure for table `tickets` */
 
@@ -630,7 +614,7 @@ CREATE TABLE `tickets` (
   `status` enum('open','in_progress','waiting_response','closed') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'open',
   `priority` enum('low','medium','high') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'medium',
   `subject` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `message` text COLLATE utf8mb4_general_ci,
+  `message` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
   `user_id` int DEFAULT NULL,
   `guest_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `guest_email` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
@@ -639,22 +623,24 @@ CREATE TABLE `tickets` (
   `closed_at` datetime DEFAULT NULL,
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `last_message_id` int DEFAULT NULL,
+  `unread_admin_count` int NOT NULL DEFAULT '0',
+  `unread_user_count` int NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `fk_ticket_user` (`user_id`),
   KEY `fk_ticket_assigned` (`assigned_to`),
+  KEY `fk_ticket_last_message` (`last_message_id`),
   CONSTRAINT `fk_ticket_assigned` FOREIGN KEY (`assigned_to`) REFERENCES `users` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `fk_ticket_last_message` FOREIGN KEY (`last_message_id`) REFERENCES `ticket_messages` (`id`) ON DELETE SET NULL,
   CONSTRAINT `fk_ticket_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `tickets` */
 
-LOCK TABLES `tickets` WRITE;
-
-insert  into `tickets`(`id`,`type`,`status`,`priority`,`subject`,`message`,`user_id`,`guest_name`,`guest_email`,`assigned_to`,`last_reply_at`,`closed_at`,`created_at`,`updated_at`) values 
-(1,'submission','in_progress','low','una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien ',NULL,2,NULL,NULL,1,'2026-07-21 20:04:35','2026-07-21 20:05:29','2026-07-21 20:05:00','2026-07-21 20:08:41'),
-(2,'contact','open','medium','tu supite veida?',NULL,1,NULL,NULL,3,'2026-07-21 20:06:34',NULL,'2026-07-21 20:06:18','2026-07-21 20:06:34');
-
-UNLOCK TABLES;
+insert  into `tickets`(`id`,`type`,`status`,`priority`,`subject`,`message`,`user_id`,`guest_name`,`guest_email`,`assigned_to`,`last_reply_at`,`closed_at`,`created_at`,`updated_at`,`last_message_id`,`unread_admin_count`,`unread_user_count`) values 
+(1,'contact','in_progress','low','una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien ','MANIATICA QUE LOCA',2,NULL,NULL,1,'2026-07-23 12:55:26','2026-07-21 20:05:29','2026-07-21 20:05:00','2026-07-23 12:55:26',NULL,0,0),
+(2,'contact','open','medium','tu supite veida?','MANIATICA DEL ALCOHOL',1,NULL,NULL,3,'2026-07-21 20:06:34',NULL,'2026-07-21 20:06:18','2026-07-23 12:38:23',NULL,0,0),
+(3,'submission','waiting_response','low','clarooooo','wacala',2,NULL,NULL,NULL,'2026-07-23 13:55:14',NULL,'2026-07-23 12:52:55','2026-07-23 13:55:14',NULL,0,0);
 
 /*Table structure for table `users` */
 
@@ -662,11 +648,11 @@ DROP TABLE IF EXISTS `users`;
 
 CREATE TABLE `users` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `username` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
-  `NAME` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `email` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `password` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `role` enum('superadmin','admin','support','editor','author') COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'editor',
+  `username` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `NAME` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `role` enum('superadmin','admin','support','editor','author') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'editor',
   `active` tinyint(1) DEFAULT '1',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
@@ -675,16 +661,12 @@ CREATE TABLE `users` (
 
 /*Data for the table `users` */
 
-LOCK TABLES `users` WRITE;
-
 insert  into `users`(`id`,`username`,`NAME`,`email`,`password`,`role`,`active`,`created_at`) values 
 (1,'darlin','Darlin L. Valdez','darlinlvaldez@gmail.com','$2b$10$2LKClehgb5ifsKKVHQDh/u8E3VmxyjYjVW3Pd0Cuty9vBrkvSraZy','superadmin',1,'2026-02-24 19:52:21'),
 (2,'anatorres','Ana Torres','anatorres@gmail.com','$2b$10$u1rbukGt2wC9qla7UxwUJ..lJtNTH9chXxArqMwBmBGe24FQoQ/IG','author',1,'2026-02-25 19:36:00'),
 (3,'carlosmendoza','Carlos Mendoza','carlosmendoza@gmail.com','$2b$10$LsGLMl3rGkp8hWf1KrMBMuTScmSf5yeP8QUKIgQnhi.br/1haltxK','author',1,'2026-02-25 19:37:15'),
 (4,'lauravega','Laura Vega','lauravega@gmail.com','$2b$10$hTBJsFQ2H3Eu9sJTnfIYCuxq2y37VBHW84xscLDwubL8oKfCkhGKO','author',1,'2026-02-25 19:37:50'),
 (5,'miguelruiz','Miguel Ruiz','miguelruiz@gmail.com','$2b$10$oS13OGYebsgM9c31EFOfMOfziqnGX6TFoxeKuG94S/cwIY2q1FCsS','author',1,'2026-02-25 19:38:15');
-
-UNLOCK TABLES;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

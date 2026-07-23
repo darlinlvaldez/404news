@@ -1,4 +1,5 @@
 import ticketAuthorModels from "@/server/models/admin/ticketChatAuthor";
+import ticketMessages from "@/server/models/admin/ticketMessages";
 
 const ticketChatAuthor = {};
 
@@ -24,6 +25,16 @@ ticketChatAuthor.create = async ({
     senderType,
     message
   });
+};
+
+ticketChatAuthor.markReadAuthor = async ({
+  ticketId,
+  userId
+}) => {
+  return await ticketMessages.markReadAuthor(
+    ticketId,
+    userId
+  );
 };
 
 export default ticketChatAuthor;
