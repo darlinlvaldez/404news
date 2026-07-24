@@ -26,15 +26,16 @@ export default function TicketChat() {
   const [ticket, setTicket] = useState(null);
   const [messages, setMessages] = useState(null);
   const [newResponse, setNewResponse] = useState("");
-
   const [currentUserId, setCurrentUserId] = useState(null);
+  const [hasMoreMessages, setHasMoreMessages] = useState(true);
+  const [loadingMessages, setLoadingMessages] = useState(false);
 
   const { id } = useParams();
 
   useEffect(() => {
     const loadTicket = async () => {
       try {
-        const response = await fetch(`/api/admin/authors/tickets/${id}`);
+        const response = await fetch(`/api/admin/authors/tickets/${id}?limit=5`);
 
         if (!response.ok) {
           throw new Error("Error al cargar el ticket");
@@ -85,12 +86,44 @@ export default function TicketChat() {
 
       const data = await response.json();
 
-      setMessages(data.messages);
+      setMessages(prev => [...prev, data.message]);
 
       setNewResponse("");
 
     } catch (err) {
       console.error(err);
+    }
+  };
+
+  const loadMoreMessages = async () => {
+
+    if (!messages?.length || loadingMessages) return;
+
+    try {
+
+      setLoadingMessages(true);
+
+      const oldestMessage = messages[0];
+
+      const response = await fetch(
+        `/api/admin/authors/tickets/${id}?limit=5&beforeId=${oldestMessage.id}`
+      );
+
+      const data = await response.json();
+
+      if(data.messages.length < 5){
+        setHasMoreMessages(false);
+      }
+
+      setMessages(prev => [
+        ...data.messages,
+        ...prev
+      ]);
+
+    } catch(error){
+      console.error(error);
+    } finally {
+      setLoadingMessages(false);
     }
   };
 
@@ -258,6 +291,27 @@ export default function TicketChat() {
                 </span>
               </div>
             </div>
+
+            {hasMoreMessages && (
+  <button
+    onClick={loadMoreMessages}
+    disabled={loadingMessages}
+    className="
+      w-full py-2
+      text-xs
+      font-bold
+      text-green-400
+      border
+      border-green-900
+      rounded-xl
+      hover:bg-green-950/30
+    "
+  >
+    {loadingMessages 
+      ? "Cargando..."
+      : "Cargar mensajes anteriores"}
+  </button>
+)}
 
             <div className="space-y-4">
               {messages?.map((message) => (

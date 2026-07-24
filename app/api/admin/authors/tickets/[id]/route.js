@@ -7,6 +7,11 @@ export async function GET(request, { params }) {
   try {
     const { id } = await params;
 
+    const { searchParams } = new URL(request.url);
+
+    const limit = Number(searchParams.get("limit")) || 5;
+    const beforeId = searchParams.get("beforeId");
+
     const session = await requireAuth(request, ["author"]);
 
     await ticketChatAuthor.markReadAuthor({
@@ -14,7 +19,12 @@ export async function GET(request, { params }) {
       userId: session.id
     });
 
-    const result = await ticketChatAuthor.ticket({ id, userId: session.id });
+    const result = await ticketChatAuthor.ticket({ 
+      id, 
+      limit,
+      beforeId,
+      userId: session.id 
+    });
 
     return NextResponse.json({
       ticket: result.ticket,
@@ -38,9 +48,8 @@ export async function POST(request, { params }) {
 
     const body = await request.json();
 
-    const messages = await ticketChatAuthor.create({
+    const message = await ticketChatAuthor.create({
       id,
-      userId: session.id,
       senderId: session.id,
       senderType: "author",
       message: body.message,
@@ -48,7 +57,7 @@ export async function POST(request, { params }) {
 
     return NextResponse.json({
       success: true,
-      messages,
+      message,
     });
   } catch (error) {
     console.error(error);

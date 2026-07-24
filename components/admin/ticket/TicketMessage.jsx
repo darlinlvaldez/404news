@@ -18,11 +18,7 @@ export default function TicketMessage({
 
             <div>
               <span className="text-xs font-bold text-white flex items-center gap-1">
-                {message.author}
-
-                {!isOwnMessage && message.sender_type === "admin" && (
-                  <span>Equipo</span>
-                )}
+                {isOwnMessage ? "Tú" : "Administrador"}
               </span>
             </div>
 

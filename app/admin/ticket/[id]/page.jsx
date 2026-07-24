@@ -49,7 +49,7 @@ export default function TicketChat() {
         const data = await response.json();
 
         setTicket(data.ticket);
-        setMessages(prev => [...prev, data.message]);
+        setMessages(data.message);
 
       } catch (error) {
         console.error(error);

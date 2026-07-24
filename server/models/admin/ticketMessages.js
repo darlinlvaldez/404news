@@ -2,8 +2,25 @@ import db from "@/server/lib/db";
 
 const ticketMessages= {};
 
-ticketMessages.markReadAuthor = async function(ticketId, userId) {
+ticketMessages.findById = async (id) => {
+  const [rows] = await db.execute(
+    `
+    SELECT
+      id,
+      sender_id,
+      message,
+      created_at
+    FROM ticket_messages
+    WHERE id = ?
+    LIMIT 1
+    `,
+    [id]
+  );
 
+  return rows[0] ?? null;
+};
+
+ticketMessages.markReadAuthor = async function(ticketId, userId) {
   const [markReadResult] = await db.query(
     `
     UPDATE ticket_messages tm
@@ -31,7 +48,6 @@ ticketMessages.markReadAuthor = async function(ticketId, userId) {
 
 
 ticketMessages.markReadAdmin = async function(ticketId, userId) {
-
   const [markReadResult] = await db.query(
     `
     UPDATE ticket_messages tm

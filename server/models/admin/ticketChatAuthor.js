@@ -1,5 +1,6 @@
 import db from "@/server/lib/db";
-import {exist} from '@/server/models/admin/ticketExist'
+import ticketMessages from "@/server/models/admin/ticketMessages";
+import {exists} from '@/server/models/admin/ticketExist'
 
 const ticketAuthorModels = {};
 
@@ -41,37 +42,45 @@ ticketAuthorModels.ticket = async (id, userId) => {
   return rows[0] ?? null;
 };
 
-ticketAuthorModels.messages = async (id, userId) => {
-  const [rows] = await db.execute(
-    `
+ticketAuthorModels.messages = async (id, userId, limit = 5, beforeId = null) => {
+
+  const params = [userId, id];
+
+  let query = `
     SELECT
-    tm.id,
-    tm.sender_id,
-    tm.message,
-    tm.created_at,
-    u.role AS sender_role,
-
-    COALESCE(a.name, u.name, u.username) AS sender_name,
-
-    a.avatar AS sender_avatar,
-
-    u.role AS sender_role
+      tm.id,
+      tm.sender_id,
+      tm.message,
+      tm.created_at,
+      u.role AS sender_role,
+      COALESCE(a.name, u.name, u.username) AS sender_name,
+      a.avatar AS sender_avatar
 
     FROM ticket_messages tm
 
     LEFT JOIN users u ON u.id = tm.sender_id
-
     LEFT JOIN authors a ON u.id = a.user_id
 
-    INNER JOIN tickets t ON t.id = tm.ticket_id AND t.user_id = ?
+    INNER JOIN tickets t 
+      ON t.id = tm.ticket_id 
+      AND t.user_id = ?
 
     WHERE tm.ticket_id = ?
+  `;
 
-    ORDER BY tm.id ASC`,
-    [userId, id],
-  );
+  if (beforeId) {
+    query += ` AND tm.id < ? `;
+    params.push(beforeId);
+  }
 
-  return rows;
+  query += `
+    ORDER BY tm.id DESC
+    LIMIT ${Number(limit)}
+  `;
+
+  const [rows] = await db.execute(query, params);
+
+  return rows.reverse();
 };
 
 ticketAuthorModels.create = async ({
@@ -80,35 +89,28 @@ ticketAuthorModels.create = async ({
   senderType,
   message,
 }) => {
-  const [ticket] = await db.execute(
-    `
-    SELECT id
-    FROM tickets
-    WHERE id = ?
-    AND user_id = ?
-    `,
-    [ticketId, senderId],
-  );
+  
+  const ticket = await exists(ticketId, senderId);
 
-  if (ticket.length === 0) {
+  if (!ticket) {
     throw new Error("No tienes permiso para responder este ticket");
   }
-
-  await db.execute(
+  
+  const [insertResult] = await db.execute(
     `
-      INSERT INTO ticket_messages
-      (
-        ticket_id,
-        sender_type,
-        sender_id,
-        message
-      )
-      VALUES (?, ?, ?, ?)
+    INSERT INTO ticket_messages
+    (
+      ticket_id,
+      sender_type,
+      sender_id,
+      message
+    )
+    VALUES (?, ?, ?, ?)
   `,
     [ticketId, senderType, senderId, message],
   );
 
-  await db.execute(
+  const [updateResult] = await db.execute(
     `
     UPDATE tickets
     SET
@@ -119,6 +121,12 @@ ticketAuthorModels.create = async ({
     `,
     [ticketId],
   );
+
+  if (updateResult.affectedRows === 0) {
+    throw new Error("No se pudo actualizar el ticket");
+  }
+
+  return await ticketMessages.findById(insertResult.insertId);
 };
 
 export default ticketAuthorModels;

@@ -30,6 +30,8 @@ Agregar que el author pueda enviar tickets.
 
 Agregar que el cliente pueda enviar tickets.
 
+Separar responsabilidades en ticket.
+
 Hacer que los chat de tickets solo puedan cargar 30 mensajes.
 
 Hacer que el ticket bloquee mensajes author si esta cerrado.
