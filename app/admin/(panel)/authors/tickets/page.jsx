@@ -167,10 +167,10 @@ export default function TicketsPage() {
                   {statusLabels[tickets.status] ?? tickets.status}
                 </span>
 
-                {tickets.unread_count > 0 && (
-                  <span className="inline-flex items-center px-3 py-1.5 rounded-xl text-xs font-black bg-green-700 text-white">
-                    {tickets.unread_count} nuevo
-                    {tickets.unread_count > 1 && "s"}
+                {tickets.unread_admin_count > 0 && (
+                  <span className="bg-green-600 text-white px-3 py-1.5 rounded-xl text-xs font-bold">
+                    {tickets.unread_admin_count} nuevo
+                    {tickets.unread_admin_count > 1 && "s"}
                   </span>
                 )}
               </div>

@@ -132,7 +132,6 @@ tickets.getMinimum = async function (
       COALESCE(a.name, u.name, u.username) AS name,
       COALESCE(u.email, t.guest_email) AS email,
       t.last_reply_at,
-      t.unread_user_count,
       t.unread_admin_count,
 
       (

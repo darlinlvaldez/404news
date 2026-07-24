@@ -32,7 +32,7 @@ export default function TicketChat() {
   const router = useRouter();
 
   const [ticket, setTicket] = useState(null);
-  const [messages, setMessages] = useState(null);
+  const [messages, setMessages] = useState([]);
   const [newResponse, setNewResponse] = useState("");
 
   const { id } = useParams();
@@ -49,7 +49,7 @@ export default function TicketChat() {
         const data = await response.json();
 
         setTicket(data.ticket);
-        setMessages(data.messages);
+        setMessages(prev => [...prev, data.message]);
 
       } catch (error) {
         console.error(error);

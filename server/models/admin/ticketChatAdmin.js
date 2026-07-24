@@ -1,4 +1,5 @@
 import db from "@/server/lib/db";
+import {exists} from '@/server/models/admin/ticketExist'
 
 const ticketModels = {};
 
@@ -84,6 +85,12 @@ ticketModels.create = async ({
   isInternal = false
 }) => {
 
+  const ticket = await exists(ticketId);
+
+  if (!ticket) {
+    throw new Error("Ticket no encontrado");
+  }
+
   await db.execute(`
     INSERT INTO ticket_messages
     (
@@ -108,13 +115,12 @@ ticketModels.create = async ({
     UPDATE tickets
     SET
       last_reply_at = NOW(),
-      updated_at = NOW()
+      updated_at = NOW(),
+      unread_admin_count = unread_admin_count + 1
     WHERE id = ?
     `,
     [ticketId]
   );
-
-  return await ticketModels.messages(ticketId);
 };
 
 ticketModels.update = async (id, data) => {

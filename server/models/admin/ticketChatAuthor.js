@@ -1,4 +1,5 @@
 import db from "@/server/lib/db";
+import {exist} from '@/server/models/admin/ticketExist'
 
 const ticketAuthorModels = {};
 
@@ -112,13 +113,12 @@ ticketAuthorModels.create = async ({
     UPDATE tickets
     SET
       last_reply_at = NOW(),
-      updated_at = NOW()
+      updated_at = NOW(),
+      unread_user_count = unread_user_count + 1
     WHERE id = ?
     `,
     [ticketId],
   );
-
-  return await ticketAuthorModels.messages(ticketId, senderId);
 };
 
 export default ticketAuthorModels;
