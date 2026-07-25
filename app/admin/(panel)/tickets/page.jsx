@@ -7,7 +7,6 @@ import {formatDateRelative} from "@/utils/formatDate"
 import Select from "@/components/admin/ui/Select"
 import Input from "@/components/admin/ui/Input"
 import { Header } from '@/components/admin/Header';
-import { Container, Th } from "@/components/admin/ui/Table";
 import { 
   getStatusStyle, 
   getStatusIcon, 
@@ -19,7 +18,6 @@ import {
 
 import {
   Search,
-  Eye,
   ChevronLeft,
   ChevronRight,
   Mail,
@@ -68,8 +66,8 @@ export default function TicketsPage() {
       const res = await fetch(`/api/admin/tickets?${params.toString()}`);
       const data = await res.json();
       
-        setTicket(data.rows);
-        setTotal(data.total);
+      setTicket(data.rows);
+      setTotal(data.total);
         
     } catch (error) {
       console.error("Error loading tickets:", error);
@@ -140,7 +138,7 @@ export default function TicketsPage() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 xl:grid-cols-2 gap-5">
+        <div className="grid grid-cols-1 xl:grid-cols-3 gap-5">
           {ticket.map((tickets) => (
             <Link key={tickets.id}
               href={`/admin/ticket/${tickets.id}`}
@@ -152,23 +150,36 @@ export default function TicketsPage() {
                     #{tickets.id}
                   </span>
 
+                  <p className="text-sm text-gray-400 mt-1">
+                    {tickets.type}
+                  </p>
+
                   <h3 className="text-lg font-bold text-white mt-1 truncate"
                     title={tickets.subject}
                   >
                     {tickets.subject}
                   </h3>
 
-                  <p className="text-sm text-gray-400 mt-1">
-                    {tickets.type}
-                  </p>
+                  <div className="flex items-start gap-3 mt-2">
+                    <p className="text-sm text-gray-400 line-clamp-2"
+                      title={tickets.last_message || tickets.message}
+                    >
+                      {tickets.last_message || tickets.message}
+                    </p>
+
+                    {tickets.unread_user_count > 0 && (
+                      <span className="shrink-0 bg-green-600 text-white px-3 py-1 rounded-xl text-xs font-bold">
+                        {tickets.unread_user_count} nuevo
+                        {tickets.unread_user_count > 1 && "s"}
+                      </span>
+                    )}
+                  </div>
+
                 </div>
 
-                <Link href={`/admin/ticket/${tickets.id}`}
-                  className="p-3 bg-gray-800 hover:bg-green-600 text-slate-400 hover:text-white rounded-xl transition-all shadow-lg active:scale-95 flex items-center gap-2"
-                >
-                  <Eye size={18} />
-                  Ver
-                </Link>
+                {Number(tickets.is_new) === 1 && (
+                  <span className="bg-red-700 mt-2.5 text-white px-3 py-1.5 rounded-xl text-xs font-bold">Nuevo</span>
+                )}
               </div>
 
               <div className="flex items-center mt-6">
@@ -210,9 +221,9 @@ export default function TicketsPage() {
                   {getPriorityIcon(tickets.priority)}
                   {priorityLabels[tickets.priority] ?? tickets.priority}
                 </span>
+
               </div>
 
-              {/* Footer */}
               <div className="mt-6 pt-4 border-t border-gray-800 flex justify-between items-center">
                 <span className="text-sm text-gray-400">
                   Última actividad

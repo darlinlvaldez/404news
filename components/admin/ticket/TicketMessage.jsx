@@ -8,8 +8,6 @@ export default function TicketMessage({
     ? "bg-green-950/20 border-green-500/20 text-gray-200"
     : "bg-gray-950 border-gray-800 text-gray-300";
 
-    console.log(JSON.stringify(message.message));
-
   return (
     <div className={`flex flex-col ${isOwnMessage ? "items-end" : "items-start"}`}>
       <div className={`max-w-[50%] rounded-2xl p-4.5 border shadow-md transition-all duration-150 ${bubbleClass}`}>

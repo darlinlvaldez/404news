@@ -34,6 +34,9 @@ export default function TicketChat() {
   const [ticket, setTicket] = useState(null);
   const [messages, setMessages] = useState([]);
   const [newResponse, setNewResponse] = useState("");
+  const [currentUserId, setCurrentUserId] = useState(null);
+  const [hasMoreMessages, setHasMoreMessages] = useState(true);
+  const [loadingMessages, setLoadingMessages] = useState(false);
 
   const { id } = useParams();
 
@@ -47,9 +50,11 @@ export default function TicketChat() {
         }
 
         const data = await response.json();
+        console.log(data);
 
         setTicket(data.ticket);
-        setMessages(data.message);
+        setMessages(data.messages);
+        setCurrentUserId(data.currentUserId);
 
       } catch (error) {
         console.error(error);
@@ -118,12 +123,44 @@ export default function TicketChat() {
 
       const data = await response.json();
 
-      setMessages(data.messages);
+      setMessages(prev => [...prev, data.message]);
 
       setNewResponse("");
 
     } catch (err) {
       console.error(err);
+    }
+  };
+
+  const loadMoreMessages = async () => {
+
+    if (!messages?.length || loadingMessages) return;
+
+    try {
+
+      setLoadingMessages(true);
+
+      const oldestMessage = messages[0];
+
+      const response = await fetch(
+        `/api/admin/tickets/${id}?limit=5&beforeId=${oldestMessage.id}`
+      );
+
+      const data = await response.json();
+
+      if(data.messages.length < 5){
+        setHasMoreMessages(false);
+      }
+
+      setMessages(prev => [
+        ...data.messages,
+        ...prev
+      ]);
+
+    } catch(error){
+      console.error(error);
+    } finally {
+      setLoadingMessages(false);
     }
   };
 
@@ -301,16 +338,37 @@ export default function TicketChat() {
               </div>
             </div>
 
+            {hasMoreMessages && (
+              <button
+                onClick={loadMoreMessages}
+                disabled={loadingMessages}
+                className="
+                  w-full py-2
+                  text-xs
+                  font-bold
+                  text-gray-400
+                  rounded-xl
+                  transition-colors
+                  duration-200
+                  hover:text-white
+                  disabled:opacity-50
+                  disabled:cursor-not-allowed
+                "
+              >
+                {loadingMessages
+                  ? "Cargando..."
+                  : "Cargar mensajes anteriores"}
+              </button>
+            )}
+
             <div className="space-y-4">
-              <div className="space-y-4">
-                  {messages?.map((message) => (
-                    <TicketMessage
-                      key={message.id}
-                      message={message}
-                      isOwnMessage={message.sender_type === "admin"}
-                    />
-                  ))}
-              </div>
+                {messages?.map((message) => (
+                  <TicketMessage
+                    key={message.id}
+                    message={message}
+                    isOwnMessage={message.sender_id === currentUserId}
+                  />
+                ))}
             </div>
           </div>
 

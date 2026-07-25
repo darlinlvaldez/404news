@@ -293,25 +293,27 @@ export default function TicketChat() {
             </div>
 
             {hasMoreMessages && (
-  <button
-    onClick={loadMoreMessages}
-    disabled={loadingMessages}
-    className="
-      w-full py-2
-      text-xs
-      font-bold
-      text-green-400
-      border
-      border-green-900
-      rounded-xl
-      hover:bg-green-950/30
-    "
-  >
-    {loadingMessages 
-      ? "Cargando..."
-      : "Cargar mensajes anteriores"}
-  </button>
-)}
+              <button
+                onClick={loadMoreMessages}
+                disabled={loadingMessages}
+                className="
+                  w-full py-2
+                  text-xs
+                  font-bold
+                  text-gray-400
+                  rounded-xl
+                  transition-colors
+                  duration-200
+                  hover:text-white
+                  disabled:opacity-50
+                  disabled:cursor-not-allowed
+                "
+              >
+                {loadingMessages 
+                  ? "Cargando..."
+                  : "Cargar mensajes anteriores"}
+              </button>
+            )}
 
             <div className="space-y-4">
               {messages?.map((message) => (
@@ -319,7 +321,6 @@ export default function TicketChat() {
                   key={message.id}
                   message={message}
                   isOwnMessage={message.sender_id === currentUserId}
-                  
                 />
               ))}
             </div>

@@ -14,6 +14,7 @@ tickets.getAll = async function (
     FROM tickets t
     LEFT JOIN users u ON t.user_id = u.id
     LEFT JOIN authors a ON a.user_id = u.id
+    LEFT JOIN ticket_messages tm ON tm.id = t.last_message_id
     WHERE 1=1
   `;
 
@@ -65,11 +66,15 @@ tickets.getAll = async function (
       t.id,
       t.type,
       t.subject,
+      t.message,
       t.status,
       t.priority,
       COALESCE(a.name, u.name, u.username, t.guest_name) AS name,
       COALESCE(u.email, t.guest_email) AS email,
-      t.last_reply_at
+      t.last_reply_at,
+      t.unread_user_count,
+      t.created_at >= DATE_SUB(NOW(), INTERVAL 24 HOUR) AS is_new,
+      tm.message AS last_message
     ${baseQuery}
     ORDER BY t.created_at DESC
     LIMIT ? OFFSET ?
@@ -136,7 +141,6 @@ tickets.getMinimum = async function (
       t.unread_admin_count,
       t.created_at >= DATE_SUB(NOW(), INTERVAL 24 HOUR) AS is_new,
       tm.message AS last_message
-
     ${baseQuery}
     ORDER BY t.created_at DESC
     LIMIT ? OFFSET ?

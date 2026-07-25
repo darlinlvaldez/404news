@@ -1,39 +1,31 @@
 import { NextResponse } from "next/server";
 import { requireAuth } from "../../../../../server/utils/auth";
 import { handleError } from "../../../../../server/errors/handleError";
-import ticketChat from "../../../../../server/controllers/admin/ticketChatAdmin";
+import ticketChatAdmin from "../../../../../server/controllers/admin/ticketChatAdmin";
 
 export async function GET(request, { params }) {
   try {
     const { id } = await params;
 
-    await requireAuth(request, ["superadmin", "admin", "editor"]);
+    const { searchParams } = new URL(request.url);
+    const limit = Number(searchParams.get("limit")) || 5;
+    const beforeId = searchParams.get("beforeId");
 
-    const result = await ticketChat.ticket({ id });
+    const session = await requireAuth(request, ["superadmin", "admin", "editor"]);
 
-    return NextResponse.json(result);
+    await ticketChatAdmin.markReadAdmin({ticketId: id});
 
-  } catch (error) {
-    console.error(error);
-    return handleError(error);
-  }
-}
-
-export async function PUT(request, { params }) {
-  try {
-    const { id } = await params;
-
-    await requireAuth(request, ["superadmin", "admin", "editor"]);
-
-    const body = await request.json();
-
-    await ticketChat.update({
-      id,
-      status: body.status,
-      priority: body.priority
+    const result = await ticketChatAdmin.ticket({ 
+      id, 
+      limit,
+      beforeId,
     });
 
-    return NextResponse.json({success: true});
+    return NextResponse.json({
+      ...result,
+      currentUserId: session.id
+    });
+
   } catch (error) {
     console.error(error);
     return handleError(error);
@@ -55,7 +47,7 @@ export async function POST(request, { params }) {
 
     const body = await request.json();
 
-    const messages = await ticketChat.create({
+    const message = await ticketChatAdmin.create({
       id,
       senderId: session.id,
       senderType,
@@ -65,9 +57,30 @@ export async function POST(request, { params }) {
 
     return NextResponse.json({
       success: true,
-      messages
+      message
     });
 
+  } catch (error) {
+    console.error(error);
+    return handleError(error);
+  }
+}
+
+export async function PUT(request, { params }) {
+  try {
+    const { id } = await params;
+
+    await requireAuth(request, ["superadmin", "admin", "editor"]);
+
+    const body = await request.json();
+
+    await ticketChatAdmin.update({
+      id,
+      status: body.status,
+      priority: body.priority
+    });
+
+    return NextResponse.json({success: true});
   } catch (error) {
     console.error(error);
     return handleError(error);

@@ -1,9 +1,10 @@
 import db from "@/server/lib/db";
+import ticketMessages from "@/server/models/admin/ticketMessages";
 import {exists} from '@/server/models/admin/ticketExist'
 
-const ticketModels = {};
+const ticketAdminModels = {};
 
-ticketModels.ticket = async (id) => {
+ticketAdminModels.ticket = async (id) => {
   const [rows] = await db.execute(
     `
     SELECT
@@ -44,8 +45,10 @@ ticketModels.ticket = async (id) => {
   return rows[0] ?? null;
 };
 
-ticketModels.messages = async (id) => {
-  const [rows] = await db.execute(
+ticketAdminModels.messages = async (id, limit = 5, beforeId = null) => {
+  const params = [id];
+
+  let query =
     `
     SELECT
     tm.id,
@@ -65,19 +68,29 @@ ticketModels.messages = async (id) => {
     FROM ticket_messages tm
 
     LEFT JOIN users u ON u.id = tm.sender_id
-
     LEFT JOIN authors a ON u.id = a.user_id
+    INNER JOIN tickets t ON t.id = tm.ticket_id 
 
     WHERE tm.ticket_id = ?
+    `
+  ;
 
-    ORDER BY tm.id ASC`,
-    [id]
-  );
+  if (beforeId) {
+    query += ` AND tm.id < ? `;
+    params.push(beforeId);
+  }
 
-  return rows;
+  query += `
+    ORDER BY tm.id DESC
+    LIMIT ${Number(limit)}
+  `;
+
+  const [rows] = await db.execute(query, params);
+
+  return rows.reverse();
 };
 
-ticketModels.create = async ({
+ticketAdminModels.create = async ({
   ticketId,
   senderId,
   senderType,
@@ -91,7 +104,8 @@ ticketModels.create = async ({
     throw new Error("Ticket no encontrado");
   }
 
-  await db.execute(`
+  const [insertResult] = await db.execute(
+    `
     INSERT INTO ticket_messages
     (
       ticket_id,
@@ -101,34 +115,35 @@ ticketModels.create = async ({
       is_internal
     )
     VALUES (?, ?, ?, ?, ?)
-  `, [
-      ticketId,
-      senderType,
-      senderId,
-      message,
-      isInternal ? 1 : 0
-    ]
+  `, [ticketId, senderType, senderId, message, isInternal ? 1 : 0]
   );
 
-  await db.execute(
+  const [updateResult] = await db.execute(
     `
     UPDATE tickets
     SET
       last_reply_at = NOW(),
       updated_at = NOW(),
+      last_message_id = ?,
       unread_admin_count = unread_admin_count + 1
     WHERE id = ?
     `,
-    [ticketId]
+    [insertResult.insertId, ticketId]
   );
+
+  if (updateResult.affectedRows === 0) {
+    throw new Error("No se pudo actualizar el ticket");
+  }
+
+  return await ticketMessages.findById(insertResult.insertId);
 };
 
-ticketModels.update = async (id, data) => {
+ticketAdminModels.update = async (id, data) => {
 
   const fields = [];
   const values = [];
 
-  const ticket = await ticketModels.ticket(id);
+  const ticket = await ticketAdminModels.ticket(id);
 
   if (data.status !== undefined) {
     if (data.status !== ticket.status) {
@@ -162,4 +177,4 @@ ticketModels.update = async (id, data) => {
   );
 };
 
-export default ticketModels;
+export default ticketAdminModels;

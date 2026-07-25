@@ -46,30 +46,28 @@ ticketMessages.markReadAuthor = async function(ticketId, userId) {
   return { markReadResult, resetCounterResult }
 };
 
-ticketMessages.markReadAdmin = async function(ticketId, userId) {
+ticketMessages.markReadAdmin = async function(ticketId) {
   const [markReadResult] = await db.query(
     `
-    UPDATE ticket_messages tm
-    INNER JOIN tickets t ON t.id = tm.ticket_id
-    SET tm.author_read = 1
-    WHERE tm.ticket_id = ?
-      AND t.user_id = ?
-      AND tm.sender_type = 'admin'
-      AND tm.author_read = 0
+    UPDATE ticket_messages
+    SET admin_read = 1
+    WHERE ticket_id = ?
+      AND sender_type = 'author'
+      AND admin_read = 0
     `,
-    [ticketId, userId]
+    [ticketId]
   );
 
   const [resetCounterResult] = await db.query(
     `
     UPDATE tickets
-    SET unread_admin_count = 0
+    SET unread_user_count = 0
     WHERE id = ?
     `,
     [ticketId]
   );
 
-  return { markReadResult, resetCounterResult }
+  return { markReadResult, resetCounterResult };
 };
 
 export default ticketMessages;

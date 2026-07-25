@@ -7,7 +7,6 @@ import {formatDateRelative} from "@/utils/formatDate"
 import Select from "@/components/admin/ui/Select"
 import Input from "@/components/admin/ui/Input"
 import { Header } from '@/components/admin/Header';
-import { Container, Th } from "@/components/admin/ui/Table";
 import { 
   getStatusStyle, 
   getStatusIcon, 
@@ -16,7 +15,6 @@ import {
 
 import {
   Search,
-  Eye,
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
@@ -124,7 +122,7 @@ export default function TicketsPage() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 xl:grid-cols-2 gap-5">
+        <div className="grid grid-cols-1 xl:grid-cols-3 gap-5">
           {ticket.map((tickets) => (
             <Link key={tickets.id}
               href={`/admin/authors/ticket/${tickets.id}`}
@@ -136,21 +134,29 @@ export default function TicketsPage() {
                     #{tickets.id}
                   </span>
 
-                  <h3 className="text-lg font-bold text-white mt-1 truncate"
-                    title={tickets.subject}
-                  >
-                    {tickets.subject}
-                  </h3>
+                    <h3 className="text-lg font-bold text-white mt-1 truncate"
+                      title={tickets.subject}
+                    >
+                      {tickets.subject}
+                    </h3>
 
-                  <p className="text-sm text-gray-400 mt-2 line-clamp-2"
-                    title={tickets.last_message || tickets.message}
-                  >
-                    {tickets.last_message || tickets.message}
-                  </p>
+                    <div className="flex items-start gap-3 mt-2">
+                      <p className="text-sm text-gray-400 line-clamp-2"
+                        title={tickets.last_message || tickets.message}
+                      >
+                        {tickets.last_message || tickets.message}
+                      </p>
 
+                      {tickets.unread_admin_count > 0 && (
+                        <span className="shrink-0 bg-green-600 text-white px-3 py-1 rounded-xl text-xs font-bold">
+                          {tickets.unread_admin_count} nuevo
+                          {tickets.unread_admin_count > 1 && "s"}
+                        </span>
+                      )}
+                  </div>
                 </div>
 
-                {tickets.is_new && (
+                {Number(tickets.is_new) === 1 && (
                   <span className="bg-red-700 mt-2.5 text-white px-3 py-1.5 rounded-xl text-xs font-bold">Nuevo</span>
                 )}
               </div>
@@ -165,12 +171,6 @@ export default function TicketsPage() {
                   {statusLabels[tickets.status] ?? tickets.status}
                 </span>
 
-                {tickets.unread_admin_count > 0 && (
-                  <span className="bg-green-600 text-white px-3 py-1.5 rounded-xl text-xs font-bold">
-                    {tickets.unread_admin_count} nuevo
-                    {tickets.unread_admin_count > 1 && "s"}
-                  </span>
-                )}
               </div>
 
               <div className="mt-6 pt-4 border-t border-gray-800 flex justify-between items-center">

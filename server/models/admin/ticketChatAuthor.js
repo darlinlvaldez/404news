@@ -43,7 +43,6 @@ ticketAuthorModels.ticket = async (id, userId) => {
 };
 
 ticketAuthorModels.messages = async (id, userId, limit = 5, beforeId = null) => {
-
   const params = [userId, id];
 
   let query = `

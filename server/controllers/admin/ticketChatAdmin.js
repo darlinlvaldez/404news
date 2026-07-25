@@ -1,22 +1,26 @@
-import ticketModels from "@/server/models/admin/ticketChatAdmin";
+import ticketAdminModels from "@/server/models/admin/ticketChatAdmin";
+import ticketMessages from "@/server/models/admin/ticketMessages";
 
-const ticketChat = {};
+const ticketChatAdmin = {};
 
-ticketChat.ticket = async ({ id }) => {
-  const ticket = await ticketModels.ticket(id);
-  const messages = await ticketModels.messages(id);
+ticketChatAdmin.ticket = async ({ 
+  id, 
+  limit,
+  beforeId
+}) => {
+    
+  const ticket = await ticketAdminModels.ticket(id);
+
+  const messages = await ticketAdminModels.messages(
+    id, 
+    limit,
+    beforeId
+  );
 
   return {ticket, messages} 
 }; 
 
-ticketChat.update = async ({ id, status, priority }) => {
-  await ticketModels.update(id, {
-    status,
-    priority
-  });
-};
-
-ticketChat.create = async ({
+ticketChatAdmin.create = async ({
   id,
   senderId,
   senderType,
@@ -28,7 +32,7 @@ ticketChat.create = async ({
     isInternal = false;
   }
 
-  return await ticketModels.create({
+  return await ticketAdminModels.create({
     ticketId: id,
     senderId,
     message,
@@ -37,4 +41,19 @@ ticketChat.create = async ({
   });
 };
 
-export default ticketChat;
+ticketChatAdmin.markReadAdmin = async ({
+  ticketId,
+}) => {
+  return await ticketMessages.markReadAdmin(
+    ticketId,
+  );
+};
+
+ticketChatAdmin.update = async ({ id, status, priority }) => {
+  await ticketAdminModels.update(id, {
+    status,
+    priority
+  });
+};
+
+export default ticketChatAdmin;
