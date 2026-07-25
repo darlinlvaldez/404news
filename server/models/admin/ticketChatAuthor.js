@@ -116,10 +116,11 @@ ticketAuthorModels.create = async ({
     SET
       last_reply_at = NOW(),
       updated_at = NOW(),
+      last_message_id = ?,
       unread_user_count = unread_user_count + 1
     WHERE id = ?
     `,
-    [ticketId],
+    [insertResult.insertId, ticketId],
   );
 
   if (updateResult.affectedRows === 0) {

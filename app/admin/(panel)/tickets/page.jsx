@@ -142,7 +142,8 @@ export default function TicketsPage() {
 
         <div className="grid grid-cols-1 xl:grid-cols-2 gap-5">
           {ticket.map((tickets) => (
-            <div key={tickets.id}
+            <Link key={tickets.id}
+              href={`/admin/ticket/${tickets.id}`}
               className="bg-gray-900 border border-gray-700 rounded-3xl p-6 shadow-xl hover:border-gray-600 transition"
             >
               <div className="flex items-start justify-between gap-4">
@@ -221,7 +222,7 @@ export default function TicketsPage() {
                   {formatDateRelative(tickets.last_reply_at)}
                 </span>
               </div>
-            </div>
+            </Link>
           ))}
 
           {ticket.length === 0 && (

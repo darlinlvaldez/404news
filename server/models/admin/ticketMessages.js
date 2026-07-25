@@ -46,7 +46,6 @@ ticketMessages.markReadAuthor = async function(ticketId, userId) {
   return { markReadResult, resetCounterResult }
 };
 
-
 ticketMessages.markReadAdmin = async function(ticketId, userId) {
   const [markReadResult] = await db.query(
     `

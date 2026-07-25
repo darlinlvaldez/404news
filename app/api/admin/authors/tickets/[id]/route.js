@@ -8,7 +8,6 @@ export async function GET(request, { params }) {
     const { id } = await params;
 
     const { searchParams } = new URL(request.url);
-
     const limit = Number(searchParams.get("limit")) || 5;
     const beforeId = searchParams.get("beforeId");
 

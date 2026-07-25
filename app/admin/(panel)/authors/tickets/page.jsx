@@ -126,12 +126,13 @@ export default function TicketsPage() {
 
         <div className="grid grid-cols-1 xl:grid-cols-2 gap-5">
           {ticket.map((tickets) => (
-            <div key={tickets.id}
+            <Link key={tickets.id}
+              href={`/admin/authors/ticket/${tickets.id}`}
               className="bg-gray-900 border border-gray-700 rounded-3xl p-6 shadow-xl hover:border-gray-600 transition"
             >
               <div className="flex items-start justify-between gap-4">
                  <div className="min-w-0 flex-1">
-                  <span className="text-xs font-mono text-gray-500">
+                  <span className="text-base font-mono text-gray-500">
                     #{tickets.id}
                   </span>
 
@@ -142,19 +143,16 @@ export default function TicketsPage() {
                   </h3>
 
                   <p className="text-sm text-gray-400 mt-2 line-clamp-2"
-                    title={tickets.last_message}
+                    title={tickets.last_message || tickets.message}
                   >
-                    {tickets.last_message || ""}
+                    {tickets.last_message || tickets.message}
                   </p>
 
                 </div>
 
-                <Link href={`/admin/authors/ticket/${tickets.id}`}
-                  className="p-3 bg-gray-800 hover:bg-green-600 text-slate-400 hover:text-white rounded-xl transition-all shadow-lg active:scale-95 flex items-center gap-2"
-                >
-                  <Eye size={18} />
-                  Ver
-                </Link>
+                {tickets.is_new && (
+                  <span className="bg-red-700 mt-2.5 text-white px-3 py-1.5 rounded-xl text-xs font-bold">Nuevo</span>
+                )}
               </div>
 
               <div className="flex flex-wrap gap-3 mt-6">
@@ -184,7 +182,7 @@ export default function TicketsPage() {
                   {formatDateRelative(tickets.last_reply_at)}
                 </span>
               </div>
-            </div>
+            </Link>
           ))}
 
           {ticket.length === 0 && (

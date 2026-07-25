@@ -91,6 +91,7 @@ tickets.getMinimum = async function (
     FROM tickets t
     LEFT JOIN users u ON t.user_id = u.id
     LEFT JOIN authors a ON a.user_id = u.id
+    LEFT JOIN ticket_messages tm ON tm.id = t.last_message_id
     WHERE t.user_id = ?
   `;
 
@@ -133,14 +134,8 @@ tickets.getMinimum = async function (
       COALESCE(u.email, t.guest_email) AS email,
       t.last_reply_at,
       t.unread_admin_count,
-
-      (
-        SELECT tm.message
-        FROM ticket_messages tm
-        WHERE tm.ticket_id = t.id
-        ORDER BY tm.created_at DESC, tm.id DESC
-        LIMIT 1
-      ) AS last_message
+      t.created_at >= DATE_SUB(NOW(), INTERVAL 24 HOUR) AS is_new,
+      tm.message AS last_message
 
     ${baseQuery}
     ORDER BY t.created_at DESC
