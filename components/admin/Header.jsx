@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { ArrowLeft, Eye, Save, Plus } from 'lucide-react';
 
-export const Header = ({ children, views, onSave, addNews, href, onBack }) => {
+export const Header = ({ children, views, onSave, addNews, href, onBack, actions }) => {
   return (
     <header className="bg-gray-900 backdrop-blur-md px-8 py-4 border-b border-gray-700 flex justify-between items-center">
       <div className="flex flex-1 items-center space-x-4">
@@ -14,9 +14,15 @@ export const Header = ({ children, views, onSave, addNews, href, onBack }) => {
           <ArrowLeft size={20}/>
           </button>
         )}
+        
         <div className='flex-1 ml-4'>
           {children}
         </div>
+
+        <div className="flex items-center gap-3">
+          {actions}
+        </div>
+
       </div>
       <div className="flex items-center space-x-3">
         {views  !== undefined && (
@@ -25,6 +31,7 @@ export const Header = ({ children, views, onSave, addNews, href, onBack }) => {
           <span className="text-xs font-mono text-gray-300">{views} vistas</span>
         </div>
         )}
+
       {onSave && (
       <button 
         onClick={onSave}

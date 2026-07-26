@@ -30,6 +30,8 @@ Agregar que el author pueda enviar tickets.
 
 Agregar que el cliente pueda enviar tickets.
 
+Arreglar el componente ActionButton, exactamente el save.
+
 Separar responsabilidades en ticket.
 
 Hacer que los chat de tickets solo puedan cargar 30 mensajes.
@@ -41,4 +43,3 @@ Generar ID publico en tickets.
 Arreglar los estilos del chat de tickets en responsive.
 
 Validar campos en controller.
-

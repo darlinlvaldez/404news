@@ -6,6 +6,8 @@ import { useSearchParams } from "next/navigation";
 import {formatDateRelative} from "@/utils/formatDate"
 import Select from "@/components/admin/ui/Select"
 import Input from "@/components/admin/ui/Input"
+import FormModal from "@/components/admin/ui/FormModal"
+import { SaveButton } from "@/components/admin/ui/ActionButtons"
 import { Header } from '@/components/admin/Header';
 import { 
   getStatusStyle, 
@@ -17,6 +19,7 @@ import {
   Search,
   ChevronLeft,
   ChevronRight,
+  Plus
 } from "lucide-react";
 
 export default function TicketsPage() {
@@ -24,6 +27,9 @@ export default function TicketsPage() {
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
+  const [showModal, setShowModal] = useState(false);
+  const [subject, setSubject] = useState("");
+  const [message, setMessage] = useState("");
   
   const searchParams = useSearchParams();
 
@@ -70,6 +76,41 @@ export default function TicketsPage() {
   fetchTicket();
   }, [page, statusFilter, debouncedSearch]);
   
+  const handleCreateTicket = async (e) => {
+    e.preventDefault();
+
+    if (!subject.trim() || !message.trim()) return;
+
+    try {
+      const response = await fetch(`/api/admin/authors/tickets`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          subject,
+          message,
+        }),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        console.log(error);
+        throw new Error(error.message || "Error create ticket");
+      }
+
+      const data = await response.json();
+
+      setSubject("");
+      setMessage("");
+      setShowModal(false);
+
+      window.location.reload();
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   const createLabels = (options) =>
   Object.fromEntries(
     options
@@ -88,7 +129,13 @@ export default function TicketsPage() {
 
   return (
     <div className="h-full flex-1 flex flex-col overflow-hidden bg-gray-800 text-gray-200 font-sans">
-      <Header>
+      <Header
+        actions={
+          <SaveButton icon={Plus} onClick={() => setShowModal(true)}>
+            Nuevo Ticket
+          </SaveButton>
+        }
+      >
         <Header.Title>Tickets</Header.Title>
         <Header.Subtitle>Administración y seguimiento de solicitudes</Header.Subtitle>
       </Header>
@@ -234,6 +281,43 @@ export default function TicketsPage() {
             </div>
           </div>
       </section>
+      <FormModal
+        open={showModal}
+        title="Nuevo Ticket"
+        onClose={() => setShowModal(false)}
+        onSubmit={handleCreateTicket}
+        submitText="Enviar Ticket"
+      >
+        <div className="space-y-5">
+          <div>
+            <label className="block text-sm font-medium text-gray-300 mb-2">
+              Asunto
+            </label>
+
+            <Input
+              name="subject"
+              value={subject}
+              onChange={(e) => setSubject(e.target.value)}
+              placeholder="Escribe el asunto del ticket..."
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-300 mb-2">
+              Mensaje
+            </label>
+
+            <textarea
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              placeholder="Describe el problema o la solicitud..."
+              rows={6}
+              className="w-full bg-gray-950 rounded-xl border border-gray-700 focus:ring-1 focus:ring-green-800 focus:border-transparent
+                outline-none transition px-4 py-3.5 text-sm text-gray-100 placeholder:text-gray-500 resize-none"
+            />
+          </div>
+        </div>
+      </FormModal>
     </div>
   );
 }
