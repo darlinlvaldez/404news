@@ -1,4 +1,6 @@
-export function ActionButton({
+import Link from "next/link";
+
+export function CompactButton({
   icon: Icon,
   onClick,
   title,
@@ -16,26 +18,35 @@ export function ActionButton({
   );
 }
 
-export function SaveButton({
+export function ActionButton({
   icon: Icon,
   children,
+  href,
   type = "button",
   variant = "green",
   className = "",
   ...props
 }) {
-
   const variants = {
-    green: "bg-green-700 hover:bg-green-600",
-    blue: "bg-blue-600 hover:bg-blue-500",
+    green: "bg-green-700 hover:bg-green-600 text-white",
+    blue: "bg-blue-600 hover:bg-blue-500 text-white",
+    red: "bg-red-600 hover:bg-red-500 text-white",
+    ghostRed: "text-red-500 hover:bg-red-500/10 shadow-none",
   };
 
+  const baseClasses = `px-6 py-3 rounded-2xl font-bold inline-flex items-center justify-center transition cursor-pointer shadow-lg ${variants[variant]} ${className}`;
+
+  if (href) {
+    return (
+      <Link href={href} className={baseClasses} {...props}>
+        {Icon && <Icon size={18} className="mr-2" />}
+        {children}
+      </Link>
+    );
+  }
+
   return (
-    <button
-      type={type}
-      className={`px-6 py-3 rounded-xl font-bold flex items-center transition cursor-pointer shadow-lg ${variants[variant]} ${className}`}
-      {...props}
-    >
+    <button type={type} className={baseClasses} {...props}>
       {Icon && <Icon size={18} className="mr-2" />}
       {children}
     </button>

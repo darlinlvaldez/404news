@@ -1,8 +1,8 @@
-import tickets from "@/server/models/admin/tickets";
+import tickets from "@/server/models/admin/ticketsAdmin";
 
-const ticketsController = {};
+const ticketsAdmin = {};
 
-ticketsController.ticketsTable = async ({
+ticketsAdmin.ticketsTable = async ({
   limit = 50,
   offset = 0,
   search = "",
@@ -20,4 +20,4 @@ ticketsController.ticketsTable = async ({
   );
 };
 
-export default ticketsController;
+export default ticketsAdmin;

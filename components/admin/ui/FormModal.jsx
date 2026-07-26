@@ -12,6 +12,8 @@ export default function FormModal({
   cancelText = "Cancelar",
   loading = false,
   width = "max-w-lg",
+  topContent = null,
+  bottomContent = null,
 }) {
   if (!open) return null;
 
@@ -35,12 +37,18 @@ export default function FormModal({
             onClick={onClose}
             className="p-2 hover:bg-gray-800 rounded-lg"
           >
-            <X size={18}/>
+            <X size={18} />
           </button>
         </header>
 
         <div className="p-5 space-y-5">
+
+          {topContent}
+
           {children}
+
+          {bottomContent}
+
         </div>
 
         <footer className="border-t border-gray-700 p-5 flex justify-end gap-3">

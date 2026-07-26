@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { toast } from "@/utils/toast";
 import { Header } from '@/components/admin/Header';
-import { ActionButton, SaveButton } from "@/components/admin/ui/ActionButtons"
+import { ActionButton, CompactButton } from "@/components/admin/ui/ActionButtons"
 import { formatDateAbsolute } from "@/utils/formatDate"
 import Input from "@/components/admin/ui/Input"
 import Switch from "@/components/admin/ui/Switch";
@@ -226,13 +226,13 @@ export default function CategoriesPage () {
                     onChange={handleInputChange}
                   />
                 </div>
-                  <SaveButton
+                  <ActionButton
                     type="submit"
                     icon={Save}
                     variant={isEditing ? "blue" : "green"}
                   >
                     {isEditing ? "Actualizar" : "Guardar"}
-                  </SaveButton>
+                  </ActionButton>
               </div>
             </form>
           </section>
@@ -296,13 +296,13 @@ export default function CategoriesPage () {
 
                       <td className="px-8 py-6 text-right">
                         <div className="flex space-x-2">
-                          <ActionButton
+                          <CompactButton
                             icon={Edit3}
                             title="Editar"
                             hoverColor="hover:bg-blue-600"
                             onClick={() => handleEdit(cat)}
                           />
-                          <ActionButton
+                          <CompactButton
                             icon={Trash2}
                             title="Eliminar"
                             hoverColor="hover:bg-red-600"

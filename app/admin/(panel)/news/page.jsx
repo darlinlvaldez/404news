@@ -7,6 +7,7 @@ import {formatDateAbsolute} from "@/utils/formatDate"
 import Select from "@/components/admin/ui/Select"
 import Input from "@/components/admin/ui/Input"
 import { Header } from '@/components/admin/Header';
+import { ActionButton } from '@/components/admin/ui/ActionButtons';
 import { Container, Th } from "@/components/admin/ui/Table";
 
 import { 
@@ -20,6 +21,7 @@ import {
   CheckCircle2,
   Clock,
   FileEdit,
+  Plus
 } from 'lucide-react';
 
 export default function NewsTable() {
@@ -111,7 +113,13 @@ export default function NewsTable() {
   return (
     <div className="h-full flex-1 flex flex-col overflow-hidden bg-gray-800 text-gray-200 font-sans">
       
-      <Header addNews href="/admin/news/create">
+      <Header
+        actions={
+          <ActionButton href="/admin/news/create" icon={Plus} variant="green">
+            Nueva Noticia
+          </ActionButton>
+        }
+      >
         <Header.Title>Noticias</Header.Title>
         <Header.Subtitle>Gestión de Noticas</Header.Subtitle>
       </Header>

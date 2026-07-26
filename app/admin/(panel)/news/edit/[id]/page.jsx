@@ -8,9 +8,11 @@ import { UseNewsState } from '@/components/admin/news/UseNewsState';
 import { Header } from '@/components/admin/Header';
 import { GeneralData } from '@/components/admin/news/GeneralData';
 import { ContentBlocks } from '@/components/admin/news/ContentBlocks';
-import { ActionButtons } from '@/components/admin/news/ActionButtons';
 import { useFormErrors } from '@/hooks/useFormErrors';
+import { ActionButton } from '@/components/admin/ui/ActionButtons';
 import ConfirmModal from '@/components/admin/ui/ConfirmModal';
+
+import { Save, Trash2 } from "lucide-react";
 
 export default function EditNews() {
   const params = useParams();
@@ -166,10 +168,13 @@ export default function EditNews() {
   return (
     <div className="flex-1 bg-gray-800 overflow-y-auto">
       <Header
-        views={newsData.views}
-        onSave={handleSave}
         onBack={onBack}
-        >
+        actions={
+          <ActionButton icon={Save} variant="green" onClick={handleSave}>
+            Guardar Noticia
+          </ActionButton>
+        }
+      >
         <Header.Title>Noticia</Header.Title>
         <Header.Subtitle>Editor de Contenido</Header.Subtitle>
       </Header>
@@ -193,13 +198,25 @@ export default function EditNews() {
         />
 
         <section className="pt-12 border-t border-gray-700">
-          <ActionButtons 
-            showDeleteConfirm={showDeleteConfirm}
-            onSetShowDeleteConfirm={setShowDeleteConfirm}
-            onSave={handleSave}
-            onDelete={() => setShowDeleteConfirm(true)}
-            blocksCount={blocks.length}
-          />
+          <div className="flex flex-col sm:flex-row items-center gap-4">
+            <ActionButton
+              icon={Save}
+              variant="green"
+              className="w-full sm:flex-1 py-5 font-black justify-center"
+              onClick={handleSave}
+            >
+              Confirmar y Guardar Noticia
+            </ActionButton>
+
+            <ActionButton
+              icon={Trash2}
+              variant="ghostRed"
+              className="w-full sm:w-auto px-8 py-5 rounded-3xl justify-center"
+              onClick={() => setShowDeleteConfirm(true)}
+            >
+              Eliminar Entrada
+            </ActionButton>
+          </div>
         </section>
       </div>
       <ConfirmModal

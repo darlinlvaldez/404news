@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { requireAuth } from "../../../../server/utils/auth";
 import { handleError } from "../../../../server/errors/handleError";
-import ticketsController from "../../../../server/controllers/admin/tickets";
+import ticketsAdmin from "../../../../server/controllers/admin/ticketsAdmin";
 
 export async function GET(request) {
   try {
@@ -16,13 +16,13 @@ export async function GET(request) {
     const priority = searchParams.get("priority") || "";
     const type = searchParams.get("type") || "";
 
-    const result = await ticketsController.ticketsTable({
+    const result = await ticketsAdmin.ticketsTable({
       limit,
       offset,
       search,
       status,
       priority,
-      type,
+      type
     });
 
     return NextResponse.json(result);

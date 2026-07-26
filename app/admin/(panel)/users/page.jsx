@@ -6,7 +6,7 @@ import Switch from "@/components/admin/ui/Switch";
 import Input from "@/components/admin/ui/Input"
 import Select from "@/components/admin/ui/Select"
 import ConfirmModal from '@/components/admin/ui/ConfirmModal';
-import { ActionButton, SaveButton } from "@/components/admin/ui/ActionButtons"
+import { ActionButton, CompactButton } from "@/components/admin/ui/ActionButtons"
 import { Header } from '@/components/admin/Header';
 import { Container, Th } from "@/components/admin/ui/Table";
 import { formatDateAbsolute } from "@/utils/formatDate"
@@ -346,13 +346,13 @@ export default function UsersAccount () {
                 </div>
 
                 <div className="flex justify-end pt-4">
-                  <SaveButton
+                  <ActionButton
                     type="submit"
                     icon={Save}
                     variant={isEditing ? "blue" : "green"}
                   >
                     {isEditing ? "Actualizar" : "Guardar"}
-                  </SaveButton>
+                  </ActionButton>
                 </div>
               </form>
             </section>
@@ -450,13 +450,13 @@ export default function UsersAccount () {
 
                         <td className="px-8 py-6 text-right">
                           <div className="flex space-x-2">
-                            <ActionButton
+                            <CompactButton
                               icon={Edit3}
                               title="Editar"
                               hoverColor="hover:bg-blue-600"
                               onClick={() => handleEdit(user)}
                             />
-                            <ActionButton
+                            <CompactButton
                               icon={Trash2}
                               title="Eliminar"
                               hoverColor="hover:bg-red-600"

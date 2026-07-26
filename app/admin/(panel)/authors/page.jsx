@@ -5,7 +5,7 @@ import { toast } from "@/utils/toast";
 import Switch from "@/components/admin/ui/Switch";
 import Input from "@/components/admin/ui/Input"
 import ConfirmModal from '@/components/admin/ui/ConfirmModal';
-import { ActionButton, SaveButton } from "@/components/admin/ui/ActionButtons"
+import { ActionButton, CompactButton } from "@/components/admin/ui/ActionButtons"
 import { Header } from '@/components/admin/Header';
 import { Container, Th } from "@/components/admin/ui/Table";
 import { useFormErrors } from '@/hooks/useFormErrors';
@@ -385,13 +385,13 @@ export default function AuthorsPage() {
                 </div>
 
                 <div className="flex justify-end pt-4">
-                  <SaveButton
+                  <ActionButton
                     type="submit"
                     icon={Save}
                     variant={isEditing ? "blue" : "green"}
                   >
                     {isEditing ? "Actualizar" : "Guardar"}
-                  </SaveButton>
+                  </ActionButton>
                 </div>
               </form>
             </div>
@@ -464,13 +464,13 @@ export default function AuthorsPage() {
                       </td>
                       <td className="px-8 py-6 text-right">
                         <div className="flex justify-end space-x-2">
-                          <ActionButton
+                          <CompactButton
                             icon={Edit3}
                             title="Editar"
                             hoverColor="hover:bg-blue-600"
                             onClick={() => handleEdit(author)}
                           />
-                          <ActionButton
+                          <CompactButton
                             icon={Trash2}
                             title="Eliminar"
                             hoverColor="hover:bg-red-600"

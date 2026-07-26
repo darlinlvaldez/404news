@@ -7,7 +7,7 @@ import {formatDateRelative} from "@/utils/formatDate"
 import Select from "@/components/admin/ui/Select"
 import Input from "@/components/admin/ui/Input"
 import FormModal from "@/components/admin/ui/FormModal"
-import { SaveButton } from "@/components/admin/ui/ActionButtons"
+import { ActionButton } from "@/components/admin/ui/ActionButtons"
 import { Header } from '@/components/admin/Header';
 import { 
   getStatusStyle, 
@@ -131,9 +131,9 @@ export default function TicketsPage() {
     <div className="h-full flex-1 flex flex-col overflow-hidden bg-gray-800 text-gray-200 font-sans">
       <Header
         actions={
-          <SaveButton icon={Plus} onClick={() => setShowModal(true)}>
+          <ActionButton icon={Plus} onClick={() => setShowModal(true)}>
             Nuevo Ticket
-          </SaveButton>
+          </ActionButton>
         }
       >
         <Header.Title>Tickets</Header.Title>

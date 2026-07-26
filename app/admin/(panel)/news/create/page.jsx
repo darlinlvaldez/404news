@@ -7,8 +7,10 @@ import { UseNewsState } from '@/components/admin/news/UseNewsState';
 import { Header } from '@/components/admin/Header';
 import { GeneralData } from '@/components/admin/news/GeneralData';
 import { ContentBlocks } from '@/components/admin/news/ContentBlocks';
-import { ActionButtons } from '@/components/admin/news/ActionButtons';
 import { useFormErrors } from '@/hooks/useFormErrors';
+import { ActionButton } from '@/components/admin/ui/ActionButtons';
+
+import { Save } from "lucide-react";
 
 export default function CreateNews() {
   const router = useRouter();
@@ -90,7 +92,14 @@ export default function CreateNews() {
 
   return (
     <div className="flex-1 overflow-y-auto bg-gray-800">
-      <Header onSave={handleSave} onBack={onBack}>
+      <Header
+        onBack={onBack}
+        actions={
+          <ActionButton icon={Save} variant="green" onClick={handleSave}>
+            Guardar Noticia
+          </ActionButton>
+        }
+      >
         <Header.Title>Noticia</Header.Title>
         <Header.Subtitle>Crear Nueva Noticia </Header.Subtitle>
       </Header>
@@ -113,11 +122,15 @@ export default function CreateNews() {
           onMoveBlock={moveBlock}
         />
 
-        <section className="pt-12 border-t border-gray-700">
-          <ActionButtons 
-            onSave={handleSave}
-            blocksCount={blocks.length}
-          />
+        <section className="pt-12 border-t items-center justify-center border-gray-700">
+          <ActionButton
+            className="w-full h-16"
+            icon={Save}
+            variant="green"
+            onClick={handleSave}
+          >
+            Guardar Noticia
+          </ActionButton>
         </section>
       </div>
     </div>
