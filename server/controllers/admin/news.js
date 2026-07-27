@@ -23,6 +23,23 @@ newsController.create = async function ({ news, blocks }) {
 
   const newsId = await newsModel.createNews(news, blocks);
 
+  try {
+    await fetch("http://localhost:5678/webhook/news-published", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        newsId,
+        title: news.title,
+        excerpt: news.excerpt,
+        slug: news.slug,
+      }),
+    });
+  } catch (error) {
+    console.error("No se pudo notificar a n8n:", error);
+  }
+
   return {
     ok: true,
     message: "Noticia creada correctamente",
