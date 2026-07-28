@@ -1,5 +1,7 @@
 import newsModel from "@/server/models/admin/news";
-import config from "@/config";
+import { sendNewsNotification } from "@/server/services/admin/n8n/notification";
+import { generateMetadata } from "@/server/services/admin/n8n/generateMetadata";
+import { existsByNews } from "@/server/models/admin/exist";
 
 const newsController = {};
 
@@ -15,47 +17,40 @@ newsController.newsTable = async function ({ limit, offset, search, status }) {
 };
 
 newsController.create = async function ({ news, blocks }) {
-  if (!news.title || !news.slug) {
+
+  const exists = await existsByNews(
+    news.title,
+    news.slug
+  );
+
+  if (exists) {
     return {
       ok: false,
-      message: "Título y slug son obligatorios",
+      message: "Ya existe una noticia con ese título o slug",
     };
   }
 
   const newsId = await newsModel.createNews(news, blocks);
 
-  await Promise.allSettled([
-  fetch(config.N8N_AI_WEBHOOK_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      newsId,
-      news,
-      blocks,
-    }),
-  }),
+  await generateMetadata({newsId, news, blocks});
 
-  fetch(config.N8N_WEBHOOK_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      newsId,
-      title: news.title,
-      excerpt: news.excerpt,
-      slug: news.slug,
-      cover_image: news.cover_image,
-    }),
-  }),
-]);
+  const updatedNews = await newsModel.findById(newsId);
+
+  await sendNewsNotification(newsId, updatedNews);
 
   return {
     ok: true,
     message: "Noticia creada correctamente",
     newsId,
+  };
+};
+
+newsController.updateFieldsAi = async function ({ newsId, title, slug, excerpt }) {
+  await newsModel.updateFieldsAi(newsId, title, slug, excerpt);
+
+  return {
+    ok: true,
+    message: "Excerpt actualizado",
   };
 };
 

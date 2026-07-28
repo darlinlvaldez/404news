@@ -366,7 +366,7 @@ CREATE TABLE `news` (
   `id` int NOT NULL AUTO_INCREMENT,
   `title` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `slug` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `excerpt` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `excerpt` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `cover_image` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `author_id` int DEFAULT NULL,
   `category_id` int DEFAULT NULL,
@@ -376,13 +376,13 @@ CREATE TABLE `news` (
   `views` int NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `uk_news_slug` (`slug`),
-  UNIQUE KEY `slug` (`slug`),
+  UNIQUE KEY `uk_news_title` (`title`),
   KEY `fk_news_author` (`author_id`),
   KEY `fk_news_category` (`category_id`),
   CONSTRAINT `fk_news_author` FOREIGN KEY (`author_id`) REFERENCES `authors` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `fk_news_category` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `news_chk_1` CHECK ((`status` in (_utf8mb4'draft',_utf8mb4'review',_utf8mb4'published')))
-) ENGINE=InnoDB AUTO_INCREMENT=99 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=121 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `news` */
 
@@ -435,7 +435,7 @@ insert  into `news`(`id`,`title`,`slug`,`excerpt`,`cover_image`,`author_id`,`cat
 (46,'IA de Michigan lee resonancias magnéticas cerebrales en segundos con 97.5% de precisión','ia-michigan-resonancias-magneticas-cerebrales','Sistema de inteligencia artificial identifica emergencias neurológicas instantáneamente, superando a herramientas avanzadas existentes','https://images-tools.cadena3.com/tools/r/88788f8e-8b07-43d4-8547-e701f0dcec49.jpg?width=1200&height=800',1,1,'published','2026-02-14 09:30:00','2026-07-02 21:21:55',17),
 (49,'India AI Summit 2026 reúne a Sundar Pichai, Sam Altman y Bill Gates en Nueva Delhi','india-ai-summit-2026-sundar-pichai-sam-altman','Cumbre tecnológica global busca transformar discusiones sobre IA en desarrollo económico y social para India','https://images.financialexpressdigital.com/2026/02/Untitled-design-2026-02-10T094319.357.jpg',3,1,'published','2026-02-15 16:20:00','2026-07-08 12:53:35',5),
 (50,'Desarrollo de nuevo Siri con IA enfrenta retrasos, algunas funciones podrían llegar hasta septiembre','apple-siri-ia-retrasos-ios-27','Problemas en pruebas retrasan el lanzamiento de funciones avanzadas del asistente, ahora previstas para iOS 26.5 o iOS 27','https://www.semana.com/resizer/v2/VOIDQRWMYVCPLIKA4FEJGD63HM.jpg?auth=51df33fe93aa417eb0cf008154f7932a10b5eee68a6bda789a97e3f1f5b319d5&smart=true&quality=75&width=1280',3,1,'published','2026-02-13 10:10:00','2026-07-13 02:01:29',19),
-(51,'Elon Musk anuncia plan para construir fábrica de satélites de IA en la Luna','elon-musk-fabrica-satelites-ia-luna','CEO de xAI propone usar la Luna como base para lanzar satélites impulsados por inteligencia artificial y expandir capacidad computacional','https://elnacional.com.do/wp-content/uploads/2026/02/Elon-Musk-anuncia-que-SpaceX-planea-la-construccion-de-una-ciudad-en-la-Luna.jpg',1,1,'published','2026-02-12 08:50:00','2026-07-05 20:52:08',4),
+(51,'Elon Musk anuncia plan para construir fábrica de satélite de IA en la Luna','elon-musk-fabrica-satelites-ia-luna','CEO de xAI propone usar la Luna como base para lanzar satélites impulsados por inteligencia artificial y expandir capacidad computacional','https://elnacional.com.do/wp-content/uploads/2026/02/Elon-Musk-anuncia-que-SpaceX-planea-la-construccion-de-una-ciudad-en-la-Luna.jpg',1,1,'published','2026-02-12 08:50:00','2026-07-28 14:25:48',4),
 (52,'Mistral AI invierte 1.200 millones de euros en infraestructura en Suecia','mistral-ai-inversion-suecia-infraestructura','La \"OpenAI europea\" construye centro de datos y capacidad de computación avanzada para sus modelos de próxima generación','https://assets.mobileworldlive.com/wp-content/uploads/2016/11/16124852/Sweden.jpg',3,1,'published','2026-02-11 13:30:00','2026-07-09 04:07:11',5),
 (53,'Samsung confirma Galaxy Unpacked el 25 de febrero: Galaxy S26 con IA \"personal y adaptativa\"','samsung-galaxy-unpacked-25-febrero-s26-ia','Nueva generación de flagships llegará con Snapdragon 8 Elite Gen 5 y funciones de inteligencia artificial avanzadas','https://www.profesionalreview.com/wp-content/uploads/2025/10/Samsung-Galaxy-S26-Ultra-portada.jpg',2,2,'published','2026-02-11 12:00:00','2026-07-02 20:21:54',3),
 (54,'Galaxy S26 Ultra podría sacrificar capa digital del S Pen para incorporar carga magnética Qi2','galaxy-s26-ultra-s-pen-qi2','Samsung evalúa eliminar digitalizador del lápiz para permitir alineación magnética en nueva generación de carga inalámbrica','https://es.digitaltrends.com/tachyon/sites/13/2025/11/Samsung-Galaxy-S25-Ultra-Magnetic-Charging-Cover-4-edited.webp?fit=1529%2C1150',2,2,'published','2026-02-10 15:40:00','2026-07-12 08:38:02',3),
@@ -474,7 +474,8 @@ insert  into `news`(`id`,`title`,`slug`,`excerpt`,`cover_image`,`author_id`,`cat
 (93,'Tests genéticos en embriones: avances y dilemas éticos en 2026','tests-geneticos-embriones-avances-etica','MIT señala esta tendencia como una de las que experimentarán impulso durante el año, con debates sobre sus límites','https://www.institutobernabeu.com/wp-content/uploads/2026/01/22-01-land-1-1.jpg',1,5,'published','2026-01-14 15:45:00','2026-07-08 08:23:35',2),
 (95,'Traducción simultánea en tiempo real: aprender idiomas dejará de ser imprescindible','traduccion-simultanea-tiempo-real-idiomas','Apple y Google ya tienen sistemas compatibles con auriculares para eliminar barreras lingüísticas','https://s.yimg.com/ny/api/res/1.2/3on7NM503A1zi79M6BSJeg--/YXBwaWQ9aGlnaGxhbmRlcjt3PTEyNDI7aD02OTk7Y2Y9d2VicA--/https://media.zenfs.com/es/fast_company_mexico_606/bbb60e598aeef3ae09c93eb7a1d10e25',2,2,'published','2026-01-14 17:15:00','2026-07-11 07:27:36',4),
 (96,'IA conquista el espacio: primer modelo entrenado en órbita por Nvidia y StarCloud','ia-espacio-modelo-entrenado-orbita','Las condiciones térmicas y energéticas del espacio ofrecen ventajas para centros de datos','https://www.hd-tecnologia.com/imagenes/articulos/2025/10/NVIDIA-llevara-la-inteligencia-artificial-al-espacio-exterior-con-el-primer-centro-de-datos-orbital-del-mundo-2.jpg',3,5,'published','2026-01-14 18:00:00','2026-07-06 19:52:22',3),
-(98,'claro claro claro ','claro-claro-claro','claro claro claro claro claro','https://localo.com/es/assets/img/definitions/what-is-google-translate.webp',3,3,'published','2026-02-21 13:01:39','2026-07-01 08:33:33',8);
+(98,'claro claro claro ','claro-claro-claro','claro claro claro claro claro','https://localo.com/es/assets/img/definitions/what-is-google-translate.webp',3,3,'published','2026-02-21 13:01:39','2026-07-01 08:33:33',8),
+(120,'EE. UU. y Emiratos Árabes crean un grupo bilateral de trabajo para la IA militar','ee-uu-y-emiratos-arabes-crean-un-grupo-bilateral-de-trabajo-para-la-ia-militar','EE. UU. y EAU lanzarán \'Task Force Talon Synapse\' para acelerar el desarrollo de aplicaciones de inteligencia artificial en el ámbito militar.','https://localo.com/es/assets/img/definitions/what-is-google-translate.webp',3,1,'draft','2026-07-28 15:12:04','2026-07-28 15:12:45',0);
 
 /*Table structure for table `news_blocks` */
 
@@ -492,7 +493,7 @@ CREATE TABLE `news_blocks` (
   PRIMARY KEY (`id`),
   KEY `fk_blocks_news` (`news_id`),
   CONSTRAINT `fk_blocks_news` FOREIGN KEY (`news_id`) REFERENCES `news` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=92 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=123 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `news_blocks` */
 
@@ -549,7 +550,8 @@ insert  into `news_blocks`(`id`,`news_id`,`block_type`,`content`,`image_url`,`al
 (50,23,'image','','starlink-global-coverage.jpg','Mapa de cobertura global de Starlink',4,'2026-02-05 20:49:46'),
 (89,98,'heading','wow wow wow',NULL,NULL,1,'2026-02-21 13:29:44'),
 (90,98,'image','','https://www.gstatic.com/marketing-cms/5e/ec/5b5baeb34571b791b2020d4cacad/meta-image.png','seacrh',2,'2026-02-21 13:29:44'),
-(91,98,'paragraph','wow wow wow wow wow wow wow wow wow wow wow wow wow wow wow wow wow wow wow wow wow wow wow wow',NULL,NULL,3,'2026-02-21 13:29:44');
+(91,98,'paragraph','wow wow wow wow wow wow wow wow wow wow wow wow wow wow wow wow wow wow wow wow wow wow wow wow',NULL,NULL,3,'2026-02-21 13:29:44'),
+(122,120,'paragraph','Miami (EE.UU.), 28 jul (EFE).- Estados Unidos y los Emiratos Árabes Unidos (EAU) crearán el primer grupo bilateral de trabajo para «acelerar el desarrollo» de aplicaciones de inteligencia artificial (IA) en el ámbito militar, anunció este martes el Comando Central del Ejército estadounidense (Centcom).\n\nEl proyecto, denominado ‘Task Force Talon Synapse’, se enfocará en integrar aplicaciones de IA para «el apoyo de inteligencia, la protección de infraestructura crítica y el monitoreo del entorno de seguridad regional», indicó el Centcom, con sede en Florida, en un comunicado.\n\n«Este será un hito histórico a medida que trabajemos con uno de nuestros socios regionales más capacitados para entregar rápidamente avances en IA en constante evolución a nuestros combatientes», declaró el almirante Brad Cooper, jefe del Comando Central.\n\nEl equipo, cuyo lanzamiento formal ocurrirá «en las próximas semanas», tendrá su sede en Abu Dabi, donde lo integrarán cerca de 20 especialistas estadounidenses y emiratíes con experiencia en IA, datos y ciberseguridad, detalló el boletín informativo.\n\nEl grupo de trabajo surge tras una nueva norma promulgada el 10 de julio por el Departamento de Comercio de EE.UU., que facilitó la exportación a los Emiratos de chips de inteligencia artificial, equipo militar, satélites y naves espaciales, al colocar al país en la misma categoría comercial que Europa y Corea del Sur.\n\nLa medida, aprobada por el apoyo que Estados Unidos ha recibido de los Emiratos Árabes Unidos en la guerra con Irán, también permitirá a ciertas empresas emiratíes recibir «artículos de computación avanzada» sin necesidad de licencia, incluyendo servidores y chips de IA.\n\nEl Departamento de Guerra de EE.UU. ha buscado incrementar la IA en el Ejército, como mostró en febrero su acuerdo con OpenAI para que sus modelos de inteligencia artificial puedan usarse en redes clasificadas, además de la disputa, el mismo mes, con la empresa Anthropic ante desacuerdos de cómo implementar la tecnología.',NULL,NULL,1,'2026-07-28 15:12:45');
 
 /*Table structure for table `ticket_attachments` */
 
@@ -590,19 +592,39 @@ CREATE TABLE `ticket_messages` (
   KEY `fk_tm_sender` (`sender_id`),
   CONSTRAINT `fk_tm_sender` FOREIGN KEY (`sender_id`) REFERENCES `users` (`id`) ON DELETE SET NULL,
   CONSTRAINT `fk_tm_ticket` FOREIGN KEY (`ticket_id`) REFERENCES `tickets` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `ticket_messages` */
 
 insert  into `ticket_messages`(`id`,`ticket_id`,`sender_type`,`sender_id`,`message`,`author_read`,`admin_read`,`is_internal`,`created_at`) values 
 (1,2,'admin',1,'Se arregló esa monda',0,0,0,'2026-07-23 12:44:24'),
-(2,2,'author',2,'como fue quien me habla?',0,0,0,'2026-07-23 12:48:55'),
-(3,1,'author',2,'hay si',0,0,0,'2026-07-23 12:55:26'),
-(4,3,'author',2,'polque?',0,0,0,'2026-07-23 12:55:36'),
+(2,2,'author',2,'como fue quien me habla?',0,1,0,'2026-07-23 12:48:55'),
+(3,1,'author',2,'hay si',0,1,0,'2026-07-23 12:55:26'),
+(4,3,'author',2,'polque?',0,1,0,'2026-07-23 12:55:36'),
 (5,3,'admin',1,'polque si?\n',1,0,0,'2026-07-23 12:57:10'),
 (6,3,'admin',1,'sii\n',1,0,0,'2026-07-23 13:55:03'),
 (7,3,'admin',1,'tu supiste',1,0,0,'2026-07-23 13:55:08'),
-(8,3,'admin',1,'locoooo',1,0,0,'2026-07-23 13:55:14');
+(8,3,'admin',1,'locoooo',1,0,0,'2026-07-23 13:55:14'),
+(9,3,'admin',1,'jejejej',1,0,0,'2026-07-24 12:35:56'),
+(10,3,'author',2,'claro',0,1,0,'2026-07-24 12:40:25'),
+(11,3,'author',2,'siii',0,1,0,'2026-07-24 12:58:18'),
+(12,3,'author',2,'pa que sepa',0,1,0,'2026-07-24 13:11:38'),
+(13,3,'author',2,'siiiiiiii',0,1,0,'2026-07-24 13:13:58'),
+(14,3,'author',2,'tu puta madreeee mmgggg\n',0,1,0,'2026-07-24 13:33:21'),
+(15,3,'author',2,'A LO QUE SEA',0,1,0,'2026-07-24 13:40:02'),
+(16,3,'author',2,'claroopo',0,1,0,'2026-07-24 13:42:42'),
+(17,3,'author',2,'coñaso\n',0,1,0,'2026-07-24 13:46:47'),
+(18,3,'author',2,'oyeeee',0,1,0,'2026-07-24 14:43:27'),
+(19,3,'admin',1,'Fo coño',1,0,0,'2026-07-25 13:57:19'),
+(20,3,'admin',1,'fo coño',1,0,0,'2026-07-25 13:59:02'),
+(21,3,'admin',1,'jejeje',1,0,0,'2026-07-25 14:00:00'),
+(22,3,'admin',1,'ajajaj',1,0,0,'2026-07-25 14:00:38'),
+(23,3,'admin',1,'que locura',1,0,0,'2026-07-25 14:01:21'),
+(24,3,'admin',1,'ahora si\n',1,0,0,'2026-07-25 14:30:36'),
+(25,3,'author',2,'claro loco',0,1,0,'2026-07-25 14:37:10'),
+(26,3,'author',2,'jajauj',0,1,0,'2026-07-25 14:44:47'),
+(27,3,'admin',1,'no sabe tu\n',0,0,0,'2026-07-25 15:06:58'),
+(28,3,'admin',1,'mmg',0,0,0,'2026-07-25 15:07:02');
 
 /*Table structure for table `tickets` */
 
@@ -633,14 +655,14 @@ CREATE TABLE `tickets` (
   CONSTRAINT `fk_ticket_assigned` FOREIGN KEY (`assigned_to`) REFERENCES `users` (`id`) ON DELETE SET NULL,
   CONSTRAINT `fk_ticket_last_message` FOREIGN KEY (`last_message_id`) REFERENCES `ticket_messages` (`id`) ON DELETE SET NULL,
   CONSTRAINT `fk_ticket_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `tickets` */
 
 insert  into `tickets`(`id`,`type`,`status`,`priority`,`subject`,`message`,`user_id`,`guest_name`,`guest_email`,`assigned_to`,`last_reply_at`,`closed_at`,`created_at`,`updated_at`,`last_message_id`,`unread_admin_count`,`unread_user_count`) values 
 (1,'contact','in_progress','low','una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien ','MANIATICA QUE LOCA',2,NULL,NULL,1,'2026-07-23 12:55:26','2026-07-21 20:05:29','2026-07-21 20:05:00','2026-07-23 12:55:26',NULL,0,0),
 (2,'contact','open','medium','tu supite veida?','MANIATICA DEL ALCOHOL',1,NULL,NULL,3,'2026-07-21 20:06:34',NULL,'2026-07-21 20:06:18','2026-07-23 12:38:23',NULL,0,0),
-(3,'submission','waiting_response','low','clarooooo','wacala',2,NULL,NULL,NULL,'2026-07-23 13:55:14',NULL,'2026-07-23 12:52:55','2026-07-23 13:55:14',NULL,0,0);
+(3,'submission','waiting_response','low','clarooooo','wacala',2,NULL,NULL,NULL,'2026-07-25 15:07:02',NULL,'2026-07-23 12:52:55','2026-07-25 15:07:02',28,2,0);
 
 /*Table structure for table `users` */
 

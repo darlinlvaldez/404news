@@ -2,17 +2,20 @@ import { z } from "zod";
 
 export const news = z
   .object({
-    title: z
-      .string()
-      .trim()
-      .min(1, "El título es obligatorio")
-      .max(150, "Máximo 150 caracteres"),
 
-    slug: z
-      .string()
-      .trim()
-      .min(1, "El slug es obligatorio")
-      .max(100, "Máximo 100 caracteres"),
+  title: z
+    .string()
+    .trim()
+    .max(150, "Máximo 150 caracteres")
+    .optional()
+    .default(""),
+
+  slug: z
+    .string()
+    .trim()
+    .max(100, "Máximo 100 caracteres")
+    .optional()
+    .default(""),
 
     excerpt: z
       .string()

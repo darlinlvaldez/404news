@@ -1,6 +1,6 @@
 import db from "@/server/lib/db";
 import ticketMessages from "@/server/models/admin/ticketMessages";
-import {exists} from '@/server/models/admin/ticketExist'
+import {existsByTicket} from '@/server/models/admin/ticketExist'
 
 const ticketAuthorModels = {};
 
@@ -89,7 +89,7 @@ ticketAuthorModels.create = async ({
   message,
 }) => {
   
-  const ticket = await exists(ticketId, senderId);
+  const ticket = await existsByTicket(ticketId, senderId);
 
   if (!ticket) {
     throw new Error("No tienes permiso para responder este ticket");

@@ -16,7 +16,8 @@ export async function GET(request) {
     const status = searchParams.get("status") || "";
 
     const result = await newsController.newsTable({
-      limit, offset, search, status});
+      limit, offset, search, status
+    });
 
     return NextResponse.json(result);
 
@@ -28,13 +29,17 @@ export async function GET(request) {
 
 export async function POST(req) {
   try {
-    const user = await requireAuth(req, ["superadmin", "admin", "editor"]);
+    const user = await requireAuth(req, [
+      "superadmin", "admin", "editor"
+    ]);
 
     const body = await req.json();
 
     body.news = newsSchema.parse(body.news);
 
-    const result = await newsController.create({...body, authorId: user.id});
+    const result = await newsController.create({
+      ...body, authorId: user.id
+    });
 
     return NextResponse.json(result);
 

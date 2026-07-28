@@ -13,6 +13,8 @@ const config = {
 
   N8N_WEBHOOK_URL: process.env.N8N_WEBHOOK_URL,
   N8N_AI_WEBHOOK_URL: process.env.N8N_AI_WEBHOOK_URL,
+  N8N_AI_SECRET: process.env.N8N_AI_SECRET,
+
   REDIS_URL: process.env.REDIS_URL,
   IP_API_URL: process.env.IP_API_URL,
 };

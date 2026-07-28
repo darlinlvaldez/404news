@@ -1,6 +1,6 @@
 import db from "@/server/lib/db";
 import ticketMessages from "@/server/models/admin/ticketMessages";
-import {exists} from '@/server/models/admin/ticketExist'
+import {existsByTicket} from '@/server/models/admin/exist'
 
 const ticketAdminModels = {};
 
@@ -98,7 +98,7 @@ ticketAdminModels.create = async ({
   isInternal = false
 }) => {
 
-  const ticket = await exists(ticketId);
+  const ticket = await existsByTicket(ticketId);
 
   if (!ticket) {
     throw new Error("Ticket no encontrado");
