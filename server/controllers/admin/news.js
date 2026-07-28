@@ -1,4 +1,5 @@
-import newsModel from "../../models/admin/news";
+import newsModel from "@/server/models/admin/news";
+import config from "@/config";
 
 const newsController = {};
 
@@ -23,22 +24,33 @@ newsController.create = async function ({ news, blocks }) {
 
   const newsId = await newsModel.createNews(news, blocks);
 
-  try {
-    await fetch("http://localhost:5678/webhook/news-published", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        newsId,
-        title: news.title,
-        excerpt: news.excerpt,
-        slug: news.slug,
-      }),
-    });
-  } catch (error) {
-    console.error("No se pudo notificar a n8n:", error);
-  }
+  await Promise.allSettled([
+  fetch(config.N8N_AI_WEBHOOK_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      newsId,
+      news,
+      blocks,
+    }),
+  }),
+
+  fetch(config.N8N_WEBHOOK_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      newsId,
+      title: news.title,
+      excerpt: news.excerpt,
+      slug: news.slug,
+      cover_image: news.cover_image,
+    }),
+  }),
+]);
 
   return {
     ok: true,

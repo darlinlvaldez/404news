@@ -17,8 +17,9 @@ export const news = z
     excerpt: z
       .string()
       .trim()
-      .min(1, "El resumen es obligatorio")
-      .max(150, "Máximo 150 caracteres"),
+      .max(150, "Máximo 150 caracteres")
+      .optional()
+      .default(""),
 
     cover_image: z
       .string()

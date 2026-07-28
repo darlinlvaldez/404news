@@ -11,6 +11,8 @@ const config = {
   DB_DATABASE: process.env.DB_DATABASE,
   DB_PORT: Number(process.env.DB_PORT),
 
+  N8N_WEBHOOK_URL: process.env.N8N_WEBHOOK_URL,
+  N8N_AI_WEBHOOK_URL: process.env.N8N_AI_WEBHOOK_URL,
   REDIS_URL: process.env.REDIS_URL,
   IP_API_URL: process.env.IP_API_URL,
 };
