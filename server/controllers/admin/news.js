@@ -1,6 +1,6 @@
 import newsModel from "@/server/models/admin/news";
 import { sendNewsNotification } from "@/server/services/admin/n8n/notification";
-import { generateMetadata } from "@/server/services/admin/n8n/generateMetadata";
+import { generateAiMetadata } from "@/server/services/admin/n8n/generateMetadata";
 import { existsByNews } from "@/server/models/admin/exist";
 
 const newsController = {};
@@ -17,40 +17,37 @@ newsController.newsTable = async function ({ limit, offset, search, status }) {
 };
 
 newsController.create = async function ({ news, blocks }) {
-
-  const exists = await existsByNews(
-    news.title,
-    news.slug
-  );
+  const exists = await existsByNews(news.title, news.slug);
 
   if (exists) {
-    return {
-      ok: false,
-      message: "Ya existe una noticia con ese título o slug",
-    };
+    return { 
+      ok: false, 
+      message: "Ya existe una noticia con ese título o slug" };
   }
 
   const newsId = await newsModel.createNews(news, blocks);
-
-  await generateMetadata({newsId, news, blocks});
-
   const updatedNews = await newsModel.findById(newsId);
 
   await sendNewsNotification(newsId, updatedNews);
 
-  return {
-    ok: true,
-    message: "Noticia creada correctamente",
-    newsId,
-  };
+  return { ok: true, message: "Noticia creada correctamente", newsId };
 };
 
-newsController.updateFieldsAi = async function ({ newsId, title, slug, excerpt }) {
-  await newsModel.updateFieldsAi(newsId, title, slug, excerpt);
+newsController.generateAiMetadata = async function ({ news, blocks }) {
+  const hasContent = blocks?.some((b) => b.content?.trim());
+
+  if (!hasContent) {
+    return {
+      ok: false,
+      message: "No hay contenido para generar metadatos",
+    };
+  }
+
+  const metadata = await generateAiMetadata({ news, blocks });
 
   return {
     ok: true,
-    message: "Excerpt actualizado",
+    ...metadata,
   };
 };
 

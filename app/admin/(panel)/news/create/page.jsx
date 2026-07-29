@@ -19,6 +19,7 @@ export default function CreateNews() {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const { errors, clearField, handleResponse } = useFormErrors();
+  const [generatingAI, setGeneratingAI] = useState(false);
 
   const {
     newsData,
@@ -86,6 +87,54 @@ export default function CreateNews() {
     fetchFormData();
   }, []);
 
+
+  const handleGenerateAI = async () => {
+    const hasContent = blocks.some((b) => b.content?.trim());
+
+    if (!hasContent) {
+      toast.error("AGREGÁ CONTENIDO ANTES DE GENERAR CON IA");
+      return;
+    }
+
+    const category = categories.find(
+      c => c.id === newsData.category_id
+    );
+
+    setGeneratingAI(true);
+
+    try {
+      const res = await fetch("/api/admin/news/generate-ai", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+        news: { ...newsData, category_name: category?.name ?? "",},
+          blocks,
+        })
+      });
+
+      const data = await res.json();
+
+      if (!res.ok || !data.ok) {
+        toast.error(data.message || "NO SE PUDO GENERAR CON IA");
+        return;
+      }
+
+      handleInputChange({ target: { name: "title", value: data.title } });
+      handleInputChange({ target: { name: "slug", value: data.slug } });
+      handleInputChange({ target: { name: "excerpt", value: data.excerpt } });
+      clearField("title");
+      clearField("slug");
+      clearField("excerpt");
+
+      toast.success("CAMPOS GENERADOS CON IA");
+    } catch (error) {
+      console.error(error);
+      toast.error("OCURRIÓ UN ERROR INESPERADO");
+    } finally {
+      setGeneratingAI(false);
+    }
+  };
+
   const onBack = () => {
     router.push('/admin/news');
   };
@@ -103,6 +152,10 @@ export default function CreateNews() {
         <Header.Title>Noticia</Header.Title>
         <Header.Subtitle>Crear Nueva Noticia </Header.Subtitle>
       </Header>
+
+      <button type="button" onClick={handleGenerateAI} disabled={generatingAI}>
+  {generatingAI ? "Generando..." : "Generar con IA"}
+</button>
 
       <div className="max-w-4xl mx-auto px-6 py-10 space-y-12">
         <GeneralData 
@@ -128,6 +181,7 @@ export default function CreateNews() {
             icon={Save}
             variant="green"
             onClick={handleSave}
+            disabled={generatingAI}
           >
             Guardar Noticia
           </ActionButton>

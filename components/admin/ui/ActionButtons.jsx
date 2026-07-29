@@ -25,6 +25,7 @@ export function ActionButton({
   type = "button",
   variant = "green",
   className = "",
+  disabled = false,
   ...props
 }) {
   const variants = {
@@ -34,7 +35,14 @@ export function ActionButton({
     ghostRed: "text-red-500 hover:bg-red-500/10 shadow-none",
   };
 
-  const baseClasses = `px-6 py-3 rounded-2xl font-bold inline-flex items-center justify-center transition cursor-pointer shadow-lg ${variants[variant]} ${className}`;
+  const disabledClasses =
+    "bg-gray-600 text-gray-300 cursor-not-allowed shadow-none opacity-70";
+
+  const baseClasses = `
+    px-6 py-3 rounded-2xl font-bold inline-flex items-center justify-center transition
+    ${disabled ? disabledClasses : `${variants[variant]} cursor-pointer shadow-lg`}
+    ${className}
+  `;
 
   if (href) {
     return (
@@ -46,7 +54,12 @@ export function ActionButton({
   }
 
   return (
-    <button type={type} className={baseClasses} {...props}>
+    <button
+      type={type}
+      disabled={disabled}
+      className={baseClasses}
+      {...props}
+    >
       {Icon && <Icon size={18} className="mr-2" />}
       {children}
     </button>

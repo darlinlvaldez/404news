@@ -1,20 +1,24 @@
 import config from "@/config";
 
-export async function generateMetadata({ newsId, news, blocks }) {
-  try {
-    await fetch(config.N8N_AI_WEBHOOK_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        newsId,
-        news,
-        blocks,
-      }),
-    });
+export async function generateAiMetadata({ news, blocks }) {
+  const response = await fetch(config.N8N_AI_WEBHOOK_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "x-ai-secret": config.N8N_AI_SECRET,
+    },
+    body: JSON.stringify({ news, blocks }),
+  });
 
-  } catch (error) {
-    console.error("Error enviando noticia a IA:", error);
-  }
+  if (!response.ok) {
+  const errorText = await response.text();
+
+  console.error("N8N ERROR:", errorText);
+
+  throw new Error(
+    `n8n respondió ${response.status}: ${errorText}`
+  );
+}
+
+  return response.json();
 }
