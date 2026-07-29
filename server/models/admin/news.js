@@ -106,31 +106,14 @@ news.createNews = async (newsData, blocks) => {
   }
 };
 
-news.updateFieldsAi = async function (newsId, title, slug, excerpt) {
-  try {
-    const [result] = await db.query(
-      `UPDATE news
-       SET title = ?, slug = ?, excerpt = ?
-       WHERE id = ?`,
-      [title, slug, excerpt, newsId]
-    );
-
-    return result;
-
-  } catch (error) {
-    console.error("Error actualizando excerpt:", error);
-    throw error;
-  }
-};
-
 news.updateNews = async (id, newsData, blocks) => {
   const connection = await db.getConnection();
 
   try {
 
     const [news] = await connection.query(
-        `SELECT id FROM news WHERE id = ?`,
-        [id]
+      `SELECT id FROM news WHERE id = ?`,
+      [id]
     );
 
     if (!news.length) {

@@ -2,7 +2,6 @@ import { z } from "zod";
 
 export const news = z
   .object({
-
     title: z
       .string()
       .trim()
@@ -19,7 +18,7 @@ export const news = z
       .string()
       .trim()
       .min(1, "El resumen es obligatorio")
-      .max(150, "Máximo 150 caracteres"),
+      .max(250, "Máximo 150 caracteres"),
 
     cover_image: z
       .string()

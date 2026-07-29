@@ -53,12 +53,16 @@ export default function CreateNews() {
         return;
       }
 
-      toast.created("NOTICIA CREADA");
+      toast.success("NOTICIA CREADA",
+         "La información se ha guardado correctamente."
+      );
       router.push("/admin/news");
 
     } catch (error) {
       console.error(error);
-      toast.error("OCURRIÓ UN ERROR INESPERADO");
+      toast.error("OCURRIÓ UN ERROR INESPERADO",
+        "No fue posible guardar la noticia"
+      );
     }
   };
 

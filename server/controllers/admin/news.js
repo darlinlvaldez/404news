@@ -22,15 +22,19 @@ newsController.create = async function ({ news, blocks }) {
   if (exists) {
     return { 
       ok: false, 
-      message: "Ya existe una noticia con ese título o slug" };
+      message: "Ya existe una noticia con ese título o slug" 
+    };
   }
 
   const newsId = await newsModel.createNews(news, blocks);
-  const updatedNews = await newsModel.findById(newsId);
 
-  await sendNewsNotification(newsId, updatedNews);
+  await sendNewsNotification(newsId, news);
 
-  return { ok: true, message: "Noticia creada correctamente", newsId };
+  return { 
+    ok: true, 
+    message: "Noticia creada correctamente", 
+    newsId 
+  };
 };
 
 newsController.generateAiMetadata = async function ({ news, blocks }) {

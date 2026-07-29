@@ -1,27 +1,35 @@
 import { sileo } from "sileo";
 
 export const toast = {
-  created: (entity) =>
+  success: (title, description = "") =>
     sileo.success({
-      title: `${entity}`,
-      description: "La información se ha guardado correctamente.",
+      title,
+      description,
     }),
 
-  updated: (entity) =>
-    sileo.success({
-      title: `${entity}`,
-      description: "Los cambios se han guardado correctamente.",
-    }),
-
-  deleted: (entity) =>
-    sileo.success({
-      title: `${entity}`,
-      description: "Se ha eliminó correctamente.",
-    }),
-
-  error: (message = "Ocurrió un error inesperado.") =>
+  error: (title = "Error", description = "") =>
     sileo.error({
-      title: "Error",
-      description: message,
+      title,
+      description,
     }),
+
+  warning: (title, description = "") =>
+    sileo.warning({
+      title,
+      description,
+    }),
+
+  info: (title, description = "") =>
+    sileo.info({
+      title,
+      description,
+    }),
+
+  action: (options) => sileo.action(options),
+
+  promise: (promise, options) => sileo.promise(promise, options),
+
+  dismiss: (id) => sileo.dismiss(id),
+
+  clear: (position) => sileo.clear(position),
 };
