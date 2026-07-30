@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { requireAuth } from "../../../../../server/utils/auth";
 import { handleError } from "../../../../../server/errors/handleError";
 import ticketsAuthor from "../../../../../server/controllers/admin/ticketsAuthor";
+import { saveTicketAttachments } from "../../../../../server/services/admin/ticketAttachments";
 
 export async function GET(request) {
   try {
@@ -32,15 +33,21 @@ export async function GET(request) {
 
 export async function POST(request) {
   try {
-
     const session = await requireAuth(request, ["author"]);
 
-    const body = await request.json();
+    const formData = await request.formData();
+
+    const subject = formData.get("subject");
+    const message = formData.get("message");
+    const files = formData.getAll("files");
+
+    const attachments = await saveTicketAttachments(files);
 
     const ticket = await ticketsAuthor.create({
       userId: session.id,
-      subject: body.subject,
-      message: body.message,
+      subject,
+      message,
+      attachments,
     });
 
     return NextResponse.json({
@@ -48,7 +55,7 @@ export async function POST(request) {
       ticket,
     });
 
-  } catch(error) {
+  } catch (error) {
     console.error(error);
     return handleError(error);
   }

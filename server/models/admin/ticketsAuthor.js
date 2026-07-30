@@ -51,7 +51,6 @@ tickets.getMinimum = async function (
       t.id,
       t.subject,
       t.status,
-      t.message,
       COALESCE(a.name, u.name, u.username) AS name,
       COALESCE(u.email, t.guest_email) AS email,
       t.last_reply_at,
@@ -68,34 +67,93 @@ tickets.getMinimum = async function (
   return { rows, total };
 };
 
-tickets.createTicket = async ({
-  userId,
-  subject,
-  message
-}) => {
-
-  const [result] = await db.execute(
+const addMessage = async (connection, { ticketId, senderType, senderId, message, isInternal = false, attachments = [] }) => {
+  const [messageResult] = await connection.execute(
     `
-    INSERT INTO tickets
-    (
-      type,
-      subject,
-      message,
-      status,
-      user_id
-    )
+    INSERT INTO ticket_messages
+      (ticket_id, sender_type, sender_id, message, is_internal)
     VALUES (?, ?, ?, ?, ?)
     `,
-    [
-      "submission",
-      subject,
-      message,
-      "open",
-      userId
-    ]
+    [ticketId, senderType, senderId ?? null, message, isInternal]
   );
 
-  return result.insertId;
+  const messageId = messageResult.insertId;
+
+  if (attachments.length > 0) {
+    const values = attachments.map((a) => [
+      messageId,
+      a.originalName,
+      a.fileName,
+      a.mimeType,
+      a.fileSize,
+      a.filePath,
+    ]);
+
+    await connection.query(
+      `
+      INSERT INTO ticket_attachments
+        (message_id, original_name, file_name, mime_type, file_size, file_path)
+      VALUES ?
+      `,
+      [values]
+    );
+  }
+
+  return messageId;
+};
+
+tickets.createTicket = async ({
+  userId,
+  guestName,
+  guestEmail,
+  type = "submission",
+  subject,
+  message,
+  senderType = "author",
+  attachments = [],
+}) => {
+  const connection = await db.getConnection();
+
+  try {
+    await connection.beginTransaction();
+
+    const [ticketResult] = await connection.execute(
+      `
+      INSERT INTO tickets
+        (type, subject, status, user_id, guest_name, guest_email)
+      VALUES (?, ?, ?, ?, ?, ?)
+      `,
+      [type, subject, "open", userId ?? null, guestName ?? null, guestEmail ?? null]
+    );
+
+    const ticketId = ticketResult.insertId;
+
+    const messageId = await addMessage(connection, {
+      ticketId,
+      senderType,
+      senderId: userId,
+      message,
+      attachments,
+    });
+
+    await connection.execute(
+      `
+      UPDATE tickets
+      SET last_message_id = ?, unread_admin_count = unread_admin_count + 1
+      WHERE id = ?
+      `,
+      [messageId, ticketId]
+    );
+
+    await connection.commit();
+
+    return { ticketId, messageId };
+  } catch (err) {
+    await connection.rollback();
+    throw err;
+  } finally {
+    connection.release();
+  }
 };
 
 export default tickets;

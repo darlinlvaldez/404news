@@ -66,7 +66,6 @@ tickets.getAll = async function (
       t.id,
       t.type,
       t.subject,
-      t.message,
       t.status,
       t.priority,
       COALESCE(a.name, u.name, u.username, t.guest_name) AS name,

@@ -21,16 +21,17 @@ ticketsAuthor.ticketsTableMinimum = async ({
 ticketsAuthor.create = async ({
   userId,
   subject,
-  message
+  message,
+  attachments = [],
 }) => {
-
-  const ticketId = await tickets.createTicket({
+  const { ticketId, messageId } = await tickets.createTicket({
     userId,
     subject,
-    message
+    message,
+    attachments,
   });
 
-  return ticketId;
+  return { ticketId, messageId };
 };
 
 export default ticketsAuthor

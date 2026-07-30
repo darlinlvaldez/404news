@@ -264,54 +264,14 @@ export default function TicketChat() {
         <main className="flex-1 flex flex-col overflow-hidden bg-gray-900">
           
           <div className="flex-1 overflow-y-auto p-6 lg:p-8 space-y-6">
-            
-            <div className="space-y-2">
-              <span className="text-[10px] text-gray-400 font-bold uppercase tracking-widest block">
-                Mensaje Inicial
-              </span>
-              <div className="bg-gray-950/80 border border-gray-800 rounded-2xl p-5 shadow-sm">
-                <div className="flex items-center justify-end border-b border-gray-900 pb-3 mb-3">
-                  <span className="text-xs  text-gray-500 font-mono">
-                    {formatDateTimeNumeric(ticket.created_at)}
-                  </span>
-                </div>
-                <p className="text-sm text-gray-300 leading-relaxed whitespace-pre-line font-medium pl-1">
-                  {ticket.message}
-                </p>
-              </div>
-            </div>
-
-            <div className="relative py-2">
-              <div className="absolute inset-0 flex items-center" aria-hidden="true">
-                <div className="w-full border-t border-gray-800"></div>
-              </div>
-              <div className="relative flex justify-center text-xs">
-                <span className="bg-gray-900 px-4 text-xs font-bold text-gray-400 uppercase tracking-widest flex items-center gap-1.5">
-                  <MessageSquare className="w-3.5 h-3.5 text-green-500" /> Respuestas 
-                </span>
-              </div>
-            </div>
-
             {hasMoreMessages && (
               <button
                 onClick={loadMoreMessages}
                 disabled={loadingMessages}
-                className="
-                  w-full py-2
-                  text-xs
-                  font-bold
-                  text-gray-400
-                  rounded-xl
-                  transition-colors
-                  duration-200
-                  hover:text-white
-                  disabled:opacity-50
-                  disabled:cursor-not-allowed
-                "
+                className="w-full py-2 text-xs font-bold text-gray-400 rounded-xl transition-colors 
+                duration-200 hover:text-white disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {loadingMessages 
-                  ? "Cargando..."
-                  : "Cargar mensajes anteriores"}
+                {loadingMessages ? "Cargando..." : "Cargar mensajes anteriores"}
               </button>
             )}
 

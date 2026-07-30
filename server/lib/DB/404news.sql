@@ -366,7 +366,7 @@ CREATE TABLE `news` (
   `id` int NOT NULL AUTO_INCREMENT,
   `title` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `slug` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `excerpt` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `excerpt` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `cover_image` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `author_id` int DEFAULT NULL,
   `category_id` int DEFAULT NULL,
@@ -569,9 +569,12 @@ CREATE TABLE `ticket_attachments` (
   PRIMARY KEY (`id`),
   KEY `fk_attachment_message` (`message_id`),
   CONSTRAINT `fk_attachment_message` FOREIGN KEY (`message_id`) REFERENCES `ticket_messages` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `ticket_attachments` */
+
+insert  into `ticket_attachments`(`id`,`message_id`,`original_name`,`file_name`,`mime_type`,`file_size`,`file_path`,`created_at`) values 
+(1,30,'Instalacion de n8n.txt','702847f6-a534-4594-864c-9a83a6ae51fb.txt','text/plain',4796,'tickets/702847f6-a534-4594-864c-9a83a6ae51fb.txt','2026-07-30 14:08:02');
 
 /*Table structure for table `ticket_messages` */
 
@@ -592,7 +595,7 @@ CREATE TABLE `ticket_messages` (
   KEY `fk_tm_sender` (`sender_id`),
   CONSTRAINT `fk_tm_sender` FOREIGN KEY (`sender_id`) REFERENCES `users` (`id`) ON DELETE SET NULL,
   CONSTRAINT `fk_tm_ticket` FOREIGN KEY (`ticket_id`) REFERENCES `tickets` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `ticket_messages` */
 
@@ -623,8 +626,16 @@ insert  into `ticket_messages`(`id`,`ticket_id`,`sender_type`,`sender_id`,`messa
 (24,3,'admin',1,'ahora si\n',1,0,0,'2026-07-25 14:30:36'),
 (25,3,'author',2,'claro loco',0,1,0,'2026-07-25 14:37:10'),
 (26,3,'author',2,'jajauj',0,1,0,'2026-07-25 14:44:47'),
-(27,3,'admin',1,'no sabe tu\n',0,0,0,'2026-07-25 15:06:58'),
-(28,3,'admin',1,'mmg',0,0,0,'2026-07-25 15:07:02');
+(27,3,'admin',1,'no sabe tu\n',1,0,0,'2026-07-25 15:06:58'),
+(28,3,'admin',1,'mmg',1,0,0,'2026-07-25 15:07:02'),
+(29,7,'author',2,'siiii jejej',0,0,0,'2026-07-30 13:55:26'),
+(30,8,'author',2,'singa tu madre',0,0,0,'2026-07-30 14:08:02'),
+(31,9,'author',2,'claro jajajaaj',0,0,0,'2026-07-30 14:45:07'),
+(32,10,'author',2,'asdadasdadad',0,1,0,'2026-07-30 14:45:27'),
+(33,10,'admin',1,'mmg callate',1,0,0,'2026-07-30 14:46:41'),
+(34,10,'admin',1,'jajajajaajajaja',1,0,0,'2026-07-30 14:47:51'),
+(35,10,'admin',1,'miralo',1,0,0,'2026-07-30 14:50:39'),
+(36,10,'admin',1,'o tiralo',1,0,0,'2026-07-30 14:50:43');
 
 /*Table structure for table `tickets` */
 
@@ -636,7 +647,6 @@ CREATE TABLE `tickets` (
   `status` enum('open','in_progress','waiting_response','closed') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'open',
   `priority` enum('low','medium','high') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'medium',
   `subject` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `message` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
   `user_id` int DEFAULT NULL,
   `guest_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `guest_email` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
@@ -655,14 +665,18 @@ CREATE TABLE `tickets` (
   CONSTRAINT `fk_ticket_assigned` FOREIGN KEY (`assigned_to`) REFERENCES `users` (`id`) ON DELETE SET NULL,
   CONSTRAINT `fk_ticket_last_message` FOREIGN KEY (`last_message_id`) REFERENCES `ticket_messages` (`id`) ON DELETE SET NULL,
   CONSTRAINT `fk_ticket_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `tickets` */
 
-insert  into `tickets`(`id`,`type`,`status`,`priority`,`subject`,`message`,`user_id`,`guest_name`,`guest_email`,`assigned_to`,`last_reply_at`,`closed_at`,`created_at`,`updated_at`,`last_message_id`,`unread_admin_count`,`unread_user_count`) values 
-(1,'contact','in_progress','low','una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien ','MANIATICA QUE LOCA',2,NULL,NULL,1,'2026-07-23 12:55:26','2026-07-21 20:05:29','2026-07-21 20:05:00','2026-07-23 12:55:26',NULL,0,0),
-(2,'contact','open','medium','tu supite veida?','MANIATICA DEL ALCOHOL',1,NULL,NULL,3,'2026-07-21 20:06:34',NULL,'2026-07-21 20:06:18','2026-07-23 12:38:23',NULL,0,0),
-(3,'submission','waiting_response','low','clarooooo','wacala',2,NULL,NULL,NULL,'2026-07-25 15:07:02',NULL,'2026-07-23 12:52:55','2026-07-25 15:07:02',28,2,0);
+insert  into `tickets`(`id`,`type`,`status`,`priority`,`subject`,`user_id`,`guest_name`,`guest_email`,`assigned_to`,`last_reply_at`,`closed_at`,`created_at`,`updated_at`,`last_message_id`,`unread_admin_count`,`unread_user_count`) values 
+(1,'contact','in_progress','low','una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien ',2,NULL,NULL,1,'2026-07-23 12:55:26','2026-07-21 20:05:29','2026-07-21 20:05:00','2026-07-23 12:55:26',NULL,0,0),
+(2,'contact','open','medium','tu supite veida?',1,NULL,NULL,3,'2026-07-21 20:06:34',NULL,'2026-07-21 20:06:18','2026-07-23 12:38:23',NULL,0,0),
+(3,'submission','waiting_response','low','clarooooo',2,NULL,NULL,NULL,'2026-07-25 15:07:02',NULL,'2026-07-23 12:52:55','2026-07-30 13:41:54',28,0,0),
+(7,'submission','open','medium','ya tu sabe',2,NULL,NULL,NULL,'2026-07-30 13:55:26',NULL,'2026-07-30 13:55:26','2026-07-30 13:55:45',29,0,0),
+(8,'submission','open','medium','mama guebo',2,NULL,NULL,NULL,'2026-07-30 14:08:02',NULL,'2026-07-30 14:08:02','2026-07-30 14:08:08',30,0,0),
+(9,'submission','open','medium','tu sipite veida?',2,NULL,NULL,NULL,'2026-07-30 14:45:07',NULL,'2026-07-30 14:45:07','2026-07-30 14:45:11',31,0,0),
+(10,'submission','open','medium','mmgmmmgmgmgmgm',2,NULL,NULL,NULL,'2026-07-30 14:50:43',NULL,'2026-07-30 14:45:27','2026-07-30 14:50:49',36,0,0);
 
 /*Table structure for table `users` */
 

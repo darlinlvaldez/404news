@@ -17,6 +17,9 @@ const config = {
 
   REDIS_URL: process.env.REDIS_URL,
   IP_API_URL: process.env.IP_API_URL,
+
+  SUPABASE_URL: process.env.SUPABASE_URL,
+  SUPABASE_SECRET_KEY: process.env.SUPABASE_SECRET_KEY
 };
 
 export default config;

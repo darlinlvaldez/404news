@@ -13,7 +13,6 @@ ticketAdminModels.ticket = async (id) => {
       t.status,
       t.priority,
       t.subject,
-      t.message,
       t.user_id,
       t.guest_name,
       t.guest_email,

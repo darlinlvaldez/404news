@@ -11,7 +11,6 @@ ticketAuthorModels.ticket = async (id, userId) => {
       t.id,
       t.status,
       t.subject,
-      t.message,
       t.user_id,
       t.assigned_to,
       t.last_reply_at,
@@ -60,9 +59,7 @@ ticketAuthorModels.messages = async (id, userId, limit = 5, beforeId = null) => 
     LEFT JOIN users u ON u.id = tm.sender_id
     LEFT JOIN authors a ON u.id = a.user_id
 
-    INNER JOIN tickets t 
-      ON t.id = tm.ticket_id 
-      AND t.user_id = ?
+    INNER JOIN tickets t ON t.id = tm.ticket_id AND t.user_id = ?
 
     WHERE tm.ticket_id = ?
   `;

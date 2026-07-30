@@ -31,6 +31,7 @@ export default function TicketsPage() {
   const [showModal, setShowModal] = useState(false);
   const [subject, setSubject] = useState("");
   const [message, setMessage] = useState("");
+  const [files, setFiles] = useState([]);
   
   const searchParams = useSearchParams();
 
@@ -83,15 +84,17 @@ export default function TicketsPage() {
     if (!subject.trim() || !message.trim()) return;
 
     try {
+      const formData = new FormData();
+      formData.append("subject", subject);
+      formData.append("message", message);
+
+      files.forEach((file) => {
+        formData.append("files", file);
+      });
+
       const response = await fetch(`/api/admin/authors/tickets`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          subject,
-          message,
-        }),
+        body: formData, // sin Content-Type manual, el browser pone el boundary correcto
       });
 
       if (!response.ok) {
@@ -104,6 +107,7 @@ export default function TicketsPage() {
 
       setSubject("");
       setMessage("");
+      setFiles([]);
       setShowModal(false);
 
       window.location.reload();
@@ -115,8 +119,8 @@ export default function TicketsPage() {
   const createLabels = (options) =>
   Object.fromEntries(
     options
-      .filter(option => option.value)
-      .map(option => [option.value, option.label])
+    .filter(option => option.value)
+    .map(option => [option.value, option.label])
   );
 
   const statusLabels = createLabels(statusOptions);
@@ -323,12 +327,34 @@ export default function TicketsPage() {
             />
           </div>
 
-          <div className="border border-dashed border-gray-800 hover:border-gray-700 rounded-xl p-3 text-center bg-gray-950/30 transition-colors cursor-pointer group">
-              <div className="flex items-center justify-center gap-2 text-xs text-gray-400 group-hover:text-gray-300">
-                <Paperclip size={14} className="text-gray-500 group-hover:text-green-600 transition-colors" />
-                <span>Adjuntar capturas de pantalla o logs <span className="text-gray-600">(Opcional)</span></span>
-              </div>
-            </div>
+          <input
+    type="file"
+    multiple
+    accept="
+      image/*,
+      .pdf,
+      .doc,
+      .docx,
+      .txt,
+      .zip,
+      .rar
+    "
+    className="hidden"
+    id="ticket-files"
+    onChange={(e) => setFiles([...e.target.files])}
+/>
+
+          <label
+    htmlFor="ticket-files"
+    className="border border-dashed border-gray-800 hover:border-gray-700 rounded-xl p-3 text-center bg-gray-950/30 transition-colors cursor-pointer block"
+>
+    <div className="flex items-center justify-center gap-2 text-xs text-gray-400">
+        <Paperclip size={14} />
+        <span>
+            Adjuntar capturas o documentos
+        </span>
+    </div>
+</label>
         </div>
       </FormModal>
     </div>
