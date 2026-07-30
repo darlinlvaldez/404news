@@ -96,7 +96,7 @@ export default function CreateNews() {
     const hasContent = blocks.some((b) => b.content?.trim());
 
     if (!hasContent) {
-      toast.error("AGREGÁ CONTENIDO ANTES DE GENERAR CON IA");
+      toast.error("AGREGA CONTENIDO ANTES DE GENERAR CON IA");
       return;
     }
 
@@ -157,16 +157,14 @@ export default function CreateNews() {
         <Header.Subtitle>Crear Nueva Noticia </Header.Subtitle>
       </Header>
 
-      <button type="button" onClick={handleGenerateAI} disabled={generatingAI}>
-  {generatingAI ? "Generando..." : "Generar con IA"}
-</button>
-
       <div className="max-w-4xl mx-auto px-6 py-10 space-y-12">
         <GeneralData 
           newsData={newsData}
           onInputChange={handleChange}
           authors={authors}
           categories={categories}
+          onGenerateAI={handleGenerateAI}
+          generatingAI={generatingAI}
           errors={errors}
           clearField={clearField}
         />

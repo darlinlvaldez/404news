@@ -154,7 +154,7 @@ export default function UsersAccount () {
       setUsers(list); 
       handleCancel();
 
-      isEditing ? toast.updated("USUARIO ACTUALIZADO") : toast.created("USUARIO CREADO");
+      isEditing ? toast.success("USUARIO ACTUALIZADO") : toast.success("USUARIO CREADO");
 
     } catch (error) {
       console.error("Error saving user:", error);
@@ -178,7 +178,7 @@ export default function UsersAccount () {
 
       setUsers(prev => prev.filter(user => user.id !== id));
 
-      toast.deleted("USUARIO ELIMINADO");
+      toast.success("USUARIO ELIMINADO");
 
     } catch (error) {
       console.error("Error deleting user:", error);

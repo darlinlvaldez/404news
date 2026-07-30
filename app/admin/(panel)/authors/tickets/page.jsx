@@ -19,7 +19,8 @@ import {
   Search,
   ChevronLeft,
   ChevronRight,
-  Plus
+  Plus,
+  Paperclip
 } from "lucide-react";
 
 export default function TicketsPage() {
@@ -283,18 +284,19 @@ export default function TicketsPage() {
       </section>
       <FormModal
         open={showModal}
-        title="Nuevo Ticket"
+        title="Nuevo Ticket de Soporte"
+        subtitle="Completa los campos para crear tu ticket"
         onClose={() => setShowModal(false)}
         onSubmit={handleCreateTicket}
         submitText="Enviar Ticket"
       >
         <div className="space-y-5">
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">
-              Asunto
+            <label className="block text-xs font-medium text-gray-300 mb-1.5">
+              Asunto <span className="text-rose-400">*</span>
             </label>
-
             <Input
+              type="text"
               name="subject"
               value={subject}
               onChange={(e) => setSubject(e.target.value)}
@@ -303,19 +305,30 @@ export default function TicketsPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">
-              Mensaje
-            </label>
-
+            <div className="flex justify-between items-center mb-1.5">
+              <label className="block text-xs font-medium text-gray-300">
+                Mensaje <span className="text-rose-400">*</span>
+              </label>
+              <span className="text-[11px] text-gray-500">
+                {message.length}/500
+              </span>
+            </div>
             <textarea
               value={message}
               onChange={(e) => setMessage(e.target.value)}
-              placeholder="Describe el problema o la solicitud..."
-              rows={6}
-              className="w-full bg-gray-950 rounded-xl border border-gray-700 focus:ring-1 focus:ring-green-800 focus:border-transparent
-                outline-none transition px-4 py-3.5 text-sm text-gray-100 placeholder:text-gray-500 resize-none"
+              placeholder="Describe el problema o la solicitud detalladamente..."
+              rows={5}
+              maxLength={500}
+              className="w-full bg-gray-950/70 rounded-xl border border-gray-700 focus:border-green-800 outline-none transition p-4 text-sm text-gray-100 placeholder:text-gray-500 resize-none shadow-inner"
             />
           </div>
+
+          <div className="border border-dashed border-gray-800 hover:border-gray-700 rounded-xl p-3 text-center bg-gray-950/30 transition-colors cursor-pointer group">
+              <div className="flex items-center justify-center gap-2 text-xs text-gray-400 group-hover:text-gray-300">
+                <Paperclip size={14} className="text-gray-500 group-hover:text-green-600 transition-colors" />
+                <span>Adjuntar capturas de pantalla o logs <span className="text-gray-600">(Opcional)</span></span>
+              </div>
+            </div>
         </div>
       </FormModal>
     </div>

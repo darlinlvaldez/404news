@@ -120,7 +120,7 @@ export default function EditNews() {
         return;
       }
 
-      toast.updated("NOTICIA ACTUALIZADA");
+      toast.success("NOTICIA ACTUALIZADA");
       router.push("/admin/news");
 
     } catch (error) {
@@ -142,7 +142,7 @@ export default function EditNews() {
         return;
       }
 
-      toast.created("NOTICIA ELIMINADA");
+      toast.success("NOTICIA ELIMINADA");
       router.push("/admin/news");
 
     } catch (error) {

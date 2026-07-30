@@ -1,11 +1,13 @@
 "use client";
 
-import { Image as ImageIcon, AlignLeft } from 'lucide-react';
 import Select from "@/components/admin/ui/Select"
 import { ErrorMessage } from "@/components/ErrorMessage";
 import { fieldClass } from "@/utils/form";
+import { ActionButton } from '@/components/admin/ui/ActionButtons';
+import { Image as ImageIcon, AlignLeft, Sparkles } from 'lucide-react';
 
-export const GeneralData = ({ newsData, onInputChange, authors = [], categories = [], errors = {}, clearField }) => {
+export const GeneralData = ({ newsData, onInputChange, authors = [], categories = [], 
+  onGenerateAI, generatingAI, errors = {}, clearField }) => {
 
   const statusOptions = [
     { value: "draft", label: "Borrador" },
@@ -21,11 +23,22 @@ export const GeneralData = ({ newsData, onInputChange, authors = [], categories 
   return (
     <section className="bg-gray-900 rounded-3xl border border-gray-700 p-8 shadow-2xl relative">
 
-      <div className="flex items-center mb-8">
-        <div className="bg-green-900/30 p-2.5 rounded-2xl mr-4 text-green-600">
-          <AlignLeft size={22}/>
+      <div className="flex items-center justify-between mb-8">
+        <div className="flex items-center">
+          <div className="bg-green-900/30 p-2.5 rounded-2xl mr-4 text-green-600">
+            <AlignLeft size={22}/>
+          </div>
+          <h3 className="text-xl font-bold">Datos Generales</h3>
         </div>
-        <h3 className="text-xl font-bold">Datos Generales</h3>
+
+        <ActionButton
+          icon={Sparkles}
+          variant="purple"
+          onClick={onGenerateAI}
+          disabled={generatingAI}
+        >
+          {generatingAI ? "Generando..." : "Generar con IA"}
+        </ActionButton>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">

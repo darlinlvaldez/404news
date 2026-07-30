@@ -190,7 +190,7 @@ export default function AuthorsPage() {
       setAuthors(list);
       handleCancel();
     
-      isEditing ? toast.updated("AUTOR ACTUALIZADO") : toast.created("AUTOR CREADO");
+      isEditing ? toast.success("AUTOR ACTUALIZADO") : toast.success("AUTOR CREADO");
 
     } catch (err) {
       console.error("Error saving author:", err);
@@ -215,7 +215,7 @@ export default function AuthorsPage() {
       
       setAuthors(prev => prev.filter(a => a.id !== id));
 
-      toast.deleted("AUTOR ELIMINADO");
+      toast.success("AUTOR ELIMINADO");
       
     } catch (err) {
       console.error("Error deleting author:", err);

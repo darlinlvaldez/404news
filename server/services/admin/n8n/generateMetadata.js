@@ -11,14 +11,14 @@ export async function generateAiMetadata({ news, blocks }) {
   });
 
   if (!response.ok) {
-  const errorText = await response.text();
+    const errorText = await response.text();
 
-  console.error("N8N ERROR:", errorText);
+    console.error("N8N ERROR:", errorText);
 
-  throw new Error(
-    `n8n respondió ${response.status}: ${errorText}`
-  );
-}
+    throw new Error(
+      `n8n respondió ${response.status}: ${errorText}`
+    );
+  }
 
   return response.json();
 }

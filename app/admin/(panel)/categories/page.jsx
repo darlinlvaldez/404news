@@ -99,7 +99,7 @@ export default function CategoriesPage () {
       setCategories(list);
       handleCancel();
 
-      isEditing ? toast.updated("CATEGORÍA ACTUALIZADA") : toast.created("CATEGORÍA CREADA");
+      isEditing ? toast.success("CATEGORÍA ACTUALIZADA") : toast.success("CATEGORÍA CREADA");
 
       } catch (err) {
       console.error(err);
@@ -154,7 +154,7 @@ export default function CategoriesPage () {
 
       setCategories(prev => prev.filter(c => c.id !== id));
 
-      toast.deleted("CATEGORÍA ELIMINADA");
+      toast.success("CATEGORÍA ELIMINADA");
 
     } catch (err) {
       console.error(err);
