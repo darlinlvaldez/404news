@@ -1,7 +1,7 @@
 import db from "@/server/lib/db";
 import ticketMessages from "@/server/models/admin/ticketMessages";
 import {existsByTicket} from '@/server/models/admin/exist'
-import { supabase } from "@/server/services/admin/supabase";
+import {resolveAttachments} from "@/server/services/admin/resolveAttachments";
 
 const ticketAuthorModels = {};
 
@@ -42,7 +42,12 @@ ticketAuthorModels.ticket = async (id, userId) => {
   return rows[0] ?? null;
 };
 
-ticketAuthorModels.messages = async (id, userId, limit = 5, beforeId = null) => {
+ticketAuthorModels.messages = async (
+  id,
+  userId,
+  limit = 5,
+  beforeId = null,
+) => {
   const params = [userId, id];
 
   let query = `
@@ -77,51 +82,13 @@ ticketAuthorModels.messages = async (id, userId, limit = 5, beforeId = null) => 
 
   if (messages.length === 0) return messages;
 
-  const messageIds = messages.map((m) => m.id);
-
-  const [attachmentRows] = await db.query(
-    `
-    SELECT id, message_id, original_name, mime_type, file_size, file_path
-    FROM ticket_attachments
-    WHERE message_id IN (?)
-    `,
-    [messageIds]
+  const attachmentsByMessage = await resolveAttachments(
+    messages.map((m) => m.id),
   );
-
-  const attachmentsByMessage = attachmentRows.reduce((acc, a) => {
-    (acc[a.message_id] ??= []).push(a);
-    return acc;
-  }, {});
-
-  const paths = attachmentRows.map((a) => a.file_path);
-
-  let signedUrlByPath = {};
-  if (attachmentRows.length > 0) {
-    const signedResults = await Promise.all(
-      attachmentRows.map((a) =>
-        supabase.storage
-          .from("ticket-files")
-          .createSignedUrl(a.file_path, 60 * 10, {
-            download: a.original_name,
-          })
-      )
-    );
-
-    signedResults.forEach((result, index) => {
-      if (result.error) throw result.error;
-      signedUrlByPath[attachmentRows[index].file_path] = result.data.signedUrl;
-    });
-  }
 
   return messages.map((m) => ({
     ...m,
-    attachments: (attachmentsByMessage[m.id] ?? []).map((a) => ({
-      id: a.id,
-      originalName: a.original_name,
-      mimeType: a.mime_type,
-      fileSize: a.file_size,
-      url: signedUrlByPath[a.file_path] ?? null,
-    })),
+    attachments: attachmentsByMessage[m.id] ?? [],
   }));
 };
 

@@ -1,4 +1,5 @@
 import db from "@/server/lib/db";
+import {resolveAttachments} from "@/server/services/admin/resolveAttachments";
 
 const ticketMessages= {};
 
@@ -6,18 +7,28 @@ ticketMessages.findById = async (id) => {
   const [rows] = await db.execute(
     `
     SELECT
-      id,
-      sender_id,
-      message,
-      created_at
-    FROM ticket_messages
-    WHERE id = ?
+      tm.id,
+      tm.sender_id,
+      tm.message,
+      tm.created_at,
+      u.role AS sender_role,
+      COALESCE(a.name, u.name, u.username) AS sender_name,
+      a.avatar AS sender_avatar
+    FROM ticket_messages tm
+    LEFT JOIN users u ON u.id = tm.sender_id
+    LEFT JOIN authors a ON u.id = a.user_id
+    WHERE tm.id = ?
     LIMIT 1
     `,
     [id]
   );
 
-  return rows[0] ?? null;
+  const message = rows[0] ?? null;
+  if (!message) return null;
+
+  const attachmentsByMessage = await resolveAttachments([id]);
+
+  return { ...message, attachments: attachmentsByMessage[id] ?? [] };
 };
 
 ticketMessages.markReadAuthor = async function(ticketId, userId) {
