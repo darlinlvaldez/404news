@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { requireAuth } from "../../../../../../server/utils/auth";
 import { handleError } from "../../../../../../server/errors/handleError";
 import ticketChatAuthor from "../../../../../../server/controllers/admin/ticketChatAuthor";
+import { saveTicketAttachments } from "../../../../../../server/services/admin/ticketAttachments";
 
 export async function GET(request, { params }) {
   try {
@@ -45,18 +46,24 @@ export async function POST(request, { params }) {
 
     const session = await requireAuth(request, ["author"]);
 
-    const body = await request.json();
+    const formData = await request.formData();
 
-    const message = await ticketChatAuthor.create({
+    const message = formData.get("message") ?? "";
+    const files = formData.getAll("files");
+
+    const attachments = await saveTicketAttachments(files);
+
+    const result = await ticketChatAuthor.create({
       id,
       senderId: session.id,
       senderType: "author",
-      message: body.message,
+      message,
+      attachments,
     });
 
     return NextResponse.json({
       success: true,
-      message,
+      message: result,
     });
   } catch (error) {
     console.error(error);

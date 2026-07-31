@@ -26,14 +26,16 @@ ticketChatAuthor.create = async ({
   id,
   senderId,
   senderType,
-  message
+  message,
+  attachments = [],
 }) => {
 
   return await ticketAuthorModels.create({
     ticketId: id,
     senderId,
     senderType,
-    message
+    message,
+    attachments,
   });
 };
 

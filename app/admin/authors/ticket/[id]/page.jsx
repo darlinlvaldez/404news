@@ -18,6 +18,7 @@ import {
   Calendar,  
   MessageSquare,
   CircleDot,
+  Paperclip
 } from 'lucide-react';
 
 export default function TicketChat() {
@@ -29,6 +30,8 @@ export default function TicketChat() {
   const [currentUserId, setCurrentUserId] = useState(null);
   const [hasMoreMessages, setHasMoreMessages] = useState(true);
   const [loadingMessages, setLoadingMessages] = useState(false);
+  const [files, setFiles] = useState([]);
+  const [sending, setSending] = useState(false);
 
   const { id } = useParams();
 
@@ -46,6 +49,7 @@ export default function TicketChat() {
         setTicket(data.ticket);
         setMessages(data.messages);
         setCurrentUserId(data.session.id);
+        setHasMoreMessages(data.messages.length === 5);
 
       } catch (error) {
         console.error(error);
@@ -67,17 +71,21 @@ export default function TicketChat() {
   const handleSendResponse = async (e) => {
     e.preventDefault();
 
-    if (!newResponse.trim()) return;
+    if (!newResponse.trim() && files.length === 0) return;
 
     try {
+      setSending(true);
+
+      const formData = new FormData();
+      formData.append("message", newResponse);
+
+      files.forEach((file) => {
+        formData.append("files", file);
+      });
+
       const response = await fetch(`/api/admin/authors/tickets/${id}`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          message: newResponse
-        })
+        body: formData,
       });
 
       if (!response.ok) {
@@ -86,14 +94,19 @@ export default function TicketChat() {
 
       const data = await response.json();
 
-      setMessages(prev => [...prev, data.message]);
+      setMessages((prev) => [...prev, data.message]);
 
       setNewResponse("");
+      setFiles([]);
 
     } catch (err) {
       console.error(err);
+    } finally {
+      setSending(false);
     }
   };
+
+  const isClosed = ticket?.status === "closed";
 
   const loadMoreMessages = async () => {
 
@@ -294,30 +307,63 @@ export default function TicketChat() {
                 </span>
                 
                 <div className="relative">
-                  <textarea
-                    rows="3"
-                    value={newResponse}
-                    onChange={(e) => setNewResponse(e.target.value)}
-                    placeholder="Escribe aquí tu respuesta para resolver la incidencia de Darlin..."
-                    className="w-full px-4 py-3 bg-gray-900 border border-gray-800 focus:border-green-600 focus:ring-1 focus:ring-green-600 focus:outline-none rounded-2xl text-sm font-medium text-gray-200 placeholder-gray-600 resize-none pr-14 shadow-inner"
-                  ></textarea>
+  <textarea
+    rows="3"
+    value={newResponse}
+    disabled={isClosed}
+    onChange={(e) => setNewResponse(e.target.value)}
+    placeholder={isClosed ? "Este ticket está cerrado." : "Escribe aquí tu respuesta..."}
+    className="w-full disabled:cursor-not-allowed disabled:opacity-60 px-4 py-3 bg-gray-900 border border-gray-800 focus:border-green-600 focus:ring-1 focus:ring-green-600 focus:outline-none rounded-2xl text-sm font-medium text-gray-200 placeholder-gray-600 resize-none pr-24 shadow-inner"
+  ></textarea>
 
-                  <button
-                    type="submit"
-                    disabled={!newResponse.trim()}
-                    className="absolute right-3.5 bottom-4 p-2.5 bg-green-700 hover:bg-green-600 disabled:opacity-20 disabled:hover:bg-green-700 text-white rounded-xl transition-all duration-200 shadow-md flex items-center justify-center active:scale-95 cursor-pointer"
-                  >
-                    <Send className="w-4 h-4" />
-                  </button>
-                </div>
+  <input
+    type="file"
+    multiple
+    disabled={isClosed}
+    className="hidden"
+    id="reply-files"
+    onChange={(e) => setFiles([...e.target.files])}
+  />
+
+  <label
+    htmlFor="reply-files"
+    className={`absolute right-14 bottom-4 p-2.5 rounded-xl transition-all duration-200 flex items-center justify-center text-gray-400 hover:text-white hover:bg-gray-800 ${isClosed ? "opacity-20 cursor-not-allowed pointer-events-none" : "cursor-pointer"}`}
+  >
+    <Paperclip className="w-4 h-4" />
+  </label>
+
+  <button
+    type="submit"
+    disabled={isClosed || sending || (!newResponse.trim() && files.length === 0)}
+    className="absolute disabled:cursor-not-allowed right-3.5 bottom-4 p-2.5 bg-green-700 hover:bg-green-600 disabled:opacity-20 disabled:hover:bg-green-700 text-white rounded-xl transition-all duration-200 shadow-md flex items-center justify-center active:scale-95 cursor-pointer"
+  >
+    <Send className="w-4 h-4" />
+  </button>
+</div>
+                {files.length > 0 && (
+                  <div className="flex flex-wrap gap-2 pl-1">
+                    {files.map((file, index) => (
+                      <span
+                        key={index}
+                        className="flex items-center gap-1.5 text-[11px] bg-gray-900 border border-gray-800 rounded-lg px-2.5 py-1 text-gray-400"
+                      >
+                        {file.name}
+                        <button
+                          type="button"
+                          onClick={() => setFiles(files.filter((_, i) => i !== index))}
+                          className="text-gray-600 hover:text-rose-400"
+                        >
+                          ×
+                        </button>
+                      </span>
+                    ))}
+                  </div>
+                )}
               </div>
             </form>
-
           </div>
-          
         </main>
       </div>
-
     </div>
   );
 }

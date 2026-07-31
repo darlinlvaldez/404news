@@ -2,7 +2,7 @@ import db from "@/server/lib/db";
 
 export async function existsByTicket(id, userId = null) {
   let query = `
-    SELECT id
+    SELECT id, status
     FROM tickets
     WHERE id = ?
   `;
@@ -18,13 +18,13 @@ export async function existsByTicket(id, userId = null) {
 
   const [rows] = await db.execute(query, params);
 
-  return rows.length > 0;
+  return rows[0] ?? null;
 }
 
 export async function existsByNews(title, slug) {
   const [rows] = await db.query(
     `
-    SELECT id 
+    SELECT id
     FROM news 
     WHERE title = ? OR slug = ?
     LIMIT 1
