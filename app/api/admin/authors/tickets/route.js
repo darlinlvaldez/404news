@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import { requireAuth } from "../../../../../server/utils/auth";
 import { handleError } from "../../../../../server/errors/handleError";
-import ticketsAuthor from "../../../../../server/controllers/admin/ticketsAuthor";
-import { saveTicketAttachments } from "../../../../../server/services/admin/ticketAttachments";
+import ticketsAuthor from "../../../../../server/controllers/admin/tickets/ticketsAuthor";
+import { saveTicketAttachments } from "../../../../../server/services/admin/tickets/ticketAttachments";
 
 export async function GET(request) {
   try {

@@ -1,6 +1,6 @@
 import db from "@/server/lib/db";
-import ticketMessages from "@/server/models/admin/ticketMessages";
-import {existsByTicket} from '@/server/models/admin/exist'
+import ticketMessages from "@/server/models/admin/tickets/ticketMessages";
+import {existsByTicket} from '@/server/services/admin/tickets/existsByTicket'
 
 const ticketAdminModels = {};
 

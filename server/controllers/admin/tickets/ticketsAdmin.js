@@ -1,4 +1,4 @@
-import tickets from "@/server/models/admin/ticketsAdmin";
+import tickets from "@/server/models/admin/tickets/ticketsAdmin";
 import {getAuthors} from "@/server/services/admin/catalog";
 
 const ticketsAdmin = {};

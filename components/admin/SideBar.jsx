@@ -3,6 +3,16 @@
 import { usePathname } from "next/navigation"
 import Link from "next/link"
 
+import {
+  LayoutDashboard,
+  Newspaper,
+  FolderTree,
+  Users,
+  ShieldCheck,
+  Ticket,
+  LogOut,
+} from "lucide-react";
+
 export default function SideBar({user}) {
     const pathname = usePathname()
 
@@ -15,13 +25,45 @@ export default function SideBar({user}) {
     };
 
     const links = [
-        { name: "Dashboard", href: "/admin/dashboard", roles: ["superadmin", "admin", "editor", "support", "author"] },
-        { name: "Noticias", href: "/admin/news", roles: ["superadmin", "admin", "editor"] },
-        { name: "Categorías", href: "/admin/categories", roles: ["superadmin", "admin"] },
-        { name: "Autores", href: "/admin/authors", roles: ["superadmin", "admin", "editor"] },
-        { name: "Administradores", href: "/admin/users", roles: ["superadmin", "admin"] },
-        { name: "Tickets", href: user.role === "author" ? "/admin/authors/tickets" : "/admin/tickets",
-        roles: ["superadmin", "admin", "support", "author"]},
+        {
+            name: "Dashboard",
+            href: "/admin/dashboard",
+            icon: LayoutDashboard,
+            roles: ["superadmin", "admin", "editor", "support", "author"],
+        },
+        {
+            name: "Noticias",
+            href: "/admin/news",
+            icon: Newspaper,
+            roles: ["superadmin", "admin", "editor"],
+        },
+        {
+            name: "Categorías",
+            href: "/admin/categories",
+            icon: FolderTree,
+            roles: ["superadmin", "admin"],
+        },
+        {
+            name: "Autores",
+            href: "/admin/authors",
+            icon: Users,
+            roles: ["superadmin", "admin", "editor"],
+        },
+        {
+            name: "Administradores",
+            href: "/admin/users",
+            icon: ShieldCheck,
+            roles: ["superadmin", "admin"],
+        },
+        {
+            name: "Tickets",
+            href:
+            user.role === "author"
+                ? "/admin/authors/tickets"
+                : "/admin/tickets",
+            icon: Ticket,
+            roles: ["superadmin", "admin", "support", "author"],
+        },
     ];
 
     const getLinkClasses = (path) => 
@@ -52,22 +94,27 @@ export default function SideBar({user}) {
             </div>
 
             <nav className="flex-1 p-4 space-y-2 text-green-100">
-            {links.filter(link => link.roles.includes(user.role))
-                .map(link => (
-                <Link key={link.href} href={link.href}
-                    className={getLinkClasses(link.href)}>
-                    {link.name}
+            {links
+                .filter((link) => link.roles.includes(user.role))
+                .map((link) => {
+                const Icon = link.icon;
+
+                return (
+                <Link
+                    key={link.href}
+                    href={link.href}
+                    className={`${getLinkClasses(link.href)} flex items-center gap-3`}
+                    >
+                    <Icon size={18} />
+                    <span>{link.name}</span>
                 </Link>
-                ))}
+                );
+            })}
             </nav>
 
             <div className="p-4 border-t border-green-700">
                 <button onClick={handleLogout} className={buttonLogaut}>
-
-                <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h6a2 2 0 012 2v1"/>
-                </svg> 
-                Cerrar Sesión
+                    <LogOut size={18} /> Cerrar Sesión
                 </button>
             </div>
         </aside>

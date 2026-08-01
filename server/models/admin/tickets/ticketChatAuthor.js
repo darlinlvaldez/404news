@@ -1,7 +1,7 @@
 import db from "@/server/lib/db";
-import ticketMessages from "@/server/models/admin/ticketMessages";
-import {existsByTicket} from '@/server/models/admin/exist'
-import {resolveAttachments} from "@/server/services/admin/resolveAttachments";
+import ticketMessages from "@/server/models/admin/tickets/ticketMessages";
+import {existsByTicket} from '@/server/services/admin/tickets/existsByTicket'
+import {resolveAttachments} from "@/server/services/admin/tickets/resolveAttachments";
 
 const ticketAuthorModels = {};
 

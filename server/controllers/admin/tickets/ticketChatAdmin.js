@@ -1,5 +1,5 @@
-import ticketAdminModels from "@/server/models/admin/ticketChatAdmin";
-import ticketMessages from "@/server/models/admin/ticketMessages";
+import ticketAdminModels from "@/server/models/admin/tickets/ticketChatAdmin";
+import ticketMessages from "@/server/models/admin/tickets/ticketMessages";
 
 const ticketChatAdmin = {};
 

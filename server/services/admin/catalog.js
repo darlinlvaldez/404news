@@ -4,6 +4,7 @@ export async function getAuthors() {
   const [rows] = await db.query(`
     SELECT
       a.id,
+      a.user_id,
       a.name
     FROM authors a
     JOIN users u ON a.user_id = u.id

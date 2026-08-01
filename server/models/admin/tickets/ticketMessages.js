@@ -1,5 +1,5 @@
 import db from "@/server/lib/db";
-import {resolveAttachments} from "@/server/services/admin/resolveAttachments";
+import {resolveAttachments} from "@/server/services/admin/tickets/resolveAttachments";
 
 const ticketMessages= {};
 

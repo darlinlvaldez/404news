@@ -211,32 +211,13 @@ export default function TicketChat() {
 
             <div className="space-y-4 pt-2">
               <span className="text-[10px] text-gray-500 font-bold uppercase tracking-widest block border-b border-gray-800/40 pb-1">
-                Información del Remitente
+                Ultima Actividad
               </span>
-
-              <div className="flex items-center space-x-3 bg-gray-900/40 p-3 rounded-xl border border-gray-800/60">
-                <div className="w-10 h-10 rounded-xl bg-green-950 text-green-400 border border-green-500/30 flex items-center justify-center font-black text-sm">
-                  {ticket.sender_name.split(' ').slice(0,2).map(n => n[0]).join('')}
-                </div>
-                <div>
-                  <span className="text-[10px] text-gray-500 font-bold uppercase block">Nombre</span>
-                  <span className="text-sm font-bold text-white block">{ticket.sender_name}</span>
-                </div>
-              </div>
 
               <div className="space-y-3 pl-1">
                 <div className="flex items-center space-x-3 text-xs">
-                  <Mail className="w-4 h-4 text-gray-500 shrink-0" />
-                  <div className="overflow-hidden">
-                    <span className="text-gray-500 block text-[9px] uppercase font-bold">Correo Electrónico</span>
-                    <span className="text-gray-300 font-mono truncate block">{ticket.email}</span>
-                  </div>
-                </div>
-
-                <div className="flex items-center space-x-3 text-xs">
                   <Calendar className="w-4 h-4 text-gray-500 shrink-0" />
                   <div>
-                    <span className="text-gray-500 block text-[9px] uppercase font-bold">Ultima Actividad</span>
                     <span className="text-gray-300 font-mono block">{formatDateRelative(ticket.last_reply_at)}</span>
                   </div>
                 </div>
@@ -268,7 +249,9 @@ export default function TicketChat() {
             <div className="flex gap-2.5">
               <CircleDot className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
               <p className="text-[11px] text-gray-400 leading-relaxed">
-                Este ticket es una consulta de <span className="text-white font-semibold">Soporte Técnico</span>. Asegúrate de actualizar el estado del ticket para mantener al usuario al tanto de tu investigación.
+                Este ticket ha sido recibido por nuestro equipo de 
+                <span className="text-white font-semibold">Soporte Técnico</span>. 
+                Podrás seguir las respuestas y el estado de tu solicitud desde este chat.
               </p>
             </div>
           </div>
