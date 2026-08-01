@@ -94,7 +94,7 @@ export default function TicketsPage() {
 
       const response = await fetch(`/api/admin/authors/tickets`, {
         method: "POST",
-        body: formData, // sin Content-Type manual, el browser pone el boundary correcto
+        body: formData,
       });
 
       if (!response.ok) {
@@ -286,6 +286,7 @@ export default function TicketsPage() {
             </div>
           </div>
       </section>
+
       <FormModal
         open={showModal}
         title="Nuevo Ticket de Soporte"
@@ -327,36 +328,28 @@ export default function TicketsPage() {
             />
           </div>
 
-          <input
-    type="file"
-    multiple
-    accept="
-      image/*,
-      .pdf,
-      .doc,
-      .docx,
-      .txt,
-      .zip,
-      .rar
-    "
-    className="hidden"
-    id="ticket-files"
-    onChange={(e) => setFiles([...e.target.files])}
-/>
+          <input 
+            type="file" 
+            multiple
+            accept="image/*, .pdf, .doc, .docx,m.txt, .zip, .rar"
+            className="hidden"
+            id="ticket-files"
+            onChange={(e) => setFiles([...e.target.files])}
+          />
 
-          <label
-    htmlFor="ticket-files"
-    className="border border-dashed border-gray-800 hover:border-gray-700 rounded-xl p-3 text-center bg-gray-950/30 transition-colors cursor-pointer block"
->
-    <div className="flex items-center justify-center gap-2 text-xs text-gray-400">
-        <Paperclip size={14} />
-        <span>
-            Adjuntar capturas o documentos
-        </span>
-    </div>
-</label>
+          <label htmlFor="ticket-files"
+            className="border border-dashed border-gray-800 hover:border-gray-700 rounded-xl p-3 text-center bg-gray-950/30 transition-colors cursor-pointer block"
+          >
+            <div className="flex items-center justify-center gap-2 text-xs text-gray-400">
+              <Paperclip size={14} />
+              <span>
+                  Adjuntar capturas o documentos
+              </span>
+            </div>
+          </label>
         </div>
       </FormModal>
+      
     </div>
   );
 }

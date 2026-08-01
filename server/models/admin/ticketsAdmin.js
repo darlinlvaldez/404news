@@ -84,4 +84,109 @@ tickets.getAll = async function (
   return { rows, total };
 };
 
+const addMessage = async (connection, { ticketId, senderType, senderId, message, isInternal = false, attachments = [] }) => {
+  const [messageResult] = await connection.execute(
+    `
+    INSERT INTO ticket_messages
+      (ticket_id, sender_type, sender_id, message, is_internal)
+    VALUES (?, ?, ?, ?, ?)
+    `,
+    [ticketId, senderType, senderId ?? null, message, isInternal]
+  );
+
+  const messageId = messageResult.insertId;
+
+  if (attachments.length > 0) {
+    const values = attachments.map((a) => [
+      messageId,
+      a.originalName,
+      a.fileName,
+      a.mimeType,
+      a.fileSize,
+      a.filePath,
+    ]);
+
+    await connection.query(
+      `
+      INSERT INTO ticket_attachments
+        (message_id, original_name, file_name, mime_type, file_size, file_path)
+      VALUES ?
+      `,
+      [values]
+    );
+  }
+
+  return messageId;
+};
+
+tickets.createTicket = async ({
+  userId,       
+  senderId,     
+  type = "submission",
+  subject,
+  message,
+  priority = "medium",
+  attachments = [],
+}) => {
+  const connection = await db.getConnection();
+
+  try {
+    await connection.beginTransaction();
+
+    const [ticketResult] = await connection.execute(
+      `
+      INSERT INTO tickets
+        (type, subject, status, priority, user_id)
+      VALUES (?, ?, ?, ?, ?)
+      `,
+      [type, subject, "open", priority, userId]
+    );
+
+    const ticketId = ticketResult.insertId;
+
+    const messageId = await addMessage(connection, {
+      ticketId,
+      senderType: "admin",
+      senderId,
+      message,
+      attachments,
+    });
+
+    await connection.execute(
+      `
+      UPDATE tickets
+      SET last_message_id = ?, unread_user_count = unread_user_count + 1
+      WHERE id = ?
+      `,
+      [messageId, ticketId]
+    );
+
+    await connection.commit();
+
+    return { ticketId, messageId };
+  } catch (err) {
+    await connection.rollback();
+    throw err;
+  } finally {
+    connection.release();
+  }
+};
+
+tickets.getAuthorsForSelect = async () => {
+  const [rows] = await db.execute(
+    `
+    SELECT
+      u.id AS user_id,
+      a.name,
+      a.avatar
+    FROM authors a
+    INNER JOIN users u ON u.id = a.user_id
+    WHERE u.active = 1
+    ORDER BY a.name ASC
+    `
+  );
+
+  return rows;
+};
+
 export default tickets;

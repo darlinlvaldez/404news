@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { requireAuth } from "../../../../server/utils/auth";
 import { handleError } from "../../../../server/errors/handleError";
+import { saveTicketAttachments } from "../../../../server/services/admin/ticketAttachments";
 import ticketsAdmin from "../../../../server/controllers/admin/ticketsAdmin";
 
 export async function GET(request) {
@@ -26,6 +27,42 @@ export async function GET(request) {
     });
 
     return NextResponse.json(result);
+
+  } catch (error) {
+    console.error(error);
+    return handleError(error);
+  }
+}
+
+export async function POST(request) {
+  try {
+    const session = await requireAuth(request, ["superadmin", "admin", "editor"]);
+
+    const formData = await request.formData();
+
+    const userId = formData.get("userId");
+    const type = formData.get("type") || "submission";
+    const subject = formData.get("subject");
+    const message = formData.get("message");
+    const priority = formData.get("priority") || "medium";
+    const files = formData.getAll("files");
+
+    const attachments = await saveTicketAttachments(files);
+
+    const result = await ticketsAdmin.create({
+      userId: Number(userId),
+      senderId: session.id,
+      type,
+      subject,
+      message,
+      priority,
+      attachments,
+    });
+
+    return NextResponse.json({
+      success: true,
+      ticket: result,
+    });
 
   } catch (error) {
     console.error(error);

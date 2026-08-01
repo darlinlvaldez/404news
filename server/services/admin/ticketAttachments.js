@@ -14,7 +14,6 @@ const ALLOWED_MIME_TYPES = new Set([
   "application/x-rar-compressed",
 ]);
 
-
 export async function saveTicketAttachments(files) {
   const attachments = [];
 

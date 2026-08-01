@@ -4,8 +4,10 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import {formatDateRelative} from "@/utils/formatDate"
+import { ActionButton } from "@/components/admin/ui/ActionButtons"
 import Select from "@/components/admin/ui/Select"
 import Input from "@/components/admin/ui/Input"
+import FormModal from "@/components/admin/ui/FormModal"
 import { Header } from '@/components/admin/Header';
 import { 
   getStatusStyle, 
@@ -21,6 +23,8 @@ import {
   ChevronLeft,
   ChevronRight,
   Mail,
+  Paperclip,
+  Plus
 } from "lucide-react";
 
 export default function TicketsPage() {
@@ -28,6 +32,13 @@ export default function TicketsPage() {
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
+  const [showModal, setShowModal] = useState(false);
+  const [subject, setSubject] = useState("");
+  const [message, setMessage] = useState("");
+  const [files, setFiles] = useState([]);
+  const [category, setCategory] = useState("");
+  const [authors, setAuthors] = useState([]);
+  const [authorId, setAuthorId] = useState("");
   
   const searchParams = useSearchParams();
 
@@ -42,6 +53,19 @@ export default function TicketsPage() {
   const showingTo = Math.min(page * limit, total);
 
   const [debouncedSearch, setDebouncedSearch] = useState("");
+
+  const categoryOptions = [
+    { value: "technical", label: "Soporte Técnico" },
+    { value: "billing", label: "Facturación" },
+    { value: "content", label: "Contenido" },
+    { value: "account", label: "Cuenta" },
+    { value: "other", label: "Otro" },
+  ];
+
+  const authorOptions = authors.map((a) => ({
+    value: a.id,
+    label: a.name,
+  }));
 
   useEffect(() => {
     const delay = setTimeout(() => {
@@ -75,6 +99,63 @@ export default function TicketsPage() {
   }
   fetchTicket();
   }, [page, statusFilter, priorityFilter, debouncedSearch]);
+
+  useEffect(() => {
+    const fetchAuthors = async () => {
+      try {
+        const res = await fetch(`/api/admin/tickets/authors`);
+        const data = await res.json();
+
+        setAuthors(data);
+      } catch (error) {
+        console.error("Error loading authors:", error);
+      }
+    };
+
+    fetchAuthors();
+  }, []);
+
+  const handleCreateTicket = async (e) => {
+    e.preventDefault();
+
+    if (!subject.trim() || !message.trim() || !authorId) return;
+
+    try {
+      const formData = new FormData();
+      formData.append("subject", subject);
+      formData.append("message", message);
+      formData.append("userId", authorId);
+      formData.append("category", category);
+
+      files.forEach((file) => {
+        formData.append("files", file);
+      });
+
+      const response = await fetch(`/api/admin/tickets`, {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        console.log(error);
+        throw new Error(error.message || "Error create ticket");
+      }
+
+      const data = await response.json();
+
+      setSubject("");
+      setMessage("");
+      setFiles([]);
+      setAuthorId("");
+      setCategory("");
+      setShowModal(false);
+
+      window.location.reload();
+    } catch (err) {
+      console.error(err);
+    }
+  };
   
   const createLabels = (options) =>
   Object.fromEntries(
@@ -95,7 +176,13 @@ export default function TicketsPage() {
 
   return (
     <div className="h-full flex-1 flex flex-col overflow-hidden bg-gray-800 text-gray-200 font-sans">
-      <Header>
+      <Header
+        actions={
+          <ActionButton icon={Plus} onClick={() => setShowModal(true)}>
+            Nuevo Ticket
+          </ActionButton>
+        }
+      >
         <Header.Title>Tickets</Header.Title>
         <Header.Subtitle>Administración y seguimiento de solicitudes</Header.Subtitle>
       </Header>
@@ -285,6 +372,98 @@ export default function TicketsPage() {
             </div>
           </div>
       </section>
+
+      <FormModal
+        open={showModal}
+        title="Nuevo Ticket de Soporte"
+        subtitle="Completa los campos para crear tu ticket"
+        onClose={() => setShowModal(false)}
+        onSubmit={handleCreateTicket}
+        submitText="Enviar Ticket"
+      >
+        <div className="space-y-5">
+
+          <div className="flex gap-4">
+            <div className="flex-1">
+              <label className="block text-xs font-medium text-gray-300 mb-1.5">
+                Autor <span className="text-rose-400">*</span>
+              </label>
+              <Select
+                name="authorId"
+                options={authorOptions}
+                value={authorId}
+                onChange={(e) => setAuthorId(e.target.value)}
+                placeholder="Selecciona un autor..."
+              />
+            </div>
+
+            <div className="flex-1">
+              <label className="block text-xs font-medium text-gray-300 mb-1.5">
+                Categoría <span className="text-rose-400">*</span>
+              </label>
+              <Select
+                name="category"
+                options={categoryOptions}
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+                placeholder="Selecciona una categoría..."
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-xs font-medium text-gray-300 mb-1.5">
+              Asunto <span className="text-rose-400">*</span>
+            </label>
+            <Input
+              type="text"
+              name="subject"
+              value={subject}
+              onChange={(e) => setSubject(e.target.value)}
+              placeholder="Escribe el asunto del ticket..."
+            />
+          </div>
+
+          <div>
+            <div className="flex justify-between items-center mb-1.5">
+              <label className="block text-xs font-medium text-gray-300">
+                Mensaje <span className="text-rose-400">*</span>
+              </label>
+              <span className="text-[11px] text-gray-500">
+                {message.length}/500
+              </span>
+            </div>
+            <textarea
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              placeholder="Describe el problema o la solicitud detalladamente..."
+              rows={5}
+              maxLength={500}
+              className="w-full bg-gray-950/70 rounded-xl border border-gray-700 focus:border-green-800 outline-none transition p-4 text-sm text-gray-100 placeholder:text-gray-500 resize-none shadow-inner"
+            />
+          </div>
+
+          <input
+            type="file"
+            multiple
+            accept="image/*, .pdf, .doc, .docx, .txt, .zip, .rar"
+            className="hidden"
+            id="ticket-files"
+            onChange={(e) => setFiles([...e.target.files])}
+          />
+
+          <label htmlFor="ticket-files"
+            className="border border-dashed border-gray-800 hover:border-gray-700 rounded-xl p-3 text-center bg-gray-950/30 transition-colors cursor-pointer block"
+          >
+            <div className="flex items-center justify-center gap-2 text-xs text-gray-400">
+              <Paperclip size={14} />
+              <span>
+                  Adjuntar capturas o documentos
+              </span>
+            </div>
+          </label>
+        </div>
+      </FormModal>
     </div>
   );
 }

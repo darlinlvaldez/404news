@@ -2,6 +2,7 @@ import newsModel from "@/server/models/admin/news";
 import { sendNewsNotification } from "@/server/services/admin/n8n/notification";
 import { generateAiMetadata } from "@/server/services/admin/n8n/generateMetadata";
 import { existsByNews } from "@/server/models/admin/exist";
+import {getAuthors, getCategories} from "@/server/services/admin/catalog";
 
 const newsController = {};
 
@@ -119,8 +120,8 @@ newsController.delete = async function (id) {
 };
 
 newsController.getFormData = async function () {
-  const authors = await newsModel.getAuthors();
-  const categories = await newsModel.getCategories();
+  const authors = await getAuthors();
+  const categories = await getCategories();
 
   return {
     ok: true,
