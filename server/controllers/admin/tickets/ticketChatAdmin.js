@@ -25,7 +25,9 @@ ticketChatAdmin.create = async ({
   senderId,
   senderType,
   message,
-  isInternal
+  isInternal,
+  attachments = [],
+
 }) => {
 
   if (senderType !== "admin") {
@@ -37,7 +39,8 @@ ticketChatAdmin.create = async ({
     senderId,
     message,
     senderType,
-    isInternal
+    isInternal,
+    attachments = [],
   });
 };
 

@@ -25,7 +25,8 @@ import {
   ArrowLeftRight, 
   MessageSquare,
   CircleDot,
-  CircleCheckBig
+  CircleCheckBig,
+  Paperclip
 } from 'lucide-react';
 
 export default function TicketChat() {
@@ -37,6 +38,7 @@ export default function TicketChat() {
   const [currentUserId, setCurrentUserId] = useState(null);
   const [hasMoreMessages, setHasMoreMessages] = useState(true);
   const [loadingMessages, setLoadingMessages] = useState(false);
+  const [files, setFiles] = useState([]);
 
   const { id } = useParams();
 
@@ -311,33 +313,6 @@ export default function TicketChat() {
           
           <div className="flex-1 overflow-y-auto p-6 lg:p-8 space-y-6">
             
-            <div className="space-y-2">
-              <span className="text-[10px] text-gray-400 font-bold uppercase tracking-widest block">
-                Mensaje Inicial
-              </span>
-              <div className="bg-gray-950/80 border border-gray-800 rounded-2xl p-5 shadow-sm">
-                <div className="flex items-center justify-end border-b border-gray-900 pb-3 mb-3">
-                  <span className="text-xs  text-gray-500 font-mono">
-                    {formatDateTimeNumeric(ticket.created_at)}
-                  </span>
-                </div>
-                <p className="text-sm text-gray-300 leading-relaxed whitespace-pre-line font-medium pl-1">
-                  {ticket.message}
-                </p>
-              </div>
-            </div>
-
-            <div className="relative py-2">
-              <div className="absolute inset-0 flex items-center" aria-hidden="true">
-                <div className="w-full border-t border-gray-800"></div>
-              </div>
-              <div className="relative flex justify-center text-xs">
-                <span className="bg-gray-900 px-4 text-xs font-bold text-gray-400 uppercase tracking-widest flex items-center gap-1.5">
-                  <MessageSquare className="w-3.5 h-3.5 text-green-500" /> Respuestas 
-                </span>
-              </div>
-            </div>
-
             {hasMoreMessages && (
               <button
                 onClick={loadMoreMessages}
@@ -405,6 +380,7 @@ export default function TicketChat() {
               )}
             </div>
 
+          <div className="bg-gray-950 border-t border-gray-800 p-6 space-y-4 shrink-0">
             <form onSubmit={handleSendResponse} className="relative">
               <div className="flex flex-col space-y-2">
                 <span className="text-[10px] text-gray-500 font-bold uppercase tracking-widest block pl-1">
@@ -420,22 +396,54 @@ export default function TicketChat() {
                     className="w-full px-4 py-3 bg-gray-900 border border-gray-800 focus:border-green-600 focus:ring-1 focus:ring-green-600 focus:outline-none rounded-2xl text-sm font-medium text-gray-200 placeholder-gray-600 resize-none pr-14 shadow-inner"
                   ></textarea>
 
+                  <input
+                    type="file"
+                    multiple
+                    className="hidden"
+                    id="reply-files"
+                    onChange={(e) => setFiles([...e.target.files])}
+                  />
+
+                  <label htmlFor="reply-files"
+                    className="absolute right-14 bottom-4 p-2.5 rounded-xl transition-all duration-200 flex items-center justify-center text-gray-400 hover:text-white hover:bg-gray-800 cursor-pointer"
+                  >
+                    <Paperclip className="w-4 h-4" />
+                  </label>
+
                   <button
                     type="submit"
-                    disabled={!newResponse.trim()}
-                    className="absolute right-3.5 bottom-4 p-2.5 bg-green-700 hover:bg-green-600 disabled:opacity-20 disabled:hover:bg-green-700 text-white rounded-xl transition-all duration-200 shadow-md flex items-center justify-center active:scale-95 cursor-pointer"
+                    disabled={(!newResponse.trim() && files.length === 0)}
+                    className="absolute disabled:cursor-not-allowed right-3.5 bottom-4 p-2.5 bg-green-700 hover:bg-green-600 disabled:opacity-20 disabled:hover:bg-green-700 text-white rounded-xl transition-all duration-200 shadow-md flex items-center justify-center active:scale-95 cursor-pointer"
                   >
                     <Send className="w-4 h-4" />
                   </button>
                 </div>
+
+                {files.length > 0 && (
+                  <div className="flex flex-wrap gap-2 pl-1">
+                    {files.map((file, index) => (
+                      <span
+                        key={index}
+                        className="flex items-center gap-1.5 text-[11px] bg-gray-900 border border-gray-800 rounded-lg px-2.5 py-1 text-gray-400"
+                      >
+                        {file.name}
+                        <button
+                          type="button"
+                          onClick={() => setFiles(files.filter((_, i) => i !== index))}
+                          className="text-gray-600 hover:text-rose-400"
+                        >
+                          ×
+                        </button>
+                      </span>
+                    ))}
+                  </div>
+                )}
               </div>
             </form>
-
           </div>
-          
-        </main>
-      </div>
-
+        </div>
+      </main>
     </div>
+  </div>
   );
 }

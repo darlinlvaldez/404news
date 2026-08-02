@@ -94,7 +94,8 @@ ticketAdminModels.create = async ({
   senderId,
   senderType,
   message,
-  isInternal = false
+  isInternal = false,
+  attachments = [],
 }) => {
 
   const ticket = await existsByTicket(ticketId);
@@ -103,38 +104,73 @@ ticketAdminModels.create = async ({
     throw new Error("Ticket no encontrado");
   }
 
-  const [insertResult] = await db.execute(
-    `
-    INSERT INTO ticket_messages
-    (
-      ticket_id,
-      sender_type,
-      sender_id,
-      message,
-      is_internal
-    )
-    VALUES (?, ?, ?, ?, ?)
-  `, [ticketId, senderType, senderId, message, isInternal ? 1 : 0]
-  );
+  const connection = await db.getConnection();
 
-  const [updateResult] = await db.execute(
-    `
-    UPDATE tickets
-    SET
-      last_reply_at = NOW(),
-      updated_at = NOW(),
-      last_message_id = ?,
-      unread_admin_count = unread_admin_count + 1
-    WHERE id = ?
-    `,
-    [insertResult.insertId, ticketId]
-  );
+  try {
+    await connection.beginTransaction();
 
-  if (updateResult.affectedRows === 0) {
-    throw new Error("No se pudo actualizar el ticket");
+    const [insertResult] = await connection.execute(
+      `
+      INSERT INTO ticket_messages
+        (ticket_id, sender_type, sender_id, message, is_internal)
+      VALUES (?, ?, ?, ?, ?)
+      `,
+      [ticketId, senderType, senderId, message, isInternal ? 1 : 0]
+    );
+
+    const messageId = insertResult.insertId;
+
+    if (attachments.length > 0) {
+      const values = attachments.map((a) => [
+        messageId,
+        a.originalName,
+        a.fileName,
+        a.mimeType,
+        a.fileSize,
+        a.filePath,
+      ]);
+
+      await connection.query(
+        `
+        INSERT INTO ticket_attachments
+          (message_id, original_name, file_name, mime_type, file_size, file_path)
+        VALUES ?
+        `,
+        [values]
+      );
+    }
+
+    const updateQuery = isInternal
+      ? `
+        UPDATE tickets
+        SET last_message_id = ?, updated_at = NOW()
+        WHERE id = ?
+        `
+      : `
+        UPDATE tickets
+        SET
+          last_reply_at = NOW(),
+          updated_at = NOW(),
+          last_message_id = ?,
+          unread_user_count = unread_user_count + 1
+        WHERE id = ?
+        `;
+
+    const [updateResult] = await connection.execute(updateQuery, [messageId, ticketId]);
+
+    if (updateResult.affectedRows === 0) {
+      throw new Error("No se pudo actualizar el ticket");
+    }
+
+    await connection.commit();
+
+    return await ticketMessages.findById(messageId);
+  } catch (err) {
+    await connection.rollback();
+    throw err;
+  } finally {
+    connection.release();
   }
-
-  return await ticketMessages.findById(insertResult.insertId);
 };
 
 ticketAdminModels.update = async (id, data) => {

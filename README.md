@@ -38,6 +38,8 @@ Hacer que los chat de tickets solo puedan cargar 30 mensajes.
 
 Hacer que el ticket bloquee mensajes author si esta cerrado.
 
+Hacer que markReadAdmin y ticket trabajen juntos y separar messages.
+
 Generar ID publico en tickets.
 
 Arreglar los estilos del chat de tickets en responsive.
