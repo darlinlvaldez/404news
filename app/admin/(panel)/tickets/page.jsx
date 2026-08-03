@@ -8,6 +8,7 @@ import { ActionButton } from "@/components/admin/ui/ActionButtons"
 import Select from "@/components/admin/ui/Select"
 import Input from "@/components/admin/ui/Input"
 import FormModal from "@/components/admin/ui/FormModal"
+import useFileUpload from "@/hooks/useFileUpload";
 import { Header } from '@/components/admin/Header';
 import { 
   getStatusStyle, 
@@ -35,10 +36,11 @@ export default function TicketsPage() {
   const [showModal, setShowModal] = useState(false);
   const [subject, setSubject] = useState("");
   const [message, setMessage] = useState("");
-  const [files, setFiles] = useState([]);
   const [category, setCategory] = useState("");
   const [authors, setAuthors] = useState([]);
   const [authorId, setAuthorId] = useState("");
+
+  const { files, handleFileChange, removeFile,  clearFiles } = useFileUpload();
   
   const searchParams = useSearchParams();
 
@@ -255,10 +257,10 @@ export default function TicketsPage() {
                     {tickets.last_message || tickets.message}
                   </p>
 
-                  {tickets.unread_user_count > 0 && (
+                  {tickets.unread_admin_count > 0 && (
                     <span className="shrink-0 bg-green-600 text-white px-3 py-1 rounded-xl text-xs font-bold">
-                      {tickets.unread_user_count} nuevo
-                      {tickets.unread_user_count > 1 && "s"}
+                      {tickets.unread_admin_count} nuevo
+                      {tickets.unread_admin_count > 1 && "s"}
                     </span>
                   )}
                 </div>

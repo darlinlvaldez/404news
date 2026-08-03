@@ -3,24 +3,36 @@ import ticketMessages from "@/server/models/admin/tickets/ticketMessages";
 
 const ticketChatAuthor = {};
 
-ticketChatAuthor.ticket = async ({ 
-  id, 
-  userId, 
-  limit,
-  beforeId
+ticketChatAuthor.ticket = async ({
+  id,
+  userId,
 }) => {
-    
-  const ticket = await ticketAuthorModels.ticket(id, userId);
+  return await ticketAuthorModels.ticket(id, userId);
+};
 
-  const messages = await ticketAuthorModels.messages(
-    id, 
-    userId, 
+ticketChatAuthor.markReadAuthor = async ({
+  ticketId,
+  userId
+}) => {
+  return await ticketMessages.markReadAuthor(
+    ticketId,
+    userId
+  );
+};
+
+ticketChatAuthor.messages = async ({
+  id,
+  userId,
+  limit,
+  beforeId,
+}) => {
+  return await ticketAuthorModels.messages(
+    id,
+    userId,
     limit,
     beforeId
   );
-
-  return {ticket, messages} 
-}; 
+};
 
 ticketChatAuthor.create = async ({
   id,
@@ -37,16 +49,6 @@ ticketChatAuthor.create = async ({
     message,
     attachments,
   });
-};
-
-ticketChatAuthor.markReadAuthor = async ({
-  ticketId,
-  userId
-}) => {
-  return await ticketMessages.markReadAuthor(
-    ticketId,
-    userId
-  );
 };
 
 export default ticketChatAuthor;

@@ -7,6 +7,8 @@ import { Header } from '@/components/admin/Header';
 import { formatDateRelative, formatDateTimeNumeric } from '@/utils/formatDate'
 import TicketMessage from "@/components/admin/ticket/TicketMessage";
 import ActionDropdown from "@/components/admin/ui/ActionDropdown";
+import useFileUpload from "@/hooks/useFileUpload";
+
 import { 
   getStatusStyle, 
   getStatusIcon, 
@@ -38,25 +40,33 @@ export default function TicketChat() {
   const [currentUserId, setCurrentUserId] = useState(null);
   const [hasMoreMessages, setHasMoreMessages] = useState(true);
   const [loadingMessages, setLoadingMessages] = useState(false);
-  const [files, setFiles] = useState([]);
+
+  const { files, handleFileChange, removeFile,  clearFiles } = useFileUpload();
 
   const { id } = useParams();
 
   useEffect(() => {
     const loadTicket = async () => {
       try {
-        const response = await fetch(`/api/admin/tickets/${id}`);
+        const [ticketResponse, messagesResponse] = await Promise.all([
+          fetch(`/api/admin/tickets/${id}`),
+          fetch(`/api/admin/tickets/${id}/messages?limit=5`),
+        ]);
 
-        if (!response.ok) {
-          throw new Error("Error al cargar el ticket");
+        if (!ticketResponse.ok || !messagesResponse.ok) {
+          throw new Error();
         }
 
-        const data = await response.json();
-        console.log(data);
+        const ticketData = await ticketResponse.json();
+        const messagesData = await messagesResponse.json();
 
-        setTicket(data.ticket);
-        setMessages(data.messages);
-        setCurrentUserId(data.currentUserId);
+        setTicket(ticketData.ticket);
+        setCurrentUserId(ticketData.currentUserId);
+        setMessages(messagesData.messages);
+
+        if (messagesData.messages.length < 5) {
+          setHasMoreMessages(false);
+        }
 
       } catch (error) {
         console.error(error);
@@ -109,14 +119,17 @@ export default function TicketChat() {
 
     try {
 
+      const formData = new FormData();
+
+      formData.append("message", newResponse);
+
+      files.forEach(file => {
+        formData.append("files", file);
+      });
+
       const response = await fetch(`/api/admin/tickets/${id}`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          message: newResponse
-        })
+        body: formData,
       });
 
       if (!response.ok) {
@@ -126,8 +139,8 @@ export default function TicketChat() {
       const data = await response.json();
 
       setMessages(prev => [...prev, data.message]);
-
       setNewResponse("");
+      clearFiles();
 
     } catch (err) {
       console.error(err);
@@ -145,7 +158,7 @@ export default function TicketChat() {
       const oldestMessage = messages[0];
 
       const response = await fetch(
-        `/api/admin/tickets/${id}?limit=5&beforeId=${oldestMessage.id}`
+        `/api/admin/tickets/${id}/messages?limit=5&beforeId=${oldestMessage.id}`
       );
 
       const data = await response.json();
@@ -401,7 +414,16 @@ export default function TicketChat() {
                     multiple
                     className="hidden"
                     id="reply-files"
-                    onChange={(e) => setFiles([...e.target.files])}
+                    onChange={(e) => {
+                      const exceeded = handleFileChange(e);
+
+                      if (exceeded) {
+                        toast.warning(
+                          "Límite de archivos",
+                          "Solo puedes adjuntar un máximo de 10 archivos por mensaje"
+                        );
+                      }
+                    }}
                   />
 
                   <label htmlFor="reply-files"
@@ -429,7 +451,7 @@ export default function TicketChat() {
                         {file.name}
                         <button
                           type="button"
-                          onClick={() => setFiles(files.filter((_, i) => i !== index))}
+                          onClick={() => removeFile(index)}
                           className="text-gray-600 hover:text-rose-400"
                         >
                           ×

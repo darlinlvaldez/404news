@@ -5,7 +5,10 @@ import { useParams } from "next/navigation";
 import { useRouter } from 'next/navigation';
 import { Header } from '@/components/admin/Header';
 import { formatDateRelative, formatDateTimeNumeric } from '@/utils/formatDate'
+import { toast } from "@/utils/toast";
 import TicketMessage from "@/components/admin/ticket/TicketMessage";
+import useFileUpload from "@/hooks/useFileUpload";
+
 import { 
   getStatusStyle, 
   getStatusIcon, 
@@ -14,7 +17,6 @@ import {
 
 import { 
   Send, 
-  Mail, 
   Calendar,  
   MessageSquare,
   CircleDot,
@@ -30,27 +32,36 @@ export default function TicketChat() {
   const [currentUserId, setCurrentUserId] = useState(null);
   const [hasMoreMessages, setHasMoreMessages] = useState(true);
   const [loadingMessages, setLoadingMessages] = useState(false);
-  const [files, setFiles] = useState([]);
   const [sending, setSending] = useState(false);
+
+  const { files, handleFileChange, removeFile,  clearFiles } = useFileUpload();
 
   const { id } = useParams();
 
   useEffect(() => {
     const loadTicket = async () => {
       try {
-        const response = await fetch(`/api/admin/authors/tickets/${id}?limit=5`);
+        const [ticketResponse, messagesResponse] = await Promise.all([
+          fetch(`/api/admin/authors/tickets/${id}`),
+          fetch(`/api/admin/authors/tickets/${id}/messages?limit=5`),
+        ]);
 
-        if (!response.ok) {
-          throw new Error("Error al cargar el ticket");
+        if (!ticketResponse.ok || !messagesResponse.ok) {
+          throw new Error();
         }
 
-        const data = await response.json();
+        const ticketData = await ticketResponse.json();
+        const messagesData = await messagesResponse.json();
 
-        setTicket(data.ticket);
-        setMessages(data.messages);
-        setCurrentUserId(data.session.id);
-        setHasMoreMessages(data.messages.length === 5);
+        setTicket(ticketData.ticket);
+        setMessages(ticketData.messages);
+        setCurrentUserId(ticketData.session.id);
+        setMessages(messagesData.messages);
+        setHasMoreMessages(messagesData.messages.length === 5);
 
+        if (messagesData.messages.length < 5) {
+          setHasMoreMessages(false);
+        }
       } catch (error) {
         console.error(error);
       }
@@ -97,7 +108,7 @@ export default function TicketChat() {
       setMessages((prev) => [...prev, data.message]);
 
       setNewResponse("");
-      setFiles([]);
+      clearFiles();
 
     } catch (err) {
       console.error(err);
@@ -119,7 +130,7 @@ export default function TicketChat() {
       const oldestMessage = messages[0];
 
       const response = await fetch(
-        `/api/admin/authors/tickets/${id}?limit=5&beforeId=${oldestMessage.id}`
+        `/api/admin/authors/tickets/${id}/messages?limit=5&beforeId=${oldestMessage.id}`
       );
 
       const data = await response.json();
@@ -305,7 +316,16 @@ export default function TicketChat() {
                     disabled={isClosed}
                     className="hidden"
                     id="reply-files"
-                    onChange={(e) => setFiles([...e.target.files])}
+                    onChange={(e) => {
+                      const exceeded = handleFileChange(e);
+
+                      if (exceeded) {
+                        toast.warning(
+                          "Límite de archivos",
+                          "Solo puedes adjuntar un máximo de 10 archivos por mensaje"
+                        );
+                      }
+                    }}
                   />
 
                   <label
@@ -334,7 +354,7 @@ export default function TicketChat() {
                         {file.name}
                         <button
                           type="button"
-                          onClick={() => setFiles(files.filter((_, i) => i !== index))}
+                          onClick={() => removeFile(index)}
                           className="text-gray-600 hover:text-rose-400"
                         >
                           ×

@@ -1,3 +1,5 @@
+import db from "@/server/lib/db";
+
 export async function existsByTicket(id, userId = null) {
   let query = `
     SELECT id, status

@@ -3,22 +3,27 @@ import ticketMessages from "@/server/models/admin/tickets/ticketMessages";
 
 const ticketChatAdmin = {};
 
-ticketChatAdmin.ticket = async ({ 
-  id, 
-  limit,
-  beforeId
-}) => {
-    
-  const ticket = await ticketAdminModels.ticket(id);
+ticketChatAdmin.ticket = async ({ id }) => {
+  return await ticketAdminModels.ticket(id);
+};
 
-  const messages = await ticketAdminModels.messages(
-    id, 
+ticketChatAdmin.messages = async ({
+  ticketId,
+  limit,
+  beforeId,
+}) => {
+  return await ticketAdminModels.messages(
+    ticketId,
     limit,
     beforeId
   );
+};
 
-  return {ticket, messages} 
-}; 
+ticketChatAdmin.markReadAdmin = async ({
+  ticketId,
+}) => {
+  return await ticketMessages.markReadAdmin(ticketId);
+};
 
 ticketChatAdmin.create = async ({
   id,
@@ -26,8 +31,7 @@ ticketChatAdmin.create = async ({
   senderType,
   message,
   isInternal,
-  attachments = [],
-
+  attachments = []
 }) => {
 
   if (senderType !== "admin") {
@@ -40,16 +44,8 @@ ticketChatAdmin.create = async ({
     message,
     senderType,
     isInternal,
-    attachments = [],
+    attachments
   });
-};
-
-ticketChatAdmin.markReadAdmin = async ({
-  ticketId,
-}) => {
-  return await ticketMessages.markReadAdmin(
-    ticketId,
-  );
 };
 
 ticketChatAdmin.update = async ({ id, status, priority }) => {

@@ -7,6 +7,7 @@ import {formatDateRelative} from "@/utils/formatDate"
 import Select from "@/components/admin/ui/Select"
 import Input from "@/components/admin/ui/Input"
 import FormModal from "@/components/admin/ui/FormModal"
+import useFileUpload from "@/hooks/useFileUpload";
 import { ActionButton } from "@/components/admin/ui/ActionButtons"
 import { Header } from '@/components/admin/Header';
 import { 
@@ -31,7 +32,8 @@ export default function TicketsPage() {
   const [showModal, setShowModal] = useState(false);
   const [subject, setSubject] = useState("");
   const [message, setMessage] = useState("");
-  const [files, setFiles] = useState([]);
+
+  const { files, handleFileChange, removeFile,  clearFiles } = useFileUpload();
   
   const searchParams = useSearchParams();
 
@@ -107,7 +109,7 @@ export default function TicketsPage() {
 
       setSubject("");
       setMessage("");
-      setFiles([]);
+      clearFiles();
       setShowModal(false);
 
       window.location.reload();
@@ -199,10 +201,10 @@ export default function TicketsPage() {
                         {tickets.last_message || tickets.message}
                       </p>
 
-                      {tickets.unread_admin_count > 0 && (
+                      {tickets.unread_user_count > 0 && (
                         <span className="shrink-0 bg-green-600 text-white px-3 py-1 rounded-xl text-xs font-bold">
-                          {tickets.unread_admin_count} nuevo
-                          {tickets.unread_admin_count > 1 && "s"}
+                          {tickets.unread_user_count} nuevo
+                          {tickets.unread_user_count > 1 && "s"}
                         </span>
                       )}
                   </div>
@@ -334,7 +336,7 @@ export default function TicketsPage() {
             accept="image/*, .pdf, .doc, .docx,m.txt, .zip, .rar"
             className="hidden"
             id="ticket-files"
-            onChange={(e) => setFiles([...e.target.files])}
+            onChange={handleFileChange}
           />
 
           <label htmlFor="ticket-files"
@@ -349,7 +351,6 @@ export default function TicketsPage() {
           </label>
         </div>
       </FormModal>
-      
     </div>
   );
 }

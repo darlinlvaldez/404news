@@ -72,7 +72,7 @@ tickets.getAll = async function (
       COALESCE(a.name, u.name, u.username, t.guest_name) AS name,
       COALESCE(u.email, t.guest_email) AS email,
       t.last_reply_at,
-      t.unread_user_count,
+      t.unread_admin_count,
       t.created_at >= DATE_SUB(NOW(), INTERVAL 24 HOUR) AS is_new,
       tm.message AS last_message
     ${baseQuery}

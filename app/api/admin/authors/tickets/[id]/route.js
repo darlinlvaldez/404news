@@ -8,10 +8,6 @@ export async function GET(request, { params }) {
   try {
     const { id } = await params;
 
-    const { searchParams } = new URL(request.url);
-    const limit = Number(searchParams.get("limit")) || 5;
-    const beforeId = searchParams.get("beforeId");
-
     const session = await requireAuth(request, ["author"]);
 
     await ticketChatAuthor.markReadAuthor({
@@ -19,19 +15,16 @@ export async function GET(request, { params }) {
       userId: session.id
     });
 
-    const result = await ticketChatAuthor.ticket({ 
-      id, 
-      limit,
-      beforeId,
-      userId: session.id 
+    const ticket = await ticketChatAuthor.ticket({
+      id,
+      userId: session.id,
     });
 
     return NextResponse.json({
-      ticket: result.ticket,
-      messages: result.messages,
+      ticket,
       session: {
-        id: session.id
-      }
+        id: session.id,
+      },
     });
     
   } catch (error) {

@@ -19,7 +19,6 @@ ticketAuthorModels.ticket = async (id, userId) => {
       t.created_at,
       t.updated_at,
 
-      COALESCE(a.name, u.name, u.username) AS sender_name,
       COALESCE(assigned.name, assigned.username) AS assigned_name,
 
       a.avatar AS sender_avatar,
@@ -57,8 +56,6 @@ ticketAuthorModels.messages = async (
       tm.message,
       tm.created_at,
       tm.author_read,
-      u.role AS sender_role,
-      COALESCE(a.name, u.name, u.username) AS sender_name,
       a.avatar AS sender_avatar
     FROM ticket_messages tm
     LEFT JOIN users u ON u.id = tm.sender_id
@@ -153,7 +150,7 @@ ticketAuthorModels.create = async ({
         last_reply_at = NOW(),
         updated_at = NOW(),
         last_message_id = ?,
-        unread_user_count = unread_user_count + 1
+        unread_admin_count = unread_admin_count + 1
       WHERE id = ?
       `,
       [messageId, ticketId]

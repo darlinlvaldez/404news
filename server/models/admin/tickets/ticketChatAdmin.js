@@ -1,6 +1,7 @@
 import db from "@/server/lib/db";
 import ticketMessages from "@/server/models/admin/tickets/ticketMessages";
 import {existsByTicket} from '@/server/services/admin/tickets/existsByTicket'
+import {resolveAttachments} from "@/server/services/admin/tickets/resolveAttachments";
 
 const ticketAdminModels = {};
 
@@ -56,6 +57,7 @@ ticketAdminModels.messages = async (id, limit = 5, beforeId = null) => {
     tm.message,
     tm.is_internal,
     tm.created_at,
+    tm.admin_read,
     u.role AS sender_role,
 
     COALESCE(a.name, u.name, u.username) AS sender_name,
@@ -84,9 +86,19 @@ ticketAdminModels.messages = async (id, limit = 5, beforeId = null) => {
     LIMIT ${Number(limit)}
   `;
 
-  const [rows] = await db.execute(query, params);
+ const [rows] = await db.execute(query, params);
+  const messages = rows.reverse();
 
-  return rows.reverse();
+  if (messages.length === 0) return messages;
+
+  const attachmentsByMessage = await resolveAttachments(
+    messages.map((m) => m.id),
+  );
+
+  return messages.map((m) => ({
+    ...m,
+    attachments: attachmentsByMessage[m.id] ?? [],
+  }));
 };
 
 ticketAdminModels.create = async ({
@@ -97,7 +109,6 @@ ticketAdminModels.create = async ({
   isInternal = false,
   attachments = [],
 }) => {
-
   const ticket = await existsByTicket(ticketId);
 
   if (!ticket) {
@@ -115,7 +126,7 @@ ticketAdminModels.create = async ({
         (ticket_id, sender_type, sender_id, message, is_internal)
       VALUES (?, ?, ?, ?, ?)
       `,
-      [ticketId, senderType, senderId, message, isInternal ? 1 : 0]
+      [ticketId, senderType, senderId, message, isInternal ? 1 : 0],
     );
 
     const messageId = insertResult.insertId;
@@ -136,7 +147,7 @@ ticketAdminModels.create = async ({
           (message_id, original_name, file_name, mime_type, file_size, file_path)
         VALUES ?
         `,
-        [values]
+        [values],
       );
     }
 
@@ -156,7 +167,10 @@ ticketAdminModels.create = async ({
         WHERE id = ?
         `;
 
-    const [updateResult] = await connection.execute(updateQuery, [messageId, ticketId]);
+    const [updateResult] = await connection.execute(updateQuery, [
+      messageId,
+      ticketId,
+    ]);
 
     if (updateResult.affectedRows === 0) {
       throw new Error("No se pudo actualizar el ticket");

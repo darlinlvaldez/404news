@@ -52,10 +52,8 @@ tickets.getMinimum = async function (
       t.id,
       t.subject,
       t.status,
-      COALESCE(a.name, u.name, u.username) AS name,
-      COALESCE(u.email, t.guest_email) AS email,
       t.last_reply_at,
-      t.unread_admin_count,
+      t.unread_user_count,
       t.created_at >= DATE_SUB(NOW(), INTERVAL 24 HOUR) AS is_new,
       tm.message AS last_message
     ${baseQuery}

@@ -8,23 +8,23 @@ export async function GET(request, { params }) {
   try {
     const { id } = await params;
 
-    const { searchParams } = new URL(request.url);
-    const limit = Number(searchParams.get("limit")) || 5;
-    const beforeId = searchParams.get("beforeId");
+    const session = await requireAuth(request, [
+      "superadmin",
+      "admin",
+      "editor",
+    ]);
 
-    const session = await requireAuth(request, ["superadmin", "admin", "editor"]);
+    await ticketChatAdmin.markReadAdmin({
+      ticketId: id,
+    });
 
-    await ticketChatAdmin.markReadAdmin({ticketId: id});
-
-    const result = await ticketChatAdmin.ticket({ 
-      id, 
-      limit,
-      beforeId,
+    const ticket = await ticketChatAdmin.ticket({
+      id,
     });
 
     return NextResponse.json({
-      ...result,
-      currentUserId: session.id
+      ticket,
+      currentUserId: session.id,
     });
 
   } catch (error) {
@@ -46,18 +46,20 @@ export async function POST(request, { params }) {
 
     const formData = await request.formData();
     
-    const message = formData.get("message") ?? "";
+    const messageText = formData.get("message") ?? "";
     const files = formData.getAll("files");
 
     const attachments = await saveTicketAttachments(files);
+
+    const isInternal = formData.get("isInternal") === "true";
 
     const message = await ticketChatAdmin.create({
       id,
       senderId: session.id,
       senderType,
-      message: body.message,
-      isInternal: body.isInternal,
-      attachments
+      message: messageText,
+      isInternal,
+      attachments,
     });
 
     return NextResponse.json({

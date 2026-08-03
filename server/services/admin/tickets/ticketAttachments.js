@@ -14,7 +14,16 @@ const ALLOWED_MIME_TYPES = new Set([
   "application/x-rar-compressed",
 ]);
 
+const MAX_FILES_PER_MESSAGE = 10;
+
 export async function saveTicketAttachments(files) {
+
+  if (files.length > MAX_FILES_PER_MESSAGE) {
+    throw new Error(
+      `Solo se permiten ${MAX_FILES_PER_MESSAGE} archivos por mensaje`
+    );
+  }
+
   const attachments = [];
 
   for (const file of files) {
