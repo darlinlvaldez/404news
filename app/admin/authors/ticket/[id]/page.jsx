@@ -8,6 +8,7 @@ import { formatDateRelative, formatDateTimeNumeric } from '@/utils/formatDate'
 import { toast } from "@/utils/toast";
 import TicketMessage from "@/components/admin/ticket/TicketMessage";
 import useFileUpload from "@/hooks/useFileUpload";
+import AttachmentDropdown from "@/components/admin/ui/AttachmentDropdown";
 
 import { 
   getStatusStyle, 
@@ -296,9 +297,16 @@ export default function TicketChat() {
           <div className="bg-gray-950 border-t border-gray-800 p-6 space-y-4 shrink-0">
             <form onSubmit={handleSendResponse} className="relative">
               <div className="flex flex-col space-y-2">
-                <span className="text-[10px] text-gray-500 font-bold uppercase tracking-widest block pl-1">
-                  Escribir respuesta
-                </span>
+                <div className="flex items-center justify-between pl-1">
+                  <span className="text-[10px] text-gray-500 font-bold uppercase tracking-widest block pl-1">
+                    Escribir respuesta
+                  </span>
+                  
+                  <AttachmentDropdown
+                    files={files}
+                    onRemove={removeFile}
+                  />
+                </div>
                 
                 <div className="relative">
                   <textarea
@@ -330,7 +338,8 @@ export default function TicketChat() {
 
                   <label
                     htmlFor="reply-files"
-                    className={`absolute right-14 bottom-4 p-2.5 rounded-xl transition-all duration-200 flex items-center justify-center text-gray-400 hover:text-white hover:bg-gray-800 ${isClosed ? "opacity-20 cursor-not-allowed pointer-events-none" : "cursor-pointer"}`}
+                    className={`absolute right-14 bottom-4 p-2.5 rounded-xl transition-all duration-200 flex items-center justify-center text-gray-400 hover:text-white hover:bg-gray-800 
+                      ${isClosed ? "opacity-20 cursor-not-allowed pointer-events-none" : "cursor-pointer"}`}
                   >
                     <Paperclip className="w-4 h-4" />
                   </label>
@@ -343,26 +352,6 @@ export default function TicketChat() {
                     <Send className="w-4 h-4" />
                   </button>
                 </div>
-                
-                {files.length > 0 && (
-                  <div className="flex flex-wrap gap-2 pl-1">
-                    {files.map((file, index) => (
-                      <span
-                        key={index}
-                        className="flex items-center gap-1.5 text-[11px] bg-gray-900 border border-gray-800 rounded-lg px-2.5 py-1 text-gray-400"
-                      >
-                        {file.name}
-                        <button
-                          type="button"
-                          onClick={() => removeFile(index)}
-                          className="text-gray-600 hover:text-rose-400"
-                        >
-                          ×
-                        </button>
-                      </span>
-                    ))}
-                  </div>
-                )}
               </div>
             </form>
           </div>

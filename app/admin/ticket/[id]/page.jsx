@@ -8,6 +8,7 @@ import { formatDateRelative, formatDateTimeNumeric } from '@/utils/formatDate'
 import TicketMessage from "@/components/admin/ticket/TicketMessage";
 import ActionDropdown from "@/components/admin/ui/ActionDropdown";
 import useFileUpload from "@/hooks/useFileUpload";
+import AttachmentDropdown from "@/components/admin/ui/AttachmentDropdown";
 
 import { 
   getStatusStyle, 
@@ -28,7 +29,7 @@ import {
   MessageSquare,
   CircleDot,
   CircleCheckBig,
-  Paperclip
+  Paperclip,
 } from 'lucide-react';
 
 export default function TicketChat() {
@@ -327,21 +328,8 @@ export default function TicketChat() {
           <div className="flex-1 overflow-y-auto p-6 lg:p-8 space-y-6">
             
             {hasMoreMessages && (
-              <button
-                onClick={loadMoreMessages}
-                disabled={loadingMessages}
-                className="
-                  w-full py-2
-                  text-xs
-                  font-bold
-                  text-gray-400
-                  rounded-xl
-                  transition-colors
-                  duration-200
-                  hover:text-white
-                  disabled:opacity-50
-                  disabled:cursor-not-allowed
-                "
+              <button onClick={loadMoreMessages} disabled={loadingMessages}
+                className="w-full py-2 text-xs font-bold text-gray-400 rounded-xl transition-colors duration-200 hover:text-white disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {loadingMessages
                   ? "Cargando..."
@@ -396,16 +384,26 @@ export default function TicketChat() {
           <div className="bg-gray-950 border-t border-gray-800 p-6 space-y-4 shrink-0">
             <form onSubmit={handleSendResponse} className="relative">
               <div className="flex flex-col space-y-2">
-                <span className="text-[10px] text-gray-500 font-bold uppercase tracking-widest block pl-1">
-                  Escribir respuesta
-                </span>
-                
+
+                <div className="flex items-center justify-between pl-1">
+                  <span className="text-[10px] text-gray-500 font-bold uppercase tracking-widest block pl-1">
+                    Escribir respuesta
+                  </span>
+                  
+                  <AttachmentDropdown
+                    files={files}
+                    onRemove={removeFile}
+                  />
+                </div>
+
+
                 <div className="relative">
+
                   <textarea
                     rows="3"
                     value={newResponse}
                     onChange={(e) => setNewResponse(e.target.value)}
-                    placeholder="Escribe aquí tu respuesta para resolver la incidencia de Darlin..."
+                    placeholder="Escribe aquí tu respuesta para resolver la incidencia..."
                     className="w-full px-4 py-3 bg-gray-900 border border-gray-800 focus:border-green-600 focus:ring-1 focus:ring-green-600 focus:outline-none rounded-2xl text-sm font-medium text-gray-200 placeholder-gray-600 resize-none pr-14 shadow-inner"
                   ></textarea>
 
@@ -440,26 +438,6 @@ export default function TicketChat() {
                     <Send className="w-4 h-4" />
                   </button>
                 </div>
-
-                {files.length > 0 && (
-                  <div className="flex flex-wrap gap-2 pl-1">
-                    {files.map((file, index) => (
-                      <span
-                        key={index}
-                        className="flex items-center gap-1.5 text-[11px] bg-gray-900 border border-gray-800 rounded-lg px-2.5 py-1 text-gray-400"
-                      >
-                        {file.name}
-                        <button
-                          type="button"
-                          onClick={() => removeFile(index)}
-                          className="text-gray-600 hover:text-rose-400"
-                        >
-                          ×
-                        </button>
-                      </span>
-                    ))}
-                  </div>
-                )}
               </div>
             </form>
           </div>

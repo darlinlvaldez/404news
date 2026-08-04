@@ -9,6 +9,7 @@ import Select from "@/components/admin/ui/Select"
 import Input from "@/components/admin/ui/Input"
 import FormModal from "@/components/admin/ui/FormModal"
 import useFileUpload from "@/hooks/useFileUpload";
+import AttachmentDropdown from "@/components/admin/ui/AttachmentDropdown";
 import { Header } from '@/components/admin/Header';
 import { 
   getStatusStyle, 
@@ -149,7 +150,7 @@ export default function TicketsPage() {
 
       setSubject("");
       setMessage("");
-      setFiles([]);
+      clearFiles();
       setAuthorId("");
       setCategory("");
       setShowModal(false);
@@ -452,7 +453,16 @@ export default function TicketsPage() {
           accept="image/*, .pdf, .doc, .docx, .txt, .zip, .rar"
           className="hidden"
           id="ticket-files"
-          onChange={(e) => setFiles([...e.target.files])}
+          onChange={(e) => {
+            const exceeded = handleFileChange(e);
+
+            if (exceeded) {
+              toast.warning(
+                "Límite de archivos",
+                "Solo puedes adjuntar un máximo de 10 archivos por mensaje"
+              );
+            }
+          }}
         />
 
         <label htmlFor="ticket-files"
@@ -465,6 +475,12 @@ export default function TicketsPage() {
             </span>
           </div>
         </label>
+         <div className="flex justify-end">
+          <AttachmentDropdown
+            files={files}
+            onRemove={removeFile}
+          />
+        </div>
       </div>
     </FormModal>
   </div>

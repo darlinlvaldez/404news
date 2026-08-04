@@ -7,9 +7,11 @@ import {formatDateRelative} from "@/utils/formatDate"
 import Select from "@/components/admin/ui/Select"
 import Input from "@/components/admin/ui/Input"
 import FormModal from "@/components/admin/ui/FormModal"
+import AttachmentDropdown from "@/components/admin/ui/AttachmentDropdown";
 import useFileUpload from "@/hooks/useFileUpload";
 import { ActionButton } from "@/components/admin/ui/ActionButtons"
 import { Header } from '@/components/admin/Header';
+
 import { 
   getStatusStyle, 
   getStatusIcon, 
@@ -333,7 +335,7 @@ export default function TicketsPage() {
           <input 
             type="file" 
             multiple
-            accept="image/*, .pdf, .doc, .docx,m.txt, .zip, .rar"
+            accept="image/*, .pdf, .doc, .docx, .txt, .zip, .rar"
             className="hidden"
             id="ticket-files"
             onChange={handleFileChange}
@@ -349,6 +351,12 @@ export default function TicketsPage() {
               </span>
             </div>
           </label>
+          <div className="flex justify-end">
+            <AttachmentDropdown
+              files={files}
+              onRemove={removeFile}
+            />
+          </div>
         </div>
       </FormModal>
     </div>

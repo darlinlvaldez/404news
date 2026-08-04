@@ -48,7 +48,7 @@ ticketMessages.markReadAuthor = async function(ticketId, userId) {
   const [resetCounterResult] = await db.query(
     `
     UPDATE tickets
-    SET unread_admin_count = 0
+    SET unread_user_count = 0
     WHERE id = ?
     `,
     [ticketId]
@@ -72,7 +72,7 @@ ticketMessages.markReadAdmin = async function(ticketId) {
   const [resetCounterResult] = await db.query(
     `
     UPDATE tickets
-    SET unread_user_count = 0
+    SET unread_admin_count = 0
     WHERE id = ?
     `,
     [ticketId]

@@ -26,22 +26,12 @@ Agregar perfil de usuario en admin.
 
 Agregar zod en tickets.
  
-Agregar que el author pueda enviar tickets.
-
-Agregar que el cliente pueda enviar tickets.
-
-Arreglar el componente ActionButton, exactamente el save.
-
-Separar responsabilidades en ticket.
-
-Hacer que los chat de tickets solo puedan cargar 30 mensajes.
-
-Hacer que el ticket bloquee mensajes author si esta cerrado.
-
-Hacer que markReadAdmin y ticket trabajen juntos y separar messages.
-
 Generar ID publico en tickets.
 
 Arreglar los estilos del chat de tickets en responsive.
+
+Controlar el tamaño de los archivos cuando sea zip.
+
+Verificar que no sea archivo malicioso.
 
 Validar campos en controller.
