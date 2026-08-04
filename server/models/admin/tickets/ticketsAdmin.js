@@ -74,7 +74,8 @@ tickets.getAll = async function (
       t.last_reply_at,
       t.unread_admin_count,
       t.created_at >= DATE_SUB(NOW(), INTERVAL 24 HOUR) AS is_new,
-      tm.message AS last_message
+      tm.message AS last_message,
+      tm.is_internal
     ${baseQuery}
     ORDER BY t.created_at DESC
     LIMIT ? OFFSET ?

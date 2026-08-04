@@ -2,6 +2,7 @@ import db from "@/server/lib/db";
 import ticketMessages from "@/server/models/admin/tickets/ticketMessages";
 import {existsByTicket} from '@/server/services/admin/tickets/existsByTicket'
 import {resolveAttachments} from "@/server/services/admin/tickets/resolveAttachments";
+import {addMessage} from "@/server/services/admin/tickets/addMessages";
 
 const ticketAuthorModels = {};
 
@@ -61,7 +62,7 @@ ticketAuthorModels.messages = async (
     LEFT JOIN users u ON u.id = tm.sender_id
     LEFT JOIN authors a ON u.id = a.user_id
     INNER JOIN tickets t ON t.id = tm.ticket_id AND t.user_id = ?
-    WHERE tm.ticket_id = ?
+    WHERE tm.ticket_id = ? AND tm.is_internal = 0
   `;
 
   if (beforeId) {
@@ -112,36 +113,13 @@ ticketAuthorModels.create = async ({
   try {
     await connection.beginTransaction();
 
-    const [insertResult] = await connection.execute(
-      `
-      INSERT INTO ticket_messages
-        (ticket_id, sender_type, sender_id, message)
-      VALUES (?, ?, ?, ?)
-      `,
-      [ticketId, senderType, senderId, message]
-    );
-
-    const messageId = insertResult.insertId;
-
-    if (attachments.length > 0) {
-      const values = attachments.map((a) => [
-        messageId,
-        a.originalName,
-        a.fileName,
-        a.mimeType,
-        a.fileSize,
-        a.filePath,
-      ]);
-
-      await connection.query(
-        `
-        INSERT INTO ticket_attachments
-          (message_id, original_name, file_name, mime_type, file_size, file_path)
-        VALUES ?
-        `,
-        [values]
-      );
-    }
+    const messageId = await addMessage(connection, {
+      ticketId,
+      senderId,
+      senderType,
+      message,
+      attachments,
+    });
 
     const [updateResult] = await connection.execute(
       `

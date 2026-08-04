@@ -218,7 +218,7 @@ export default function CategoriesPage () {
                 />
               </div>
               <div className="flex md:col-span-2 justify-end  items-center space-x-4 mt-5">
-                <div className="w-34 bg-gray-900 p-3 rounded-xl border border-gray-700">
+                <div className="w-28 bg-gray-900 p-3 rounded-xl border border-gray-700">
                   <Switch
                     label="Estado"
                     name="active"

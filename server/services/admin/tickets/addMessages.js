@@ -1,4 +1,9 @@
 export const addMessage = async (connection, { ticketId, senderType, senderId, message, isInternal = false, attachments = [] }) => {
+
+  if (isInternal && senderType !== "admin") {
+    throw new Error("Solo los administradores pueden crear mensajes internos");
+  }
+
   const [messageResult] = await connection.execute(
     `
     INSERT INTO ticket_messages

@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import { useRouter } from 'next/navigation';
 import { Header } from '@/components/admin/Header';
 import { formatDateRelative, formatDateTimeNumeric } from '@/utils/formatDate'
+import Switch from "@/components/admin/ui/Switch";
 import TicketMessage from "@/components/admin/ticket/TicketMessage";
 import ActionDropdown from "@/components/admin/ui/ActionDropdown";
 import useFileUpload from "@/hooks/useFileUpload";
@@ -41,6 +42,7 @@ export default function TicketChat() {
   const [currentUserId, setCurrentUserId] = useState(null);
   const [hasMoreMessages, setHasMoreMessages] = useState(true);
   const [loadingMessages, setLoadingMessages] = useState(false);
+  const [isInternal, setIsInternal] = useState(false);
 
   const { files, handleFileChange, removeFile,  clearFiles } = useFileUpload();
 
@@ -123,6 +125,7 @@ export default function TicketChat() {
       const formData = new FormData();
 
       formData.append("message", newResponse);
+      formData.append("isInternal", String(isInternal));
 
       files.forEach(file => {
         formData.append("files", file);
@@ -366,19 +369,28 @@ export default function TicketChat() {
                 onChange={(e) => handleTicketChange(e.target.name, e.target.value)}
               />
 
-              {ticket.status !== 'closed' ? (
-                <button onClick={() => handleTicketChange("status", "closed")}
-                  className="px-4 py-2 bg-red-950/40 hover:bg-red-900/40 border border-red-500/20 hover:border-red-500/40 text-red-400 font-bold text-xs rounded-xl transition duration-150 flex items-center gap-1.5 active:scale-95 cursor-pointer ml-auto"
-                >
-                  <CheckCircle className="w-3.5 h-3.5" />
-                  Cerrar ticket
-                </button>
-              ) : (
-                <span className="text-xs text-gray-500 font-bold italic ml-auto flex items-center gap-1.5 bg-gray-900 px-3 py-1.5 rounded-lg border border-gray-800">
-                  <CircleCheckBig className="w-3.5 h-3.5" />
-                  Ticket ya cerrado
-                </span>
-              )}
+              <div className="ml-auto flex items-center gap-3">
+                <Switch
+                  label="Nota interna"
+                  name="isInternal"
+                  checked={isInternal}
+                  onChange={(e) => setIsInternal(e.target.checked)}
+                />
+
+                {ticket.status !== 'closed' ? (
+                  <button onClick={() => handleTicketChange("status", "closed")}
+                    className="px-4 py-2 bg-red-950/40 hover:bg-red-900/40 border border-red-500/20 hover:border-red-500/40 text-red-400 font-bold text-xs rounded-xl transition duration-150 flex items-center gap-1.5 active:scale-95 cursor-pointer ml-auto"
+                  >
+                    <CheckCircle className="w-3.5 h-3.5" />
+                    Cerrar ticket
+                  </button>
+                ) : (
+                  <span className="text-xs text-gray-500 font-bold italic ml-auto flex items-center gap-1.5 bg-gray-900 px-3 py-1.5 rounded-lg border border-gray-800">
+                    <CircleCheckBig className="w-3.5 h-3.5" />
+                    Ticket ya cerrado
+                  </span>
+                )}
+              </div>
             </div>
 
           <div className="bg-gray-950 border-t border-gray-800 p-6 space-y-4 shrink-0">
@@ -396,7 +408,6 @@ export default function TicketChat() {
                   />
                 </div>
 
-
                 <div className="relative">
 
                   <textarea
@@ -407,10 +418,13 @@ export default function TicketChat() {
                     className="w-full px-4 py-3 bg-gray-900 border border-gray-800 focus:border-green-600 focus:ring-1 focus:ring-green-600 focus:outline-none rounded-2xl text-sm font-medium text-gray-200 placeholder-gray-600 resize-none pr-14 shadow-inner"
                   ></textarea>
 
+                  
+
                   <input
                     type="file"
                     multiple
                     className="hidden"
+                    accept="image/*,.pdf,.txt"
                     id="reply-files"
                     onChange={(e) => {
                       const exceeded = handleFileChange(e);

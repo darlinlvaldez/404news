@@ -321,6 +321,7 @@ export default function TicketChat() {
                   <input
                     type="file"
                     multiple
+                    accept="image/*,.pdf,.txt"
                     disabled={isClosed}
                     className="hidden"
                     id="reply-files"

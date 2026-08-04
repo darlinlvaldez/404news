@@ -11,7 +11,12 @@ export default function TicketMessage({
   message,
   isOwnMessage = false
 }) {
-  const bubbleClass = isOwnMessage
+
+  const isInternal = message.is_internal === 1;
+
+  const bubbleClass = isInternal
+  ? "bg-red-950/20 border-red-500/30 text-gray-200"
+  : isOwnMessage
     ? "bg-green-950/20 border-green-500/20 text-gray-200"
     : "bg-gray-950 border-gray-800 text-gray-300";
 
@@ -20,7 +25,7 @@ export default function TicketMessage({
       <div className={`max-w-[50%] rounded-2xl p-4.5 border shadow-md transition-all duration-150 ${bubbleClass}`}>
         <div className="flex items-center justify-between gap-8 mb-2.5 border-b border-gray-800/40 pb-2">
           <div className="flex items-center space-x-2">
-            <div>
+            <div className="flex items-center gap-2">
               <span className="text-xs font-bold text-white flex items-center gap-1">
                 {isOwnMessage
                   ? "Tú"
@@ -28,6 +33,12 @@ export default function TicketMessage({
                     ? "Autor"
                     : "Administrador"}
               </span>
+
+              {isInternal && (
+                <span className="text-[10px] uppercase font-bold text-red-400 bg-red-950/40 border border-red-500/20 px-2 py-0.5 rounded-md">
+                  Nota interna
+                </span>
+              )}
             </div>
           </div>
 

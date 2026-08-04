@@ -2,19 +2,17 @@ import crypto from "crypto";
 import { fileTypeFromBuffer } from "file-type";
 import { supabase } from "@/server/services/admin/supabase";
 
-const ALLOWED_MIME_TYPES = new Set([
-  "image/jpeg",
-  "image/png",
-  "image/webp",
-  "application/pdf",
-  "application/msword",
-  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-  "text/plain",
-  "application/zip",
-  "application/x-rar-compressed",
-]);
+const ALLOWED_TYPES = {
+  "image/jpeg": ["jpg", "jpeg"],
+  "image/png": ["png"],
+  "image/webp": ["webp"],
+  "application/pdf": ["pdf"],
+  "text/plain": ["txt"],
+};
 
 const MAX_FILES_PER_MESSAGE = 10;
+
+const MAX_FILE_SIZE = 20 * 1024 * 1024;
 
 export async function saveTicketAttachments(files) {
 
@@ -29,25 +27,42 @@ export async function saveTicketAttachments(files) {
   for (const file of files) {
     if (!(file instanceof File)) continue;
 
+    if (file.size > MAX_FILE_SIZE) {
+      throw new Error(
+        `El archivo "${file.name}" supera el límite de 20 MB.`
+      );
+    }
+
     const buffer = Buffer.from(await file.arrayBuffer());
     const detected = await fileTypeFromBuffer(buffer);
 
     const realMimeType = detected?.mime ?? file.type;
 
-    if (!ALLOWED_MIME_TYPES.has(realMimeType)) {
+    if (!(realMimeType in ALLOWED_TYPES)) {
       throw new Error(
         `Archivo "${file.name}" no permitido (tipo detectado: ${realMimeType})`
       );
     }
 
-    const extension = file.name.split(".").pop();
+    const extension = file.name.split(".").pop()?.toLowerCase();
+
+    if (!extension || extension === file.name.toLowerCase()) {
+      throw new Error("El archivo no tiene una extensión válida.");
+    }
+
+    const allowedExtensions = ALLOWED_TYPES[realMimeType];
+
+    if (!allowedExtensions.includes(extension)) {
+      throw new Error("La extensión no coincide con el tipo del archivo");
+    }
+
     const fileName = `${crypto.randomUUID()}.${extension}`;
     const path = `tickets/${fileName}`;
 
     const { error } = await supabase.storage
       .from("ticket-files")
       .upload(path, buffer, {
-        contentType: file.type,
+        contentType: realMimeType
       });
 
     if (error) {
@@ -57,7 +72,7 @@ export async function saveTicketAttachments(files) {
     attachments.push({
       originalName: file.name,
       fileName,
-      mimeType: file.type,
+      mimeType: realMimeType,
       fileSize: file.size,
       filePath: path,
     });

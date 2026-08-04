@@ -2,6 +2,7 @@ import db from "@/server/lib/db";
 import ticketMessages from "@/server/models/admin/tickets/ticketMessages";
 import {existsByTicket} from '@/server/services/admin/tickets/existsByTicket'
 import {resolveAttachments} from "@/server/services/admin/tickets/resolveAttachments";
+import {addMessage} from "@/server/services/admin/tickets/addMessages";
 
 const ticketAdminModels = {};
 
@@ -120,41 +121,19 @@ ticketAdminModels.create = async ({
   try {
     await connection.beginTransaction();
 
-    const [insertResult] = await connection.execute(
-      `
-      INSERT INTO ticket_messages
-        (ticket_id, sender_type, sender_id, message, is_internal)
-      VALUES (?, ?, ?, ?, ?)
-      `,
-      [ticketId, senderType, senderId, message, isInternal ? 1 : 0],
-    );
-
-    const messageId = insertResult.insertId;
-
-    if (attachments.length > 0) {
-      const values = attachments.map((a) => [
-        messageId,
-        a.originalName,
-        a.fileName,
-        a.mimeType,
-        a.fileSize,
-        a.filePath,
-      ]);
-
-      await connection.query(
-        `
-        INSERT INTO ticket_attachments
-          (message_id, original_name, file_name, mime_type, file_size, file_path)
-        VALUES ?
-        `,
-        [values],
-      );
-    }
+    const messageId = await addMessage(connection, {
+      ticketId,
+      senderId,
+      senderType,
+      message,
+      isInternal,
+      attachments,
+    });
 
     const updateQuery = isInternal
       ? `
         UPDATE tickets
-        SET last_message_id = ?, updated_at = NOW()
+        SET updated_at = NOW()
         WHERE id = ?
         `
       : `
@@ -167,10 +146,11 @@ ticketAdminModels.create = async ({
         WHERE id = ?
         `;
 
-    const [updateResult] = await connection.execute(updateQuery, [
-      messageId,
-      ticketId,
-    ]);
+    const params = isInternal ? [ticketId] : [messageId, ticketId];
+
+    const [updateResult] = await connection.execute(
+      updateQuery, params
+    );
 
     if (updateResult.affectedRows === 0) {
       throw new Error("No se pudo actualizar el ticket");

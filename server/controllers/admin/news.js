@@ -1,7 +1,7 @@
 import newsModel from "@/server/models/admin/news";
 import { sendNewsNotification } from "@/server/services/admin/n8n/notification";
 import { generateAiMetadata } from "@/server/services/admin/n8n/generateMetadata";
-import { existsByNews } from "@/server/models/admin/exist";
+import { existsByNews } from "@/server/services/admin/existsByNews";
 import {getAuthors, getCategories} from "@/server/services/admin/catalog";
 
 const newsController = {};

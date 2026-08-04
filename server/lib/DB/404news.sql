@@ -569,12 +569,45 @@ CREATE TABLE `ticket_attachments` (
   PRIMARY KEY (`id`),
   KEY `fk_attachment_message` (`message_id`),
   CONSTRAINT `fk_attachment_message` FOREIGN KEY (`message_id`) REFERENCES `ticket_messages` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `ticket_attachments` */
 
 insert  into `ticket_attachments`(`id`,`message_id`,`original_name`,`file_name`,`mime_type`,`file_size`,`file_path`,`created_at`) values 
-(1,30,'Instalacion de n8n.txt','702847f6-a534-4594-864c-9a83a6ae51fb.txt','text/plain',4796,'tickets/702847f6-a534-4594-864c-9a83a6ae51fb.txt','2026-07-30 14:08:02');
+(1,30,'Instalacion de n8n.txt','702847f6-a534-4594-864c-9a83a6ae51fb.txt','text/plain',4796,'tickets/702847f6-a534-4594-864c-9a83a6ae51fb.txt','2026-07-30 14:08:02'),
+(2,37,'Instalacion de n8n.txt','ccfb46de-3ea6-461a-b33d-8c3a8627d56b.txt','text/plain',4796,'tickets/ccfb46de-3ea6-461a-b33d-8c3a8627d56b.txt','2026-07-31 13:25:55'),
+(3,44,'Darlin Luis Valdez - CV.pdf','9cfe2908-7d09-4a72-8824-55d6a323bc0a.pdf','application/pdf',62429,'tickets/9cfe2908-7d09-4a72-8824-55d6a323bc0a.pdf','2026-08-01 13:35:26'),
+(4,45,'Curso de electricidad.pdf','a38cb525-1d87-4a77-8433-c42061901f73.pdf','application/pdf',135449,'tickets/a38cb525-1d87-4a77-8433-c42061901f73.pdf','2026-08-03 12:51:09'),
+(5,46,'Certificado de 4to.pdf','9a96bed3-4ef5-4c5d-84e1-fc35ed18a56c.pdf','application/pdf',282364,'tickets/9a96bed3-4ef5-4c5d-84e1-fc35ed18a56c.pdf','2026-08-03 13:17:44'),
+(6,57,'Darlin Luis Valdez - CV.pdf','c3c26ff4-f660-4d2c-8675-f6da37faa986.pdf','application/pdf',62429,'tickets/c3c26ff4-f660-4d2c-8675-f6da37faa986.pdf','2026-08-03 13:40:28'),
+(7,58,'Darlin Luis Valdez - CV.pdf','32e26f65-b656-49c1-8f5b-8d4592fb972f.pdf','application/pdf',62429,'tickets/32e26f65-b656-49c1-8f5b-8d4592fb972f.pdf','2026-08-03 13:40:46'),
+(8,67,'Instalacion de n8n.txt','facaae7e-05fa-4f67-b941-5fd1119f5c99.txt','text/plain',4796,'tickets/facaae7e-05fa-4f67-b941-5fd1119f5c99.txt','2026-08-04 12:33:08');
+
+/*Table structure for table `ticket_categories` */
+
+DROP TABLE IF EXISTS `ticket_categories`;
+
+CREATE TABLE `ticket_categories` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `slug` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `active` tinyint(1) NOT NULL DEFAULT '1',
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `slug` (`slug`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+/*Data for the table `ticket_categories` */
+
+insert  into `ticket_categories`(`id`,`name`,`slug`,`active`,`created_at`,`updated_at`) values 
+(1,'Problema técnico','technical',1,'2026-08-04 13:09:42','2026-08-04 13:09:42'),
+(2,'Solicitud de publicación','publication',1,'2026-08-04 13:09:42','2026-08-04 13:09:42'),
+(3,'Corrección de noticia','correction',1,'2026-08-04 13:09:42','2026-08-04 13:09:42'),
+(4,'Actualización de contenido','content_update',1,'2026-08-04 13:09:42','2026-08-04 13:09:42'),
+(5,'Cuenta','account',1,'2026-08-04 13:09:42','2026-08-04 13:09:42'),
+(6,'Sugerencia','suggestion',1,'2026-08-04 13:09:42','2026-08-04 13:09:42'),
+(7,'Otro','other',1,'2026-08-04 13:09:42','2026-08-04 13:09:42');
 
 /*Table structure for table `ticket_messages` */
 
@@ -595,7 +628,7 @@ CREATE TABLE `ticket_messages` (
   KEY `fk_tm_sender` (`sender_id`),
   CONSTRAINT `fk_tm_sender` FOREIGN KEY (`sender_id`) REFERENCES `users` (`id`) ON DELETE SET NULL,
   CONSTRAINT `fk_tm_ticket` FOREIGN KEY (`ticket_id`) REFERENCES `tickets` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=72 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `ticket_messages` */
 
@@ -635,7 +668,42 @@ insert  into `ticket_messages`(`id`,`ticket_id`,`sender_type`,`sender_id`,`messa
 (33,10,'admin',1,'mmg callate',1,0,0,'2026-07-30 14:46:41'),
 (34,10,'admin',1,'jajajajaajajaja',1,0,0,'2026-07-30 14:47:51'),
 (35,10,'admin',1,'miralo',1,0,0,'2026-07-30 14:50:39'),
-(36,10,'admin',1,'o tiralo',1,0,0,'2026-07-30 14:50:43');
+(36,10,'admin',1,'o tiralo',1,0,0,'2026-07-30 14:50:43'),
+(37,10,'author',2,'',0,1,0,'2026-07-31 13:25:55'),
+(38,11,'admin',1,'tu dique queee',0,0,0,'2026-08-01 12:41:50'),
+(39,12,'admin',1,'yo meno mmg singa tu mai',1,0,0,'2026-08-01 12:46:04'),
+(40,13,'author',2,'no yo no supe singa tu mai',0,0,0,'2026-08-01 12:46:39'),
+(41,14,'author',2,'quedate ciego singa tu mai',0,1,0,'2026-08-01 12:50:09'),
+(42,15,'admin',1,'cagate singa tu mai',0,0,0,'2026-08-01 12:50:37'),
+(43,16,'admin',1,'ie pa comerte con nutella',0,0,0,'2026-08-01 13:34:31'),
+(44,17,'admin',1,'Tu solo dejame tocarte',1,0,0,'2026-08-01 13:35:26'),
+(45,17,'admin',1,'entra en champaña y vela',1,0,0,'2026-08-03 12:51:09'),
+(46,17,'author',2,'que locura bro',0,1,0,'2026-08-03 13:17:44'),
+(47,17,'admin',1,'claro mmg\r\n',1,0,0,'2026-08-03 13:18:58'),
+(48,17,'admin',1,'te gua entra',1,0,0,'2026-08-03 13:20:22'),
+(49,17,'admin',1,'Polque?\r\n',1,0,0,'2026-08-03 13:21:16'),
+(50,17,'admin',1,'waos',1,0,0,'2026-08-03 13:24:46'),
+(51,17,'admin',1,'si',1,0,0,'2026-08-03 13:25:06'),
+(52,17,'admin',1,'mmg',1,0,0,'2026-08-03 13:27:50'),
+(53,17,'admin',1,'singa tu mai',1,0,0,'2026-08-03 13:30:12'),
+(54,17,'author',2,'claro mmg',0,1,0,'2026-08-03 13:30:45'),
+(55,17,'admin',1,'dio mio dio',1,0,0,'2026-08-03 13:31:08'),
+(56,17,'author',2,'no mmg',0,1,0,'2026-08-03 13:34:29'),
+(57,17,'author',2,'',0,1,0,'2026-08-03 13:40:28'),
+(58,17,'author',2,'',0,1,0,'2026-08-03 13:40:46'),
+(59,17,'author',2,'que pasa aqui?',0,1,0,'2026-08-03 14:32:13'),
+(60,17,'author',2,'mmg',0,1,0,'2026-08-03 14:38:27'),
+(61,17,'admin',1,'yo por que?\r\n',1,0,0,'2026-08-03 14:39:27'),
+(62,17,'admin',1,'singa tu madre',1,0,0,'2026-08-03 14:39:41'),
+(63,17,'admin',1,'si yo no te hecho na',1,0,0,'2026-08-03 14:39:56'),
+(64,17,'admin',1,'buen mmg',1,0,0,'2026-08-03 14:40:05'),
+(65,17,'author',2,'ya loco tranquilo',0,1,0,'2026-08-03 14:40:22'),
+(66,17,'author',2,'yo no quiero problemas',0,1,0,'2026-08-03 14:40:29'),
+(67,17,'admin',1,'a ver si sirve esta monda',1,0,0,'2026-08-04 12:33:08'),
+(68,17,'admin',1,'tu supite veida?',1,0,0,'2026-08-04 14:03:20'),
+(69,17,'admin',1,'claro que supe, y tu??',1,0,1,'2026-08-04 14:11:03'),
+(70,17,'admin',1,'ejejejeje',0,0,1,'2026-08-04 14:34:26'),
+(71,17,'admin',1,'coño',0,0,1,'2026-08-04 14:34:33');
 
 /*Table structure for table `tickets` */
 
@@ -648,6 +716,7 @@ CREATE TABLE `tickets` (
   `priority` enum('low','medium','high') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'medium',
   `subject` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `user_id` int DEFAULT NULL,
+  `category_id` int NOT NULL,
   `guest_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `guest_email` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `assigned_to` int DEFAULT NULL,
@@ -662,21 +731,30 @@ CREATE TABLE `tickets` (
   KEY `fk_ticket_user` (`user_id`),
   KEY `fk_ticket_assigned` (`assigned_to`),
   KEY `fk_ticket_last_message` (`last_message_id`),
+  KEY `fk_ticket_category` (`category_id`),
   CONSTRAINT `fk_ticket_assigned` FOREIGN KEY (`assigned_to`) REFERENCES `users` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `fk_ticket_category` FOREIGN KEY (`category_id`) REFERENCES `ticket_categories` (`id`) ON DELETE RESTRICT,
   CONSTRAINT `fk_ticket_last_message` FOREIGN KEY (`last_message_id`) REFERENCES `ticket_messages` (`id`) ON DELETE SET NULL,
   CONSTRAINT `fk_ticket_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `tickets` */
 
-insert  into `tickets`(`id`,`type`,`status`,`priority`,`subject`,`user_id`,`guest_name`,`guest_email`,`assigned_to`,`last_reply_at`,`closed_at`,`created_at`,`updated_at`,`last_message_id`,`unread_admin_count`,`unread_user_count`) values 
-(1,'contact','in_progress','low','una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien ',2,NULL,NULL,1,'2026-07-23 12:55:26','2026-07-21 20:05:29','2026-07-21 20:05:00','2026-07-23 12:55:26',NULL,0,0),
-(2,'contact','open','medium','tu supite veida?',1,NULL,NULL,3,'2026-07-21 20:06:34',NULL,'2026-07-21 20:06:18','2026-07-23 12:38:23',NULL,0,0),
-(3,'submission','waiting_response','low','clarooooo',2,NULL,NULL,NULL,'2026-07-25 15:07:02',NULL,'2026-07-23 12:52:55','2026-07-30 13:41:54',28,0,0),
-(7,'submission','open','medium','ya tu sabe',2,NULL,NULL,NULL,'2026-07-30 13:55:26',NULL,'2026-07-30 13:55:26','2026-07-30 13:55:45',29,0,0),
-(8,'submission','open','medium','mama guebo',2,NULL,NULL,NULL,'2026-07-30 14:08:02',NULL,'2026-07-30 14:08:02','2026-07-30 14:08:08',30,0,0),
-(9,'submission','open','medium','tu sipite veida?',2,NULL,NULL,NULL,'2026-07-30 14:45:07',NULL,'2026-07-30 14:45:07','2026-07-30 14:45:11',31,0,0),
-(10,'submission','open','medium','mmgmmmgmgmgmgm',2,NULL,NULL,NULL,'2026-07-30 14:50:43',NULL,'2026-07-30 14:45:27','2026-07-30 14:50:49',36,0,0);
+insert  into `tickets`(`id`,`type`,`status`,`priority`,`subject`,`user_id`,`category_id`,`guest_name`,`guest_email`,`assigned_to`,`last_reply_at`,`closed_at`,`created_at`,`updated_at`,`last_message_id`,`unread_admin_count`,`unread_user_count`) values 
+(1,'contact','in_progress','low','una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien ',2,1,NULL,NULL,1,'2026-07-23 12:55:26','2026-07-21 20:05:29','2026-07-21 20:05:00','2026-08-04 13:10:03',NULL,0,0),
+(2,'submission','open','medium','tu supite veida?',1,3,NULL,NULL,3,'2026-07-21 20:06:34',NULL,'2026-07-21 20:06:18','2026-08-04 13:10:06',NULL,0,0),
+(3,'submission','waiting_response','low','clarooooo',2,6,NULL,NULL,NULL,'2026-07-25 15:07:02',NULL,'2026-07-23 12:52:55','2026-08-04 13:10:10',28,0,0),
+(7,'submission','open','medium','ya tu sabe',2,4,NULL,NULL,NULL,'2026-07-30 13:55:26',NULL,'2026-07-30 13:55:26','2026-08-04 13:10:13',29,0,0),
+(8,'submission','open','medium','mama guebo',2,5,NULL,NULL,NULL,'2026-07-30 14:08:02',NULL,'2026-07-30 14:08:02','2026-08-04 13:10:17',30,0,0),
+(9,'submission','open','medium','tu sipite veida?',2,2,NULL,NULL,NULL,'2026-07-30 14:45:07',NULL,'2026-07-30 14:45:07','2026-08-04 13:10:20',31,0,0),
+(10,'submission','open','medium','mmgmmmgmgmgmgm',2,7,NULL,NULL,NULL,'2026-07-31 13:25:55',NULL,'2026-07-30 14:45:27','2026-08-04 13:10:24',37,0,0),
+(11,'submission','open','medium','vamo a singa mmg que fue',2,2,NULL,NULL,NULL,'2026-08-01 12:41:50',NULL,'2026-08-01 12:41:50','2026-08-04 13:10:27',38,0,0),
+(12,'submission','open','medium','ya no quiero singa mmg',2,4,NULL,NULL,NULL,'2026-08-01 12:46:04',NULL,'2026-08-01 12:46:04','2026-08-04 13:10:29',39,0,0),
+(13,'submission','open','medium','pero tu supite veida?',2,5,NULL,NULL,NULL,'2026-08-01 12:46:39',NULL,'2026-08-01 12:46:39','2026-08-04 13:10:33',40,0,0),
+(14,'submission','open','medium','me gua queda ciego mmg',2,1,NULL,NULL,NULL,'2026-08-01 12:50:09',NULL,'2026-08-01 12:50:09','2026-08-04 13:10:36',41,0,0),
+(15,'submission','open','medium','me toy cagando mmg',2,6,NULL,NULL,NULL,'2026-08-01 12:50:37',NULL,'2026-08-01 12:50:37','2026-08-04 14:17:06',42,0,0),
+(16,'submission','open','medium','con tu panti ven modela ',2,3,NULL,NULL,NULL,'2026-08-01 13:34:31',NULL,'2026-08-01 13:34:31','2026-08-04 14:17:04',43,0,0),
+(17,'submission','open','medium','yo se que tu tambien quieres de mi',2,7,NULL,NULL,NULL,'2026-08-04 14:03:20',NULL,'2026-08-01 13:35:26','2026-08-04 14:34:33',68,0,0);
 
 /*Table structure for table `users` */
 
