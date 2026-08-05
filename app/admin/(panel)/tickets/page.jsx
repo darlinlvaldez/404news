@@ -17,7 +17,8 @@ import {
   getPriorityStyle, 
   getPriorityIcon, 
   statusOptions, 
-  priorityOptions } 
+  priorityOptions,
+  ticketTypeOptions } 
   from "@/utils/ticketConfig";
 
 import {
@@ -247,11 +248,11 @@ export default function TicketsPage() {
             <div className="flex items-start justify-between gap-4">
                 <div className="min-w-0 flex-1">
                 <span className="text-xs font-mono text-gray-500">
-                  #{tickets.id}
+                  #{tickets.ticket_number}
                 </span>
 
                 <p className="text-sm text-gray-400 mt-1">
-                  {tickets.type}
+                  {ticketTypeOptions[tickets.type] ?? tickets.type}
                 </p>
 
                 <h3 className="text-lg font-bold text-white mt-1 truncate"
@@ -266,6 +267,12 @@ export default function TicketsPage() {
                   >
                     {tickets.last_message || tickets.message}
                   </p>
+
+                  {Number(tickets.is_internal) === 1 && (
+                    <span className="shrink-0 bg-red-600 text-white px-3 py-1 rounded-xl text-xs font-bold uppercase">
+                      Nota interna
+                    </span>
+                  )}
 
                   {tickets.unread_admin_count > 0 && (
                     <span className="shrink-0 bg-green-600 text-white px-3 py-1 rounded-xl text-xs font-bold">

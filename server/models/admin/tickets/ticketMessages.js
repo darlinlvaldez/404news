@@ -11,6 +11,7 @@ ticketMessages.findById = async (id) => {
       tm.sender_id,
       tm.message,
       tm.created_at,
+      tm.is_internal,
       u.role AS sender_role,
       COALESCE(a.name, u.name, u.username) AS sender_name,
       a.avatar AS sender_avatar

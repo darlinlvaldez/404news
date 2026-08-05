@@ -11,6 +11,7 @@ ticketAuthorModels.ticket = async (id, userId) => {
     `
     SELECT
       t.id,
+      t.ticket_number,
       t.status,
       t.subject,
       t.user_id,

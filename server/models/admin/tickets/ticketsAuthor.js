@@ -51,6 +51,7 @@ tickets.getMinimum = async function (
     `
     SELECT
       t.id,
+      t.ticket_number,
       t.subject,
       t.status,
       t.last_reply_at,
@@ -95,6 +96,8 @@ tickets.createTicket = async ({
 
     const ticketId = ticketResult.insertId;
 
+    const ticketNumber = `TCK-${String(ticketId).padStart(6, "0")}`;
+
     const messageId = await addMessage(connection, {
       ticketId,
       senderType,
@@ -109,7 +112,7 @@ tickets.createTicket = async ({
       SET last_message_id = ?, unread_user_count = unread_user_count + 1
       WHERE id = ?
       `,
-      [messageId, ticketId]
+      [messageId, ticketId, ticketNumber]
     );
 
     await connection.commit();

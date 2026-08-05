@@ -18,7 +18,7 @@ Rango personalizado.
 
 isLoading en admin.
 
-Poder agregar archivos en los campos, como imagenes.
+Poder agregar archivos de imagenes en las noticias.
 
 Arreglar en el frontend los estilos de las noticias.
 
@@ -26,12 +26,14 @@ Agregar perfil de usuario en admin.
 
 Agregar zod en tickets.
  
-Generar ID publico en tickets.
-
 Arreglar los estilos del chat de tickets en responsive.
 
-Controlar el tamaño de los archivos cuando sea zip.
+Agregar el enviar ticket en contact.
 
 Verificar que no sea archivo malicioso.
+
+Agregar el poder asignar el ticket.
+
+Hacer que segun la categoria se decida la prioridad.
 
 Validar campos en controller.

@@ -11,6 +11,7 @@ ticketAdminModels.ticket = async (id) => {
     `
     SELECT
       t.id,
+      t.ticket_number,
       t.type,
       t.status,
       t.priority,
@@ -87,7 +88,7 @@ ticketAdminModels.messages = async (id, limit = 5, beforeId = null) => {
     LIMIT ${Number(limit)}
   `;
 
- const [rows] = await db.execute(query, params);
+  const [rows] = await db.execute(query, params);
   const messages = rows.reverse();
 
   if (messages.length === 0) return messages;
@@ -133,7 +134,9 @@ ticketAdminModels.create = async ({
     const updateQuery = isInternal
       ? `
         UPDATE tickets
-        SET updated_at = NOW()
+        SET 
+          updated_at = NOW(),
+          last_message_id = ?
         WHERE id = ?
         `
       : `
@@ -146,7 +149,9 @@ ticketAdminModels.create = async ({
         WHERE id = ?
         `;
 
-    const params = isInternal ? [ticketId] : [messageId, ticketId];
+    const params = isInternal  
+    ? [messageId, ticketId]
+    : [messageId, ticketId];
 
     const [updateResult] = await connection.execute(
       updateQuery, params

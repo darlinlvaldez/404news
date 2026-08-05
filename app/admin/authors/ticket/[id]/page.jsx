@@ -173,7 +173,7 @@ export default function TicketChat() {
             <div className="flex items-center gap-2">
               <Header.Title>Detalles del Ticket</Header.Title>
               <span className="text-sm font-mono text-gray-500">
-                #{ticket.id}
+                #{ticket.ticket_number}
               </span>
             </div>
 

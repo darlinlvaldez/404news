@@ -142,9 +142,12 @@ export default function TicketChat() {
 
       const data = await response.json();
 
+      console.log(data.message);
+
       setMessages(prev => [...prev, data.message]);
       setNewResponse("");
       clearFiles();
+      setIsInternal(false);
 
     } catch (err) {
       console.error(err);
@@ -204,7 +207,7 @@ export default function TicketChat() {
             <div className="flex items-center gap-2">
               <Header.Title>Detalles del Ticket</Header.Title>
               <span className="text-sm font-mono text-gray-500">
-                #{ticket.id}
+                #{ticket.ticket_number}
               </span>
             </div>
 
@@ -417,8 +420,6 @@ export default function TicketChat() {
                     placeholder="Escribe aquí tu respuesta para resolver la incidencia..."
                     className="w-full px-4 py-3 bg-gray-900 border border-gray-800 focus:border-green-600 focus:ring-1 focus:ring-green-600 focus:outline-none rounded-2xl text-sm font-medium text-gray-200 placeholder-gray-600 resize-none pr-14 shadow-inner"
                   ></textarea>
-
-                  
 
                   <input
                     type="file"

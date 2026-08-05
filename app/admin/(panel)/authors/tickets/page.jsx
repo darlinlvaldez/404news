@@ -206,7 +206,7 @@ export default function TicketsPage() {
               <div className="flex items-start justify-between gap-4">
                  <div className="min-w-0 flex-1">
                   <span className="text-base font-mono text-gray-500">
-                    #{tickets.id}
+                    #{tickets.ticket_number}
                   </span>
 
                     <h3 className="text-lg font-bold text-white mt-1 truncate"

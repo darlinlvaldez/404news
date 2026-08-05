@@ -24,6 +24,11 @@ export const priorityOptions = [
   { value: "low", label: "Baja" },
 ];
 
+export const ticketTypeOptions = {
+  contact: "Contacto",
+  submission: "Solicitud",
+};
+
 export const getStatusStyle = (status) => {
   switch (status) {
     case "closed":

@@ -66,6 +66,7 @@ tickets.getAll = async function (
     `
     SELECT
       t.id,
+      t.ticket_number,
       t.type,
       t.subject,
       t.status,
@@ -114,6 +115,8 @@ tickets.createTicket = async ({
 
     const ticketId = ticketResult.insertId;
 
+    const ticketNumber = `TCK-${String(ticketId).padStart(6, "0")}`;
+
     const messageId = await addMessage(connection, {
       ticketId,
       senderType: "admin",
@@ -125,10 +128,12 @@ tickets.createTicket = async ({
     await connection.execute(
       `
       UPDATE tickets
-      SET last_message_id = ?, unread_admin_count = unread_admin_count + 1
+      SET last_message_id = ?, 
+      ticket_number = ?,
+      unread_admin_count = unread_admin_count + 1
       WHERE id = ?
       `,
-      [messageId, ticketId]
+      [messageId, ticketId, ticketNumber]
     );
 
     await connection.commit();
