@@ -28,6 +28,7 @@ ticketsAdmin.create = async ({
   subject,
   message,
   priority,
+  categoryId,
   attachments = [],
 }) => {
   if (!userId) {
@@ -41,6 +42,7 @@ ticketsAdmin.create = async ({
     subject,
     message,
     priority,
+    categoryId,
     attachments,
   });
 };

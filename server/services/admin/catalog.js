@@ -25,3 +25,14 @@ export async function getCategories() {
 
   return rows;
 }
+
+export async function getTicketCategories() {
+  const [rows] = await db.query(`
+    SELECT id, name
+    FROM ticket_categories
+    WHERE active = 1
+    ORDER BY id ASC
+  `);
+
+  return rows;
+}

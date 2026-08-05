@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import { requireAuth } from "../../../../../server/utils/auth";
 import { handleError } from "../../../../../server/errors/handleError";
-import ticketsAuthor from "../../../../../server/controllers/admin/tickets/ticketsAuthor";
 import { saveTicketAttachments } from "../../../../../server/services/admin/tickets/ticketAttachments";
+import ticketsAuthor from "../../../../../server/controllers/admin/tickets/ticketsAuthor";
 
 export async function GET(request) {
   try {
@@ -40,6 +40,7 @@ export async function POST(request) {
     const subject = formData.get("subject");
     const message = formData.get("message");
     const files = formData.getAll("files");
+    const categoryId = formData.get("categoryId");
 
     const attachments = await saveTicketAttachments(files);
 
@@ -47,6 +48,7 @@ export async function POST(request) {
       userId: session.id,
       subject,
       message,
+      categoryId,
       attachments,
     });
 

@@ -22,12 +22,14 @@ ticketsAuthor.create = async ({
   userId,
   subject,
   message,
+  categoryId,
   attachments = [],
 }) => {
   const { ticketId, messageId } = await tickets.createTicket({
     userId,
     subject,
     message,
+    categoryId,
     attachments,
   });
 

@@ -37,6 +37,7 @@ export default function TicketsPage() {
   const [showModal, setShowModal] = useState(false);
   const [subject, setSubject] = useState("");
   const [message, setMessage] = useState("");
+  const [categories, setCategories] = useState([]);
   const [category, setCategory] = useState("");
   const [authors, setAuthors] = useState([]);
   const [authorId, setAuthorId] = useState("");
@@ -57,13 +58,10 @@ export default function TicketsPage() {
 
   const [debouncedSearch, setDebouncedSearch] = useState("");
 
-  const categoryOptions = [
-    { value: "technical", label: "Soporte Técnico" },
-    { value: "billing", label: "Facturación" },
-    { value: "content", label: "Contenido" },
-    { value: "account", label: "Cuenta" },
-    { value: "other", label: "Otro" },
-  ];
+  const categoryOptions = categories.map(c => ({
+    value: c.id,
+    label: c.name,
+  }));
 
   const authorOptions = authors.map((a) => ({
     value: a.user_id,
@@ -105,6 +103,17 @@ export default function TicketsPage() {
   }, [page, statusFilter, priorityFilter, debouncedSearch]);
 
   useEffect(() => {
+    const fetchCategories = async () => {
+        const res = await fetch("/api/tickets/categories");
+        const data = await res.json();
+
+        setCategories(data);
+    };
+
+    fetchCategories();
+  }, []);
+
+  useEffect(() => {
     const fetchAuthors = async () => {
       try {
         const res = await fetch(`/api/admin/tickets/authors`);
@@ -129,7 +138,7 @@ export default function TicketsPage() {
       formData.append("subject", subject);
       formData.append("message", message);
       formData.append("userId", authorId);
-      formData.append("category", category);
+      formData.append("categoryId", category);
 
       files.forEach((file) => {
         formData.append("files", file);
@@ -312,7 +321,13 @@ export default function TicketsPage() {
                 {getPriorityIcon(tickets.priority)}
                 {priorityLabels[tickets.priority] ?? tickets.priority}
               </span>
+            </div>
 
+            <div className="mt-4 text-sm text-gray-500">
+              Categoría:
+              <span className="ml-2 text-gray-300 font-medium">
+                {tickets.category}
+              </span>
             </div>
 
             <div className="mt-6 pt-4 border-t border-gray-800 flex justify-between items-center">

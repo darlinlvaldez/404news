@@ -16,6 +16,7 @@ tickets.getAll = async function (
     LEFT JOIN users u ON t.user_id = u.id
     LEFT JOIN authors a ON a.user_id = u.id
     LEFT JOIN ticket_messages tm ON tm.id = t.last_message_id
+    LEFT JOIN ticket_categories tc ON tc.id = t.category_id
     WHERE 1=1
   `;
 
@@ -74,6 +75,7 @@ tickets.getAll = async function (
       t.last_reply_at,
       t.unread_admin_count,
       t.created_at >= DATE_SUB(NOW(), INTERVAL 24 HOUR) AS is_new,
+      tc.name AS category,
       tm.message AS last_message,
       tm.is_internal
     ${baseQuery}
@@ -93,6 +95,7 @@ tickets.createTicket = async ({
   subject,
   message,
   priority = "medium",
+  categoryId,
   attachments = [],
 }) => {
   const connection = await db.getConnection();
@@ -103,10 +106,10 @@ tickets.createTicket = async ({
     const [ticketResult] = await connection.execute(
       `
       INSERT INTO tickets
-        (type, subject, status, priority, user_id)
-      VALUES (?, ?, ?, ?, ?)
+        (type, subject, status, priority, category_id, user_id)
+      VALUES (?, ?, ?, ?, ?, ?)
       `,
-      [type, subject, "open", priority, userId]
+      [type, subject, "open", priority, categoryId, userId]
     );
 
     const ticketId = ticketResult.insertId;

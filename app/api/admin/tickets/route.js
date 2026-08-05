@@ -45,6 +45,7 @@ export async function POST(request) {
     const subject = formData.get("subject");
     const message = formData.get("message");
     const priority = formData.get("priority") || "medium";
+    const categoryId = formData.get("categoryId");
     const files = formData.getAll("files");
 
     const attachments = await saveTicketAttachments(files);
@@ -56,6 +57,7 @@ export async function POST(request) {
       subject,
       message,
       priority,
+      categoryId: Number(categoryId),
       attachments,
     });
 

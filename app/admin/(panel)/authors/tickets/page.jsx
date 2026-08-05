@@ -34,6 +34,8 @@ export default function TicketsPage() {
   const [showModal, setShowModal] = useState(false);
   const [subject, setSubject] = useState("");
   const [message, setMessage] = useState("");
+  const [categories, setCategories] = useState([]);
+  const [category, setCategory] = useState("");
 
   const { files, handleFileChange, removeFile,  clearFiles } = useFileUpload();
   
@@ -81,7 +83,23 @@ export default function TicketsPage() {
   }
   fetchTicket();
   }, [page, statusFilter, debouncedSearch]);
-  
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      const res = await fetch("/api/tickets/categories");
+      const data = await res.json();
+
+      setCategories(data);
+    };
+
+    fetchCategories();
+  }, []);
+
+  const categoryOptions = categories.map(c => ({
+    value: c.id,
+    label: c.name,
+  }));
+
   const handleCreateTicket = async (e) => {
     e.preventDefault();
 
@@ -91,6 +109,7 @@ export default function TicketsPage() {
       const formData = new FormData();
       formData.append("subject", subject);
       formData.append("message", message);
+      formData.append("categoryId", category);
 
       files.forEach((file) => {
         formData.append("files", file);
@@ -226,7 +245,13 @@ export default function TicketsPage() {
                   {getStatusIcon(tickets.status)}
                   {statusLabels[tickets.status] ?? tickets.status}
                 </span>
+              </div>
 
+              <div className="mt-4 text-sm text-gray-500">
+                Categoría:
+                <span className="ml-2 text-gray-300 font-medium">
+                  {tickets.category}
+                </span>
               </div>
 
               <div className="mt-6 pt-4 border-t border-gray-800 flex justify-between items-center">
@@ -299,19 +324,35 @@ export default function TicketsPage() {
         onSubmit={handleCreateTicket}
         submitText="Enviar Ticket"
       >
-        <div className="space-y-5">
-          <div>
+      <div className="space-y-5">
+        <div className="flex gap-4">
+
+          <div className="flex-1">
             <label className="block text-xs font-medium text-gray-300 mb-1.5">
-              Asunto <span className="text-rose-400">*</span>
+              Categoría <span className="text-rose-400">*</span>
             </label>
-            <Input
-              type="text"
-              name="subject"
-              value={subject}
-              onChange={(e) => setSubject(e.target.value)}
-              placeholder="Escribe el asunto del ticket..."
+            <Select
+              name="category"
+              options={categoryOptions}
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+              placeholder="Selecciona una categoría..."
             />
           </div>
+        </div>
+
+        <div>
+          <label className="block text-xs font-medium text-gray-300 mb-1.5">
+            Asunto <span className="text-rose-400">*</span>
+          </label>
+          <Input
+            type="text"
+            name="subject"
+            value={subject}
+            onChange={(e) => setSubject(e.target.value)}
+            placeholder="Escribe el asunto del ticket..."
+          />
+        </div>
 
           <div>
             <div className="flex justify-between items-center mb-1.5">

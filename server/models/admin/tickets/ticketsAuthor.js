@@ -15,6 +15,7 @@ tickets.getMinimum = async function (
     LEFT JOIN users u ON t.user_id = u.id
     LEFT JOIN authors a ON a.user_id = u.id
     LEFT JOIN ticket_messages tm ON tm.id = t.last_message_id
+    LEFT JOIN ticket_categories tc ON tc.id = t.category_id
     WHERE t.user_id = ?
   `;
 
@@ -55,7 +56,8 @@ tickets.getMinimum = async function (
       t.last_reply_at,
       t.unread_user_count,
       t.created_at >= DATE_SUB(NOW(), INTERVAL 24 HOUR) AS is_new,
-      tm.message AS last_message
+      tm.message AS last_message,
+      tc.name AS category
     ${baseQuery}
     ORDER BY t.created_at DESC
     LIMIT ? OFFSET ?
@@ -73,6 +75,7 @@ tickets.createTicket = async ({
   type = "submission",
   subject,
   message,
+  categoryId,
   senderType = "author",
   attachments = [],
 }) => {
@@ -84,10 +87,10 @@ tickets.createTicket = async ({
     const [ticketResult] = await connection.execute(
       `
       INSERT INTO tickets
-        (type, subject, status, user_id, guest_name, guest_email)
-      VALUES (?, ?, ?, ?, ?, ?)
+        (type, subject, status, user_id, category_id, guest_name, guest_email)
+      VALUES (?, ?, ?, ?, ?, ?, ?)
       `,
-      [type, subject, "open", userId ?? null, guestName ?? null, guestEmail ?? null]
+      [type, subject, "open", categoryId, userId ?? null, guestName ?? null, guestEmail ?? null]
     );
 
     const ticketId = ticketResult.insertId;
