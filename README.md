@@ -36,4 +36,6 @@ Agregar el poder asignar el ticket.
 
 Hacer que segun la categoria se decida la prioridad.
 
+Que el sistema mande un mensaje inmediantamente se cree un ticket. 
+
 Validar campos en controller.

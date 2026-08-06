@@ -109,10 +109,12 @@ tickets.createTicket = async ({
     await connection.execute(
       `
       UPDATE tickets
-      SET last_message_id = ?, unread_user_count = unread_user_count + 1
+      SET last_message_id = ?,
+      ticket_number = ?,
+      unread_user_count = unread_user_count + 1
       WHERE id = ?
       `,
-      [messageId, ticketId, ticketNumber]
+      [messageId, ticketNumber, ticketId]
     );
 
     await connection.commit();

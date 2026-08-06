@@ -133,7 +133,7 @@ tickets.createTicket = async ({
       unread_admin_count = unread_admin_count + 1
       WHERE id = ?
       `,
-      [messageId, ticketId, ticketNumber]
+      [messageId, ticketNumber, ticketId]
     );
 
     await connection.commit();

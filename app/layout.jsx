@@ -1,4 +1,5 @@
 import "./globals.css";
+import { Toaster } from "sileo";
 
 export const metadata = {
   verification: {
@@ -41,6 +42,21 @@ export default function RootLayout({ children }) {
         />
 
         {children}
+        
+        <Toaster
+        position="top-right"
+        theme="dark"
+        options={{
+          fill: "#030712",
+          roundness: 12,
+          styles: {
+            title: "text-white!",
+            description: "text-gray-400!",
+            badge: "bg-white/10!",
+            button: "bg-white/10! hover:bg-white/20!",
+          },
+        }}
+      />
 
       </body>
     </html>
