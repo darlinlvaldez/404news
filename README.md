@@ -28,7 +28,9 @@ Agregar zod en tickets.
  
 Arreglar los estilos del chat de tickets en responsive.
 
-Agregar el enviar ticket en contact.
+// Agregar el enviar ticket en contact.
+Email: verificar que la persona controla esa dirección.
+Redis: almacenar temporalmente el estado de la verificación y controlar límites.
 
 Verificar que no sea archivo malicioso.
 

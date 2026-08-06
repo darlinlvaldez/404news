@@ -30,12 +30,14 @@ export function useFormErrors(handleResponse) {
 
     function handleResponse(data) {
 
+        clearErrors();
+
         if (data.errors) {
             setErrors(normalizeErrors(data.errors));
-        } else {
-            setError(data.error);
+            return;
         }
 
+        setError(data.message || data.error || "");
     }
 
     function handleZodError(error) {

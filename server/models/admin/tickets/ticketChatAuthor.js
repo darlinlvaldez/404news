@@ -54,6 +54,7 @@ ticketAuthorModels.messages = async (
   let query = `
     SELECT
       tm.id,
+      tm.sender_type,
       tm.sender_id,
       tm.message,
       tm.created_at,

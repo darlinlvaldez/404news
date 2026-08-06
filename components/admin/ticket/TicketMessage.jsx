@@ -7,6 +7,18 @@ function formatFileSize(bytes) {
   return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
 }
 
+function getSenderName(role, isOwnMessage) {
+  if (isOwnMessage) return "Tú";
+
+  const roles = {
+    admin: "Administrador",
+    author: "Autor",
+    customer: "Cliente",
+  };
+
+  return roles[role] ?? "Desconocido";
+}
+
 export default function TicketMessage({
   message,
   isOwnMessage = false
@@ -27,11 +39,7 @@ export default function TicketMessage({
           <div className="flex items-center space-x-2">
             <div className="flex items-center gap-2">
               <span className="text-xs font-bold text-white flex items-center gap-1">
-                {isOwnMessage
-                  ? "Tú"
-                  : message.sender_role === "author"
-                    ? "Autor"
-                    : "Administrador"}
+                {getSenderName(message.sender_type, isOwnMessage)}
               </span>
 
               {isInternal && (

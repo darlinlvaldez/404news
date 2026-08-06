@@ -2,9 +2,15 @@
 
 import { useState } from "react";
 import { toast } from "@/utils/toast";
+import { useFormErrors } from "@/hooks/useFormErrors";
+import { ErrorMessage } from "@/components/ErrorMessage";
+import { fieldClass } from "@/utils/form";
+
+import { Phone, Mail, Clock, MapPin, Send } from "lucide-react";
 
 export default function Contact() {
   const [loading, setLoading] = useState(false);
+  const { errors, clearField, clearErrors, handleResponse } = useFormErrors();
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -32,8 +38,16 @@ export default function Contact() {
       const data = await response.json();
 
       if (!response.ok) {
+
+      if (data.errors) {
+        handleResponse(data);
+        return;
+      }
+
         throw new Error(data.message || "Ocurrió un error.");
       }
+
+      clearErrors();
 
       toast.success(
         "Mensaje enviado",
@@ -48,6 +62,8 @@ export default function Contact() {
       setLoading(false);
     }
   }  
+
+  const inputStyles = "w-full py-3 focus:outline-none focus:border-blue-500";
   
   return (
     <>
@@ -60,39 +76,68 @@ export default function Contact() {
 
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <input
-                  name="guestName"
-                  type="text"
-                  placeholder="Nombre"
-                  className="w-full border-b border-gray-200 py-3 focus:outline-none focus:border-blue-500"
-                />
+                <div>
+                  <input
+                    name="guestName"
+                    type="text"
+                    placeholder="Nombre"
+                    className={fieldClass(errors.guestName, inputStyles, "bottom")}
+                    onChange={() => clearField("guestName")}
+                  />
+                  <ErrorMessage
+                    errors={errors}
+                    name="guestName"
+                  />
+                </div>
 
+                  <div>
+                    <input
+                      name="guestEmail"
+                      type="email"
+                      placeholder="Email"
+                      className={fieldClass( errors.guestEmail, inputStyles, "bottom")}
+                      onChange={() => clearField("guestEmail")}
+                    />
+                    <ErrorMessage
+                      errors={errors}
+                      name="guestEmail"
+                    />
+                </div>
+              </div>
+
+              <div>
                 <input
-                  name="guestEmail"
-                  type="email"
-                  placeholder="Email"
-                  className="w-full border-b border-gray-200 py-3 focus:outline-none focus:border-blue-500"
+                  name="subject"
+                  type="text"
+                  placeholder="Asunto"
+                  className={fieldClass(errors.subject, inputStyles, "bottom")}
+                  onChange={() => clearField("subject")}
+                />
+                <ErrorMessage
+                  errors={errors}
+                  name="subject"
                 />
               </div>
 
-              <input
-                name="subject"
-                type="text"
-                placeholder="Asunto"
-                className="w-full border-b border-gray-200 py-3 focus:outline-none focus:border-blue-500"
-              />
-
-              <textarea
-                name="message"
-                placeholder="Mensaje"
-                rows={5}
-                className="w-full border-b border-gray-200 py-3 focus:outline-none focus:border-blue-500 resize-none"
-              />
+              <div>
+                <textarea
+                  name="message"
+                  placeholder="Mensaje"
+                  rows={5}
+                  className={fieldClass(errors.message, inputStyles, "bottom")}
+                  onChange={() => clearField("message")}
+                />
+                <ErrorMessage
+                  errors={errors}
+                  name="message"
+                />
+              </div>
 
               <button
                 type="submit"
-                className="bg-green-800 hover:bg-green-700 text-white px-8 py-3 rounded-md"
+                className="bg-green-800 hover:bg-green-700 text-white px-6 py-3 rounded-md flex items-center gap-2 cursor-pointer"
               >
+                <Send size={16} />
                 Enviar
               </button>
             </form>
@@ -104,26 +149,7 @@ export default function Contact() {
             <div className="space-y-8">
               <div className="flex items-start gap-4">
                 <div className="bg-green-400/30 p-3 rounded-full">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-6 w-6"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                    />
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                    />
-                  </svg>
+                  <MapPin className="h-6 w-6"/>
                 </div>
                 <div>
                   <p className="font-bold">Dirección:</p>
@@ -135,20 +161,7 @@ export default function Contact() {
 
               <div className="flex items-start gap-4">
                 <div className="bg-green-400/30 p-3 rounded-full">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-6 w-6"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
-                    />
-                  </svg>
+                   <Phone className="h-6 w-6"/>
                 </div>
                 <div>
                   <p className="font-bold">Teléfono:</p>
@@ -158,20 +171,7 @@ export default function Contact() {
 
               <div className="flex items-start gap-4">
                 <div className="bg-green-400/30 p-3 rounded-full">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-6 w-6"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8m-18 0a2 2 0 012-2h14a2 2 0 012 2m-18 0v8a2 2 0 002 2h14a2 2 0 002-2V8"
-                    />
-                  </svg>
+                   <Mail className="h-6 w-6" />
                 </div>
                 <div>
                   <p className="font-bold">Email:</p>
@@ -181,20 +181,7 @@ export default function Contact() {
 
               <div className="flex items-start gap-4">
                 <div className="bg-green-400/30 p-3 rounded-full">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-6 w-6"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
-                  </svg>
+                   <Clock className="h-6 w-6" />
                 </div>
                 <div>
                   <p className="font-bold">Servicios:</p>
