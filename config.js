@@ -19,7 +19,10 @@ const config = {
   IP_API_URL: process.env.IP_API_URL,
 
   SUPABASE_URL: process.env.SUPABASE_URL,
-  SUPABASE_SECRET_KEY: process.env.SUPABASE_SECRET_KEY
+  SUPABASE_SECRET_KEY: process.env.SUPABASE_SECRET_KEY,
+
+  EMAIL_USER: process.env.EMAIL_USER,
+  EMAIL_PASSWORD: process.env.EMAIL_PASSWORD
 };
 
 export default config;

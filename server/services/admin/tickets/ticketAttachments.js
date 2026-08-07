@@ -1,6 +1,6 @@
 import crypto from "crypto";
 import { fileTypeFromBuffer } from "file-type";
-import { supabase } from "@/server/services/admin/supabase";
+import { supabase } from "@/server/services/supabase";
 
 const ALLOWED_TYPES = {
   "image/jpeg": ["jpg", "jpeg"],

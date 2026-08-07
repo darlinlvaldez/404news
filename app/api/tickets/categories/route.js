@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { requireAuth } from "../../../../server/utils/auth";
 import { handleError } from "../../../../server/errors/handleError";
-import {getTicketCategories} from "../../../../server/services/admin/catalog";
+import {getTicketCategories} from "../../../../server/services/catalog";
 
 export async function GET(request) {
   try {

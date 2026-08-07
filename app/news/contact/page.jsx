@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { useState, useEffect } from "react";
 import { toast } from "@/utils/toast";
 import { useFormErrors } from "@/hooks/useFormErrors";
 import { ErrorMessage } from "@/components/ErrorMessage";
@@ -11,6 +12,9 @@ import { Phone, Mail, Clock, MapPin, Send } from "lucide-react";
 export default function Contact() {
   const [loading, setLoading] = useState(false);
   const { errors, clearField, clearErrors, handleResponse } = useFormErrors();
+  const [successMessage, setSuccessMessage] = useState("");
+
+  const searchParams = useSearchParams();
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -50,8 +54,14 @@ export default function Contact() {
       clearErrors();
 
       toast.success(
-        "Mensaje enviado",
-        "Te responderemos lo antes posible."
+        "Solicitud recibida",
+        "Revisa tu correo para confirmar el envío del mensaje."
+      );
+
+      clearErrors();
+
+      setSuccessMessage(
+      "Te enviamos un correo de confirmación. Revisa tu bandeja de entrada para completar el envío."
       );
 
       form.reset();
@@ -62,6 +72,19 @@ export default function Contact() {
       setLoading(false);
     }
   }  
+
+  const verified = searchParams.get("verified");
+
+  useEffect(() => {
+    if (verified === "true") {
+      setTimeout(() => {
+        toast.success(
+          "Correo confirmado",
+          "Tu mensaje ha sido enviado correctamente."
+        );
+      }, 300);
+    }
+  }, [verified]);
 
   const inputStyles = "w-full py-3 focus:outline-none focus:border-blue-500";
   
@@ -141,6 +164,12 @@ export default function Contact() {
                 Enviar
               </button>
             </form>
+
+            {successMessage && (
+              <p className="mt-4 text-green-700 text-sm">
+                {successMessage}
+              </p>
+            )}
           </div>
 
           <div className="flex-1 bg-green-800 p-8 lg:p-12 text-white flex flex-col justify-center">

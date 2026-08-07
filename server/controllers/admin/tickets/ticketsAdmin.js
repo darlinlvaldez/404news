@@ -1,5 +1,5 @@
 import tickets from "@/server/models/admin/tickets/ticketsAdmin";
-import {getAuthors} from "@/server/services/admin/catalog";
+import {getAuthors} from "@/server/services/catalog";
 
 const ticketsAdmin = {};
 

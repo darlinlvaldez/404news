@@ -19,6 +19,7 @@
     "lucide-react": "^0.574.0",
     "mysql2": "^3.16.2",
     "next": "16.1.6",
+    "nodemailer": "^9.0.4",
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "recharts": "^3.9.1",
