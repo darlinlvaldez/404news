@@ -46,9 +46,9 @@ export function useFormErrors(handleResponse) {
         const fieldErrors = {};
 
         error.issues.forEach((issue) => {
-            const field = issue.path[0];
+            const field = issue.path.join(".");
 
-            fieldErrors[field ?? "general"] = issue.message;
+            fieldErrors[field || "general"] = issue.message;
         });
 
         setErrors(fieldErrors);

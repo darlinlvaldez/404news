@@ -22,7 +22,7 @@ export default function Input({
 
   const inputType = PasswordToggle ? (showPassword ? "text" : "password") : type;
 
-  const styleInput = `w-full bg-gray-950 rounded-xl focus:ring-1 focus:ring-green-800 
+  const inputstyles = `w-full bg-gray-950 rounded-xl focus:ring-1 focus:ring-green-800 
   focus:border-transparent outline-none transition py-3.5 text-sm text-gray-100 placeholder:text-gray-500`
 
   const iconStyles = "absolute inset-y-0 left-4 my-auto text-gray-500 pointer-events-none group-focus-within:text-green-800"
@@ -47,7 +47,7 @@ export default function Input({
           placeholder={placeholder}
           className={fieldClass(
             hasError,
-            `${styleInput}
+            `${inputstyles}
             ${Icon ? "pl-12 pr-4" : "px-4"}
             ${PasswordToggle ? "pr-12" : "pr-4"}
             ${inputClassName}`

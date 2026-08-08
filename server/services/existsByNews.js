@@ -1,3 +1,5 @@
+import db from "@/server/lib/db";
+
 export async function existsByNews(title, slug) {
   const [rows] = await db.query(
     `

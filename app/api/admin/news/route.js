@@ -3,6 +3,8 @@ import newsController from "../../../../server/controllers/admin/news";
 import { requireAuth } from "../../../../server/utils/auth";
 import { handleError } from "../../../../server/errors/handleError";
 import { news as newsSchema } from "../../../../server/schemas/admin/news"
+import { newsBlocks } from "../../../../server/schemas/admin/newsBlocks"
+
 
 export async function GET(request) {
   try {
@@ -36,6 +38,7 @@ export async function POST(req) {
     const body = await req.json();
 
     body.news = newsSchema.parse(body.news);
+    body.blocks = newsBlocks.parse(body.blocks);
 
     const result = await newsController.create({
       ...body, authorId: user.id

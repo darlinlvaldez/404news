@@ -195,6 +195,8 @@ export default function EditNews() {
           onRemoveBlock={removeBlock}
           onUpdateBlock={updateBlock}
           onMoveBlock={moveBlock}
+          errors={errors}
+          clearField={clearField}
         />
 
         <section className="pt-12 border-t border-gray-700">

@@ -35,7 +35,7 @@ export default function CreateNews() {
     try {
       const payload = {
         news: newsData,
-        blocks,
+        blocks: blocks.map(({ id, ...block }) => block),
       };
 
       const res = await fetch("/api/admin/news", {
@@ -90,7 +90,6 @@ export default function CreateNews() {
 
     fetchFormData();
   }, []);
-
 
   const handleGenerateAI = async () => {
     const hasContent = blocks.some((b) => b.content?.trim());
@@ -175,6 +174,8 @@ export default function CreateNews() {
           onRemoveBlock={removeBlock}
           onUpdateBlock={updateBlock}
           onMoveBlock={moveBlock}
+          errors={errors}
+          clearField={clearField}
         />
 
         <section className="pt-12 border-t items-center justify-center border-gray-700">

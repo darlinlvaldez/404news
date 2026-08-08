@@ -4,13 +4,21 @@ import { ApiError } from "@/server/errors/apiError";
 
 export function handleError(error) {
   if (error instanceof ZodError) {
+    const errors = {};
+
+    error.issues.forEach((issue) => {
+      const field = issue.path.join(".");
+
+      errors[field || "general"] = [issue.message];
+    });
+
     return NextResponse.json(
       {
-        errors: error.flatten().fieldErrors,
+        errors,
       },
       {
         status: 400,
-      },
+      }
     );
   }
 
@@ -24,7 +32,7 @@ export function handleError(error) {
         },
         {
           status: error.status,
-        },
+        }
       );
     }
 
@@ -49,6 +57,6 @@ export function handleError(error) {
     },
     {
       status: 500,
-    },
+    }
   );
 }
