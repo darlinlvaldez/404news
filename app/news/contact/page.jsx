@@ -13,6 +13,7 @@ export default function Contact() {
   const [loading, setLoading] = useState(false);
   const { errors, clearField, clearErrors, handleResponse } = useFormErrors();
   const [successMessage, setSuccessMessage] = useState("");
+  const [cooldown, setCooldown] = useState(0);
 
   const searchParams = useSearchParams();
 
@@ -42,11 +43,23 @@ export default function Contact() {
       const data = await response.json();
 
       if (!response.ok) {
+        if (response.status === 429) {
+          if (data.retryAfter) {
+            setCooldown(data.retryAfter);
+          }
 
-      if (data.errors) {
-        handleResponse(data);
-        return;
-      }
+          toast.error(
+            "Debes esperar",
+            data.error || "Intenta nuevamente más tarde."
+          );
+
+          return;
+        }
+
+        if (data.errors) {
+          handleResponse(data);
+          return;
+        }
 
         throw new Error(data.message || "Ocurrió un error.");
       }
@@ -61,7 +74,7 @@ export default function Contact() {
       clearErrors();
 
       setSuccessMessage(
-      "Te enviamos un correo de confirmación. Revisa tu bandeja de entrada para completar el envío."
+        "Te enviamos un correo de confirmación. Revisa tu bandeja de entrada para completar el envío."
       );
 
       form.reset();
@@ -85,6 +98,23 @@ export default function Contact() {
       }, 300);
     }
   }, [verified]);
+
+  useEffect(() => {
+    if (cooldown <= 0) return;
+
+    const timer = setInterval(() => {
+      setCooldown((current) => {
+        if (current <= 1) {
+          clearInterval(timer);
+          return 0;
+        }
+
+        return current - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [cooldown]);
 
   const inputStyles = "w-full py-3 focus:outline-none focus:border-blue-500";
   
@@ -158,10 +188,16 @@ export default function Contact() {
 
               <button
                 type="submit"
-                className="bg-green-800 hover:bg-green-700 text-white px-6 py-3 rounded-md flex items-center gap-2 cursor-pointer"
+                disabled={loading || cooldown > 0}
+                className="bg-green-800 hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed text-white px-6 py-3 rounded-md flex items-center cursor-pointer gap-2"
               >
                 <Send size={16} />
-                Enviar
+
+                {cooldown > 0
+                  ? `Espera ${cooldown}s`
+                  : loading
+                    ? "Enviando..."
+                    : "Enviar"}
               </button>
             </form>
 

@@ -24,13 +24,11 @@ Arreglar en el frontend los estilos de las noticias.
 
 Agregar perfil de usuario en admin.
 
-Agregar zod en tickets.
+Agregar zod en tickets y terminarlo en news
  
 Arreglar los estilos del chat de tickets en responsive.
 
-// Agregar el enviar ticket en contact.
-Email: verificar que la persona controla esa dirección.
-Redis: almacenar temporalmente el estado de la verificación y controlar límites.
+Arreglar el sideBar en responsive.
 
 Verificar que no sea archivo malicioso.
 
@@ -38,6 +36,6 @@ Agregar el poder asignar el ticket.
 
 Hacer que segun la categoria se decida la prioridad.
 
-Que el sistema mande un mensaje inmediantamente se cree un ticket. 
+Que el sistema mande un mensaje inmediatamente se cree un ticket. 
 
 Validar campos en controller.
