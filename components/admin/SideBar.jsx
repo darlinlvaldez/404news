@@ -33,9 +33,11 @@ export default function SideBar({user}) {
         },
         {
             name: "Noticias",
-            href: "/admin/news",
+            href: user.role === "author"
+                ? "/admin/authors/news"
+                : "/admin/news",
             icon: Newspaper,
-            roles: ["superadmin", "admin", "editor"],
+            roles: ["superadmin", "admin", "editor", "author"],
         },
         {
             name: "Categorías",
@@ -57,8 +59,7 @@ export default function SideBar({user}) {
         },
         {
             name: "Tickets",
-            href:
-            user.role === "author"
+            href: user.role === "author"
                 ? "/admin/authors/tickets"
                 : "/admin/tickets",
             icon: Ticket,

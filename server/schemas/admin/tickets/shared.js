@@ -1,6 +1,11 @@
 import { z } from "zod";
 
 export const ticketContent = z.object({
+  categoryId: z.coerce
+    .number()
+    .int("La categoría no es válida")
+    .positive("Debes seleccionar una categoría"),
+
   subject: z
     .string()
     .trim()

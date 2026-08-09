@@ -1,4 +1,5 @@
 import tickets from '@/server/models/admin/tickets/ticketsAuthor';
+import {getTicketCategoryById} from "@/server/services/catalog";
 
 const ticketsAuthor = {};
 
@@ -25,6 +26,15 @@ ticketsAuthor.create = async ({
   categoryId,
   attachments = [],
 }) => {
+
+  const category = await getTicketCategoryById(categoryId);
+
+  if (!category) {
+    throw new Error(
+      "La categoría seleccionada no existe o no está activa"
+    );
+  }
+  
   const { ticketId, messageId } = await tickets.createTicket({
     userId,
     subject,

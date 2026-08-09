@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { requireAuth } from "../../../../../server/utils/auth";
 import { handleError } from "../../../../../server/errors/handleError";
 import { saveTicketAttachments } from "../../../../../server/services/admin/tickets/ticketAttachments";
+import {ticketContent as ticketSchema } from "../../../../../server/schemas/admin/tickets/shared";
 import ticketsAuthor from "../../../../../server/controllers/admin/tickets/ticketsAuthor";
 
 export async function GET(request) {
@@ -42,13 +43,19 @@ export async function POST(request) {
     const files = formData.getAll("files");
     const categoryId = formData.get("categoryId");
 
+    const data = ticketSchema.parse({
+      categoryId,
+      subject,
+      message,
+    });
+
     const attachments = await saveTicketAttachments(files);
 
     const ticket = await ticketsAuthor.create({
       userId: session.id,
-      subject,
-      message,
-      categoryId,
+      subject: data.subject,
+      message: data.message,
+      categoryId: data.categoryId,
       attachments,
     });
 

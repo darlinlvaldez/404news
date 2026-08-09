@@ -10,6 +10,9 @@ import Input from "@/components/admin/ui/Input"
 import FormModal from "@/components/admin/ui/FormModal"
 import useFileUpload from "@/hooks/useFileUpload";
 import AttachmentDropdown from "@/components/admin/ui/AttachmentDropdown";
+import { useFormErrors } from '@/hooks/useFormErrors';
+import { fieldClass } from '@/utils/form';
+import { ErrorMessage } from '@/components/ErrorMessage';
 import { Header } from '@/components/admin/Header';
 import { 
   getStatusStyle, 
@@ -39,9 +42,10 @@ export default function TicketsPage() {
   const [subject, setSubject] = useState("");
   const [message, setMessage] = useState("");
   const [categories, setCategories] = useState([]);
-  const [category, setCategory] = useState("");
+  const [categoryId, setCategoryId] = useState("");
   const [authors, setAuthors] = useState([]);
   const [authorId, setAuthorId] = useState("");
+  const {errors, clearField, clearErrors, handleResponse} = useFormErrors();
 
   const { files, handleFileChange, removeFile,  clearFiles } = useFileUpload();
   
@@ -132,14 +136,15 @@ export default function TicketsPage() {
   const handleCreateTicket = async (e) => {
     e.preventDefault();
 
-    if (!subject.trim() || !message.trim() || !authorId) return;
+    clearErrors();
 
     try {
       const formData = new FormData();
+
       formData.append("subject", subject);
       formData.append("message", message);
-      formData.append("userId", authorId);
-      formData.append("categoryId", category);
+      formData.append("categoryId", categoryId);
+      formData.append("authorId", authorId);
 
       files.forEach((file) => {
         formData.append("files", file);
@@ -150,19 +155,18 @@ export default function TicketsPage() {
         body: formData,
       });
 
-      if (!response.ok) {
-        const error = await response.json();
-        console.log(error);
-        throw new Error(error.message || "Error create ticket");
-      }
-
       const data = await response.json();
+
+      if (!response.ok) {
+        handleResponse(data);
+        return;
+      }
 
       setSubject("");
       setMessage("");
       clearFiles();
       setAuthorId("");
-      setCategory("");
+      setCategoryId("");
       setShowModal(false);
 
       window.location.reload();
@@ -418,7 +422,11 @@ export default function TicketsPage() {
               name="authorId"
               options={authorOptions}
               value={authorId}
-              onChange={(e) => setAuthorId(e.target.value)}
+              onChange={(e) => {
+                setAuthorId(e.target.value);
+                clearField("authorId");
+              }}
+              errors={errors}
               placeholder="Selecciona un autor..."
             />
           </div>
@@ -428,10 +436,14 @@ export default function TicketsPage() {
               Categoría <span className="text-rose-400">*</span>
             </label>
             <Select
-              name="category"
+              name="categoryId"
               options={categoryOptions}
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
+              value={categoryId}
+              onChange={(e) => {
+                setCategoryId(e.target.value);
+                clearField("categoryId");
+              }}
+              errors={errors}
               placeholder="Selecciona una categoría..."
             />
           </div>
@@ -445,7 +457,11 @@ export default function TicketsPage() {
             type="text"
             name="subject"
             value={subject}
-            onChange={(e) => setSubject(e.target.value)}
+            onChange={(e) => {
+              setSubject(e.target.value);
+              clearField("subject");
+            }}
+            errors={errors}
             placeholder="Escribe el asunto del ticket..."
           />
         </div>
@@ -460,12 +476,22 @@ export default function TicketsPage() {
             </span>
           </div>
           <textarea
+            name="message"
             value={message}
-            onChange={(e) => setMessage(e.target.value)}
+            onChange={(e) => {
+              setMessage(e.target.value);
+              clearField("message");
+            }}
             placeholder="Describe el problema o la solicitud detalladamente..."
             rows={5}
             maxLength={500}
-            className="w-full bg-gray-950/70 rounded-xl border border-gray-700 focus:border-green-800 outline-none transition p-4 text-sm text-gray-100 placeholder:text-gray-500 resize-none shadow-inner"
+            className={fieldClass(!!errors?.message, 
+              "w-full bg-gray-950/70 rounded-xl border border-gray-700 focus:border-green-800 outline-none transition p-4 text-sm text-gray-100 placeholder:text-gray-500 resize-none shadow-inner"
+            )}          
+          />
+          <ErrorMessage
+            errors={errors}
+            name="message"
           />
         </div>
 

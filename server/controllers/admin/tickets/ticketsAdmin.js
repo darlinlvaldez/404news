@@ -1,5 +1,5 @@
 import tickets from "@/server/models/admin/tickets/ticketsAdmin";
-import {getAuthors} from "@/server/services/catalog";
+import {getAuthors, getAuthorByUserId, getTicketCategoryById} from "@/server/services/catalog";
 
 const ticketsAdmin = {};
 
@@ -31,8 +31,19 @@ ticketsAdmin.create = async ({
   categoryId,
   attachments = [],
 }) => {
-  if (!userId) {
-    throw new Error("Debes seleccionar un autor");
+
+  const author = await getAuthorByUserId(userId);
+
+  if (!author) {
+    throw new Error("El autor seleccionado no existe o no está activo");
+  }
+
+  const category = await getTicketCategoryById(categoryId);
+
+  if (!category) {
+    throw new Error(
+      "La categoría seleccionada no existe o no está activa"
+    );
   }
 
   return await tickets.createTicket({

@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { requireAuth } from "../../../../server/utils/auth";
 import { handleError } from "../../../../server/errors/handleError";
 import { saveTicketAttachments } from "../../../../server/services/admin/tickets/ticketAttachments";
+import {tickets as ticketSchema } from "../../../../server/schemas/admin/tickets/admin";
 import ticketsAdmin from "../../../../server/controllers/admin/tickets/ticketsAdmin";
 
 export async function GET(request) {
@@ -36,28 +37,38 @@ export async function GET(request) {
 
 export async function POST(request) {
   try {
-    const session = await requireAuth(request, ["superadmin", "admin", "editor"]);
+    const session = await requireAuth(request, [
+      "superadmin",
+      "admin",
+      "editor",
+    ]);
 
     const formData = await request.formData();
 
-    const userId = formData.get("userId");
-    const type = formData.get("type") || "submission";
+    const authorId = formData.get("authorId");
     const subject = formData.get("subject");
     const message = formData.get("message");
-    const priority = formData.get("priority") || "medium";
     const categoryId = formData.get("categoryId");
+
     const files = formData.getAll("files");
+
+    const data = ticketSchema.parse({
+      authorId,
+      categoryId,
+      subject,
+      message,
+    });
 
     const attachments = await saveTicketAttachments(files);
 
     const result = await ticketsAdmin.create({
-      userId: Number(userId),
+      userId: data.authorId,
       senderId: session.id,
-      type,
-      subject,
-      message,
-      priority,
-      categoryId: Number(categoryId),
+      type: "submission",
+      subject: data.subject,
+      message: data.message,
+      priority: "medium",
+      categoryId: data.categoryId,
       attachments,
     });
 

@@ -1,9 +1,9 @@
 import { z } from "zod";
-import { ticketContent } from "../shared/ticket";
+import { ticketContent } from "@/server/schemas/admin/tickets/shared";
 
-export const tickets = ticketContent.merge(
-  z.object({
-    authorId: z.coerce.number().int().positive(),
-    category: z.string().trim().min(1),
-  })
-);
+export const tickets = ticketContent.extend({
+  authorId: z.coerce
+    .number()
+    .int()
+    .positive("Debes seleccionar un autor"),
+});
