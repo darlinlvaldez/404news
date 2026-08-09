@@ -24,7 +24,7 @@ Arreglar en el frontend los estilos de las noticias.
 
 Agregar perfil de usuario en admin.
 
-Agregar zod en tickets y terminarlo en news
+Agregar zod en chat de tickets.
  
 Arreglar los estilos del chat de tickets en responsive.
 
