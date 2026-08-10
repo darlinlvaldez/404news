@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { requireAuth } from "../../../../../server/utils/auth";
 import { handleError } from "../../../../../server/errors/handleError";
 import { saveTicketAttachments } from "../../../../../server/services/admin/tickets/ticketAttachments";
+import { message as messageSchema } from "../../../../../server/schemas/admin/tickets/message";
 import ticketChatAdmin from "../../../../../server/controllers/admin/tickets/ticketChatAdmin";
 
 export async function GET(request, { params }) {
@@ -49,6 +50,10 @@ export async function POST(request, { params }) {
     const messageText = formData.get("message") ?? "";
     const files = formData.getAll("files");
 
+    const { message: validatedMessage } = messageSchema.parse({
+      message: messageText,
+    });
+    
     const attachments = await saveTicketAttachments(files);
 
     const isInternal = formData.get("isInternal") === "true";
@@ -57,7 +62,7 @@ export async function POST(request, { params }) {
       id,
       senderId: session.id,
       senderType,
-      message: messageText,
+      message: validatedMessage,
       isInternal,
       attachments,
     });

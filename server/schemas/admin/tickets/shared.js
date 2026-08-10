@@ -16,5 +16,5 @@ export const ticketContent = z.object({
     .string()
     .trim()
     .min(10, "El mensaje debe tener al menos 10 caracteres")
-    .max(500, "Máximo 500 caracteres"),
+    .max(500, "El mensaje es demasiado largo"),
 });

@@ -1,8 +1,9 @@
-import CurrentDate from '../../../../components/CurrentDate';
-import StatsCard from '../../../../components/admin/ui/StatsCard';
-import ViewsChart from '../../../../components/admin/chart/ViewsChart';
-import CategoryChart from '../../../../components/admin/chart/CategoryChart';
-import dashboard from "../../../../server/controllers/admin/dashboard";
+import { requirePageAuth } from "../../../../../server/utils/pageAuth";
+import CurrentDate from '../../../../../components/CurrentDate';
+import StatsCard from '../../../../../components/admin/ui/StatsCard';
+import ViewsChart from '../../../../../components/admin/chart/ViewsChart';
+import CategoryChart from '../../../../../components/admin/chart/CategoryChart';
+import dashboard from "../../../../../server/controllers/admin/dashboard";
 import Link from "next/link";
 
 import { 
@@ -20,6 +21,8 @@ import {
     Calendar} from 'lucide-react';
 
 export default async function AdminPanel() {
+
+    await requirePageAuth(["superadmin", "admin"]);
 
     const stats = await dashboard.getStats();
 

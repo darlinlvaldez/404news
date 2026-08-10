@@ -43,8 +43,8 @@ export default function TicketChat() {
     const loadTicket = async () => {
       try {
         const [ticketResponse, messagesResponse] = await Promise.all([
-          fetch(`/api/admin/authors/tickets/${id}`),
-          fetch(`/api/admin/authors/tickets/${id}/messages?limit=5`),
+          fetch(`/api/authors/tickets/${id}`),
+          fetch(`/api/authors/tickets/${id}/messages?limit=5`),
         ]);
 
         if (!ticketResponse.ok || !messagesResponse.ok) {
@@ -95,7 +95,7 @@ export default function TicketChat() {
         formData.append("files", file);
       });
 
-      const response = await fetch(`/api/admin/authors/tickets/${id}`, {
+      const response = await fetch(`/api/authors/tickets/${id}`, {
         method: "POST",
         body: formData,
       });
@@ -131,7 +131,7 @@ export default function TicketChat() {
       const oldestMessage = messages[0];
 
       const response = await fetch(
-        `/api/admin/authors/tickets/${id}/messages?limit=5&beforeId=${oldestMessage.id}`
+        `/api/authors/tickets/${id}/messages?limit=5&beforeId=${oldestMessage.id}`
       );
 
       const data = await response.json();
@@ -153,7 +153,7 @@ export default function TicketChat() {
   };
 
   const onBack = () => {
-    router.push('/admin/authors/tickets');
+    router.push('/authors/tickets');
   };
 
   if (!ticket) {

@@ -1,4 +1,4 @@
-import { supabase } from "@/server/services/admin/supabase";
+import { supabase } from "@/server/services/supabase";
 import db from "@/server/lib/db";
 
 export async function resolveAttachments(messageIds) {

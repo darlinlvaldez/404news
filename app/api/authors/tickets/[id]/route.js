@@ -1,8 +1,9 @@
 import { NextResponse } from "next/server";
-import { requireAuth } from "../../../../../../server/utils/auth";
-import { handleError } from "../../../../../../server/errors/handleError";
-import { saveTicketAttachments } from "../../../../../../server/services/admin/tickets/ticketAttachments";
-import ticketChatAuthor from "../../../../../../server/controllers/admin/tickets/ticketChatAuthor";
+import { requireAuth } from "../../../../../server/utils/auth";
+import { handleError } from "../../../../../server/errors/handleError";
+import { saveTicketAttachments } from "../../../../../server/services/admin/tickets/ticketAttachments";
+import { message as messageSchema } from "../../../../../server/schemas/admin/tickets/message";
+import ticketChatAuthor from "../../../../../server/controllers/admin/tickets/ticketChatAuthor";
 
 export async function GET(request, { params }) {
   try {
@@ -44,13 +45,15 @@ export async function POST(request, { params }) {
     const message = formData.get("message") ?? "";
     const files = formData.getAll("files");
 
+    const data = messageSchema.parse({ message });
+
     const attachments = await saveTicketAttachments(files);
 
     const result = await ticketChatAuthor.create({
       id,
       senderId: session.id,
       senderType: "author",
-      message,
+      message: data.message,
       attachments,
     });
 

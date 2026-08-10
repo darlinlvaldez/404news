@@ -21,7 +21,7 @@ export default function SideBar({user}) {
             method: "POST"
         });
         
-        window.location.href = "/admin/login";
+        window.location.href = "/login";
     };
 
     const links = [
@@ -29,12 +29,12 @@ export default function SideBar({user}) {
             name: "Dashboard",
             href: "/admin/dashboard",
             icon: LayoutDashboard,
-            roles: ["superadmin", "admin", "editor", "support", "author"],
+            roles: ["superadmin", "admin"],
         },
         {
             name: "Noticias",
             href: user.role === "author"
-                ? "/admin/authors/news"
+                ? "/authors/news"
                 : "/admin/news",
             icon: Newspaper,
             roles: ["superadmin", "admin", "editor", "author"],
@@ -60,7 +60,7 @@ export default function SideBar({user}) {
         {
             name: "Tickets",
             href: user.role === "author"
-                ? "/admin/authors/tickets"
+                ? "/authors/tickets"
                 : "/admin/tickets",
             icon: Ticket,
             roles: ["superadmin", "admin", "support", "author"],

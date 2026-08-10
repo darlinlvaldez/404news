@@ -38,4 +38,8 @@ Hacer que segun la categoria se decida la prioridad.
 
 Que el sistema mande un mensaje inmediatamente se cree un ticket. 
 
+Hacer que el admin sepa si un usuario vio el ultimo mensaje.
+
+Hacer que en la lista de tickets diga de quien es el ultimo mensaje.
+
 Validar campos en controller.

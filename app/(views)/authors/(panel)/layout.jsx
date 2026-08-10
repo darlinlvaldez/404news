@@ -3,12 +3,12 @@ import { redirect } from "next/navigation";
 import { verifyToken } from "@/server/utils/jwt";
 import SideBar from "@/components/admin/SideBar";
 
-export default async function AdminLayout({ children }) {
+export default async function AuthorsLayout({ children }) {
   const cookieStore = await cookies();  
   const token = cookieStore.get("admin_token")?.value;
 
   if (!token) {
-    redirect("/admin/login");
+    redirect("/login");
   }
 
   let user;
@@ -16,7 +16,7 @@ export default async function AdminLayout({ children }) {
   try {
     user = await verifyToken(token);
   } catch {
-    redirect("/admin/login");
+    redirect("/login");
   }
 
   return (

@@ -75,7 +75,7 @@ export default function TicketsPage() {
 
   const fetchTicket = async () => {
     try {
-      const res = await fetch(`/api/admin/authors/tickets?${params.toString()}`);
+      const res = await fetch(`/api/authors/tickets?${params.toString()}`);
       const data = await res.json();
       
       setTicket(data.rows);
@@ -119,7 +119,7 @@ export default function TicketsPage() {
         formData.append("files", file);
       });
 
-      const response = await fetch(`/api/admin/authors/tickets`, {
+      const response = await fetch(`/api/authors/tickets`, {
         method: "POST",
         body: formData,
       });
@@ -203,7 +203,7 @@ export default function TicketsPage() {
         <div className="grid grid-cols-1 xl:grid-cols-3 gap-5">
           {ticket.map((tickets) => (
             <Link key={tickets.id}
-              href={`/admin/authors/ticket/${tickets.id}`}
+              href={`/authors/ticket/${tickets.id}`}
               className="bg-gray-900 border border-gray-700 rounded-3xl p-6 shadow-xl hover:border-gray-600 transition"
             >
               <div className="flex items-start justify-between gap-4">
