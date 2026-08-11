@@ -656,7 +656,7 @@ CREATE TABLE `ticket_messages` (
   KEY `fk_tm_sender` (`sender_id`),
   CONSTRAINT `fk_tm_sender` FOREIGN KEY (`sender_id`) REFERENCES `users` (`id`) ON DELETE SET NULL,
   CONSTRAINT `fk_tm_ticket` FOREIGN KEY (`ticket_id`) REFERENCES `tickets` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=85 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=97 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `ticket_messages` */
 
@@ -732,20 +732,32 @@ insert  into `ticket_messages`(`id`,`ticket_id`,`sender_type`,`sender_id`,`messa
 (67,17,'admin',1,'a ver si sirve esta monda',1,0,0,'2026-08-04 12:33:08'),
 (68,17,'admin',1,'tu supite veida?',1,0,0,'2026-08-04 14:03:20'),
 (69,17,'admin',1,'claro que supe, y tu??',1,0,1,'2026-08-04 14:11:03'),
-(70,17,'admin',1,'ejejejeje',0,0,1,'2026-08-04 14:34:26'),
-(71,17,'admin',1,'coño',0,0,1,'2026-08-04 14:34:33'),
-(73,17,'admin',1,'Puta madre abuela',0,0,1,'2026-08-05 12:45:17'),
-(74,17,'admin',1,'ya tu sabe',0,0,1,'2026-08-05 13:04:25'),
-(75,17,'admin',1,'que locura',0,0,1,'2026-08-05 13:08:13'),
-(76,17,'admin',1,'frenamo el reloj',0,0,1,'2026-08-05 13:13:36'),
-(77,17,'admin',1,'claro',0,0,0,'2026-08-05 13:13:44'),
-(78,17,'admin',1,'mire buen mmg',0,0,1,'2026-08-05 13:16:34'),
-(79,17,'admin',1,'solo dejame probarte',0,0,0,'2026-08-05 13:17:52'),
+(70,17,'admin',1,'ejejejeje',1,0,1,'2026-08-04 14:34:26'),
+(71,17,'admin',1,'coño',1,0,1,'2026-08-04 14:34:33'),
+(73,17,'admin',1,'Puta madre abuela',1,0,1,'2026-08-05 12:45:17'),
+(74,17,'admin',1,'ya tu sabe',1,0,1,'2026-08-05 13:04:25'),
+(75,17,'admin',1,'que locura',1,0,1,'2026-08-05 13:08:13'),
+(76,17,'admin',1,'frenamo el reloj',1,0,1,'2026-08-05 13:13:36'),
+(77,17,'admin',1,'claro',1,0,0,'2026-08-05 13:13:44'),
+(78,17,'admin',1,'mire buen mmg',1,0,1,'2026-08-05 13:16:34'),
+(79,17,'admin',1,'solo dejame probarte',1,0,0,'2026-08-05 13:17:52'),
 (80,18,'customer',NULL,'al dia y corazon siente el fuego las reglas el juego la pongo yo',0,0,0,'2026-08-05 21:13:23'),
 (81,19,'customer',NULL,'el segundo e tu gran admirador',0,0,0,'2026-08-05 21:49:46'),
 (82,20,'customer',NULL,'que siempre el mismo ya yo no sere',0,0,0,'2026-08-05 21:50:35'),
 (83,21,'customer',NULL,'claro que siiiii',0,0,0,'2026-08-05 21:57:53'),
-(84,22,'customer',NULL,'si te doy de frente, de espalda y de lao',0,0,0,'2026-08-05 21:59:10');
+(84,22,'customer',NULL,'si te doy de frente, de espalda y de lao',0,0,0,'2026-08-05 21:59:10'),
+(85,23,'customer',NULL,'yo no se pelear, pero por ti es posible',0,0,0,'2026-08-06 20:54:37'),
+(86,24,'customer',NULL,'siiiiiiiiiiiiiiiiiiiii',0,0,0,'2026-08-06 21:09:38'),
+(87,25,'customer',NULL,'eres mi tormento',0,0,0,'2026-08-06 21:12:14'),
+(88,26,'customer',NULL,'preso tu esclavo sereeeeeeeeeeeee',0,0,0,'2026-08-06 21:36:32'),
+(89,27,'customer',NULL,'estas escuchando a luis segura',0,0,0,'2026-08-06 21:39:04'),
+(90,28,'customer',NULL,'pa que sepa woOo',0,0,0,'2026-08-06 21:41:51'),
+(91,29,'customer',NULL,'siento ganas de llorar',0,0,0,'2026-08-06 21:43:50'),
+(92,30,'customer',NULL,'contigo ha nacido mi nueva razon',0,0,0,'2026-08-06 21:52:52'),
+(93,31,'customer',NULL,'estaras soliitaaaa',0,0,0,'2026-08-06 21:54:41'),
+(94,32,'customer',NULL,'que calor que calor, es imposible de aguantar',0,0,0,'2026-08-07 22:58:01'),
+(95,33,'customer',NULL,'mmg mmg mmg mmg',0,0,0,'2026-08-07 22:59:23'),
+(96,34,'customer',NULL,'ay mi madre ah bueno',0,0,0,'2026-08-07 23:10:53');
 
 UNLOCK TABLES;
 
@@ -757,7 +769,7 @@ CREATE TABLE `tickets` (
   `id` int NOT NULL AUTO_INCREMENT,
   `ticket_number` varchar(20) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `type` enum('contact','submission') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `status` enum('open','in_progress','waiting_response','closed') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'open',
+  `status` enum('draft','pending','rejected','published','archived') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'draft',
   `priority` enum('low','medium','high') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'medium',
   `subject` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `user_id` int DEFAULT NULL,
@@ -782,32 +794,44 @@ CREATE TABLE `tickets` (
   CONSTRAINT `fk_ticket_category` FOREIGN KEY (`category_id`) REFERENCES `ticket_categories` (`id`) ON DELETE RESTRICT,
   CONSTRAINT `fk_ticket_last_message` FOREIGN KEY (`last_message_id`) REFERENCES `ticket_messages` (`id`) ON DELETE SET NULL,
   CONSTRAINT `fk_ticket_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `tickets` */
 
 LOCK TABLES `tickets` WRITE;
 
 insert  into `tickets`(`id`,`ticket_number`,`type`,`status`,`priority`,`subject`,`user_id`,`category_id`,`guest_name`,`guest_email`,`assigned_to`,`last_reply_at`,`closed_at`,`created_at`,`updated_at`,`last_message_id`,`unread_admin_count`,`unread_user_count`) values 
-(1,'TCK-000001','contact','in_progress','low','una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien ',2,1,NULL,NULL,1,'2026-07-23 12:55:26','2026-07-21 20:05:29','2026-07-21 20:05:00','2026-08-05 13:41:16',NULL,0,0),
-(2,'TCK-000002','submission','open','medium','tu supite veida?',1,3,NULL,NULL,3,'2026-07-21 20:06:34',NULL,'2026-07-21 20:06:18','2026-08-05 13:41:16',NULL,0,0),
-(3,'TCK-000003','submission','waiting_response','low','clarooooo',2,6,NULL,NULL,NULL,'2026-07-25 15:07:02',NULL,'2026-07-23 12:52:55','2026-08-05 13:41:16',28,0,0),
-(7,'TCK-000007','submission','open','medium','ya tu sabe',2,4,NULL,NULL,NULL,'2026-07-30 13:55:26',NULL,'2026-07-30 13:55:26','2026-08-05 13:41:16',29,0,0),
-(8,'TCK-000008','submission','open','medium','mama guebo',2,5,NULL,NULL,NULL,'2026-07-30 14:08:02',NULL,'2026-07-30 14:08:02','2026-08-05 13:41:16',30,0,0),
-(9,'TCK-000009','submission','open','medium','tu sipite veida?',2,2,NULL,NULL,NULL,'2026-07-30 14:45:07',NULL,'2026-07-30 14:45:07','2026-08-05 13:41:16',31,0,0),
-(10,'TCK-000010','submission','open','medium','mmgmmmgmgmgmgm',2,7,NULL,NULL,NULL,'2026-07-31 13:25:55',NULL,'2026-07-30 14:45:27','2026-08-05 13:41:16',37,0,0),
-(11,'TCK-000011','submission','open','medium','vamo a singa mmg que fue',2,2,NULL,NULL,NULL,'2026-08-01 12:41:50',NULL,'2026-08-01 12:41:50','2026-08-05 13:41:16',38,0,0),
-(12,'TCK-000012','submission','open','medium','ya no quiero singa mmg',2,4,NULL,NULL,NULL,'2026-08-01 12:46:04',NULL,'2026-08-01 12:46:04','2026-08-05 13:41:16',39,0,0),
-(13,'TCK-000013','submission','open','medium','pero tu supite veida?',2,5,NULL,NULL,NULL,'2026-08-01 12:46:39',NULL,'2026-08-01 12:46:39','2026-08-05 13:41:16',40,0,0),
-(14,'TCK-000014','submission','open','medium','me gua queda ciego mmg',2,1,NULL,NULL,NULL,'2026-08-01 12:50:09',NULL,'2026-08-01 12:50:09','2026-08-05 13:41:16',41,0,0),
-(15,'TCK-000015','submission','open','medium','me toy cagando mmg',2,6,NULL,NULL,NULL,'2026-08-01 12:50:37',NULL,'2026-08-01 12:50:37','2026-08-05 13:41:16',42,0,0),
-(16,'TCK-000016','submission','open','medium','con tu panti ven modela ',2,3,NULL,NULL,NULL,'2026-08-01 13:34:31',NULL,'2026-08-01 13:34:31','2026-08-05 13:41:16',43,0,0),
-(17,'TCK-000017','submission','open','medium','yo se que tu tambien quieres de mi',2,7,NULL,NULL,NULL,'2026-08-05 13:17:52',NULL,'2026-08-01 13:35:26','2026-08-05 13:41:16',79,0,2),
-(18,'TCK-000018','contact','open','medium','tu sabes que somos de calle',NULL,NULL,'Darlin Luis Valdez','darlinlvaldez@gmail.com',NULL,'2026-08-05 21:13:23',NULL,'2026-08-05 21:13:23','2026-08-05 21:13:23',80,1,0),
-(19,'TCK-000019','contact','open','medium','Uno nacen pa lider otro pa seguidor',NULL,NULL,'Darlin Luis Valdez','darlinlvaldez@gmail.com',NULL,'2026-08-05 21:49:46',NULL,'2026-08-05 21:49:46','2026-08-05 21:49:46',81,1,0),
-(20,'TCK-000020','contact','open','medium','y por eso vuelveeee',NULL,NULL,'Darlin Luis Valdez','darlinlvaldez@gmail.com',NULL,'2026-08-05 21:50:35',NULL,'2026-08-05 21:50:35','2026-08-05 21:50:35',82,1,0),
-(21,'TCK-000021','contact','open','medium','setentaaa setentaaaa ieeeeee',NULL,NULL,'Darlin Luis Valdez','darlinlvaldez@gmail.com',NULL,'2026-08-05 21:57:53',NULL,'2026-08-05 21:57:53','2026-08-05 21:57:53',83,1,0),
-(22,'TCK-000022','contact','open','medium','caliente caliente dime que tu sientes',NULL,NULL,'Darlin Luis Valdez','darlinlvaldez@gmail.com',NULL,'2026-08-05 21:59:10',NULL,'2026-08-05 21:59:10','2026-08-05 21:59:10',84,1,0);
+(1,'TCK-000001','contact','pending','low','una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien ',2,1,NULL,NULL,1,'2026-07-23 12:55:26','2026-07-21 20:05:29','2026-07-21 20:05:00','2026-08-10 21:25:13',NULL,0,0),
+(2,'TCK-000002','submission','pending','medium','tu supite veida?',1,3,NULL,NULL,3,'2026-07-21 20:06:34',NULL,'2026-07-21 20:06:18','2026-08-10 21:25:13',NULL,0,0),
+(3,'TCK-000003','submission','draft','low','clarooooo',2,6,NULL,NULL,NULL,'2026-07-25 15:07:02',NULL,'2026-07-23 12:52:55','2026-08-10 21:25:13',28,0,0),
+(7,'TCK-000007','submission','pending','medium','ya tu sabe',2,4,NULL,NULL,NULL,'2026-07-30 13:55:26',NULL,'2026-07-30 13:55:26','2026-08-10 21:25:13',29,0,0),
+(8,'TCK-000008','submission','pending','medium','mama guebo',2,5,NULL,NULL,NULL,'2026-07-30 14:08:02',NULL,'2026-07-30 14:08:02','2026-08-10 21:25:13',30,0,0),
+(9,'TCK-000009','submission','pending','medium','tu sipite veida?',2,2,NULL,NULL,NULL,'2026-07-30 14:45:07',NULL,'2026-07-30 14:45:07','2026-08-10 21:25:13',31,0,0),
+(10,'TCK-000010','submission','pending','medium','mmgmmmgmgmgmgm',2,7,NULL,NULL,NULL,'2026-07-31 13:25:55',NULL,'2026-07-30 14:45:27','2026-08-10 21:25:13',37,0,0),
+(11,'TCK-000011','submission','pending','medium','vamo a singa mmg que fue',2,2,NULL,NULL,NULL,'2026-08-01 12:41:50',NULL,'2026-08-01 12:41:50','2026-08-10 21:25:13',38,0,0),
+(12,'TCK-000012','submission','pending','medium','ya no quiero singa mmg',2,4,NULL,NULL,NULL,'2026-08-01 12:46:04',NULL,'2026-08-01 12:46:04','2026-08-10 21:25:13',39,0,0),
+(13,'TCK-000013','submission','pending','medium','pero tu supite veida?',2,5,NULL,NULL,NULL,'2026-08-01 12:46:39',NULL,'2026-08-01 12:46:39','2026-08-10 21:25:13',40,0,0),
+(14,'TCK-000014','submission','pending','medium','me gua queda ciego mmg',2,1,NULL,NULL,NULL,'2026-08-01 12:50:09',NULL,'2026-08-01 12:50:09','2026-08-10 21:25:13',41,0,0),
+(15,'TCK-000015','submission','pending','medium','me toy cagando mmg',2,6,NULL,NULL,NULL,'2026-08-01 12:50:37',NULL,'2026-08-01 12:50:37','2026-08-10 21:25:13',42,0,0),
+(16,'TCK-000016','submission','pending','medium','con tu panti ven modela ',2,3,NULL,NULL,NULL,'2026-08-01 13:34:31',NULL,'2026-08-01 13:34:31','2026-08-10 21:25:13',43,0,0),
+(17,'TCK-000017','submission','pending','medium','yo se que tu tambien quieres de mi',2,7,NULL,NULL,NULL,'2026-08-05 13:17:52',NULL,'2026-08-01 13:35:26','2026-08-10 21:25:13',79,0,0),
+(18,'TCK-000018','contact','pending','medium','tu sabes que somos de calle',NULL,NULL,'Darlin Luis Valdez','darlinlvaldez@gmail.com',NULL,'2026-08-05 21:13:23',NULL,'2026-08-05 21:13:23','2026-08-10 21:25:13',80,1,0),
+(19,'TCK-000019','contact','pending','medium','Uno nacen pa lider otro pa seguidor',NULL,NULL,'Darlin Luis Valdez','darlinlvaldez@gmail.com',NULL,'2026-08-05 21:49:46',NULL,'2026-08-05 21:49:46','2026-08-10 21:25:13',81,1,0),
+(20,'TCK-000020','contact','pending','medium','y por eso vuelveeee',NULL,NULL,'Darlin Luis Valdez','darlinlvaldez@gmail.com',NULL,'2026-08-05 21:50:35',NULL,'2026-08-05 21:50:35','2026-08-10 21:25:13',82,0,0),
+(21,'TCK-000021','contact','pending','medium','setentaaa setentaaaa ieeeeee',NULL,NULL,'Darlin Luis Valdez','darlinlvaldez@gmail.com',NULL,'2026-08-05 21:57:53',NULL,'2026-08-05 21:57:53','2026-08-10 21:25:13',83,1,0),
+(22,'TCK-000022','contact','pending','medium','caliente caliente dime que tu sientes',NULL,NULL,'Darlin Luis Valdez','darlinlvaldez@gmail.com',NULL,'2026-08-05 21:59:10',NULL,'2026-08-05 21:59:10','2026-08-10 21:25:13',84,1,0),
+(23,'TCK-000023','contact','pending','medium','por ti hay uno y no me importa el tiempo',NULL,NULL,'Darlin Luis Valdez','darlinlvaldez@gmail.com',NULL,'2026-08-06 20:54:37',NULL,'2026-08-06 20:54:37','2026-08-10 21:25:13',85,1,0),
+(24,'TCK-000024','contact','pending','medium','soy un cacawateeee',NULL,NULL,'Darlin Luis Valdez','darlinlvaldez@gmail.com',NULL,'2026-08-06 21:09:38',NULL,'2026-08-06 21:09:38','2026-08-10 21:25:13',86,1,0),
+(25,'TCK-000025','contact','pending','medium','& solo tuuuuu',NULL,NULL,'Darlin Luis Valdez','darlinlvaldez@gmail.com',NULL,'2026-08-06 21:12:14',NULL,'2026-08-06 21:12:14','2026-08-10 21:25:13',87,1,0),
+(26,'TCK-000026','contact','pending','medium','preso tu me tienes preso a mi',NULL,NULL,'Darlin Luis Valdez','darlinlvaldez@gmail.com',NULL,'2026-08-06 21:36:32',NULL,'2026-08-06 21:36:32','2026-08-10 21:25:13',88,1,0),
+(27,'TCK-000027','contact','pending','medium','desde que te conoci me estoy muriendo de amor',NULL,NULL,'Darlin Luis Valdez','darlinlvaldez@gmail.com',NULL,'2026-08-06 21:39:04',NULL,'2026-08-06 21:39:04','2026-08-10 21:25:13',89,1,0),
+(28,'TCK-000028','contact','pending','medium','bubalu asiloco do',NULL,NULL,'Darlin Luis Valdez','darlinlvaldez@gmail.com',NULL,'2026-08-06 21:41:51',NULL,'2026-08-06 21:41:51','2026-08-10 21:25:13',90,1,0),
+(29,'TCK-000029','contact','pending','medium','ya no me importa nada',NULL,NULL,'Darlin Luis Valdez','darlinlvaldez@gmail.com',NULL,'2026-08-06 21:43:50',NULL,'2026-08-06 21:43:50','2026-08-10 21:25:13',91,1,0),
+(30,'TCK-000030','contact','pending','medium','chiquilla boniiitaaa',NULL,NULL,'Darlin Luis Valdez','darlinlvaldez@gmail.com',NULL,'2026-08-06 21:52:52',NULL,'2026-08-06 21:52:52','2026-08-10 21:25:13',92,1,0),
+(31,'TCK-000031','contact','pending','medium','Contigo ha nacido mi nueva razon',NULL,NULL,'Darlin Luis Valdez','darlinlvaldez@gmail.com',NULL,'2026-08-06 21:54:41',NULL,'2026-08-06 21:54:41','2026-08-10 21:25:13',93,1,0),
+(32,'TCK-000032','contact','pending','medium','que calor hay en la ciudad',NULL,NULL,'Darlin Luis Valdez','darlinlvaldez@gmail.com',NULL,'2026-08-07 22:58:01',NULL,'2026-08-07 22:58:01','2026-08-10 21:25:13',94,1,0),
+(33,'TCK-000033','contact','pending','medium','tu sabes que somos de calle',NULL,NULL,'Darlin Luis Valdez','darlinlvaldez@gmail.com',NULL,'2026-08-07 22:59:23',NULL,'2026-08-07 22:59:23','2026-08-10 21:25:13',95,1,0),
+(34,'TCK-000034','contact','pending','medium','vea yo lo que quiero e rapa',NULL,NULL,'Darlin Luis Valdez','darlinlvaldez@gmail.com',NULL,'2026-08-07 23:10:53',NULL,'2026-08-07 23:10:53','2026-08-10 21:25:13',96,1,0);
 
 UNLOCK TABLES;
 

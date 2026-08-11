@@ -1,4 +1,4 @@
-import tickets from '@/server/models/admin/tickets/ticketsAuthor';
+import tickets from '@/server/models/authors/tickets/ticketsAuthor';
 import {getTicketCategoryById} from "@/server/services/catalog";
 
 const ticketsAuthor = {};

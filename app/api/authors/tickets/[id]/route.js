@@ -3,7 +3,7 @@ import { requireAuth } from "../../../../../server/utils/auth";
 import { handleError } from "../../../../../server/errors/handleError";
 import { saveTicketAttachments } from "../../../../../server/services/admin/tickets/ticketAttachments";
 import { message as messageSchema } from "../../../../../server/schemas/admin/tickets/message";
-import ticketChatAuthor from "../../../../../server/controllers/admin/tickets/ticketChatAuthor";
+import ticketChatAuthor from "../../../../../server/controllers/authors/tickets/ticketChatAuthor";
 
 export async function GET(request, { params }) {
   try {

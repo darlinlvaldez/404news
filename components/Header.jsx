@@ -90,18 +90,102 @@ export default function Header() {
       </div>
 
       {searchOpen && (
-        <div className="w-full mt-4 flex justify-center animate-in fade-in slide-in-from-top-1">
+        <div className="w-full mt-4 flex flex-col items-center animate-in fade-in slide-in-from-top-1">
+          
+          {/* Buscador */}
           <div className="relative w-3/4 md:w-1/2">
-            <input value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} onKeyDown={handleSearch} 
-            className="w-full p-3 pr-12 bg-green-700 text-white border border-green-600 
-              rounded-md focus:outline-none focus:border-white transition-all"
-              type="text" placeholder="Buscar 404 News" autoFocus/>
+            <input
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              onKeyDown={handleSearch}
+              className="w-full p-3 pr-12 bg-green-700 text-white border border-green-600 
+                rounded-md focus:outline-none focus:border-white transition-all"
+              type="text"
+              placeholder="Buscar 404 News"
+              autoFocus
+            />
 
-            <svg className="w-5 h-5 text-white absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none"
-              xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2.5" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round"
-                d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"/>
+            <svg
+              className="w-5 h-5 text-white absolute right-3 top-1/2 
+                -translate-y-1/2 pointer-events-none"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth="2.5"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+              />
             </svg>
+          </div>
+
+          <div className="mt-4 flex flex-col items-center">
+            <span className="text-sm font-bold uppercase text-gray-200 mb-2">
+              Síguenos
+            </span>
+
+            <div className="flex gap-4">
+              {/* X */}
+              <a
+                href="#"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Síguenos en X"
+                className="text-gray-300 hover:text-white transition-colors"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  className="w-5 h-5"
+                >
+                  <path d="M18.9 2H22l-6.8 7.8L23 22h-6.5l-5.1-6.2L6 22H2.9l7.3-8.4L1 2h6.6l4.6 5.6L18.9 2z" />
+                </svg>
+              </a>
+
+              {/* Facebook */}
+              <a
+                href="#"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Síguenos en Facebook"
+                className="text-gray-300 hover:text-white transition-colors"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  className="w-5 h-5"
+                >
+                  <path d="M22 12a10 10 0 1 0-11.6 9.9v-7H8v-3h2.4V9.5c0-2.4 1.4-3.8 3.6-3.8 1 0 2 .1 2 .1v2.3h-1.2c-1.2 0-1.6.8-1.6 1.5V12H16l-.4 3h-2.4v7A10 10 0 0 0 22 12z" />
+                </svg>
+              </a>
+
+              {/* Instagram */}
+              <a
+                href="#"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Síguenos en Instagram"
+                className="text-gray-300 hover:text-white transition-colors"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  className="w-5 h-5"
+                >
+                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                  <circle cx="12" cy="12" r="4" />
+                  <circle cx="18" cy="6" r="1" />
+                </svg>
+              </a>
+            </div>
           </div>
         </div>
       )}

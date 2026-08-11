@@ -3,7 +3,7 @@ import { requireAuth } from "../../../../server/utils/auth";
 import { handleError } from "../../../../server/errors/handleError";
 import { saveTicketAttachments } from "../../../../server/services/admin/tickets/ticketAttachments";
 import {ticketContent as ticketSchema } from "../../../../server/schemas/admin/tickets/shared";
-import ticketsAuthor from "../../../../server/controllers/admin/tickets/ticketsAuthor";
+import ticketsAuthor from "../../../../server/controllers/authors/tickets/ticketsAuthor";
 
 export async function GET(request) {
   try {

@@ -1,5 +1,5 @@
 import db from "@/server/lib/db";
-import ticketMessages from "@/server/models/admin/tickets/ticketMessages";
+import ticketMessages from "@/server/models/ticketMessages";
 import {existsByTicket} from '@/server/services/admin/tickets/existsByTicket'
 import {resolveAttachments} from "@/server/services/admin/tickets/resolveAttachments";
 import {addMessage} from "@/server/services/admin/tickets/addMessages";

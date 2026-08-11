@@ -1,5 +1,5 @@
 import db from "@/server/lib/db";
-import ticketMessages from "@/server/models/admin/tickets/ticketMessages";
+import ticketMessages from "@/server/models/ticketMessages";
 import {existsByTicket} from '@/server/services/admin/tickets/existsByTicket'
 import {resolveAttachments} from "@/server/services/admin/tickets/resolveAttachments";
 import {addMessage} from "@/server/services/admin/tickets/addMessages";
@@ -20,11 +20,8 @@ ticketAuthorModels.ticket = async (id, userId) => {
       t.closed_at,
       t.created_at,
       t.updated_at,
-
       COALESCE(assigned.name, assigned.username) AS assigned_name,
-
       a.avatar AS sender_avatar,
-
       u.email
 
     FROM tickets t
