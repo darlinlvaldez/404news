@@ -36,15 +36,11 @@ CREATE TABLE `authors` (
 
 /*Data for the table `authors` */
 
-LOCK TABLES `authors` WRITE;
-
 insert  into `authors`(`id`,`name`,`bio`,`slug`,`avatar`,`user_id`) values 
 (1,'Ana Torres','Periodista especializada en inteligencia artificial con más de 10 años de experiencia','ana-torres','',2),
 (2,'Carlos Mendoza','Analista de hardware y dispositivos móviles, colaborador habitual en revistas especializadas','carlos-mendoza','',3),
 (3,'Laura Vega','Desarrolladora de software y experta en nuevas tecnologías','laura-vega','',4),
 (4,'Miguel Ruiz','Ingeniero en sistemas y especialista en hardware de PCs','miguel-ruiz','',5);
-
-UNLOCK TABLES;
 
 /*Table structure for table `categories` */
 
@@ -64,16 +60,12 @@ CREATE TABLE `categories` (
 
 /*Data for the table `categories` */
 
-LOCK TABLES `categories` WRITE;
-
 insert  into `categories`(`id`,`name`,`slug`,`created_at`,`active`) values 
 (1,'Inteligencia Artificial','ia-inteligencia-artificial','2026-02-03 12:01:14',1),
 (2,'Dispositivos Móviles','dispositivos-moviles','2026-02-03 12:01:14',1),
 (3,'Software','desarrollo-software-app','2026-02-03 12:01:14',1),
 (4,'Computadoras (PC)','computadoras-pc','2026-02-03 12:01:14',1),
 (5,'Tecnología General','tecnologia-general','2026-02-03 20:19:34',1);
-
-UNLOCK TABLES;
 
 /*Table structure for table `country_stats` */
 
@@ -94,8 +86,6 @@ CREATE TABLE `country_stats` (
 ) ENGINE=InnoDB AUTO_INCREMENT=358 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `country_stats` */
-
-LOCK TABLES `country_stats` WRITE;
 
 insert  into `country_stats`(`id`,`news_id`,`country_code`,`country_name`,`views`,`created_at`) values 
 (1,13,'US','United States',2,'2026-06-29 17:58:32'),
@@ -368,8 +358,6 @@ insert  into `country_stats`(`id`,`news_id`,`country_code`,`country_name`,`views
 (356,34,'US','United States',1,'2026-07-19 22:01:12'),
 (357,10,'US','United States',1,'2026-07-20 12:30:51');
 
-UNLOCK TABLES;
-
 /*Table structure for table `news` */
 
 DROP TABLE IF EXISTS `news`;
@@ -382,7 +370,7 @@ CREATE TABLE `news` (
   `cover_image` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `author_id` int DEFAULT NULL,
   `category_id` int DEFAULT NULL,
-  `status` enum('draft','review','published') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'draft',
+  `status` enum('draft','pending','rejected','published','archived') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'draft',
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `views` int NOT NULL DEFAULT '0',
@@ -397,8 +385,6 @@ CREATE TABLE `news` (
 ) ENGINE=InnoDB AUTO_INCREMENT=121 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `news` */
-
-LOCK TABLES `news` WRITE;
 
 insert  into `news`(`id`,`title`,`slug`,`excerpt`,`cover_image`,`author_id`,`category_id`,`status`,`created_at`,`updated_at`,`views`) values 
 (1,'GPT-5 supera los límites de la generación de texto multimodal','gpt-5-supera-limites-texto-multimodal','OpenAI presenta su modelo más avanzado capaz de entender y generar contenido en múltiples formatos','https://www.iweaver.ai/wp-content/uploads/2025/08/ChatGPT-5.webp',1,1,'draft','2026-02-12 14:31:54','2026-02-19 15:18:42',7),
@@ -491,8 +477,6 @@ insert  into `news`(`id`,`title`,`slug`,`excerpt`,`cover_image`,`author_id`,`cat
 (98,'claro claro claro ','claro-claro-claro','claro claro claro claro claro','https://localo.com/es/assets/img/definitions/what-is-google-translate.webp',3,3,'published','2026-02-21 13:01:39','2026-07-01 08:33:33',8),
 (120,'EE. UU. y Emiratos Árabes crean un grupo bilateral de trabajo para la IA militar','ee-uu-y-emiratos-arabes-crean-un-grupo-bilateral-de-trabajo-para-la-ia-militar','EE. UU. y EAU lanzarán \'Task Force Talon Synapse\' para acelerar el desarrollo de aplicaciones de inteligencia artificial en el ámbito militar.','https://localo.com/es/assets/img/definitions/what-is-google-translate.webp',3,1,'draft','2026-07-28 15:12:04','2026-07-28 15:12:45',0);
 
-UNLOCK TABLES;
-
 /*Table structure for table `news_blocks` */
 
 DROP TABLE IF EXISTS `news_blocks`;
@@ -512,8 +496,6 @@ CREATE TABLE `news_blocks` (
 ) ENGINE=InnoDB AUTO_INCREMENT=125 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `news_blocks` */
-
-LOCK TABLES `news_blocks` WRITE;
 
 insert  into `news_blocks`(`id`,`news_id`,`block_type`,`content`,`image_url`,`alt_text`,`position`,`created_at`) values 
 (1,1,'heading','La revolución multimodal de la IA','https://blog.donweb.com/wp-content/uploads/2025/08/Lo-nuevo-de-GPT-5.jpeg',NULL,1,'2026-02-05 12:46:12'),
@@ -571,8 +553,6 @@ insert  into `news_blocks`(`id`,`news_id`,`block_type`,`content`,`image_url`,`al
 (91,98,'paragraph','wow wow wow wow wow wow wow wow wow wow wow wow wow wow wow wow wow wow wow wow wow wow wow wow',NULL,NULL,3,'2026-02-21 13:29:44'),
 (124,120,'paragraph','Miami (EE.UU.), 28 jul (EFE).- Estados Unidos y los Emiratos Árabes Unidos (EAU) crearán el primer grupo bilateral de trabajo para «acelerar el desarrollo» de aplicaciones de inteligencia artificial (IA) en el ámbito militar, anunció este martes el Comando Central del Ejército estadounidense (Centcom).\n\nEl proyecto, denominado ‘Task Force Talon Synapse’, se enfocará en integrar aplicaciones de IA para «el apoyo de inteligencia, la protección de infraestructura crítica y el monitoreo del entorno de seguridad regional», indicó el Centcom, con sede en Florida, en un comunicado.\n\n«Este será un hito histórico a medida que trabajemos con uno de nuestros socios regionales más capacitados para entregar rápidamente avances en IA en constante evolución a nuestros combatientes», declaró el almirante Brad Cooper, jefe del Comando Central.\n\nEl equipo, cuyo lanzamiento formal ocurrirá «en las próximas semanas», tendrá su sede en Abu Dabi, donde lo integrarán cerca de 20 especialistas estadounidenses y emiratíes con experiencia en IA, datos y ciberseguridad, detalló el boletín informativo.\n\nEl grupo de trabajo surge tras una nueva norma promulgada el 10 de julio por el Departamento de Comercio de EE.UU., que facilitó la exportación a los Emiratos de chips de inteligencia artificial, equipo militar, satélites y naves espaciales, al colocar al país en la misma categoría comercial que Europa y Corea del Sur.\n\nLa medida, aprobada por el apoyo que Estados Unidos ha recibido de los Emiratos Árabes Unidos en la guerra con Irán, también permitirá a ciertas empresas emiratíes recibir «artículos de computación avanzada» sin necesidad de licencia, incluyendo servidores y chips de IA.\n\nEl Departamento de Guerra de EE.UU. ha buscado incrementar la IA en el Ejército, como mostró en febrero su acuerdo con OpenAI para que sus modelos de inteligencia artificial puedan usarse en redes clasificadas, además de la disputa, el mismo mes, con la empresa Anthropic ante desacuerdos de cómo implementar la tecnología.',NULL,NULL,1,'2026-08-05 22:01:26');
 
-UNLOCK TABLES;
-
 /*Table structure for table `ticket_attachments` */
 
 DROP TABLE IF EXISTS `ticket_attachments`;
@@ -593,8 +573,6 @@ CREATE TABLE `ticket_attachments` (
 
 /*Data for the table `ticket_attachments` */
 
-LOCK TABLES `ticket_attachments` WRITE;
-
 insert  into `ticket_attachments`(`id`,`message_id`,`original_name`,`file_name`,`mime_type`,`file_size`,`file_path`,`created_at`) values 
 (1,30,'Instalacion de n8n.txt','702847f6-a534-4594-864c-9a83a6ae51fb.txt','text/plain',4796,'tickets/702847f6-a534-4594-864c-9a83a6ae51fb.txt','2026-07-30 14:08:02'),
 (2,37,'Instalacion de n8n.txt','ccfb46de-3ea6-461a-b33d-8c3a8627d56b.txt','text/plain',4796,'tickets/ccfb46de-3ea6-461a-b33d-8c3a8627d56b.txt','2026-07-31 13:25:55'),
@@ -604,8 +582,6 @@ insert  into `ticket_attachments`(`id`,`message_id`,`original_name`,`file_name`,
 (6,57,'Darlin Luis Valdez - CV.pdf','c3c26ff4-f660-4d2c-8675-f6da37faa986.pdf','application/pdf',62429,'tickets/c3c26ff4-f660-4d2c-8675-f6da37faa986.pdf','2026-08-03 13:40:28'),
 (7,58,'Darlin Luis Valdez - CV.pdf','32e26f65-b656-49c1-8f5b-8d4592fb972f.pdf','application/pdf',62429,'tickets/32e26f65-b656-49c1-8f5b-8d4592fb972f.pdf','2026-08-03 13:40:46'),
 (8,67,'Instalacion de n8n.txt','facaae7e-05fa-4f67-b941-5fd1119f5c99.txt','text/plain',4796,'tickets/facaae7e-05fa-4f67-b941-5fd1119f5c99.txt','2026-08-04 12:33:08');
-
-UNLOCK TABLES;
 
 /*Table structure for table `ticket_categories` */
 
@@ -624,8 +600,6 @@ CREATE TABLE `ticket_categories` (
 
 /*Data for the table `ticket_categories` */
 
-LOCK TABLES `ticket_categories` WRITE;
-
 insert  into `ticket_categories`(`id`,`name`,`slug`,`active`,`created_at`,`updated_at`) values 
 (1,'Problema técnico','technical',1,'2026-08-04 13:09:42','2026-08-04 13:09:42'),
 (2,'Solicitud de publicación','publication',1,'2026-08-04 13:09:42','2026-08-04 13:09:42'),
@@ -634,8 +608,6 @@ insert  into `ticket_categories`(`id`,`name`,`slug`,`active`,`created_at`,`updat
 (5,'Cuenta','account',1,'2026-08-04 13:09:42','2026-08-04 13:09:42'),
 (6,'Sugerencia','suggestion',1,'2026-08-04 13:09:42','2026-08-04 13:09:42'),
 (7,'Otro','other',1,'2026-08-04 13:09:42','2026-08-04 13:09:42');
-
-UNLOCK TABLES;
 
 /*Table structure for table `ticket_messages` */
 
@@ -656,11 +628,9 @@ CREATE TABLE `ticket_messages` (
   KEY `fk_tm_sender` (`sender_id`),
   CONSTRAINT `fk_tm_sender` FOREIGN KEY (`sender_id`) REFERENCES `users` (`id`) ON DELETE SET NULL,
   CONSTRAINT `fk_tm_ticket` FOREIGN KEY (`ticket_id`) REFERENCES `tickets` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=97 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=85 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `ticket_messages` */
-
-LOCK TABLES `ticket_messages` WRITE;
 
 insert  into `ticket_messages`(`id`,`ticket_id`,`sender_type`,`sender_id`,`message`,`author_read`,`admin_read`,`is_internal`,`created_at`) values 
 (1,2,'admin',1,'Se arregló esa monda',0,0,0,'2026-07-23 12:44:24'),
@@ -732,34 +702,20 @@ insert  into `ticket_messages`(`id`,`ticket_id`,`sender_type`,`sender_id`,`messa
 (67,17,'admin',1,'a ver si sirve esta monda',1,0,0,'2026-08-04 12:33:08'),
 (68,17,'admin',1,'tu supite veida?',1,0,0,'2026-08-04 14:03:20'),
 (69,17,'admin',1,'claro que supe, y tu??',1,0,1,'2026-08-04 14:11:03'),
-(70,17,'admin',1,'ejejejeje',1,0,1,'2026-08-04 14:34:26'),
-(71,17,'admin',1,'coño',1,0,1,'2026-08-04 14:34:33'),
-(73,17,'admin',1,'Puta madre abuela',1,0,1,'2026-08-05 12:45:17'),
-(74,17,'admin',1,'ya tu sabe',1,0,1,'2026-08-05 13:04:25'),
-(75,17,'admin',1,'que locura',1,0,1,'2026-08-05 13:08:13'),
-(76,17,'admin',1,'frenamo el reloj',1,0,1,'2026-08-05 13:13:36'),
-(77,17,'admin',1,'claro',1,0,0,'2026-08-05 13:13:44'),
-(78,17,'admin',1,'mire buen mmg',1,0,1,'2026-08-05 13:16:34'),
-(79,17,'admin',1,'solo dejame probarte',1,0,0,'2026-08-05 13:17:52'),
+(70,17,'admin',1,'ejejejeje',0,0,1,'2026-08-04 14:34:26'),
+(71,17,'admin',1,'coño',0,0,1,'2026-08-04 14:34:33'),
+(73,17,'admin',1,'Puta madre abuela',0,0,1,'2026-08-05 12:45:17'),
+(74,17,'admin',1,'ya tu sabe',0,0,1,'2026-08-05 13:04:25'),
+(75,17,'admin',1,'que locura',0,0,1,'2026-08-05 13:08:13'),
+(76,17,'admin',1,'frenamo el reloj',0,0,1,'2026-08-05 13:13:36'),
+(77,17,'admin',1,'claro',0,0,0,'2026-08-05 13:13:44'),
+(78,17,'admin',1,'mire buen mmg',0,0,1,'2026-08-05 13:16:34'),
+(79,17,'admin',1,'solo dejame probarte',0,0,0,'2026-08-05 13:17:52'),
 (80,18,'customer',NULL,'al dia y corazon siente el fuego las reglas el juego la pongo yo',0,0,0,'2026-08-05 21:13:23'),
 (81,19,'customer',NULL,'el segundo e tu gran admirador',0,0,0,'2026-08-05 21:49:46'),
 (82,20,'customer',NULL,'que siempre el mismo ya yo no sere',0,0,0,'2026-08-05 21:50:35'),
 (83,21,'customer',NULL,'claro que siiiii',0,0,0,'2026-08-05 21:57:53'),
-(84,22,'customer',NULL,'si te doy de frente, de espalda y de lao',0,0,0,'2026-08-05 21:59:10'),
-(85,23,'customer',NULL,'yo no se pelear, pero por ti es posible',0,0,0,'2026-08-06 20:54:37'),
-(86,24,'customer',NULL,'siiiiiiiiiiiiiiiiiiiii',0,0,0,'2026-08-06 21:09:38'),
-(87,25,'customer',NULL,'eres mi tormento',0,0,0,'2026-08-06 21:12:14'),
-(88,26,'customer',NULL,'preso tu esclavo sereeeeeeeeeeeee',0,0,0,'2026-08-06 21:36:32'),
-(89,27,'customer',NULL,'estas escuchando a luis segura',0,0,0,'2026-08-06 21:39:04'),
-(90,28,'customer',NULL,'pa que sepa woOo',0,0,0,'2026-08-06 21:41:51'),
-(91,29,'customer',NULL,'siento ganas de llorar',0,0,0,'2026-08-06 21:43:50'),
-(92,30,'customer',NULL,'contigo ha nacido mi nueva razon',0,0,0,'2026-08-06 21:52:52'),
-(93,31,'customer',NULL,'estaras soliitaaaa',0,0,0,'2026-08-06 21:54:41'),
-(94,32,'customer',NULL,'que calor que calor, es imposible de aguantar',0,0,0,'2026-08-07 22:58:01'),
-(95,33,'customer',NULL,'mmg mmg mmg mmg',0,0,0,'2026-08-07 22:59:23'),
-(96,34,'customer',NULL,'ay mi madre ah bueno',0,0,0,'2026-08-07 23:10:53');
-
-UNLOCK TABLES;
+(84,22,'customer',NULL,'si te doy de frente, de espalda y de lao',0,0,0,'2026-08-05 21:59:10');
 
 /*Table structure for table `tickets` */
 
@@ -767,9 +723,9 @@ DROP TABLE IF EXISTS `tickets`;
 
 CREATE TABLE `tickets` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `ticket_number` varchar(20) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `ticket_number` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `type` enum('contact','submission') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `status` enum('draft','pending','rejected','published','archived') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'draft',
+  `status` enum('open','in_progress','waiting_response','closed') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'open',
   `priority` enum('low','medium','high') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'medium',
   `subject` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `user_id` int DEFAULT NULL,
@@ -794,46 +750,30 @@ CREATE TABLE `tickets` (
   CONSTRAINT `fk_ticket_category` FOREIGN KEY (`category_id`) REFERENCES `ticket_categories` (`id`) ON DELETE RESTRICT,
   CONSTRAINT `fk_ticket_last_message` FOREIGN KEY (`last_message_id`) REFERENCES `ticket_messages` (`id`) ON DELETE SET NULL,
   CONSTRAINT `fk_ticket_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL
-) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `tickets` */
 
-LOCK TABLES `tickets` WRITE;
-
 insert  into `tickets`(`id`,`ticket_number`,`type`,`status`,`priority`,`subject`,`user_id`,`category_id`,`guest_name`,`guest_email`,`assigned_to`,`last_reply_at`,`closed_at`,`created_at`,`updated_at`,`last_message_id`,`unread_admin_count`,`unread_user_count`) values 
-(1,'TCK-000001','contact','pending','low','una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien ',2,1,NULL,NULL,1,'2026-07-23 12:55:26','2026-07-21 20:05:29','2026-07-21 20:05:00','2026-08-10 21:25:13',NULL,0,0),
-(2,'TCK-000002','submission','pending','medium','tu supite veida?',1,3,NULL,NULL,3,'2026-07-21 20:06:34',NULL,'2026-07-21 20:06:18','2026-08-10 21:25:13',NULL,0,0),
-(3,'TCK-000003','submission','draft','low','clarooooo',2,6,NULL,NULL,NULL,'2026-07-25 15:07:02',NULL,'2026-07-23 12:52:55','2026-08-10 21:25:13',28,0,0),
-(7,'TCK-000007','submission','pending','medium','ya tu sabe',2,4,NULL,NULL,NULL,'2026-07-30 13:55:26',NULL,'2026-07-30 13:55:26','2026-08-10 21:25:13',29,0,0),
-(8,'TCK-000008','submission','pending','medium','mama guebo',2,5,NULL,NULL,NULL,'2026-07-30 14:08:02',NULL,'2026-07-30 14:08:02','2026-08-10 21:25:13',30,0,0),
-(9,'TCK-000009','submission','pending','medium','tu sipite veida?',2,2,NULL,NULL,NULL,'2026-07-30 14:45:07',NULL,'2026-07-30 14:45:07','2026-08-10 21:25:13',31,0,0),
-(10,'TCK-000010','submission','pending','medium','mmgmmmgmgmgmgm',2,7,NULL,NULL,NULL,'2026-07-31 13:25:55',NULL,'2026-07-30 14:45:27','2026-08-10 21:25:13',37,0,0),
-(11,'TCK-000011','submission','pending','medium','vamo a singa mmg que fue',2,2,NULL,NULL,NULL,'2026-08-01 12:41:50',NULL,'2026-08-01 12:41:50','2026-08-10 21:25:13',38,0,0),
-(12,'TCK-000012','submission','pending','medium','ya no quiero singa mmg',2,4,NULL,NULL,NULL,'2026-08-01 12:46:04',NULL,'2026-08-01 12:46:04','2026-08-10 21:25:13',39,0,0),
-(13,'TCK-000013','submission','pending','medium','pero tu supite veida?',2,5,NULL,NULL,NULL,'2026-08-01 12:46:39',NULL,'2026-08-01 12:46:39','2026-08-10 21:25:13',40,0,0),
-(14,'TCK-000014','submission','pending','medium','me gua queda ciego mmg',2,1,NULL,NULL,NULL,'2026-08-01 12:50:09',NULL,'2026-08-01 12:50:09','2026-08-10 21:25:13',41,0,0),
-(15,'TCK-000015','submission','pending','medium','me toy cagando mmg',2,6,NULL,NULL,NULL,'2026-08-01 12:50:37',NULL,'2026-08-01 12:50:37','2026-08-10 21:25:13',42,0,0),
-(16,'TCK-000016','submission','pending','medium','con tu panti ven modela ',2,3,NULL,NULL,NULL,'2026-08-01 13:34:31',NULL,'2026-08-01 13:34:31','2026-08-10 21:25:13',43,0,0),
-(17,'TCK-000017','submission','pending','medium','yo se que tu tambien quieres de mi',2,7,NULL,NULL,NULL,'2026-08-05 13:17:52',NULL,'2026-08-01 13:35:26','2026-08-10 21:25:13',79,0,0),
-(18,'TCK-000018','contact','pending','medium','tu sabes que somos de calle',NULL,NULL,'Darlin Luis Valdez','darlinlvaldez@gmail.com',NULL,'2026-08-05 21:13:23',NULL,'2026-08-05 21:13:23','2026-08-10 21:25:13',80,1,0),
-(19,'TCK-000019','contact','pending','medium','Uno nacen pa lider otro pa seguidor',NULL,NULL,'Darlin Luis Valdez','darlinlvaldez@gmail.com',NULL,'2026-08-05 21:49:46',NULL,'2026-08-05 21:49:46','2026-08-10 21:25:13',81,1,0),
-(20,'TCK-000020','contact','pending','medium','y por eso vuelveeee',NULL,NULL,'Darlin Luis Valdez','darlinlvaldez@gmail.com',NULL,'2026-08-05 21:50:35',NULL,'2026-08-05 21:50:35','2026-08-10 21:25:13',82,0,0),
-(21,'TCK-000021','contact','pending','medium','setentaaa setentaaaa ieeeeee',NULL,NULL,'Darlin Luis Valdez','darlinlvaldez@gmail.com',NULL,'2026-08-05 21:57:53',NULL,'2026-08-05 21:57:53','2026-08-10 21:25:13',83,1,0),
-(22,'TCK-000022','contact','pending','medium','caliente caliente dime que tu sientes',NULL,NULL,'Darlin Luis Valdez','darlinlvaldez@gmail.com',NULL,'2026-08-05 21:59:10',NULL,'2026-08-05 21:59:10','2026-08-10 21:25:13',84,1,0),
-(23,'TCK-000023','contact','pending','medium','por ti hay uno y no me importa el tiempo',NULL,NULL,'Darlin Luis Valdez','darlinlvaldez@gmail.com',NULL,'2026-08-06 20:54:37',NULL,'2026-08-06 20:54:37','2026-08-10 21:25:13',85,1,0),
-(24,'TCK-000024','contact','pending','medium','soy un cacawateeee',NULL,NULL,'Darlin Luis Valdez','darlinlvaldez@gmail.com',NULL,'2026-08-06 21:09:38',NULL,'2026-08-06 21:09:38','2026-08-10 21:25:13',86,1,0),
-(25,'TCK-000025','contact','pending','medium','& solo tuuuuu',NULL,NULL,'Darlin Luis Valdez','darlinlvaldez@gmail.com',NULL,'2026-08-06 21:12:14',NULL,'2026-08-06 21:12:14','2026-08-10 21:25:13',87,1,0),
-(26,'TCK-000026','contact','pending','medium','preso tu me tienes preso a mi',NULL,NULL,'Darlin Luis Valdez','darlinlvaldez@gmail.com',NULL,'2026-08-06 21:36:32',NULL,'2026-08-06 21:36:32','2026-08-10 21:25:13',88,1,0),
-(27,'TCK-000027','contact','pending','medium','desde que te conoci me estoy muriendo de amor',NULL,NULL,'Darlin Luis Valdez','darlinlvaldez@gmail.com',NULL,'2026-08-06 21:39:04',NULL,'2026-08-06 21:39:04','2026-08-10 21:25:13',89,1,0),
-(28,'TCK-000028','contact','pending','medium','bubalu asiloco do',NULL,NULL,'Darlin Luis Valdez','darlinlvaldez@gmail.com',NULL,'2026-08-06 21:41:51',NULL,'2026-08-06 21:41:51','2026-08-10 21:25:13',90,1,0),
-(29,'TCK-000029','contact','pending','medium','ya no me importa nada',NULL,NULL,'Darlin Luis Valdez','darlinlvaldez@gmail.com',NULL,'2026-08-06 21:43:50',NULL,'2026-08-06 21:43:50','2026-08-10 21:25:13',91,1,0),
-(30,'TCK-000030','contact','pending','medium','chiquilla boniiitaaa',NULL,NULL,'Darlin Luis Valdez','darlinlvaldez@gmail.com',NULL,'2026-08-06 21:52:52',NULL,'2026-08-06 21:52:52','2026-08-10 21:25:13',92,1,0),
-(31,'TCK-000031','contact','pending','medium','Contigo ha nacido mi nueva razon',NULL,NULL,'Darlin Luis Valdez','darlinlvaldez@gmail.com',NULL,'2026-08-06 21:54:41',NULL,'2026-08-06 21:54:41','2026-08-10 21:25:13',93,1,0),
-(32,'TCK-000032','contact','pending','medium','que calor hay en la ciudad',NULL,NULL,'Darlin Luis Valdez','darlinlvaldez@gmail.com',NULL,'2026-08-07 22:58:01',NULL,'2026-08-07 22:58:01','2026-08-10 21:25:13',94,1,0),
-(33,'TCK-000033','contact','pending','medium','tu sabes que somos de calle',NULL,NULL,'Darlin Luis Valdez','darlinlvaldez@gmail.com',NULL,'2026-08-07 22:59:23',NULL,'2026-08-07 22:59:23','2026-08-10 21:25:13',95,1,0),
-(34,'TCK-000034','contact','pending','medium','vea yo lo que quiero e rapa',NULL,NULL,'Darlin Luis Valdez','darlinlvaldez@gmail.com',NULL,'2026-08-07 23:10:53',NULL,'2026-08-07 23:10:53','2026-08-10 21:25:13',96,1,0);
-
-UNLOCK TABLES;
+(1,'TCK-000001','contact','in_progress','low','una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien una vaina bien ',2,1,NULL,NULL,1,'2026-07-23 12:55:26','2026-07-21 20:05:29','2026-07-21 20:05:00','2026-08-05 13:41:16',NULL,0,0),
+(2,'TCK-000002','submission','open','medium','tu supite veida?',1,3,NULL,NULL,3,'2026-07-21 20:06:34',NULL,'2026-07-21 20:06:18','2026-08-05 13:41:16',NULL,0,0),
+(3,'TCK-000003','submission','waiting_response','low','clarooooo',2,6,NULL,NULL,NULL,'2026-07-25 15:07:02',NULL,'2026-07-23 12:52:55','2026-08-05 13:41:16',28,0,0),
+(7,'TCK-000007','submission','open','medium','ya tu sabe',2,4,NULL,NULL,NULL,'2026-07-30 13:55:26',NULL,'2026-07-30 13:55:26','2026-08-05 13:41:16',29,0,0),
+(8,'TCK-000008','submission','open','medium','mama guebo',2,5,NULL,NULL,NULL,'2026-07-30 14:08:02',NULL,'2026-07-30 14:08:02','2026-08-05 13:41:16',30,0,0),
+(9,'TCK-000009','submission','open','medium','tu sipite veida?',2,2,NULL,NULL,NULL,'2026-07-30 14:45:07',NULL,'2026-07-30 14:45:07','2026-08-05 13:41:16',31,0,0),
+(10,'TCK-000010','submission','open','medium','mmgmmmgmgmgmgm',2,7,NULL,NULL,NULL,'2026-07-31 13:25:55',NULL,'2026-07-30 14:45:27','2026-08-05 13:41:16',37,0,0),
+(11,'TCK-000011','submission','open','medium','vamo a singa mmg que fue',2,2,NULL,NULL,NULL,'2026-08-01 12:41:50',NULL,'2026-08-01 12:41:50','2026-08-05 13:41:16',38,0,0),
+(12,'TCK-000012','submission','open','medium','ya no quiero singa mmg',2,4,NULL,NULL,NULL,'2026-08-01 12:46:04',NULL,'2026-08-01 12:46:04','2026-08-05 13:41:16',39,0,0),
+(13,'TCK-000013','submission','open','medium','pero tu supite veida?',2,5,NULL,NULL,NULL,'2026-08-01 12:46:39',NULL,'2026-08-01 12:46:39','2026-08-05 13:41:16',40,0,0),
+(14,'TCK-000014','submission','open','medium','me gua queda ciego mmg',2,1,NULL,NULL,NULL,'2026-08-01 12:50:09',NULL,'2026-08-01 12:50:09','2026-08-05 13:41:16',41,0,0),
+(15,'TCK-000015','submission','open','medium','me toy cagando mmg',2,6,NULL,NULL,NULL,'2026-08-01 12:50:37',NULL,'2026-08-01 12:50:37','2026-08-05 13:41:16',42,0,0),
+(16,'TCK-000016','submission','open','medium','con tu panti ven modela ',2,3,NULL,NULL,NULL,'2026-08-01 13:34:31',NULL,'2026-08-01 13:34:31','2026-08-05 13:41:16',43,0,0),
+(17,'TCK-000017','submission','open','medium','yo se que tu tambien quieres de mi',2,7,NULL,NULL,NULL,'2026-08-05 13:17:52',NULL,'2026-08-01 13:35:26','2026-08-05 13:41:16',79,0,2),
+(18,'TCK-000018','contact','open','medium','tu sabes que somos de calle',NULL,NULL,'Darlin Luis Valdez','darlinlvaldez@gmail.com',NULL,'2026-08-05 21:13:23',NULL,'2026-08-05 21:13:23','2026-08-05 21:13:23',80,1,0),
+(19,'TCK-000019','contact','open','medium','Uno nacen pa lider otro pa seguidor',NULL,NULL,'Darlin Luis Valdez','darlinlvaldez@gmail.com',NULL,'2026-08-05 21:49:46',NULL,'2026-08-05 21:49:46','2026-08-05 21:49:46',81,1,0),
+(20,'TCK-000020','contact','open','medium','y por eso vuelveeee',NULL,NULL,'Darlin Luis Valdez','darlinlvaldez@gmail.com',NULL,'2026-08-05 21:50:35',NULL,'2026-08-05 21:50:35','2026-08-05 21:50:35',82,1,0),
+(21,'TCK-000021','contact','open','medium','setentaaa setentaaaa ieeeeee',NULL,NULL,'Darlin Luis Valdez','darlinlvaldez@gmail.com',NULL,'2026-08-05 21:57:53',NULL,'2026-08-05 21:57:53','2026-08-05 21:57:53',83,1,0),
+(22,'TCK-000022','contact','open','medium','caliente caliente dime que tu sientes',NULL,NULL,'Darlin Luis Valdez','darlinlvaldez@gmail.com',NULL,'2026-08-05 21:59:10',NULL,'2026-08-05 21:59:10','2026-08-05 21:59:10',84,1,0);
 
 /*Table structure for table `users` */
 
@@ -854,16 +794,12 @@ CREATE TABLE `users` (
 
 /*Data for the table `users` */
 
-LOCK TABLES `users` WRITE;
-
 insert  into `users`(`id`,`username`,`NAME`,`email`,`password`,`role`,`active`,`created_at`) values 
 (1,'darlin','Darlin L. Valdez','darlinlvaldez@gmail.com','$2b$10$2LKClehgb5ifsKKVHQDh/u8E3VmxyjYjVW3Pd0Cuty9vBrkvSraZy','superadmin',1,'2026-02-24 19:52:21'),
 (2,'anatorres','Ana Torres','anatorres@gmail.com','$2b$10$u1rbukGt2wC9qla7UxwUJ..lJtNTH9chXxArqMwBmBGe24FQoQ/IG','author',1,'2026-02-25 19:36:00'),
 (3,'carlosmendoza','Carlos Mendoza','carlosmendoza@gmail.com','$2b$10$LsGLMl3rGkp8hWf1KrMBMuTScmSf5yeP8QUKIgQnhi.br/1haltxK','author',1,'2026-02-25 19:37:15'),
 (4,'lauravega','Laura Vega','lauravega@gmail.com','$2b$10$hTBJsFQ2H3Eu9sJTnfIYCuxq2y37VBHW84xscLDwubL8oKfCkhGKO','author',1,'2026-02-25 19:37:50'),
 (5,'miguelruiz','Miguel Ruiz','miguelruiz@gmail.com','$2b$10$oS13OGYebsgM9c31EFOfMOfziqnGX6TFoxeKuG94S/cwIY2q1FCsS','author',1,'2026-02-25 19:38:15');
-
-UNLOCK TABLES;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

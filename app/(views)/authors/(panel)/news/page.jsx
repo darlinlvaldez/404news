@@ -60,7 +60,7 @@ export default function NewsTable() {
   if (statusFilter) {params.append("status", statusFilter)}
   if (debouncedSearch) params.append("search", debouncedSearch);
 
-  fetch(`/api/admin/news?${params.toString()}`)
+  fetch(`/api/authors/news?${params.toString()}`)
     .then(res => res.json())
     .then(data => {
       if (data.ok) {

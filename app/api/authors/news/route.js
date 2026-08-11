@@ -1,14 +1,13 @@
 import { NextResponse } from "next/server";
-import newsController from "../../../../server/controllers/admin/news";
 import { requireAuth } from "../../../../server/utils/auth";
 import { handleError } from "../../../../server/errors/handleError";
 import { news as newsSchema } from "../../../../server/schemas/admin/news"
 import { newsBlocks } from "../../../../server/schemas/admin/newsBlocks"
-
+import newsController from "../../../../server/controllers/authors/news";
 
 export async function GET(request) {
   try {
-    await requireAuth(request, ["superadmin", "admin", "editor"]);
+    await requireAuth(request, ["author"]);
 
     const { searchParams } = new URL(request.url);
 
@@ -17,8 +16,8 @@ export async function GET(request) {
     const search = searchParams.get("search") || "";
     const status = searchParams.get("status") || "";
 
-    const result = await newsController.newsTable({
-      limit, offset, search, status
+    const result = await newsController.authorNews({
+      userId: user.id, limit, offset, search, status
     });
 
     return NextResponse.json(result);

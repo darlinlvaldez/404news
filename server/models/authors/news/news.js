@@ -2,7 +2,8 @@ import db from "@/server/lib/db.js";
 
 const news = {}; 
 
-news.getNewsTable = async function (
+news.getAuthorNews = async function (
+  userId,
   limit = 50,
   offset = 0,
   search = "",
@@ -11,12 +12,12 @@ news.getNewsTable = async function (
 
   let baseQuery = `
     FROM news n
-    LEFT JOIN authors a ON n.author_id = a.id
+    INNER JOIN authors a ON n.author_id = a.id
     LEFT JOIN categories c ON n.category_id = c.id
-    WHERE 1=1
+    WHERE a.user_id = ?
   `;
 
-  const params = [];
+  const params = [userId];
 
   if (search) {
     baseQuery += ` AND (n.title LIKE ? OR n.id LIKE ?)`;

@@ -3,7 +3,7 @@ const config = {
   PORT: process.env.PORT,
   PORTAL: process.env.PORTAL,
 
-  JWT_SECRET: process.env.SECRET_KEY,
+  JWT_SECRET: process.env.JWT_SECRET,
   
   DB_HOST: process.env.DB_HOST,
   DB_USER: process.env.DB_USER,

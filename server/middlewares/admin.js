@@ -1,11 +1,11 @@
-import { verifyToken } from "@/server/utils/jwt";
 import { NextResponse } from "next/server";
+import { verifyToken } from "@/server/utils/jwt";
 
 export async function admin(req) {
   const { pathname } = req.nextUrl;
   const token = req.cookies.get("admin_token")?.value;
 
-  if (pathname === "/admin/login") {
+  if (pathname === "/login") {
     
     if (!token) {
       return NextResponse.next();
@@ -22,7 +22,7 @@ export async function admin(req) {
   }
 
   if (!token) {
-    return NextResponse.redirect(new URL("/admin/login", req.url));
+    return NextResponse.redirect(new URL("/login", req.url));
   }
 
   try {
@@ -41,6 +41,6 @@ export async function admin(req) {
     return NextResponse.next();
 
   } catch {
-    return NextResponse.redirect(new URL("/admin/login", req.url));
+    return NextResponse.redirect(new URL("/login", req.url));
   }
 }
