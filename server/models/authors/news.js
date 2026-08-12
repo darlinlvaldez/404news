@@ -1,4 +1,5 @@
 import db from "@/server/lib/db.js";
+import { getAuthorByUserId } from "@/server/services/catalog";
 
 const news = {}; 
 
@@ -44,7 +45,6 @@ news.getAuthorNews = async function (
       n.status,
       n.views,
       n.created_at,
-      a.name AS author,
       c.name AS category
     ${baseQuery}
     ORDER BY n.created_at DESC
@@ -56,14 +56,20 @@ news.getAuthorNews = async function (
   return { rows, total };
 };
 
-news.createNews = async (newsData, blocks) => {
+news.createNewsByAuthor = async (userId, newsData, blocks) => {
   const connection = await db.getConnection();
 
   try {
     await connection.beginTransaction();
 
+    const author = await getAuthorByUserId(userId);
+
+    if (!author) {
+      throw new Error("AUTHOR NOT FOUND");
+    }
+
     const [newsResult] = await connection.query(
-      `INSERT INTO news 
+      `INSERT INTO news
        (title, slug, excerpt, cover_image, author_id, category_id, status)
        VALUES (?, ?, ?, ?, ?, ?, ?)`,
       [
@@ -71,9 +77,9 @@ news.createNews = async (newsData, blocks) => {
         newsData.slug,
         newsData.excerpt,
         newsData.cover_image,
-        newsData.author_id,
+        author.id,
         newsData.category_id,
-        newsData.status,
+        "draft"
       ]
     );
 

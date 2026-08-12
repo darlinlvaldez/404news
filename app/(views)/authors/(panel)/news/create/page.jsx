@@ -15,7 +15,6 @@ import { Save } from "lucide-react";
 export default function CreateNews() {
   const router = useRouter();
   
-  const [authors, setAuthors] = useState([]);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const { errors, clearField, handleResponse } = useFormErrors();
@@ -38,7 +37,7 @@ export default function CreateNews() {
         blocks: blocks.map(({ id, ...block }) => block),
       };
 
-      const res = await fetch("/api/admin/news", {
+      const res = await fetch("/api/authors/news", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -56,7 +55,7 @@ export default function CreateNews() {
       toast.success("NOTICIA CREADA",
          "La información se ha guardado correctamente."
       );
-      router.push("/admin/news");
+      router.push("/authors/news");
 
     } catch (error) {
       console.error(error);
@@ -77,11 +76,10 @@ export default function CreateNews() {
 
   useEffect(() => {
     const fetchFormData = async () => {
-      const res = await fetch("/api/admin/news/form-data");
+      const res = await fetch("/api/authors/news/form-data");
       const data = await res.json();
 
       if (data.ok) {
-        setAuthors(data.authors);
         setCategories(data.categories);
       }
 
@@ -106,7 +104,7 @@ export default function CreateNews() {
     setGeneratingAI(true);
 
     try {
-      const res = await fetch("/api/admin/news/generate-ai", {
+      const res = await fetch("/api/authors/news/generate-ai", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -139,7 +137,7 @@ export default function CreateNews() {
   };
 
   const onBack = () => {
-    router.push('/admin/news');
+    router.push('/authors/news');
   };
 
   return (
@@ -160,12 +158,12 @@ export default function CreateNews() {
         <GeneralData 
           newsData={newsData}
           onInputChange={handleChange}
-          authors={authors}
           categories={categories}
           onGenerateAI={handleGenerateAI}
           generatingAI={generatingAI}
           errors={errors}
           clearField={clearField}
+          isAuthor
         />
 
         <ContentBlocks 

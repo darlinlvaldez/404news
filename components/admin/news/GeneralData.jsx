@@ -7,7 +7,8 @@ import { ActionButton } from '@/components/admin/ui/ActionButtons';
 import { Image as ImageIcon, AlignLeft, Sparkles } from 'lucide-react';
 
 export const GeneralData = ({ newsData, onInputChange, authors = [], categories = [], 
-  onGenerateAI, generatingAI, errors = {}, clearField }) => {
+  onGenerateAI, generatingAI, errors = {}, clearField, isAuthor = false
+ }) => {
 
   const statusOptions = [
     { value: "draft", label: "Borrador" },
@@ -101,22 +102,25 @@ export const GeneralData = ({ newsData, onInputChange, authors = [], categories 
         </div>
 
         <div className="md:col-span-2 grid grid-cols-1 sm:grid-cols-3 gap-6 pt-4 border-t border-gray-800">
-          <div>
-            <label className={labelStyles}>
-              Autor
-            </label>
-            <Select
-              name="author_id"
-              placeholder="Seleccionar Autor"
-              errors={errors} 
-              options={authors.map(author => ({
-                value: author.id,
-                label: author.name,
-              }))}
-              value={newsData.author_id}
-              onChange={onInputChange}
-            />
-          </div>
+          {!isAuthor && (
+            <div>
+              <label className={labelStyles}>
+                Autor
+              </label>
+
+              <Select
+                name="author_id"
+                placeholder="Seleccionar Autor"
+                errors={errors}
+                options={authors.map(author => ({
+                  value: author.id,
+                  label: author.name,
+                }))}
+                value={newsData.author_id}
+                onChange={onInputChange}
+              />
+            </div>
+          )}
           <div>
             <label className={labelStyles}>
               Categoría
@@ -134,19 +138,21 @@ export const GeneralData = ({ newsData, onInputChange, authors = [], categories 
               onChange={onInputChange}
             />
           </div>
-          <div>
-          <label className={labelStyles}>
-              Estado
-            </label>
-            <Select
-              name="status"
-              value={newsData.status}
-              options={statusOptions}
-              onChange={onInputChange}
-              errors={errors} 
-              placeholder="Seleccionar estado"
-            />
-          </div>
+          {!isAuthor && (
+            <div>
+              <label className={labelStyles}>
+                Estado
+              </label>
+
+              <Select
+                name="status"
+                value={newsData.status}
+                options={statusOptions}
+                onChange={onInputChange}
+                errors={errors}
+              />
+            </div>
+          )}
         </div>
       </div>
     </section>

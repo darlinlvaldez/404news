@@ -21,6 +21,8 @@ import {
   CheckCircle2,
   Clock,
   FileEdit,
+  Archive,
+  XCircle,
   Plus
 } from 'lucide-react';
 
@@ -72,20 +74,46 @@ export default function NewsTable() {
 
   const getStatusStyle = (status) => {
     switch (status) {
-      case 'published': return 'text-green-700 border-green-800';
-      case 'review': return 'text-amber-500 border-amber-500/20';
-      case 'draft': return 'text-slate-500 border-slate-600';
-      default: return 'text-gray-500 border-gray-500/20';
+      case "published":
+        return "text-green-700 border-green-800";
+
+      case "review":
+        return "text-amber-500 border-amber-500/20";
+
+      case "draft":
+        return "text-slate-500 border-slate-600";
+
+      case "archived":
+        return "text-gray-500 border-gray-500/20";
+
+      case "rejected":
+        return "text-red-500 border-red-500/20";
+
+      default:
+        return "text-gray-500 border-gray-500/20";
     }
   };
 
   const getStatusIcon = (status) => {
     switch (status) {
-      case 'published': return <CheckCircle2 size={20} className="mr-1.5" />;
-      case 'review': return <Clock size={12} className="mr-1.5" />;
-      case 'draft': return <FileEdit size={12} className="mr-1.5" />;
-      default: return null;
-      }
+      case "published":
+        return <CheckCircle2 size={20} className="mr-1.5" />;
+
+      case "review":
+        return <Clock size={12} className="mr-1.5" />;
+
+      case "draft":
+        return <FileEdit size={12} className="mr-1.5" />;
+
+      case "archived":
+        return <Archive size={12} className="mr-1.5" />;
+
+      case "rejected":
+        return <XCircle size={12} className="mr-1.5" />;
+
+      default:
+        return null;
+    }
   };
 
   const statusOptions = [
@@ -93,6 +121,8 @@ export default function NewsTable() {
     { value: "published", label: "Publicado" },
     { value: "review", label: "En revisión" },
     { value: "draft", label: "Borrador" },
+    { value: "archived", label: "Archivado" },
+    { value: "rejected", label: "Rechazado" },
   ];
 
   const statusLabels = Object.fromEntries(
@@ -115,7 +145,7 @@ export default function NewsTable() {
       
       <Header
         actions={
-          <ActionButton href="/admin/news/create" icon={Plus} variant="green">
+          <ActionButton href="/authors/news/create" icon={Plus} variant="green">
             Nueva Noticia
           </ActionButton>
         }
@@ -152,7 +182,6 @@ export default function NewsTable() {
           <thead>
             <tr className="bg-gray-800/40 text-gray-400 tracking-tight border-b border-slate-800">
               <Th>Detalles del Artículo</Th>
-              <Th>Autoría</Th>
               <Th>Categoría</Th>
               <Th>Estado</Th>
               <Th>Analítica</Th>
@@ -176,14 +205,6 @@ export default function NewsTable() {
                     </span>
                   </div>
                 </div>
-                </td>
-                <td className="px-8 py-6">
-                  <div className="flex items-center text-sm text-gray-300">
-                    <div className="w-7 h-7 rounded-lg bg-gray-800 flex items-center justify-center mr-3 border border-gray-700 text-xs font-bold">
-                      {item.author.split(' ').slice(0,2).map(n => n[0]).join('')}
-                    </div>
-                    {item.author}
-                  </div>
                 </td>
                 <td className="px-8 py-6">
                   <div className="flex items-center text-sm text-slate-300">

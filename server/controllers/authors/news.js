@@ -1,8 +1,8 @@
-import newsModel from "@/server/models/admin/news";
 import { sendNewsNotification } from "@/server/services/admin/n8n/notification";
 import { generateAiMetadata } from "@/server/services/admin/n8n/generateMetadata";
 import { existsByNews } from "@/server/services/existsByNews";
-import {getAuthors, getCategories} from "@/server/services/catalog";
+import { getCategories } from "@/server/services/catalog";
+import newsModel from "@/server/models/authors/news";
 
 const newsController = {};
 
@@ -18,7 +18,7 @@ newsController.authorNews = async function ({ userId, limit, offset, search, sta
   return { ok: true, news: rows, total };
 };
 
-newsController.create = async function ({ news, blocks }) {
+newsController.create = async function ({ user, news, blocks }) {
   const exists = await existsByNews(news.title, news.slug);
 
   if (exists) {
@@ -28,7 +28,7 @@ newsController.create = async function ({ news, blocks }) {
     };
   }
 
-  const newsId = await newsModel.createNews(news, blocks);
+  const newsId = await newsModel.createNewsByAuthor(user.id, news, blocks);
 
   await sendNewsNotification(newsId, news);
 
@@ -121,12 +121,10 @@ newsController.delete = async function (id) {
 };
 
 newsController.getFormData = async function () {
-  const authors = await getAuthors();
   const categories = await getCategories();
 
   return {
     ok: true,
-    authors,
     categories,
   };
 };

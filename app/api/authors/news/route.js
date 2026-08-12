@@ -7,7 +7,7 @@ import newsController from "../../../../server/controllers/authors/news";
 
 export async function GET(request) {
   try {
-    await requireAuth(request, ["author"]);
+    const user = await requireAuth(request, ["author"]);
 
     const { searchParams } = new URL(request.url);
 
@@ -30,9 +30,7 @@ export async function GET(request) {
 
 export async function POST(req) {
   try {
-    const user = await requireAuth(req, [
-      "superadmin", "admin", "editor"
-    ]);
+    const user = await requireAuth(req, ["author"]);
 
     const body = await req.json();
 
@@ -40,7 +38,7 @@ export async function POST(req) {
     body.blocks = newsBlocks.parse(body.blocks);
 
     const result = await newsController.create({
-      ...body, authorId: user.id
+      user, ...body
     });
 
     return NextResponse.json(result);
