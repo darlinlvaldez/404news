@@ -47,9 +47,15 @@ export const GeneralData = ({ newsData, onInputChange, authors = [], categories 
           <label className={labelStyles}>
             Título Principal
           </label>
-          <input type="text" name="title" value={newsData.title} onChange={onInputChange} 
-          className={fieldClass(!!errors?.title, `${styleInput} px-5 py-4 text-xl`)}
-          placeholder="Escribe un título impactante..."/>   
+          <input
+            type="text" 
+            name="title" 
+            value={newsData.title} 
+            onChange={onInputChange} 
+            className={fieldClass(!!errors?.title, 
+              `${styleInput} px-5 py-4 text-xl`)}
+            placeholder="Escribe un título impactante..."
+          />   
           <ErrorMessage
             errors={errors}
             name="title"
@@ -61,8 +67,14 @@ export const GeneralData = ({ newsData, onInputChange, authors = [], categories 
             <label className={labelStyles}>
               URL amigable (Slug)
             </label>
-            <input type="text" name="slug" value={newsData.slug} onChange={onInputChange} 
-            className={fieldClass(!!errors?.slug, `${styleInput} px-4 py-2.5`)}
+            <input 
+              type="text" 
+              name="slug" 
+              placeholder="Escribe-un-título-impactante"
+              value={newsData.slug} 
+              onChange={onInputChange} 
+              className={fieldClass(!!errors?.slug, 
+                `${styleInput} px-4 py-2.5`)}
             />
             <ErrorMessage
               errors={errors}
@@ -74,9 +86,13 @@ export const GeneralData = ({ newsData, onInputChange, authors = [], categories 
               Imagen de Portada (URL)
             </label>
             <div className="relative group">
-              <input type="text" name="cover_image" value={newsData.cover_image} onChange={onInputChange}
-                placeholder="https://ejemplo.com/imagen.jpg" className={fieldClass(!!errors?.cover_image, 
-                `${styleInput} px-4 py-2.5`)}
+              <input 
+                type="text" 
+                name="cover_image" 
+                value={newsData.cover_image} onChange={onInputChange}
+                placeholder="https://ejemplo.com/imagen.jpg" 
+                className={fieldClass(!!errors?.cover_image, 
+                  `${styleInput} px-4 py-2.5 pr-10`)}
               />
               <ImageIcon className="absolute right-3 top-3 text-gray-600 group-focus-within:text-green-800" size={18}/>
               <ErrorMessage
@@ -91,8 +107,12 @@ export const GeneralData = ({ newsData, onInputChange, authors = [], categories 
           <label className={labelStyles}>
             Resumen / Excerpt
           </label>
-          <textarea name="excerpt" value={newsData.excerpt} onChange={onInputChange} rows="5"
-            className={fieldClass(!!errors?.excerpt, `${styleInput} px-4 py-2`)}
+          <textarea 
+            name="excerpt" 
+            value={newsData.excerpt} 
+            onChange={onInputChange} rows="5"
+            className={fieldClass(!!errors?.excerpt, 
+              `${styleInput} px-4 py-2`)}
             placeholder="Escribe un breve resumen para los listados de noticias...">
           </textarea>
           <ErrorMessage

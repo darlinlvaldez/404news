@@ -1,5 +1,5 @@
 import db from "@/server/lib/db.js";
-import { getAuthorByUserId } from "@/server/services/catalog";
+import { getAuthorByUserId, getAuthorNewsById } from "@/server/services/catalog";
 
 const news = {}; 
 
@@ -113,21 +113,18 @@ news.createNewsByAuthor = async (userId, newsData, blocks) => {
   }
 };
 
-news.updateNews = async (id, newsData, blocks) => {
+news.updateNewsAuthor = async (userId, id, newsData, blocks) => {
   const connection = await db.getConnection();
 
   try {
 
-    const [news] = await connection.query(
-      `SELECT id FROM news WHERE id = ?`,
-      [id]
-    );
+    const news = await getAuthorNewsById(id, userId);
 
-    if (!news.length) {
-        throw new Error("Noticia no encontrada");
+    if (!news) {
+      throw new Error("Noticia no encontrada o no tienes permiso");
     }
 
-    const newsId = news[0].id;
+    const newsId = news.id;
 
     await connection.beginTransaction();
 
@@ -137,18 +134,14 @@ news.updateNews = async (id, newsData, blocks) => {
         slug = ?,
         excerpt = ?,
         cover_image = ?,
-        author_id = ?,
-        category_id = ?,
-        status = ?
+        category_id = ?
        WHERE id = ?`,
       [
         newsData.title,
         newsData.slug,
         newsData.excerpt,
         newsData.cover_image,
-        newsData.author_id,
         newsData.category_id,
-        newsData.status,
         id
       ]
     );
@@ -186,48 +179,55 @@ news.updateNews = async (id, newsData, blocks) => {
   }
 };
 
-news.getNewsById = async (id) => {
-
+news.getNewsById = async (userId, id) => {
   const [news] = await db.query(
-    `SELECT * FROM news WHERE id = ?`,
-    [id]
+    `
+    SELECT n.*
+    FROM news n
+    INNER JOIN authors a ON n.author_id = a.id
+    WHERE n.id = ?
+      AND a.user_id = ?
+    LIMIT 1
+    `,
+    [id, userId]
   );
 
   if (!news.length) {
-    return { news: null, blocks: [] };
+    return {
+      news: null,
+      blocks: [],
+    };
   }
 
-  const newsId = news[0].id;
-
   const [blocks] = await db.query(
-    `SELECT * FROM news_blocks
-     WHERE news_id = ?
-     ORDER BY position ASC`,
-    [newsId]
+    `
+    SELECT *
+    FROM news_blocks
+    WHERE news_id = ?
+    ORDER BY position ASC
+    `,
+    [id]
   );
 
   return {
     news: news[0],
-    blocks
+    blocks,
   };
 };
 
-news.deleteNews = async (id) => {
+news.deleteNews = async (userId, id) => {
   const connection = await db.getConnection();
 
   try {
-    await connection.beginTransaction();
+    const existing = await getAuthorNewsById(id, userId);
 
-    const [existing] = await connection.query(
-      `SELECT id FROM news WHERE id = ?`,
-      [id]
-    );
-
-    const newsId = existing[0].id;
-
-    if (existing.length === 0) {
-      throw new Error("Noticia no encontrada");
+    if (!existing) {
+      throw new Error("Noticia no encontrada o no tienes permiso");
     }
+
+    const newsId = existing.id;
+
+    await connection.beginTransaction();
 
     await connection.query(
       `DELETE FROM news_blocks WHERE news_id = ?`,
@@ -242,7 +242,6 @@ news.deleteNews = async (id) => {
     await connection.commit();
 
     return true;
-
   } catch (error) {
     await connection.rollback();
     throw error;

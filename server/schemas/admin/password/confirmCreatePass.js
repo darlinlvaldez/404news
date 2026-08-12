@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { createAuthorSchema, createUserSchema } from "../password/createMerge";
+import { createAuthorSchema, createUserSchema } from "@/server/schemas/admin/password/createMerge";
 
 function confirmCreatePassword(schema) {
   return schema

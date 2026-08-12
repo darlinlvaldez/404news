@@ -1,6 +1,5 @@
 import newsModel from "@/server/models/admin/news";
 import { sendNewsNotification } from "@/server/services/admin/n8n/notification";
-import { generateAiMetadata } from "@/server/services/admin/n8n/generateMetadata";
 import { existsByNews } from "@/server/services/existsByNews";
 import {getAuthors, getCategories} from "@/server/services/catalog";
 
@@ -35,24 +34,6 @@ newsController.create = async function ({ news, blocks }) {
     ok: true, 
     message: "Noticia creada correctamente", 
     newsId 
-  };
-};
-
-newsController.generateAiMetadata = async function ({ news, blocks }) {
-  const hasContent = blocks?.some((b) => b.content?.trim());
-
-  if (!hasContent) {
-    return {
-      ok: false,
-      message: "No hay contenido para generar metadatos",
-    };
-  }
-
-  const metadata = await generateAiMetadata({ news, blocks });
-
-  return {
-    ok: true,
-    ...metadata,
   };
 };
 

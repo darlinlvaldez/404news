@@ -180,9 +180,9 @@ export default function NewsTable() {
                 <td className="px-8 py-6">
                   <div className="flex items-center text-sm text-gray-300">
                     <div className="w-7 h-7 rounded-lg bg-gray-800 flex items-center justify-center mr-3 border border-gray-700 text-xs font-bold">
-                      {item.author.split(' ').slice(0,2).map(n => n[0]).join('')}
+                      {item.author ? item.author.split(" ").slice(0, 2).map(n => n[0]).join(""): "AD"}
                     </div>
-                    {item.author}
+                    {item.author || "Administrador"}
                   </div>
                 </td>
                 <td className="px-8 py-6">

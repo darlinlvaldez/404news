@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from "react";
 import { toast } from "@/utils/toast";
-import { UseNewsState } from '@/components/admin/news/UseNewsState';
+import { useNewsState } from '@/hooks/useNewsState';
 import { Header } from '@/components/admin/Header';
 import { GeneralData } from '@/components/admin/news/GeneralData';
 import { ContentBlocks } from '@/components/admin/news/ContentBlocks';
@@ -28,15 +28,37 @@ export default function CreateNews() {
     removeBlock,
     updateBlock,
     moveBlock,
-  } = UseNewsState();
+  } = useNewsState();
+
+  const payload = {
+    news: {
+      title: newsData.title,
+      slug: newsData.slug,
+      excerpt: newsData.excerpt,
+      cover_image: newsData.cover_image,
+      category_id: newsData.category_id,
+    },
+
+    blocks: blocks.map((block) => {
+      if (block.block_type === "image") {
+        return {
+          block_type: block.block_type,
+          image_url: block.image_url,
+          alt_text: block.alt_text,
+          position: block.position,
+        };
+      }
+
+      return {
+        block_type: block.block_type,
+        content: block.content,
+        position: block.position,
+      };
+    }),
+  };
 
   const handleSave = async () => {
     try {
-      const payload = {
-        news: newsData,
-        blocks: blocks.map(({ id, ...block }) => block),
-      };
-
       const res = await fetch("/api/authors/news", {
         method: "POST",
         headers: {
@@ -104,7 +126,7 @@ export default function CreateNews() {
     setGeneratingAI(true);
 
     try {
-      const res = await fetch("/api/authors/news/generate-ai", {
+      const res = await fetch("/api/generate-ai", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

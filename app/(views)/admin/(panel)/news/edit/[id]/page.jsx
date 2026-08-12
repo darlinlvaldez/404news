@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { useParams } from "next/navigation";
 import { toast } from "@/utils/toast";
-import { UseNewsState } from '@/components/admin/news/UseNewsState';
+import { useNewsState } from '@/hooks/useNewsState';
 import { Header } from '@/components/admin/Header';
 import { GeneralData } from '@/components/admin/news/GeneralData';
 import { ContentBlocks } from '@/components/admin/news/ContentBlocks';
@@ -23,6 +23,7 @@ export default function EditNews() {
 
   const [authors, setAuthors] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [generatingAI, setGeneratingAI] = useState(false);
   const { errors, clearField, handleResponse } = useFormErrors();
   
   const {
@@ -36,7 +37,7 @@ export default function EditNews() {
     updateBlock,
     moveBlock,
     setFormData
-  } = UseNewsState();
+  } = useNewsState();
 
   useEffect(() => {
     const fetchFormData = async () => {
@@ -129,6 +130,53 @@ export default function EditNews() {
     }
   };
 
+  const handleGenerateAI = async () => {
+    const hasContent = blocks.some((b) => b.content?.trim());
+
+    if (!hasContent) {
+      toast.error("AGREGA CONTENIDO ANTES DE GENERAR CON IA");
+      return;
+    }
+
+    const category = categories.find(
+      c => c.id === newsData.category_id
+    );
+
+    setGeneratingAI(true);
+
+    try {
+      const res = await fetch("/api/generate-ai", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+        news: { ...newsData, category_name: category?.name ?? "",},
+          blocks,
+        })
+      });
+
+      const data = await res.json();
+
+      if (!res.ok || !data.ok) {
+        toast.error(data.message || "NO SE PUDO GENERAR CON IA");
+        return;
+      }
+
+      handleInputChange({ target: { name: "title", value: data.title } });
+      handleInputChange({ target: { name: "slug", value: data.slug } });
+      handleInputChange({ target: { name: "excerpt", value: data.excerpt } });
+      clearField("title");
+      clearField("slug");
+      clearField("excerpt");
+
+      toast.success("CAMPOS GENERADOS CON IA");
+    } catch (error) {
+      console.error(error);
+      toast.error("OCURRIÓ UN ERROR INESPERADO");
+    } finally {
+      setGeneratingAI(false);
+    }
+  };
+
   const handleDelete = async () => {
     try {
       const response = await fetch(`/api/admin/news/${id}`, {
@@ -185,6 +233,8 @@ export default function EditNews() {
           onInputChange={handleChange}
           authors={authors}
           categories={categories}
+          onGenerateAI={handleGenerateAI}
+          generatingAI={generatingAI}
           errors={errors}
           clearField={clearField}
         />
@@ -206,6 +256,7 @@ export default function EditNews() {
               variant="green"
               className="w-full sm:flex-1 py-5 font-black justify-center"
               onClick={handleSave}
+              disabled={generatingAI}
             >
               Confirmar y Guardar Noticia
             </ActionButton>
@@ -215,6 +266,7 @@ export default function EditNews() {
               variant="ghostRed"
               className="w-full sm:w-auto px-8 py-5 rounded-3xl justify-center"
               onClick={() => setShowDeleteConfirm(true)}
+              disabled={generatingAI}
             >
               Eliminar Entrada
             </ActionButton>

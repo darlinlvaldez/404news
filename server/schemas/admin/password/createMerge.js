@@ -1,6 +1,6 @@
-import { authors } from "../authors";
-import { users } from "../users";
-import { createPass } from "./createPass";
+import { authors } from "@/server/schemas/admin/authors";
+import { users } from "@/server/schemas/admin/users";
+import { createPass } from "@/server/schemas/admin/password/createPass";
 
 export const createAuthorSchema = authors.merge(createPass);
 

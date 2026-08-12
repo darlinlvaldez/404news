@@ -2,9 +2,8 @@ import { NextResponse } from "next/server";
 import newsController from "../../../../../server/controllers/admin/news";
 import { requireAuth } from "../../../../../server/utils/auth";
 import { handleError } from "../../../../../server/errors/handleError";
-import { news as newsSchema } from "../../../../../server/schemas/admin/news"
+import { newsAdmin as newsSchema } from "../../../../../server/schemas/admin/news"
 import { newsBlocks } from "../../../../../server/schemas/admin/newsBlocks"
-
 
 export async function GET(req, context) {
   try {

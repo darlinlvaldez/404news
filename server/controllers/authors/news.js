@@ -57,7 +57,7 @@ newsController.generateAiMetadata = async function ({ news, blocks }) {
   };
 };
 
-newsController.update = async function ({ id, news, blocks }) {
+newsController.update = async function ({ userId, id, news, blocks }) {
   if (!id) {
     return {
       ok: false,
@@ -72,7 +72,7 @@ newsController.update = async function ({ id, news, blocks }) {
     };
   }
 
-  await newsModel.updateNews(id, news, blocks);
+  await newsModel.updateNewsAuthor(userId, id, news, blocks);
 
   return {
     ok: true,
@@ -80,7 +80,7 @@ newsController.update = async function ({ id, news, blocks }) {
   };
 };
 
-newsController.getById = async function (id) {
+newsController.getById = async function (userId, id) {
   if (!id) {
     return {
       ok: false,
@@ -88,7 +88,7 @@ newsController.getById = async function (id) {
     };
   }
 
-  const data = await newsModel.getNewsById(id);
+  const data = await newsModel.getNewsById(userId, id);
 
   if (!data.news) {
     return {
@@ -104,7 +104,7 @@ newsController.getById = async function (id) {
   };
 };
 
-newsController.delete = async function (id) {
+newsController.delete = async function (userId, id) {
   if (!id) {
     return {
       ok: false,
@@ -112,7 +112,7 @@ newsController.delete = async function (id) {
     };
   }
 
-  await newsModel.deleteNews(id);
+  await newsModel.deleteNews(userId, id);
 
   return {
     ok: true,

@@ -34,6 +34,22 @@ export async function getAuthorByUserId(userId) {
   return rows[0] || null;
 }
 
+export async function getAuthorNewsById(newsId, userId) {
+  const [rows] = await db.query(
+    `
+    SELECT n.id
+    FROM news n
+    INNER JOIN authors a ON n.author_id = a.id
+    WHERE n.id = ?
+      AND a.user_id = ?
+    LIMIT 1
+    `,
+    [newsId, userId]
+  );
+
+  return rows[0] || null;
+}
+
 export async function getCategories() {
   const [rows] = await db.query(`
     SELECT id, name

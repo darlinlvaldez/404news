@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { useParams } from "next/navigation";
 import { toast } from "@/utils/toast";
-import { UseNewsState } from '@/components/admin/news/UseNewsState';
+import { useNewsState } from '@/hooks/useNewsState';
 import { Header } from '@/components/admin/Header';
 import { GeneralData } from '@/components/admin/news/GeneralData';
 import { ContentBlocks } from '@/components/admin/news/ContentBlocks';
@@ -21,8 +21,8 @@ export default function EditNews() {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
 
-  const [authors, setAuthors] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [generatingAI, setGeneratingAI] = useState(false);
   const { errors, clearField, handleResponse } = useFormErrors();
   
   const {
@@ -36,16 +36,42 @@ export default function EditNews() {
     updateBlock,
     moveBlock,
     setFormData
-  } = UseNewsState();
+  } = useNewsState();
+
+  const payload = {
+    news: {
+      title: newsData.title,
+      slug: newsData.slug,
+      excerpt: newsData.excerpt,
+      cover_image: newsData.cover_image,
+      category_id: newsData.category_id,
+    },
+
+    blocks: blocks.map((block) => {
+      if (block.block_type === "image") {
+        return {
+          block_type: block.block_type,
+          image_url: block.image_url,
+          alt_text: block.alt_text,
+          position: block.position,
+        };
+      }
+
+      return {
+        block_type: block.block_type,
+        content: block.content,
+        position: block.position,
+      };
+    }),
+  };
 
   useEffect(() => {
     const fetchFormData = async () => {
       try {
-        const response = await fetch("/api/admin/news/form-data");
+        const response = await fetch("/api/authors/news/form-data");
         const data = await response.json();
         
         if (data.ok) {
-          setAuthors(data.authors);
           setCategories(data.categories);
         }
       } catch (error) {
@@ -62,7 +88,7 @@ export default function EditNews() {
     const fetchNews = async () => {
       try {
 
-      const response = await fetch(`/api/admin/news/${id}`);
+      const response = await fetch(`/api/authors/news/${id}`);
       const data = await response.json();
 
       if (data.ok) {
@@ -92,20 +118,8 @@ export default function EditNews() {
 
   const handleSave = async () => {
     try {
-      const payload = {
-        news: {
-          title: newsData.title,
-          slug: newsData.slug,
-          excerpt: newsData.excerpt,
-          cover_image: newsData.cover_image,
-          author_id: newsData.author_id,
-          category_id: newsData.category_id,
-          status: newsData.status,
-        },
-        blocks,
-      };
-
-      const response = await fetch(`/api/admin/news/${id}`, {
+      
+      const response = await fetch(`/api/authors/news/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -121,7 +135,7 @@ export default function EditNews() {
       }
 
       toast.success("NOTICIA ACTUALIZADA");
-      router.push("/admin/news");
+      router.push("/authors/news");
 
     } catch (error) {
       console.error(error);
@@ -129,9 +143,57 @@ export default function EditNews() {
     }
   };
 
+  const handleGenerateAI = async () => {
+    const hasContent = blocks.some((b) => b.content?.trim());
+
+    if (!hasContent) {
+      toast.error("AGREGA CONTENIDO ANTES DE GENERAR CON IA");
+      return;
+    }
+
+    const category = categories.find(
+      c => c.id === newsData.category_id
+    );
+
+    setGeneratingAI(true);
+
+    try {
+      const res = await fetch("/api/generate-ai", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+        news: { ...newsData, category_name: category?.name ?? "",},
+          blocks,
+        })
+      });
+
+      const data = await res.json();
+
+      if (!res.ok || !data.ok) {
+        toast.error(data.message || "NO SE PUDO GENERAR CON IA");
+        return;
+      }
+
+      handleInputChange({ target: { name: "title", value: data.title } });
+      handleInputChange({ target: { name: "slug", value: data.slug } });
+      handleInputChange({ target: { name: "excerpt", value: data.excerpt } });
+      clearField("title");
+      clearField("slug");
+      clearField("excerpt");
+
+      toast.success("CAMPOS GENERADOS CON IA");
+    } catch (error) {
+      console.error(error);
+      toast.error("OCURRIÓ UN ERROR INESPERADO");
+    } finally {
+      setGeneratingAI(false);
+    }
+  };
+
+
   const handleDelete = async () => {
     try {
-      const response = await fetch(`/api/admin/news/${id}`, {
+      const response = await fetch(`/api/authors/news/${id}`, {
         method: "DELETE",
       });
 
@@ -143,7 +205,7 @@ export default function EditNews() {
       }
 
       toast.success("NOTICIA ELIMINADA");
-      router.push("/admin/news");
+      router.push("/authors/news");
 
     } catch (error) {
       console.error(error);
@@ -154,7 +216,7 @@ export default function EditNews() {
   };
 
   const onBack = () => {
-    router.push('/admin/news');
+    router.push('/authors/news');
   };
 
   if (loading) {
@@ -183,10 +245,12 @@ export default function EditNews() {
         <GeneralData 
           newsData={newsData}
           onInputChange={handleChange}
-          authors={authors}
           categories={categories}
+          onGenerateAI={handleGenerateAI}
+          generatingAI={generatingAI}
           errors={errors}
           clearField={clearField}
+          isAuthor
         />
 
         <ContentBlocks 
@@ -206,6 +270,7 @@ export default function EditNews() {
               variant="green"
               className="w-full sm:flex-1 py-5 font-black justify-center"
               onClick={handleSave}
+              disabled={generatingAI}
             >
               Confirmar y Guardar Noticia
             </ActionButton>
@@ -215,6 +280,7 @@ export default function EditNews() {
               variant="ghostRed"
               className="w-full sm:w-auto px-8 py-5 rounded-3xl justify-center"
               onClick={() => setShowDeleteConfirm(true)}
+              disabled={generatingAI}
             >
               Eliminar Entrada
             </ActionButton>

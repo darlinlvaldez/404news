@@ -1,14 +1,13 @@
 import { NextResponse } from "next/server";
-import { handleError } from "../../../../../server/errors/handleError";
-import newsController from "../../../../../server/controllers/admin/news";
+import { handleError } from "../../../server/errors/handleError";
+import { generateAiMetadata } from "../../../server/controllers/generateMetada";
 
 export async function POST(req) {
   try {
     const { news, blocks } = await req.json();
 
-    const result = await newsController.generateAiMetadata({
-      news,
-      blocks,
+    const result = await generateAiMetadata({
+      news, blocks,
     });
 
     return NextResponse.json(result);

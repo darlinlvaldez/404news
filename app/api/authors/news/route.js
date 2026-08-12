@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { requireAuth } from "../../../../server/utils/auth";
 import { handleError } from "../../../../server/errors/handleError";
-import { news as newsSchema } from "../../../../server/schemas/admin/news"
+import { news as newsSchema } from "../../../../server/schemas/news"
 import { newsBlocks } from "../../../../server/schemas/admin/newsBlocks"
 import newsController from "../../../../server/controllers/authors/news";
 
