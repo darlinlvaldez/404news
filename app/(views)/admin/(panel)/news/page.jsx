@@ -9,6 +9,7 @@ import Input from "@/components/admin/ui/Input"
 import { Header } from '@/components/admin/Header';
 import { ActionButton } from '@/components/admin/ui/ActionButtons';
 import { Container, Th } from "@/components/admin/ui/Table";
+import { getStatusStyle, getStatusIcon, statusOptions } from "@/utils/statusNews";
 
 import { 
   Search, 
@@ -18,10 +19,7 @@ import {
   Tag, 
   ChevronLeft, 
   ChevronRight, 
-  CheckCircle2,
-  Clock,
-  FileEdit,
-  Plus
+  Plus,
 } from 'lucide-react';
 
 export default function NewsTable() {
@@ -29,6 +27,7 @@ export default function NewsTable() {
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
+  const [authorFilter, setAuthorFilter] = useState(null);
   
   const searchParams = useSearchParams();
 
@@ -59,6 +58,7 @@ export default function NewsTable() {
 
   if (statusFilter) {params.append("status", statusFilter)}
   if (debouncedSearch) params.append("search", debouncedSearch);
+  if (authorFilter !== null) {params.append("author", authorFilter)}
 
   fetch(`/api/admin/news?${params.toString()}`)
     .then(res => res.json())
@@ -68,40 +68,13 @@ export default function NewsTable() {
         setTotal(data.total);
       }
     });
-  }, [page, statusFilter, debouncedSearch]);
-
-  const getStatusStyle = (status) => {
-    switch (status) {
-      case 'published': return 'text-green-700 border-green-800';
-      case 'review': return 'text-amber-500 border-amber-500/20';
-      case 'draft': return 'text-slate-500 border-slate-600';
-      default: return 'text-gray-500 border-gray-500/20';
-    }
-  };
-
-  const getStatusIcon = (status) => {
-    switch (status) {
-      case 'published': return <CheckCircle2 size={20} className="mr-1.5" />;
-      case 'review': return <Clock size={12} className="mr-1.5" />;
-      case 'draft': return <FileEdit size={12} className="mr-1.5" />;
-      default: return null;
-      }
-  };
-
-  const statusOptions = [
-    { value: "", label: "Todos los estados" },
-    { value: "published", label: "Publicado" },
-    { value: "review", label: "En revisión" },
-    { value: "draft", label: "Borrador" },
-  ];
+  }, [page, statusFilter, debouncedSearch, authorFilter]);
 
   const statusLabels = Object.fromEntries(
   statusOptions
     .filter(option => option.value)
     .map(option => [option.value, option.label])
   );
-
-  console.log(statusLabels)
   
   const getVisiblePages = () => {
     const maxVisible = 5;
@@ -137,6 +110,32 @@ export default function NewsTable() {
               }}
               placeholder="Buscar por título o ID..."
               icon={Search}/>
+          </div>
+
+          <div>
+            <div className="grid grid-cols-3 gap-1.5 p-1 bg-slate-950/60 rounded-xl border border-slate-800">
+              {[
+                { value: null, label: "Todas" },
+                { value: false, label: "Admin" },
+                { value: true, label: "Author" }
+              ].map((option) => (
+                <button
+                  key={option.label}
+                  type="button"
+                  onClick={() => {
+                    setAuthorFilter(option.value);
+                    setPage(1);
+                  }}
+                  className={`py-1.5 px-3 text-xs font-medium rounded-lg transition-all cursor-pointer ${
+                    authorFilter === option.value
+                      ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 shadow-sm"
+                      : "text-slate-400 hover:text-slate-200"
+                  }`}
+                >
+                  {option.label}
+                </button>
+              ))}
+            </div>
           </div>
           
           <Select className="w-full md:w-56"

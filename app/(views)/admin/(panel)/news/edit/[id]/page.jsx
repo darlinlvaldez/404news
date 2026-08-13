@@ -92,6 +92,9 @@ export default function EditNews() {
   };
 
   const handleSave = async () => {
+
+    const blocksPayload = blocks.map(({ id, ...block }) => block);
+
     try {
       const payload = {
         news: {
@@ -102,9 +105,12 @@ export default function EditNews() {
           author_id: newsData.author_id,
           category_id: newsData.category_id,
           status: newsData.status,
+          rejection_reason: newsData.rejection_reason,
         },
-        blocks,
+        blocks: blocksPayload,
       };
+
+      console.log("BLOCKS QUE ESTOY ENVIANDO:", blocks);
 
       const response = await fetch(`/api/admin/news/${id}`, {
         method: "PUT",
@@ -237,6 +243,7 @@ export default function EditNews() {
           generatingAI={generatingAI}
           errors={errors}
           clearField={clearField}
+          isEdit={true}
         />
 
         <ContentBlocks 

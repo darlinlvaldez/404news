@@ -5,12 +5,13 @@ import {getAuthors, getCategories} from "@/server/services/catalog";
 
 const newsController = {};
 
-newsController.newsTable = async function ({ limit, offset, search, status }) {
+newsController.newsTable = async function ({ limit, offset, search, status, author }) {
   const { rows, total } = await newsModel.getNewsTable(
     limit,
     offset,
     search,
     status,
+    author,
   );
 
   return { ok: true, news: rows, total };

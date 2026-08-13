@@ -124,6 +124,10 @@ news.updateNewsAuthor = async (userId, id, newsData, blocks) => {
       throw new Error("Noticia no encontrada o no tienes permiso");
     }
 
+    if (!["draft", "rejected"].includes(news.status)) {
+      throw new Error("Esta noticia no puede ser modificada en su estado actual");
+    }
+
     const newsId = news.id;
 
     await connection.beginTransaction();
@@ -215,7 +219,7 @@ news.getNewsById = async (userId, id) => {
   };
 };
 
-news.deleteNews = async (userId, id) => {
+news.deleteNewsAuthor = async (userId, id) => {
   const connection = await db.getConnection();
 
   try {
@@ -223,6 +227,10 @@ news.deleteNews = async (userId, id) => {
 
     if (!existing) {
       throw new Error("Noticia no encontrada o no tienes permiso");
+    }
+
+    if (existing.status !== "draft") {
+      throw new Error("Solo puedes eliminar noticias en borrador");
     }
 
     const newsId = existing.id;

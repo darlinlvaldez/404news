@@ -5,16 +5,14 @@ import { ErrorMessage } from "@/components/ErrorMessage";
 import { fieldClass } from "@/utils/form";
 import { ActionButton } from '@/components/admin/ui/ActionButtons';
 import { Image as ImageIcon, AlignLeft, Sparkles } from 'lucide-react';
+import { statusOptions } from "@/utils/statusNews";
 
 export const GeneralData = ({ newsData, onInputChange, authors = [], categories = [], 
-  onGenerateAI, generatingAI, errors = {}, clearField, isAuthor = false
+  onGenerateAI, generatingAI, errors = {}, clearField, isAuthor = false, isEdit
  }) => {
 
-  const statusOptions = [
-    { value: "draft", label: "Borrador" },
-    { value: "review", label: "En Revisión" },
-    { value: "published", label: "Publicado" },
-  ];
+  const options = statusOptions.slice(1)
+  .filter(option => isEdit || option.value !== "rejected");
 
   const styleInput = `w-full bg-gray-950 border border-gray-700 rounded-xl font-semibold 
   focus:ring-1 focus:ring-green-800 focus:border-transparent outline-none transition placeholder:text-gray-600`
@@ -167,13 +165,37 @@ export const GeneralData = ({ newsData, onInputChange, authors = [], categories 
               <Select
                 name="status"
                 value={newsData.status}
-                options={statusOptions}
+                options={options}
                 onChange={onInputChange}
                 errors={errors}
               />
             </div>
           )}
         </div>
+        {newsData.status === "rejected" && (
+          <div>
+            <label className={labelStyles}>
+              Motivo del rechazo
+            </label>
+
+            <textarea
+              name="rejection_reason"
+              value={newsData.rejection_reason ?? ""}
+              onChange={onInputChange}
+              rows="4"
+              className={fieldClass(
+                !!errors?.rejection_reason,
+                `${styleInput} px-4 py-3`
+              )}
+              placeholder="Explica al autor por qué la noticia ha sido rechazada..."
+            />
+
+            <ErrorMessage
+              errors={errors}
+              name="rejection_reason"
+            />
+          </div>
+        )}
       </div>
     </section>
   );

@@ -37,7 +37,7 @@ export async function getAuthorByUserId(userId) {
 export async function getAuthorNewsById(newsId, userId) {
   const [rows] = await db.query(
     `
-    SELECT n.id
+    SELECT n.id, status
     FROM news n
     INNER JOIN authors a ON n.author_id = a.id
     WHERE n.id = ?

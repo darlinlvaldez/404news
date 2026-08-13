@@ -6,7 +6,8 @@ news.getNewsTable = async function (
   limit = 50,
   offset = 0,
   search = "",
-  status = ""
+  status = "",
+  author = null
 ) {
 
   let baseQuery = `
@@ -26,6 +27,14 @@ news.getNewsTable = async function (
   if (status) {
     baseQuery += ` AND n.status = ?`;
     params.push(status);
+  }
+
+  if (author === true) {
+    baseQuery += ` AND n.author_id IS NOT NULL`;
+  }
+
+  if (author === false) {
+    baseQuery += ` AND n.author_id IS NULL`;
   }
 
   const [countResult] = await db.query(
@@ -132,7 +141,8 @@ news.updateNews = async (id, newsData, blocks) => {
         cover_image = ?,
         author_id = ?,
         category_id = ?,
-        status = ?
+        status = ?,
+        rejection_reason = ?
        WHERE id = ?`,
       [
         newsData.title,
@@ -142,6 +152,7 @@ news.updateNews = async (id, newsData, blocks) => {
         newsData.author_id,
         newsData.category_id,
         newsData.status,
+        newsData.rejection_reason,
         id
       ]
     );
@@ -193,9 +204,16 @@ news.getNewsById = async (id) => {
   const newsId = news[0].id;
 
   const [blocks] = await db.query(
-    `SELECT * FROM news_blocks
-     WHERE news_id = ?
-     ORDER BY position ASC`,
+    `SELECT 
+      id,
+      block_type,
+      content,
+      image_url,
+      alt_text,
+      position
+    FROM news_blocks
+    WHERE news_id = ?
+    ORDER BY position ASC`,
     [newsId]
   );
 

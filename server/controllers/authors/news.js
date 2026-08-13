@@ -112,7 +112,7 @@ newsController.delete = async function (userId, id) {
     };
   }
 
-  await newsModel.deleteNews(userId, id);
+  await newsModel.deleteNewsAuthor(userId, id);
 
   return {
     ok: true,

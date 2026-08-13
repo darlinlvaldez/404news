@@ -5,7 +5,7 @@ import { ErrorMessage } from "@/components/ErrorMessage";
 import useDropdown from "@/hooks/useDropdown";
 
 export default function Select({
-  options,
+  options = [],
   value,
   onChange,
   onOpen,

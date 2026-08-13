@@ -166,6 +166,7 @@ export default function CreateNews() {
           generatingAI={generatingAI}
           errors={errors}
           clearField={clearField}
+          isEdit={false}
         />
 
         <ContentBlocks 

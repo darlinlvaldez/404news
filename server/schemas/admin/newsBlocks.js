@@ -1,8 +1,7 @@
 import { z } from "zod";
 
 export const newsBlock = z.discriminatedUnion("block_type", [
-  z
-    .object({
+  z.object({
       block_type: z.literal("paragraph"),
       content: z
         .string()
@@ -12,8 +11,7 @@ export const newsBlock = z.discriminatedUnion("block_type", [
     })
     .strict(),
 
-  z
-    .object({
+  z.object({
       block_type: z.literal("heading"),
       content: z
         .string()
@@ -23,8 +21,7 @@ export const newsBlock = z.discriminatedUnion("block_type", [
     })
     .strict(),
 
-  z
-    .object({
+  z.object({
       block_type: z.literal("image"),
       image_url: z
         .string()
