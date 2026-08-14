@@ -178,22 +178,32 @@ export const GeneralData = ({ newsData, onInputChange, authors = [], categories 
               Motivo del rechazo
             </label>
 
-            <textarea
-              name="rejection_reason"
-              value={newsData.rejection_reason ?? ""}
-              onChange={onInputChange}
-              rows="4"
-              className={fieldClass(
-                !!errors?.rejection_reason,
-                `${styleInput} px-4 py-3`
-              )}
-              placeholder="Explica al autor por qué la noticia ha sido rechazada..."
-            />
+            {isAuthor ? (
+              <div className="w-fit max-w-full bg-red-950/30 border border-red-900/50 rounded-xl px-4 py-3">
+                <p className="text-sm text-red-400 font-semibold">
+                  {newsData.rejection_reason || "No se especificó un motivo de rechazo."}
+                </p>
+              </div>
+            ) : (
+              <>
+                <textarea
+                  name="rejection_reason"
+                  value={newsData.rejection_reason ?? ""}
+                  onChange={onInputChange}
+                  rows="4"
+                  className={fieldClass(
+                    !!errors?.rejection_reason,
+                    `${styleInput} px-4 py-3`
+                  )}
+                  placeholder="Explica al autor por qué la noticia ha sido rechazada..."
+                />
 
-            <ErrorMessage
-              errors={errors}
-              name="rejection_reason"
-            />
+                <ErrorMessage
+                  errors={errors}
+                  name="rejection_reason"
+                />
+              </>
+            )}
           </div>
         )}
       </div>

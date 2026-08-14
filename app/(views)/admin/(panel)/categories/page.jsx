@@ -240,7 +240,7 @@ export default function CategoriesPage () {
           <section className="space-y-6">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
               <h3 className="text-xl font-bold flex items-center text-gray-200">
-                <Folder size={20} className="mr-3 text-gray-500" />
+                <Folder size={25} className="mr-3 text-green-700/90" />
                 Listado de Categorías
               </h3>
               <div className="relative w-80">

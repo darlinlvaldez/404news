@@ -2,12 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import Link from "next/link";
 import Select from "@/components/admin/ui/Select"
 import Input from "@/components/admin/ui/Input"
 import {formatDateAbsolute} from "@/utils/formatDate"
 import { Header } from '@/components/admin/Header';
-import { ActionButton } from '@/components/admin/ui/ActionButtons';
+import { ActionButton, CompactButton} from '@/components/admin/ui/ActionButtons';
 import { Container, Th } from "@/components/admin/ui/Table";
 import { statusOptions, getStatusIcon, getStatusStyle } from "@/utils/statusNews"
 
@@ -28,7 +27,8 @@ export default function NewsTable() {
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
-  
+  const [debouncedSearch, setDebouncedSearch] = useState("");
+
   const searchParams = useSearchParams();
 
   const initialStatus = searchParams.get("status") ?? "";
@@ -40,33 +40,37 @@ export default function NewsTable() {
   const showingFrom = (page - 1) * limit + 1;
   const showingTo = Math.min(page * limit, total);
 
-  const [debouncedSearch, setDebouncedSearch] = useState("");
-
   useEffect(() => {
-    const delay = setTimeout(() => {
-      setDebouncedSearch(search);
-    }, 400);
+    const fetchNews = async () => {
+      try {
+        const offset = (page - 1) * limit;
 
-    return () => clearTimeout(delay);
-  }, [search]);
+        const params = new URLSearchParams({
+          limit: String(limit),
+          offset: String(offset),
+        });
 
-  useEffect(() => {
+        if (statusFilter) {
+          params.append("status", statusFilter);
+        }
 
-  const offset = (page - 1) * limit;
+        if (debouncedSearch) {
+          params.append("search", debouncedSearch);
+        }
 
-  const params = new URLSearchParams({ limit, offset });
+        const response = await fetch(`/api/authors/news?${params.toString()}`);
+        const data = await response.json();
 
-  if (statusFilter) {params.append("status", statusFilter)}
-  if (debouncedSearch) params.append("search", debouncedSearch);
-
-  fetch(`/api/authors/news?${params.toString()}`)
-    .then(res => res.json())
-    .then(data => {
-      if (data.ok) {
-        setNews(data.news);
-        setTotal(data.total);
+        if (data.ok) {
+          setNews(data.news);
+          setTotal(data.total);
+        }
+      } catch (error) {
+        console.error("Error al obtener las noticias:", error);
       }
-    });
+    };
+
+    fetchNews();
   }, [page, statusFilter, debouncedSearch]);
 
   const statusLabels = Object.fromEntries(
@@ -136,7 +140,8 @@ export default function NewsTable() {
               <tr key={item.id} className="hover:bg-slate-800/40 transition-all group">
                 <td className="px-8 py-5">
                 <div className="max-w-xs md:max-w-sm">
-                  <p className="text-sm font-bold text-white group-hover:text-green-700 transition truncate mb-1">
+                  <p className="text-sm font-bold text-white group-hover:text-green-700 transition truncate mb-1"
+                    title={item.title}>
                     {item.title}
                   </p>
                   <div className="flex items-center space-x-2 text-xs py-0.5 font-mono text-gray-500">
@@ -183,7 +188,7 @@ export default function NewsTable() {
                             Motivo del rechazo
                           </p>
 
-                          <p className="text-xs leading-relaxed text-gray-300">
+                          <p className="text-xs leading-relaxed text-gray-300 line-clamp-2">
                             {item.rejection_reason || "No se especificó un motivo."}
                           </p>
                         </div>
@@ -199,15 +204,15 @@ export default function NewsTable() {
                     </span>
                   </div>
                 </td>
-                <td className="px-8 py-6 text-right">
-                  <div className="flex justify-end space-x-2">
+                <td className="px-8 py-6">
+                  <div className="flex justify-start space-x-2">
                     {["draft", "rejected"].includes(item.status) && (
-                      <Link
+                      <CompactButton
+                        icon={Edit3}
                         href={`/authors/news/edit/${item.id}`}
-                        className="p-3 bg-gray-800 hover:bg-blue-600 text-slate-400 hover:text-white rounded-xl transition-all shadow-lg active:scale-95 flex items-center justify-center"
-                      >
-                        <Edit3 size={18}/>
-                      </Link>
+                        title="Editar noticia"
+                        hoverColor="hover:bg-blue-600"
+                      />
                     )}
                   </div>
                 </td>

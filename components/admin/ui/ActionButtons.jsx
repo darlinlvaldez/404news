@@ -3,15 +3,30 @@ import Link from "next/link";
 export function CompactButton({
   icon: Icon,
   onClick,
+  href,
   title,
   hoverColor = "hover:bg-gray-700",
   className = ""
 }) {
+  const classes = `p-2 bg-gray-800 text-gray-400 hover:text-white rounded-xl transition shadow-md cursor-pointer ${hoverColor} ${className}`;
+
+  if (href) {
+    return (
+      <Link
+        href={href}
+        title={title}
+        className={classes}
+      >
+        <Icon size={20} />
+      </Link>
+    );
+  }
+
   return (
     <button
       onClick={onClick}
       title={title}
-      className={`p-2 bg-gray-800 text-gray-400 hover:text-white rounded-xl transition shadow-md cursor-pointer ${hoverColor} ${className}`}
+      className={classes}
     >
       <Icon size={20} />
     </button>

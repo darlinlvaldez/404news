@@ -20,6 +20,7 @@ import {
   ChevronLeft, 
   ChevronRight, 
   Plus,
+  CircleHelp
 } from 'lucide-react';
 
 export default function NewsTable() {
@@ -163,7 +164,8 @@ export default function NewsTable() {
               <tr key={item.id} className="hover:bg-slate-800/40 transition-all group">
                 <td className="px-8 py-5">
                 <div className="max-w-xs md:max-w-sm">
-                  <p className="text-sm font-bold text-white group-hover:text-green-700 transition truncate mb-1">
+                  <p className="text-sm font-bold text-white group-hover:text-green-700 transition truncate mb-1"
+                    title={item.title}>
                     {item.title}
                   </p>
                   <div className="flex items-center space-x-2 text-xs py-0.5 font-mono text-gray-500">
@@ -191,9 +193,41 @@ export default function NewsTable() {
                   </div>
                 </td>
                 <td className="px-8 py-6">
-                  <span className={`inline-flex items-center px-3 py-1.5 rounded-xl text-xs font-black uppercase tracking-widest border 
-                    ${getStatusStyle(item.status)}`}> {getStatusIcon(item.status)} {statusLabels[item.status] ?? item.status}
-                  </span>
+                  <div className="relative inline-flex">
+                    
+                    <span
+                      className={`inline-flex items-center px-3 py-1.5 rounded-xl text-xs font-black uppercase tracking-widest border
+                      ${getStatusStyle(item.status)}`}
+                    >
+                      {getStatusIcon(item.status)}
+                      {statusLabels[item.status] ?? item.status}
+                    </span>
+
+                    {item.status === "rejected" && (
+                      <div className="relative group/info">
+                        <button
+                          type="button"
+                          className="absolute -top-2 -right-2 text-red-400 hover:text-red-200 cursor-pointer transition-colors"
+                          aria-label="Ver motivo del rechazo"
+                        >
+                          <CircleHelp size={16} />
+                        </button>
+
+                        <div className="absolute z-50 bottom-full right-0 mb-2 w-72 p-4 rounded-xl bg-gray-950 border border-gray-700
+                          shadow-2xl text-left opacity-0 invisible group-hover/info:opacity-100 group-hover/info:visible transition-all duration-200"
+                        >
+                          <p className="text-[10px] font-black uppercase tracking-widest text-red-400 mb-2">
+                            Motivo del rechazo
+                          </p>
+
+                          <p className="text-xs leading-relaxed text-gray-300 line-clamp-2">
+                            {item.rejection_reason || "No se especificó un motivo."}
+                          </p>
+                        </div>
+                      </div>
+                    )}
+
+                  </div>
                 </td>
                 <td className="px-8 py-6 text-sm">
                   <div className="flex flex-col">

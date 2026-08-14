@@ -52,6 +52,7 @@ news.getNewsTable = async function (
       n.status,
       n.views,
       n.created_at,
+      n.rejection_reason,
       a.name AS author,
       c.name AS category
     ${baseQuery}
