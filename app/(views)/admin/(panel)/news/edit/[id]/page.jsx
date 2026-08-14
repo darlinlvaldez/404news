@@ -70,6 +70,8 @@ export default function EditNews() {
         setFormData(data.news, data.blocks);
       }
 
+      console.log(data)
+
       setLoading(false);
 
     } catch (error) {
@@ -93,7 +95,30 @@ export default function EditNews() {
 
   const handleSave = async () => {
 
-    const blocksPayload = blocks.map(({ id, ...block }) => block);
+  const normalizeBlock = (block) => {
+    switch (block.block_type) {
+      case "paragraph":
+      case "heading":
+        return {
+          block_type: block.block_type,
+          content: block.content,
+          position: block.position,
+        };
+
+      case "image":
+        return {
+          block_type: block.block_type,
+          image_url: block.image_url,
+          alt_text: block.alt_text ?? undefined,
+          position: block.position,
+        };
+
+      default:
+        throw new Error(`Tipo de bloque desconocido: ${block.block_type}`);
+    }
+  };
+
+  const blocksPayload = blocks.map(normalizeBlock);
 
     try {
       const payload = {
@@ -109,8 +134,6 @@ export default function EditNews() {
         },
         blocks: blocksPayload,
       };
-
-      console.log("BLOCKS QUE ESTOY ENVIANDO:", blocks);
 
       const response = await fetch(`/api/admin/news/${id}`, {
         method: "PUT",

@@ -13,6 +13,7 @@ export const useNewsState = (initialNews = null, initialBlocks = null) => {
     author_id: null,
     category_id: "",
     status: "draft",
+    rejection_reason: "",
     ...initialNews
   });
 
@@ -103,6 +104,7 @@ export const useNewsState = (initialNews = null, initialBlocks = null) => {
         author_id: news.author_id,
         category_id: news.category_id,
         status: news.status,
+        rejection_reason: news.rejection_reason,
       });
     }
 

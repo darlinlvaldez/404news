@@ -98,7 +98,8 @@ export const ContentBlocks = ({ blocks, onAddBlock, onRemoveBlock, onUpdateBlock
                   placeholder="Subtítulo de la sección..."
                   className={fieldClass(!!errors[`${index}.content`],
                     "w-full bg-gray-800/40 border border-gray-700 rounded-xl px-5 py-4 text-lg font-bold focus:ring-1 focus:border-transparent focus:ring-green-700 outline-none"
-                    )}/>
+                  )}
+                />
 
                   <ErrorMessage
                     errors={errors}

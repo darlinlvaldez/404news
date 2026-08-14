@@ -43,6 +43,7 @@ news.getAuthorNews = async function (
       n.title,
       n.slug,
       n.status,
+      n.rejection_reason,
       n.views,
       n.created_at,
       c.name AS category
@@ -124,7 +125,7 @@ news.updateNewsAuthor = async (userId, id, newsData, blocks) => {
       throw new Error("Noticia no encontrada o no tienes permiso");
     }
 
-    if (!["draft", "rejected"].includes(news.status)) {
+    if (["pending", "published", "archived"].includes(news.status)) {
       throw new Error("Esta noticia no puede ser modificada en su estado actual");
     }
 

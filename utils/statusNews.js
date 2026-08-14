@@ -9,41 +9,41 @@ import {
 export const getStatusStyle = (status) => {
   switch (status) {
     case "published":
-      return "text-green-700 border-green-800";
+      return "text-green-700 border-green-800/40";
 
     case "review":
-      return "text-amber-500 border-amber-500/20";
+      return "text-amber-500 border-amber-500/40";
 
     case "draft":
-      return "text-slate-500 border-slate-600";
+      return "text-slate-500 border-slate-600/40";
 
     case "archived":
-      return "text-gray-500 border-gray-500/20";
+      return "text-gray-500 border-gray-500/40";
 
     case "rejected":
-      return "text-red-500 border-red-500/20";
+      return "text-red-500 border-red-500/30";
 
     default:
-      return "text-gray-500 border-gray-500/20";
+      return "text-gray-500 border-gray-500/40";
   }
 };
 
 export const getStatusIcon = (status) => {
   switch (status) {
     case "published":
-      return <CheckCircle2 size={20} className="mr-1.5" />;
+      return <CheckCircle2 size={18} className="mr-1.5" />;
 
     case "review":
-      return <Clock size={12} className="mr-1.5" />;
+      return <Clock size={18} className="mr-1.5" />;
 
     case "draft":
-      return <FileEdit size={12} className="mr-1.5" />;
+      return <FileEdit size={18} className="mr-1.5" />;
 
     case "archived":
-      return <Archive size={12} className="mr-1.5" />;
+      return <Archive size={18} className="mr-1.5" />;
 
     case "rejected":
-      return <XCircle size={12} className="mr-1.5" />;
+      return <XCircle size={18} className="mr-1.5" />;
 
     default:
       return null;

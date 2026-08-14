@@ -106,7 +106,6 @@ export default function EditNews() {
   fetchNews();
   }, [id]);
 
-  
   const handleChange = (e) => {
     handleInputChange(e);
     clearField(e.target.name);
@@ -130,6 +129,7 @@ export default function EditNews() {
       const data = await response.json();
 
       if (!response.ok) {
+        toast.error(data.message || "No se pudo actualizar la noticia");
         handleResponse(data);
         return;
       }
@@ -190,7 +190,6 @@ export default function EditNews() {
     }
   };
 
-
   const handleDelete = async () => {
     try {
       const response = await fetch(`/api/authors/news/${id}`, {
@@ -199,8 +198,9 @@ export default function EditNews() {
 
       const data = await response.json();
 
-      if (!data.ok) {
-        alert(data.message);
+      if (!response.ok) {
+        toast.error(data.message || "No se pudo eliminar la noticia");
+        handleResponse(data);
         return;
       }
 
@@ -210,9 +210,9 @@ export default function EditNews() {
     } catch (error) {
       console.error(error);
       toast.error("OCURRIÓ UN ERROR INESPERADO");
+    } finally {
+      setShowDeleteConfirm(false);
     }
-
-    setShowDeleteConfirm(false);
   };
 
   const onBack = () => {

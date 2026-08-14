@@ -126,7 +126,7 @@ news.updateNews = async (id, newsData, blocks) => {
     );
 
     if (!news.length) {
-        throw new Error("Noticia no encontrada");
+      throw new Error("Noticia no encontrada");
     }
 
     const newsId = news[0].id;

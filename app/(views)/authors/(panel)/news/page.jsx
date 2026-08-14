@@ -1,14 +1,15 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import {formatDateAbsolute} from "@/utils/formatDate"
+import Link from "next/link";
 import Select from "@/components/admin/ui/Select"
 import Input from "@/components/admin/ui/Input"
+import {formatDateAbsolute} from "@/utils/formatDate"
 import { Header } from '@/components/admin/Header';
 import { ActionButton } from '@/components/admin/ui/ActionButtons';
 import { Container, Th } from "@/components/admin/ui/Table";
+import { statusOptions, getStatusIcon, getStatusStyle } from "@/utils/statusNews"
 
 import { 
   Search, 
@@ -18,12 +19,8 @@ import {
   Tag, 
   ChevronLeft, 
   ChevronRight, 
-  CheckCircle2,
-  Clock,
-  FileEdit,
-  Archive,
-  XCircle,
-  Plus
+  Plus,
+  CircleHelp
 } from 'lucide-react';
 
 export default function NewsTable() {
@@ -72,66 +69,11 @@ export default function NewsTable() {
     });
   }, [page, statusFilter, debouncedSearch]);
 
-  const getStatusStyle = (status) => {
-    switch (status) {
-      case "published":
-        return "text-green-700 border-green-800";
-
-      case "review":
-        return "text-amber-500 border-amber-500/20";
-
-      case "draft":
-        return "text-slate-500 border-slate-600";
-
-      case "archived":
-        return "text-gray-500 border-gray-500/20";
-
-      case "rejected":
-        return "text-red-500 border-red-500/20";
-
-      default:
-        return "text-gray-500 border-gray-500/20";
-    }
-  };
-
-  const getStatusIcon = (status) => {
-    switch (status) {
-      case "published":
-        return <CheckCircle2 size={20} className="mr-1.5" />;
-
-      case "review":
-        return <Clock size={12} className="mr-1.5" />;
-
-      case "draft":
-        return <FileEdit size={12} className="mr-1.5" />;
-
-      case "archived":
-        return <Archive size={12} className="mr-1.5" />;
-
-      case "rejected":
-        return <XCircle size={12} className="mr-1.5" />;
-
-      default:
-        return null;
-    }
-  };
-
-  const statusOptions = [
-    { value: "", label: "Todos los estados" },
-    { value: "published", label: "Publicado" },
-    { value: "review", label: "En revisión" },
-    { value: "draft", label: "Borrador" },
-    { value: "archived", label: "Archivado" },
-    { value: "rejected", label: "Rechazado" },
-  ];
-
   const statusLabels = Object.fromEntries(
   statusOptions
     .filter(option => option.value)
     .map(option => [option.value, option.label])
   );
-
-  console.log(statusLabels)
   
   const getVisiblePages = () => {
     const maxVisible = 5;
@@ -175,7 +117,8 @@ export default function NewsTable() {
             onChange={(value) => {
               setStatusFilter(value);
               setPage(1);
-          }}/>
+            }}
+          />
         </div>
 
         <Container>
@@ -213,9 +156,41 @@ export default function NewsTable() {
                   </div>
                 </td>
                 <td className="px-8 py-6">
-                  <span className={`inline-flex items-center px-3 py-1.5 rounded-xl text-xs font-black uppercase tracking-widest border 
-                    ${getStatusStyle(item.status)}`}> {getStatusIcon(item.status)} {statusLabels[item.status] ?? item.status}
-                  </span>
+                  <div className="relative inline-flex">
+                    
+                    <span
+                      className={`inline-flex items-center px-3 py-1.5 rounded-xl text-xs font-black uppercase tracking-widest border
+                      ${getStatusStyle(item.status)}`}
+                    >
+                      {getStatusIcon(item.status)}
+                      {statusLabels[item.status] ?? item.status}
+                    </span>
+
+                    {item.status === "rejected" && (
+                      <div className="relative group/info">
+                        <button
+                          type="button"
+                          className="absolute -top-2 -right-2 text-red-400 hover:text-red-200 cursor-pointer transition-colors"
+                          aria-label="Ver motivo del rechazo"
+                        >
+                          <CircleHelp size={16} />
+                        </button>
+
+                        <div className="absolute z-50 bottom-full right-0 mb-2 w-72 p-4 rounded-xl bg-gray-950 border border-gray-700
+                          shadow-2xl text-left opacity-0 invisible group-hover/info:opacity-100 group-hover/info:visible transition-all duration-200"
+                        >
+                          <p className="text-[10px] font-black uppercase tracking-widest text-red-400 mb-2">
+                            Motivo del rechazo
+                          </p>
+
+                          <p className="text-xs leading-relaxed text-gray-300">
+                            {item.rejection_reason || "No se especificó un motivo."}
+                          </p>
+                        </div>
+                      </div>
+                    )}
+
+                  </div>
                 </td>
                 <td className="px-8 py-6 text-sm">
                   <div className="flex flex-col">
@@ -226,10 +201,14 @@ export default function NewsTable() {
                 </td>
                 <td className="px-8 py-6 text-right">
                   <div className="flex justify-end space-x-2">
-                    <Link href={`/authors/news/edit/${item.id}`}
-                        className="p-3 bg-gray-800 hover:bg-blue-600 text-slate-400 hover:text-white rounded-xl transition-all shadow-lg active:scale-95 flex items-center justify-center">
+                    {["draft", "rejected"].includes(item.status) && (
+                      <Link
+                        href={`/authors/news/edit/${item.id}`}
+                        className="p-3 bg-gray-800 hover:bg-blue-600 text-slate-400 hover:text-white rounded-xl transition-all shadow-lg active:scale-95 flex items-center justify-center"
+                      >
                         <Edit3 size={18}/>
-                    </Link>
+                      </Link>
+                    )}
                   </div>
                 </td>
               </tr>
